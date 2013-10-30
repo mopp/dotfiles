@@ -1,0 +1,40 @@
+" Basic setting
+" --------------------------------------------------------------------------------
+set smartindent
+set autoindent
+set ignorecase
+set smartcase
+
+" 英字キーボード用
+" --------------------------------------------------------------------------------
+noremap ; :
+
+" Insert mode 時に Emacs っぽくする
+" --------------------------------------------------------------------------------
+inoremap <C-a> <Esc>0i
+inoremap <C-e> <Esc>:LineEnd<CR>a
+
+inoremap <C-f> <Esc><Right>a
+inoremap <C-b> <Esc>i
+inoremap <C-n> <Esc>:LineDown<CR>a
+inoremap <C-p> <Esc>:LineUp<CR>a
+
+inoremap <C-o> <Esc>o
+inoremap <C-h> <BS>
+inoremap <C-d> <Esc><Right>xi
+inoremap <C-k> <Esc><Right>:DeleteLineToEnd<CR>i
+
+" コピー
+" --------------------------------------------------------------------------------
+nnoremap Y Vy
+
+" 移動
+" --------------------------------------------------------------------------------
+" nnoremap J 10j
+" nnoremap K 10k
+" vnoremap J 10j
+" vnoremap K 10k
+
+" 整形
+" --------------------------------------------------------------------------------
+vnoremap = :Format<CR>
