@@ -1,0 +1,9 @@
+[user]
+    name = もぷり
+    email = mopp
+[push]
+    default = matching
+[color]
+    ui = auto
+[core]
+    editor = vim
