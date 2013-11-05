@@ -11,17 +11,6 @@
 #   LD_LIBRARY_PATH this is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
 #---------------------------------------------------------------------------------------"
 
-# export CC='/usr/local/bin/gcc-4.9'
-# export CFLAGS='-I./ -I/usr/local/Cellar/isl011/0.11.1/include/ -I/usr/local/include/ -I/usr/include/'
-# export LDFLAGS='-L./ -L/usr/local/opt/ncurses/lib/ -L/usr/local/opt/gettext/lib/ -L/usr/local/opt/libiconv/lib/ -L/usr/local/lib/ -L/usr/lib/'
-# export CPPFLAGS='-I./ -I/usr/local/opt/ncurses/include/ -I/usr/local/opt/gettext/include/ -I/usr/local/opt/libiconv/include/ -I/usr/include/ -I/usr/local/include/'
-# export CXX='/usr/bin/g++-4.9'
-# export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9/ -I/usr/local/include/ -I/usr/include/'
-
-# export LIBRARY_PATH=/usr/local/lib/:/usr/lib/
-# export LD_LIBRARY_PATH=$LIBRARY_PATH
-# export LD_RUN_PATH=$LIBRARY_PATH
-
 # export C_INCLUDE_PATH=/usr/local/include/:/usr/include/
 # export CPLUS_INCLUDE_PATH=/usr/local/include/:/usr/include/
 
@@ -61,7 +50,23 @@ case ${OSTYPE} in
         alias g++='/usr/local/bin/g++-4.9 -Wall'
         ;;
     linux*)
+        # export PATH=/usr/bin:$HOME/.mopp/bin:$PATH
         export PATH=$HOME/.mopp/bin:$PATH
+
+        # export CC='/usr/local/bin/clang'
+        # export CC='/usr/bin/gcc-4.8'
+        export CFLAGS='-I./ -I /usr/local/include/'
+        # export CXX='/usr/local/bin/clang++'
+        # export CXX='/usr/bin/g++-4.8'
+        export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
+        export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
+        export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
+
+        # 末尾にコロンを付けないこと
+        export LIBRARY_PATH=/usr/local/libexec/gcc/x86_64-linux-gnu/4.9.0:/usr/local/lib64:/usr/local/lib32:/usr/local/lib/:/lib64/:/lib32/:/lib/
+        export LD_LIBRARY_PATH=$LIBRARY_PATH
+        export LD_RUN_PATH=$LIBRARY_PATH
+
         ;;
 esac
 
@@ -92,12 +97,16 @@ rm -rf ~/.vim/neocomplete/*
 rm ~/.viminfo
 }
 
+function reload_zshrc() {
+source ~/.zshrc
+}
+
 
 #---------------------------------------------------------------------------------------"
 # zsh
 #---------------------------------------------------------------------------------------"
 ### 補完 ###
-autoload -U compinit; compinit
+autoload -U compinit; compinit -u
 setopt auto_list        # 補完候補を一覧表示
 setopt auto_menu        # <TAB>で補完候補切り替え
 setopt list_packed      # 補完候補を詰めて表示
