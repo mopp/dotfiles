@@ -54,7 +54,11 @@ case ${OSTYPE} in
         autoload run-help
         HELPDIR=/usr/local/share/zsh/helpfiles
 
+        export CC='/usr/local/bin/gcc-4.9'
+
         alias eclipse='/Applications/eclipse/eclipse'
+        alias gcc='/usr/local/bin/gcc-4.9 -Wall'
+        alias g++='/usr/local/bin/g++-4.9 -Wall'
         ;;
     linux*)
         export PATH=$HOME/.mopp/bin:$PATH
@@ -72,8 +76,6 @@ export LESS='-f -N -X -i -P ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 
 alias cl=clear
-alias gcc='gcc -Wall'
-alias g++='g++ -Wall'
 alias clang++='clang++ -Wall'
 alias grep='grep --color=auto'
 alias la='ls -ahF --color'
