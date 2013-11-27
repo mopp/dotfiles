@@ -7,3 +7,5 @@
     ui = auto
 [core]
     editor = vim
+[github]
+    user = mopp
