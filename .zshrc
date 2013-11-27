@@ -58,17 +58,11 @@ case ${OSTYPE} in
     linux*)
         export PATH=$HOME/.mopp/bin:$PATH
 
-<<<<<<< HEAD
         export CC='/usr/local/bin/clang'
         # export CC='/usr/bin/gcc-4.8'
         export CFLAGS='-I./ -I /usr/local/include/'
         export CXX='/usr/local/bin/clang++'
         # export CXX='/usr/bin/g++-4.8'
-=======
-        # export CC='/usr/local/bin/clang'
-        export CFLAGS='-I./ -I /usr/local/include/'
-        # export CXX='/usr/local/bin/clang++'
->>>>>>> d2ae134d111b6129fc57849b01ae65e2b206c7d4
         export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
         export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
         export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
