@@ -31,6 +31,7 @@ case ${OSTYPE} in
     darwin*)
         export PATH=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools:$PATH
         export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
+        export PATH=$HOME/.mopp/bin:/usr/local/opt/ruby/bin:$PATH
 
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
 
@@ -43,21 +44,23 @@ case ${OSTYPE} in
         autoload run-help
         HELPDIR=/usr/local/share/zsh/helpfiles
 
-        export CC='/usr/local/bin/gcc-4.9'
+        export CC='clang-3.4'
+        export CXX='clang++-3.4'
+        # export CXXFLAGS="${CXXFLAGS} -I/usr/local/Cellar/gettext/0.18.3.1/include -I/usr/local/Cellar/ncurses/5.9/include -I/usr/local/Cellar/libiconv/1.14/include"
+        # export LDFLAGS="${LDFLAGS} -L/usr/local/Cellar/gettext/0.18.3.1/lib -L/usr/local/Cellar/ncurses/5.9/lib -L/usr/local/Cellar/libiconv/1.14/lib"
 
         alias eclipse='/Applications/eclipse/eclipse'
         alias gcc='/usr/local/bin/gcc-4.9 -Wall'
         alias g++='/usr/local/bin/g++-4.9 -Wall'
+        alias clang='/usr/local/bin/clang-3.4 -Wall'
+        alias clang++='/usr/local/bin/clang++-3.4 -Wall'
         ;;
     linux*)
-        # export PATH=/usr/bin:$HOME/.mopp/bin:$PATH
         export PATH=$HOME/.mopp/bin:$PATH
 
         # export CC='/usr/local/bin/clang'
-        # export CC='/usr/bin/gcc-4.8'
         export CFLAGS='-I./ -I /usr/local/include/'
         # export CXX='/usr/local/bin/clang++'
-        # export CXX='/usr/bin/g++-4.8'
         export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
         export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
         export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
