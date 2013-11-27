@@ -53,10 +53,10 @@ case ${OSTYPE} in
         # export PATH=/usr/bin:$HOME/.mopp/bin:$PATH
         export PATH=$HOME/.mopp/bin:$PATH
 
-        # export CC='/usr/local/bin/clang'
+        export CC='/usr/local/bin/clang'
         # export CC='/usr/bin/gcc-4.8'
         export CFLAGS='-I./ -I /usr/local/include/'
-        # export CXX='/usr/local/bin/clang++'
+        export CXX='/usr/local/bin/clang++'
         # export CXX='/usr/bin/g++-4.8'
         export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
         export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
