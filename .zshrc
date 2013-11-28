@@ -44,7 +44,7 @@ case ${OSTYPE} in
         autoload run-help
         HELPDIR=/usr/local/share/zsh/helpfiles
 
-        export CC='clang-3.5 -stdlib=libc++'
+        export CC='clang-3.5'
         export CXX='clang++-3.5 -stdlib=libc++'
         export CXXFLAGS="${CXXFLAGS} -nostdinc++ -I/usr/local/lib/llvm-3.5/lib/c++/v1"
         export LDFLAGS="${LDFLAGS} -L/usr/local/lib/llvm-3.5/usr/lib"
