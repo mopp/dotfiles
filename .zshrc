@@ -44,16 +44,16 @@ case ${OSTYPE} in
         autoload run-help
         HELPDIR=/usr/local/share/zsh/helpfiles
 
-        export CC='clang-3.4'
-        export CXX='clang++-3.4'
-        # export CXXFLAGS="${CXXFLAGS} -I/usr/local/Cellar/gettext/0.18.3.1/include -I/usr/local/Cellar/ncurses/5.9/include -I/usr/local/Cellar/libiconv/1.14/include"
-        # export LDFLAGS="${LDFLAGS} -L/usr/local/Cellar/gettext/0.18.3.1/lib -L/usr/local/Cellar/ncurses/5.9/lib -L/usr/local/Cellar/libiconv/1.14/lib"
+        export CC='clang-3.5 -stdlib=libc++'
+        export CXX='clang++-3.5 -stdlib=libc++'
+        export CXXFLAGS="${CXXFLAGS} -nostdinc++ -I/usr/local/lib/llvm-3.5/lib/c++/v1"
+        export LDFLAGS="${LDFLAGS} -L/usr/local/lib/llvm-3.5/usr/lib"
 
         alias eclipse='/Applications/eclipse/eclipse'
         alias gcc='/usr/local/bin/gcc-4.9 -Wall'
         alias g++='/usr/local/bin/g++-4.9 -Wall'
-        alias clang='/usr/local/bin/clang-3.4 -Wall'
-        alias clang++='/usr/local/bin/clang++-3.4 -Wall'
+        alias clang='clang-3.5 -Wall'
+        alias clang++='clang++-3.5 -Wall'
         ;;
     linux*)
         export PATH=$HOME/.mopp/bin:$PATH
