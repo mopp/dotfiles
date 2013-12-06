@@ -112,11 +112,12 @@ source ~/.zshrc
 #---------------------------------------------------------------------------------------"
 ### 補完 ###
 autoload -U compinit; compinit -u
-setopt auto_list        # 補完候補を一覧表示
-setopt auto_menu        # <TAB>で補完候補切り替え
-setopt list_packed      # 補完候補を詰めて表示
-setopt list_types       # 補完候補にファイル種類表示
-setopt auto_param_slash # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
+setopt auto_list            # 補完候補を一覧表示
+setopt auto_menu            # <TAB>で補完候補切り替え
+setopt list_packed          # 補完候補を詰めて表示
+setopt list_types           # 補完候補にファイル種類表示
+setopt auto_param_slash     # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
+setopt magic_equal_subst    # コマンドラインの引数で --prefix=/usr などの = 以降でも補完できる
 zstyle ':completion:*:default' menu select=2        # 補完候補での現在カーソル位置強調
 zstyle ':completion:*' list-colors ''               # 補完候補に色付け
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # 大文字小文字無視
@@ -158,3 +159,5 @@ setopt no_beep              # ビーブ音を鳴らさない
 setopt nolistbeep           # 補完時にビーブ音を鳴らさない
 setopt correct              # コマンド入力ミス修正
 bindkey -e                  # emacsのキーバインド設定
+
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
