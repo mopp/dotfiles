@@ -59,8 +59,11 @@ case ${OSTYPE} in
         case $(uname -n) in
             march*)
                 export PATH=$HOME/.mopp/bin:$PATH
+                export PATH=$HOME/.mopp/cross/bin:$PATH
                 export PATH=$HOME/.gem/ruby/2.0.0/bin:$PATH
-                export PATH=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools:$PATH
+                export PATH=$HOME/Tools/Android/android-sdk-linux/tools:$HOME/Tools/Android/android-sdk-linux/platform-tools:$PATH
+
+                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
