@@ -29,8 +29,8 @@ export LANG=ja_JP.UTF-8
 
 case ${OSTYPE} in
     darwin*)
-        export PATH=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools:$PATH
-        export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
+        export ANDROID_HOME=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools
+        export PATH=$ANDROID_HOME:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export PATH=$HOME/.mopp/bin:/usr/local/opt/ruby/bin:$PATH
 
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH

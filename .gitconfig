@@ -1,5 +1,5 @@
 [user]
-    name = もぷり
+    name = mopp
     email = mopp
 [push]
     default = matching
@@ -7,6 +7,6 @@
     ui = auto
 [core]
     editor = vim
-	pager = less
+	pager = 
 [github]
     user = mopp
