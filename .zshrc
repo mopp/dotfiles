@@ -56,21 +56,31 @@ case ${OSTYPE} in
         alias clang++='clang++-3.5 -Wall'
         ;;
     linux*)
-        export PATH=$HOME/.mopp/bin:$PATH
+        case $(uname -n) in
+            march*)
+                export PATH=$HOME/.mopp/bin:$PATH
+                export PATH=$HOME/.mopp/cross/bin:$PATH
+                export PATH=$HOME/.gem/ruby/2.0.0/bin:$PATH
+                export PATH=$HOME/Tools/Android/android-sdk-linux/tools:$HOME/Tools/Android/android-sdk-linux/platform-tools:$PATH
 
-        export CC='/usr/local/bin/clang'
-        # export CC='/usr/bin/gcc-4.8'
-        export CFLAGS='-I./ -I /usr/local/include/'
-        export CXX='/usr/local/bin/clang++'
-        # export CXX='/usr/bin/g++-4.8'
-        export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
-        export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
-        export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
+                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
+                ;;
+            mopuntu*)
+                export CC='/usr/local/bin/clang'
+                export CC='/usr/bin/gcc-4.8'
+                export CFLAGS='-I./ -I /usr/local/include/'
+                export CXX='/usr/local/bin/clang++'
+                export CXX='/usr/bin/g++-4.8'
+                export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
+                export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
+                export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
 
-        # 末尾にコロンを付けないこと
-        export LIBRARY_PATH=/usr/local/libexec/gcc/x86_64-linux-gnu/4.9.0:/usr/local/lib64:/usr/local/lib32:/usr/local/lib/:/lib64/:/lib32/:/lib/
-        export LD_LIBRARY_PATH=$LIBRARY_PATH
-        export LD_RUN_PATH=$LIBRARY_PATH
+                #末尾にコロンを付けないこと
+                export LIBRARY_PATH=/usr/local/libexec/gcc/x86_64-linux-gnu/4.9.0:/usr/local/lib64:/usr/local/lib32:/usr/local/lib/:/lib64/:/lib32/:/lib/
+                export LD_LIBRARY_PATH=$LIBRARY_PATH
+                export LD_RUN_PATH=$LIBRARY_PATH
+                ;;
+        esac
 
         ;;
 esac
@@ -149,10 +159,20 @@ setopt prompt_subst         # プロンプト内で変数展開・コマンド�
 setopt re_match_pcre
 setopt transient_rprompt    # コマンド実行後は右プロンプト消去
 autoload -U colors; colors
-PROMPT="%F{161}%n@%m:%% %f"
-PROMPT2="%F{039}%B>%b %f"
-SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
-RPROMPT="%F{105}[%~]%f"
+case ${OSTYPE} in
+    darwin*)
+        PROMPT="%F{161}%n@%m:%% %f"
+        PROMPT2="%F{039}%B>%b %f"
+        SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
+        RPROMPT="%F{105}[%~]%f"
+        ;;
+    linux*)
+        PROMPT="%F{1}%n@%m:%% %f"
+        PROMPT2="%F{2}%B>%b %f"
+        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
+        RPROMPT="%F{4}[%~]%f"
+        ;;
+esac
 
 ### Others ###
 setopt no_beep              # ビーブ音を鳴らさない
