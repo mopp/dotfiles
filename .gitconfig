@@ -7,6 +7,6 @@
     ui = auto
 [core]
     editor = vim
-	pager = 
+    pager = less
 [github]
     user = mopp
