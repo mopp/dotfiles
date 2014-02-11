@@ -89,7 +89,7 @@ typeset -U PATH CDPATH FPATH MANPATH
 
 export EDITOR=vim
 export PAGER=less
-export LESS='-f -N -X -i -P ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
+export LESS='-R -f -N -X -i -P ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 
 # for Java
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
