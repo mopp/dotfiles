@@ -63,6 +63,10 @@ case ${OSTYPE} in
                 export PATH=$HOME/Tools/Android/android-sdk-linux/tools:$HOME/Tools/Android/android-sdk-linux/platform-tools:$PATH
 
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
+
+                export CC='clang'
+                export CXX='clang++'
+
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
