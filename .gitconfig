@@ -10,3 +10,5 @@
     pager = less
 [github]
     user = mopp
+[alias]
+	graph = log --graph --decorate --oneline
