@@ -9,20 +9,14 @@
 #   CXXFLAGS        C++ compiler flags
 #   LIBRARY_PATH    this is used by gcc before compilation to search for directories containing libraries that need to be linked to your program.
 #   LD_LIBRARY_PATH this is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
+#   CPATH
+#   C_INCLUDE_PATH
+#   CPLUS_INCLUDE_PATH
+#   CPLUS_LIBRARY_PATH
+#   DYLD_FALLBACK_LIBRARY_PATH
+#   DYLD_LIBRARY_PATH
+#   BOOST_ROOT
 #---------------------------------------------------------------------------------------"
-
-# export C_INCLUDE_PATH=/usr/local/include/:/usr/include/
-# export CPLUS_INCLUDE_PATH=/usr/local/include/:/usr/include/
-
-# export BOOST_ROOT=/usr/local/include/boost
-# export CPATH=/usr/local/include
-# export CPLUS_INCLUDE_PATH=/usr/local/include
-# export CPLUS_LIBRARY_PATH=/usr/local/lib
-# export C_INCLUDE_PATH=/usr/local/include
-# export DYLD_FALLBACK_LIBRARY_PATH=/usr/local/lib homebrew warnig
-# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-# export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
-# export DYLD_LIBRARY_PATH=/usr/local/lib:$DYLD_LIBRARY_PATH
 
 
 export LANG=ja_JP.UTF-8
@@ -70,10 +64,8 @@ case ${OSTYPE} in
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
-                export CC='/usr/bin/gcc-4.8'
                 export CFLAGS='-I./ -I /usr/local/include/'
                 export CXX='/usr/local/bin/clang++'
-                export CXX='/usr/bin/g++-4.8'
                 export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
                 export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
                 export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
