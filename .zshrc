@@ -26,7 +26,6 @@ case ${OSTYPE} in
         export ANDROID_HOME=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools
         export PATH=$ANDROID_HOME:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export PATH=$HOME/.mopp/bin:/usr/local/opt/ruby/bin:$PATH
-
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
 
         export HOMEBREW_VERBOSE
@@ -34,9 +33,9 @@ case ${OSTYPE} in
         fpath=(/usr/local/share/zsh-completions $fpath)
         source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-        unalias run-help
+        [[ -e $(alias run-help) ]] && unalias run-help
         autoload run-help
-        HELPDIR=/usr/local/share/zsh/helpfiles
+        export HELPDIR=/usr/local/share/zsh/helpfiles
 
         # export CC='clang-3.5'
         # export CXX='clang++-3.5 -stdlib=libc++'
@@ -60,7 +59,6 @@ case ${OSTYPE} in
 
                 export CC='clang'
                 export CXX='clang++'
-
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
@@ -76,7 +74,6 @@ case ${OSTYPE} in
                 export LD_RUN_PATH=$LIBRARY_PATH
                 ;;
         esac
-
         ;;
 esac
 
@@ -97,26 +94,27 @@ alias la='ls -ahF --color'
 alias ll='ls -hlF --color'
 alias ls='ls -hF --color'
 
+
+# functions
 function vimman() {
-vim -c 'Ref man '$1 -c 'winc j' -c 'q'
+    vim -c 'Ref man '$1 -c 'winc j' -c 'q'
 }
+
 function cleanVim() {
-rm -rf ~/.vim/view/*
-rm -rf ~/.vim/vimfiler/*
-rm -rf ~/.vim/neocomplete/*
-rm ~/.viminfo
+    rm -rf ~/.vim/view/*
+    rm -rf ~/.vim/vimfiler/*
+    rm -rf ~/.vim/neocomplete/*
+    rm ~/.viminfo
 }
 
 function reload_zshrc() {
-source ~/.zshrc
+    source ~/.zshrc
 }
 
 
-#---------------------------------------------------------------------------------------"
-# zsh
-#---------------------------------------------------------------------------------------"
 ### 補完 ###
-autoload -U compinit; compinit -u
+autoload -U compinit
+compinit -u
 setopt auto_list            # 補完候補を一覧表示
 setopt auto_menu            # <TAB>で補完候補切り替え
 setopt list_packed          # 補完候補を詰めて表示
@@ -172,7 +170,7 @@ esac
 ### Others ###
 setopt no_beep              # ビーブ音を鳴らさない
 setopt nolistbeep           # 補完時にビーブ音を鳴らさない
-setopt correct              # コマンド入力ミス修正
+# setopt correct              # コマンド入力ミス修正
 bindkey -e                  # emacsのキーバインド設定
 
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
