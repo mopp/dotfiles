@@ -57,8 +57,8 @@ case ${OSTYPE} in
 
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
 
-                export CC='clang'
-                export CXX='clang++'
+                # export CC='clang'
+                # export CXX='clang++'
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
