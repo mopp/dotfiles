@@ -20,6 +20,7 @@ floating_modifier $mod
 
 # specific setting
 # for_window [title="urxvt"] border 1pixel
+for_window [class="qemu"] floating enable
 
 # mouse setting
 focus_follows_mouse no
