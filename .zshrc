@@ -160,10 +160,20 @@ case ${OSTYPE} in
         RPROMPT="%F{105}[%~]%f"
         ;;
     linux*)
-        PROMPT="%F{1}%n@%m:%% %f"
-        PROMPT2="%F{2}%B>%b %f"
-        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
-        RPROMPT="%F{4}[%~]%f"
+        case ${TERM} in
+            rxvt*)
+                PROMPT="%F{161}%n@%m:%% %f"
+                PROMPT2="%F{039}%B>%b %f"
+                SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
+                RPROMPT="%F{105}[%~]%f"
+                ;;
+            *)
+                PROMPT="%F{1}%n@%m:%% %f"
+                PROMPT2="%F{2}%B>%b %f"
+                SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
+                RPROMPT="%F{4}[%~]%f"
+                ;;
+        esac
         ;;
 esac
 

@@ -1,31 +1,33 @@
-urxvt.geometry: 72x24
-urxvt.saveLines: 512
-urxvt.scrollBar: false
-urxvt.termName: rxvt
-
-! urxvt.iconFile: /usr/share/icons/Humanity/apps/128/gnome-terminal.svg
-urxvt.font: xft:Ricty:size=11:antialias=true
-
 ! color
 urxvt.depth: 32
 urxvt.foreground: rgba:dc00/dc00/dc00/ffff
 urxvt.background: rgba:3c00/4000/4500/cccc
 
-! blue
-! from http://blog.asial.co.jp/262
-urxvt.color4: #5566ff
+! transparent
+urxvt.transparent: true
+urxvt.shading: 10
+urxvt.inheritPixmap: True
+
+! scroll
+urxvt.saveLines: 12000
+urxvt.scrollBar: true
+urxvt.scrollstyle: plain
+urxvt.scrollBar_right: true
+
+! urxvt.iconFile: /usr/share/icons/Humanity/apps/128/gnome-terminal.svg
+urxvt.font: xft:Ricty:size=11:antialias=true
+urxvt.preeditType: OverTheSpot
+
+! Color
+urxvt.color1:  #ff66ad
+urxvt.color9:  #ff057a
+urxvt.color4:  #5566ff
 urxvt.color12: #7799ff
+urxvt.cursorColor: #56E310
 
 ! fadeout urxvt if outfocus
 urxvt.fading: 30
 
-! input with IM at cursor position
-urxvt.preeditType: OverTheSpot
-
-! clipboard
-! $ urxvt --perl-lib $HOME/.urxvt/urxvt-perls
-! urxvt.perl-lib: /home/sasaplus1/.urxvt/urxvt-perls
-! urxvt.perl-ext-common: clipboard
-! urxvt.keysym.M-c: perl:clipboard:copy
-! urxvt.keysym.M-v: perl:clipboard:paste
-! urxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+urxvt.cursorBlink: true
+urxvt.iso14755: false
+urxvt.iso14755_52: false
