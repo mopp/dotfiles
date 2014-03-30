@@ -14,8 +14,7 @@ urxvt.scrollBar: true
 urxvt.scrollstyle: plain
 urxvt.scrollBar_right: true
 
-! urxvt.iconFile: /usr/share/icons/Humanity/apps/128/gnome-terminal.svg
-urxvt.font: xft:Ricty:size=11:antialias=true
+urxvt.font: xft:Ricty:size=12:antialias=true
 urxvt.preeditType: OverTheSpot
 
 ! Color

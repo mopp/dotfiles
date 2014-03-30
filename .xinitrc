@@ -15,6 +15,11 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 
+if [ -s ~/.Xmodmap ]; then
+    xmodmap ~/.Xmodmap
+fi
+
+
 # default
 session=${1:-i3}
 
