@@ -49,8 +49,9 @@ case ${OSTYPE} in
         alias clang++='clang++-3.5 -Wall'
         ;;
     linux*)
+
         case $(uname -n) in
-            march*)
+            march)
                 export PATH=$HOME/.mopp/bin:$PATH
                 export PATH=$HOME/.gem/ruby/2.0.0/bin:$PATH
                 export PATH=$HOME/Tools/Android/android-sdk-linux/tools:$HOME/Tools/Android/android-sdk-linux/platform-tools:$PATH
@@ -59,6 +60,18 @@ case ${OSTYPE} in
 
                 # export CC='clang'
                 # export CXX='clang++'
+                ;;
+            march_pro)
+                export PATH=$HOME/.mopp/bin:$PATH
+                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
+
+                # export CC='clang'
+                # export CXX='clang++'
+
+                if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
+                    export TERM=fbterm
+                    uim-fep
+                fi
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
@@ -109,6 +122,17 @@ function cleanVim() {
 
 function reload_zshrc() {
     source ~/.zshrc
+}
+
+function man() {
+    env LESS_TERMCAP_mb=$'\E[01;31m' \
+        LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+        LESS_TERMCAP_me=$'\E[0m' \
+        LESS_TERMCAP_se=$'\E[0m' \
+        LESS_TERMCAP_so=$'\E[38;5;246m' \
+        LESS_TERMCAP_ue=$'\E[0m' \
+        LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+        man "$@"
 }
 
 
