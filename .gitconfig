@@ -12,3 +12,4 @@
     user = mopp
 [alias]
 	graph = log --graph --decorate --oneline
+	logs = log --stat

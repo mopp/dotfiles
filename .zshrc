@@ -21,6 +21,8 @@
 
 export LANG=ja_JP.UTF-8
 
+CLANG_OPTION='-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+
 case ${OSTYPE} in
     darwin*)
         export ANDROID_HOME=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools
@@ -45,8 +47,8 @@ case ${OSTYPE} in
         alias eclipse='/Applications/eclipse/eclipse'
         alias gcc='/usr/local/bin/gcc-4.9 -Wall'
         alias g++='/usr/local/bin/g++-4.9 -Wall'
-        alias clang='clang-3.5 -Wall'
-        alias clang++='clang++-3.5 -Wall'
+        alias clang="clang-3.5 -std=c11 ${CLANG_OPTION}"
+        alias clang++="clang++-3.5 -std=c++11 ${CLANG_OPTION}"
         ;;
     linux*)
         case $(uname -n) in
@@ -59,6 +61,8 @@ case ${OSTYPE} in
 
                 # export CC='clang'
                 # export CXX='clang++'
+                alias clang="clang -std=c11 ${CLANG_OPTION}"
+                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
@@ -72,6 +76,9 @@ case ${OSTYPE} in
                 export LIBRARY_PATH=/usr/local/libexec/gcc/x86_64-linux-gnu/4.9.0:/usr/local/lib64:/usr/local/lib32:/usr/local/lib/:/lib64/:/lib32/:/lib/
                 export LD_LIBRARY_PATH=$LIBRARY_PATH
                 export LD_RUN_PATH=$LIBRARY_PATH
+
+                alias clang="clang -std=c11 ${CLANG_OPTION}"
+                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
                 ;;
         esac
         ;;
