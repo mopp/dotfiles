@@ -1,44 +1,50 @@
+! Xft settings ---------------------------------------------------------------
+Xft*dpi:        96
+Xft*antialias:  true
+Xft*rgba:       rgb
+Xft*hinting:    true
+Xft*hintstyle:  hintmedium
+Xft*lcdfilter:  lcddefault
+
 ! color
-! urxvt.depth: 32
-urxvt.foreground: rgba:dc00/dc00/dc00/ffff
-urxvt.background: rgba:3c00/4000/4500/aaaa
+! URxvt*depth: 32
+URxvt*foreground: rgba:dc00/dc00/dc00/ffff
+URxvt*background: rgba:3c00/4000/4500/aaaa
 
 ! transparent
-urxvt.transparent: true
-urxvt.shading: 10
-urxvt.inheritPixmap: True
+URxvt*transparent:      true
+URxvt*shading:          10
+URxvt*inheritPixmap:    True
 
 ! scroll
-urxvt.saveLines: 12000
-urxvt.scrollBar: false
-urxvt.scrollstyle: plain
-urxvt.scrollBar_right: true
+URxvt*saveLines:        12000
+URxvt*scrollBar:        false
+URxvt*scrollstyle:      plain
+URxvt*scrollBar_right:  true
 
-urxvt.font: xft:Ricty:size=12:antialias=true
-urxvt.preeditType: OverTheSpot
-urxvt.inputMethod: uim
+URxvt*font:         xft:Ricty:size=12:antialias=true
+URxvt*preeditType:  OverTheSpot
+URxvt*inputMethod:  uim
 
 ! Color
-urxvt.color1:  #ff66ad
-urxvt.color9:  #ff057a
-urxvt.color4:  #5566ff
-urxvt.color12: #7799ff
-urxvt.cursorColor: #56E310
+URxvt*color1:       #ff66ad
+URxvt*color9:       #ff057a
+URxvt*color4:       #5566ff
+URxvt*color12:      #7799ff
+URxvt*cursorColor:  #56E310
 
-! fadeout urxvt if outfocus
-urxvt.fading: 30
+! fadeout URxvt*if outfocus
+URxvt*fading: 30
 
-urxvt.cursorBlink: true
-urxvt.iso14755: false
-urxvt.iso14755_52: false
+URxvt*cursorBlink:  true
+URxvt*iso14755:     false
+URxvt*iso14755_52:  false
 
 ! https://github.com/muennich/urxvt-perls
-URxvt.perl-ext-common: default,clipboard,matcher
-URxvt.keysym.Mod4-c:   perl:clipboard:copy
-URxvt.keysym.Mod4-v:   perl:clipboard:paste
-URxvt.keysym.Mod4-C-v: perl:clipboard:paste_escaped
-! URxvt.keysym.Mod4-Escape: perl:keyboard-select:activate
-! URxvt.keysym.Mod4-s: perl:keyboard-select:search
+URxvt*perl-ext-common: default,clipboard,matcher
+URxvt*keysym.Mod4-c:   perl:clipboard:copy
+URxvt*keysym.Mod4-v:   perl:clipboard:paste
+URxvt*keysym.Mod4-C-v: perl:clipboard:paste_escaped
 
 ! URxvt*termName:                       string
 ! URxvt*geometry:                       geometry

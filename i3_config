@@ -26,7 +26,7 @@ popup_during_fullscreen leave_fullscreen
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+b exec --no-startup-id /usr/bin/google-chrome-unstable
+bindsym $mod+b exec --no-startup-id /usr/bin/google-chrome-stable
 
 # kill focused window
 bindsym $mod+q kill
