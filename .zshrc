@@ -69,8 +69,8 @@ case ${OSTYPE} in
                 export PATH=$HOME/.mopp/bin:$PATH
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
 
-                # export CC='clang'
-                # export CXX='clang++'
+                export CC='clang'
+                export CXX='clang++'
 
                 if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
                     export TERM=fbterm

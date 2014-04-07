@@ -1,7 +1,7 @@
 ! color
 ! urxvt.depth: 32
 urxvt.foreground: rgba:dc00/dc00/dc00/ffff
-urxvt.background: rgba:3c00/4000/45ff/aaaa
+urxvt.background: rgba:3c00/4000/4500/aaaa
 
 ! transparent
 urxvt.transparent: true
@@ -31,6 +31,14 @@ urxvt.fading: 30
 urxvt.cursorBlink: true
 urxvt.iso14755: false
 urxvt.iso14755_52: false
+
+! https://github.com/muennich/urxvt-perls
+URxvt.perl-ext-common: default,clipboard,matcher
+URxvt.keysym.Mod4-c:   perl:clipboard:copy
+URxvt.keysym.Mod4-v:   perl:clipboard:paste
+URxvt.keysym.Mod4-C-v: perl:clipboard:paste_escaped
+! URxvt.keysym.Mod4-Escape: perl:keyboard-select:activate
+! URxvt.keysym.Mod4-s: perl:keyboard-select:search
 
 ! URxvt*termName:                       string
 ! URxvt*geometry:                       geometry
