@@ -1,0 +1,33 @@
+#!/bin/sh
+
+lock() {
+    i3lock -i /home/mopp/Dropbox/Photos/use/up_full.png
+}
+
+
+case "$1" in
+    lock)
+        lock
+        ;;
+    exit)
+        i3-msg exit
+        ;;
+    suspend)
+        lock && systemctl suspend
+        ;;
+    hibernate)
+        lock && systemctl hibernate
+        ;;
+    reboot)
+        systemctl reboot
+        ;;
+    poweroff)
+        systemctl poweroff
+        ;;
+    *)
+        echo "Usage: $0 {lock|exit|suspend|hibernate|reboot|poweroff}"
+        exit 2
+        ;;
+esac
+
+exit 0

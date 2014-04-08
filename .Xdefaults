@@ -13,7 +13,7 @@ URxvt*background: rgba:3c00/4000/4500/aaaa
 
 ! transparent
 URxvt*transparent:      true
-URxvt*shading:          10
+URxvt*shading:          15
 URxvt*inheritPixmap:    True
 
 ! scroll
