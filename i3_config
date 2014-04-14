@@ -3,7 +3,7 @@
 
 # startup
 exec --no-startup-id sh ~/.fehbg
-exec --no-startup-id urxvt
+exec --no-startup-id urxvtc
 
 # set $mod Mod4
 set $mod Mod1
@@ -15,18 +15,25 @@ font pango:Ricty 14px
 floating_modifier $mod
 
 # specific setting
-for_window [class="qemu"] floating enable   # for_window [title="urxvt"] border 1pixel
-assign [class="chrome"] 2                   # Assign chrome to workspace 2
+# for_window [title="urxvt"] border 1pixel
+for_window [class="qemu"] floating enable
+# Assign chrome to workspace 2
+assign [class="chrome"] 2
 
 # mouse setting
 focus_follows_mouse no
 
 # popup in fullscreen setting
-popup_during_fullscreen leave_fullscreen
+# popup_during_fullscreen leave_fullscreen
 
 # start a application
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id urxvtc
 bindsym $mod+b exec --no-startup-id /usr/bin/google-chrome-stable
+bindsym $mod+i exec --no-startup-id xbacklight -dec 10
+bindsym $mod+o exec --no-startup-id xbacklight -inc 10
+bindsym $mod+Shift+i exec --no-startup-id xbacklight -dec 3
+bindsym $mod+Shift+o exec --no-startup-id xbacklight -inc 3
 
 # kill focused window
 bindsym $mod+q kill
@@ -47,10 +54,14 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-bindsym $mod+a focus parent             # focus the parent container
-bindsym $mod+z focus child              # focus the child container
-bindsym $mod+g focus mode_toggle        # focus last floating/tiling container
-bindsym $mod+space focus mode_toggle    # change focus between tiling / floating windows
+# focus the parent container
+bindsym $mod+a focus parent
+# focus the child container
+bindsym $mod+z focus child
+# focus last floating/tiling container
+bindsym $mod+g focus mode_toggle
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
 
 # split in horizontal or vertical orientation
 bindsym $mod+n split h
@@ -63,8 +74,10 @@ bindsym $mod+f fullscreen
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
-bindsym $mod+x layout toggle all            # Toggle between stacking/tabbed/splith/splitv:
-bindsym $mod+Shift+space floating toggle    # toggle tiling / floating
+# Toggle between stacking/tabbed/splith/splitv:
+bindsym $mod+x layout toggle all
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -139,11 +152,11 @@ bar {
 
     colors {
         background #4682b4
-        statusline #afeeee
-        separator  #2f4f4f
-        focused_workspace  #2f4f4f #26499d #f5f5f5
-        active_workspace   #2f4f4f #4682b4 #f5f5f5
-        inactive_workspace #2f4f4f #192f60 #f5f5f5
-        urgent_workspace   #2f4f4f #900000 #f5f5f5
+            statusline #afeeee
+            separator  #2f4f4f
+            focused_workspace  #2f4f4f #26499d #f5f5f5
+            active_workspace   #2f4f4f #4682b4 #f5f5f5
+            inactive_workspace #2f4f4f #192f60 #f5f5f5
+            urgent_workspace   #2f4f4f #900000 #f5f5f5
     }
 }

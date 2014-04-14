@@ -51,31 +51,25 @@ case ${OSTYPE} in
         alias clang++="clang++-3.5 -std=c++11 ${CLANG_OPTION}"
         ;;
     linux*)
-
-        case $(uname -n) in
-            march)
-                export PATH=$HOME/.mopp/bin:$PATH
-                export PATH=$HOME/.gem/ruby/2.0.0/bin:$PATH
-                export PATH=$HOME/Tools/Android/android-sdk-linux/tools:$HOME/Tools/Android/android-sdk-linux/platform-tools:$PATH
-
-                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
-
-                # export CC='clang'
-                # export CXX='clang++'
-                alias clang="clang -std=c11 ${CLANG_OPTION}"
-                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
-                ;;
-            march_pro)
-                export PATH=$HOME/.mopp/bin:$PATH
+        hostname=$(uname -n)
+        case $hostname in
+            march*)
+                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$PATH
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
 
                 export CC='clang'
                 export CXX='clang++'
+                alias clang="clang -std=c11 ${CLANG_OPTION}"
+                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
 
-                if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
-                    export TERM=fbterm
-                    uim-fep
-                fi
+                case $hostname in
+                    *_pro)
+                        if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
+                            export TERM=fbterm
+                            uim-fep
+                        fi
+                        ;;
+                esac
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
