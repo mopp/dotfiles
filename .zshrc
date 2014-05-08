@@ -55,12 +55,14 @@ case ${OSTYPE} in
         case $hostname in
             march*)
                 export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$PATH
-                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:$MANPATH
+                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
 
                 export CC='clang'
                 export CXX='clang++'
                 alias clang="clang -std=c11 ${CLANG_OPTION}"
                 alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
+                alias gcc="gcc -std=c11 ${CLANG_OPTION}"
+                alias g++="g++ -std=c++11 ${CLANG_OPTION}"
 
                 case $hostname in
                     *_pro)
