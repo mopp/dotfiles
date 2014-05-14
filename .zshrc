@@ -93,6 +93,12 @@ case ${OSTYPE} in
         ;;
 esac
 
+case ${TERM} in
+    *rxvt*)
+        stty -ixon
+        ;;
+esac
+
 # 重複削除
 typeset -U PATH CDPATH FPATH MANPATH
 
