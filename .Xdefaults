@@ -3,7 +3,7 @@ Xft*dpi:        96
 Xft*antialias:  true
 Xft*rgba:       rgb
 Xft*hinting:    true
-Xft*hintstyle:  hintmedium
+Xft*hintstyle:  hintfull
 Xft*lcdfilter:  lcddefault
 
 ! color
@@ -22,7 +22,7 @@ URxvt*scrollBar:        false
 URxvt*scrollstyle:      plain
 URxvt*scrollBar_right:  true
 
-URxvt*font:         xft:Ricty:size=12:antialias=true
+URxvt*font:         xft:Ricty:size=13:antialias=true:style=Regular
 URxvt*preeditType:  OverTheSpot
 URxvt*inputMethod:  uim
 

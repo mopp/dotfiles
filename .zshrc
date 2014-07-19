@@ -61,8 +61,6 @@ case ${OSTYPE} in
                 export CXX='clang++'
                 alias clang="clang -std=c11 ${CLANG_OPTION}"
                 alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
-                alias gcc="gcc -std=c11 ${CLANG_OPTION}"
-                alias g++="g++ -std=c++11 ${CLANG_OPTION}"
 
                 case $hostname in
                     *_pro)
@@ -72,6 +70,7 @@ case ${OSTYPE} in
                         fi
                         ;;
                 esac
+
                 ;;
             mopuntu*)
                 export CC='/usr/local/bin/clang'
@@ -93,6 +92,7 @@ case ${OSTYPE} in
         ;;
 esac
 
+
 case ${TERM} in
     *rxvt*)
         stty -ixon
@@ -108,6 +108,8 @@ export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS--
 
 # for Java
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+export JAVA_FONTS=/usr/share/fonts/TTF
 
 alias cl=clear
 alias clang++='clang++ -Wall'
@@ -124,6 +126,8 @@ function vimman() {
 
 function cleanVim() {
     rm -rf ~/.vim/view/*
+    rm -rf ~/.vim/unite/*
+    rm -rf ~/.vim/bundle/.neobundle/*
     rm -rf ~/.vim/vimfiler/*
     rm -rf ~/.vim/neocomplete/*
     rm ~/.viminfo
