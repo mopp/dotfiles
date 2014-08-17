@@ -56,6 +56,7 @@ case ${OSTYPE} in
             march*)
                 export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$PATH
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
+                export XDG_CONFIG_HOME=$HOME/.config/
 
                 export CC='clang'
                 export CXX='clang++'

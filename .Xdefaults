@@ -16,6 +16,8 @@ URxvt*transparent:      true
 URxvt*shading:          15
 URxvt*inheritPixmap:    True
 
+! urxvt*termName: xterm
+
 ! scroll
 URxvt*saveLines:        12000
 URxvt*scrollBar:        false
