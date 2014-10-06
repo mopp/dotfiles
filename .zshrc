@@ -153,6 +153,7 @@ function man() {
 ### 補完 ###
 autoload -U compinit
 compinit -u
+zmodload zsh/mathfunc;
 setopt auto_list            # 補完候補を一覧表示
 setopt auto_menu            # <TAB>で補完候補切り替え
 setopt list_packed          # 補完候補を詰めて表示

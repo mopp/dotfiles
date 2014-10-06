@@ -13,8 +13,8 @@ URxvt*background: rgba:3c00/4000/4500/aaaa
 
 ! transparent
 URxvt*transparent:      true
-URxvt*shading:          15
-URxvt*inheritPixmap:    True
+URxvt*shading:          60
+URxvt*inheritPixmap:    true
 
 ! urxvt*termName: xterm
 
@@ -67,6 +67,8 @@ URxvt*keysym.Control-Left:      \033[1;5D
 URxvt*keysym.Control-Right:     \033[1;5C
 URxvt*keysym.Control-Page_Up:   \033[5;5~
 URxvt*keysym.Control-Page_Down: \033[6;5~
+! https://github.com/majutsushi/etc/blob/master/xorg/Xresources
+URxvt*keysym.Control-Space:           \033Q32;5~
 
 ! URxvt*termName:                       string
 ! URxvt*geometry:                       geometry

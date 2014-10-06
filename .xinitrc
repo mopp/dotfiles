@@ -18,7 +18,7 @@ fi
 dropboxd &
 pulseaudio --start &
 volumeicon &
-urxvtd -q -f -o &
+# urxvtd -q -f -o &
 
 # for ibus
 # export GTK_IM_MODULE=ibus
@@ -39,7 +39,7 @@ xinput set-button-map 'Logitech Unifying Device. Wireless PID:4009' 1 2 3 5 4 6 
 xinput set-button-map 'Microsoft Microsoft Wheel Mouse Optical®' 1 2 3 5 4 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
 
 if xrandr | grep -q 'HDMI1 connected'; then
-    xrandr --output eDP1 --auto --primary --output HDMI1 --auto --above eDP1
+    xrandr --output eDP1 --auto --primary --output eDP1 --auto --below HDMI1
 fi
 
 # default
