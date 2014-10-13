@@ -19,7 +19,7 @@
 #---------------------------------------------------------------------------------------"
 
 
-export LANG=ja_JP.UTF-8
+# export LANG=ja_JP.UTF-8
 
 CLANG_OPTION='-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
 
@@ -54,7 +54,8 @@ case ${OSTYPE} in
         hostname=$(uname -n)
         case $hostname in
             march*)
-                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$PATH
+                export GOPATH=$HOME/.mopp/go
+                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$GOPATH/bin:$PATH
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
                 export XDG_CONFIG_HOME=$HOME/.config/
 
