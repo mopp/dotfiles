@@ -228,6 +228,8 @@ setopt nolistbeep           # 補完時にビーブ音を鳴らさない
 bindkey -e                  # emacsのキーバインド設定
 
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
+
+# http://blog.himajinworks.net/archives/713
 export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
 export ZUSER_SLOT_MAX_SLOT_ID=8
 source ~/Tools/zsh/zslot.zsh
