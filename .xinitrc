@@ -36,6 +36,8 @@ uim-toolbar-gtk3-systray &
 
 xinput --set-prop 'Logitech Unifying Device. Wireless PID:4009' 'Device Accel Constant Deceleration' 2.0
 xinput set-button-map 'Logitech Unifying Device. Wireless PID:4009' 1 2 3 5 4 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+xinput --set-prop 'Genius 2.4G Wireless Mouse' 'Device Accel Constant Deceleration' 2.5
+xinput set-button-map 'Genius 2.4G Wireless Mouse' 1 2 3 5 4 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
 xinput set-button-map 'Microsoft Microsoft Wheel Mouse Optical®' 1 2 3 5 4 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
 
 if xrandr | grep -q 'HDMI1 connected'; then

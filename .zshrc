@@ -58,11 +58,15 @@ case ${OSTYPE} in
                 export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$GOPATH/bin:$PATH
                 export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
                 export XDG_CONFIG_HOME=$HOME/.config/
+                export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
+                export LD_LIBRARY_PATH=$(llvm-config --libdir)
 
                 export CC='clang'
                 export CXX='clang++'
-                alias clang="clang -std=c11 ${CLANG_OPTION}"
-                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
+
+                # alias clang="clang -std=c11 ${CLANG_OPTION}"
+                # alias clang++='clang++ -std=c++11 ${CLANG_OPTION}'
+                alias ccp='clang++ -std=c++11 '
 
                 case $hostname in
                     *_pro)
@@ -224,3 +228,10 @@ setopt nolistbeep           # 補完時にビーブ音を鳴らさない
 bindkey -e                  # emacsのキーバインド設定
 
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
+export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
+export ZUSER_SLOT_MAX_SLOT_ID=8
+source ~/Tools/zsh/zslot.zsh
+alias zs=zslot
+alias zss='zslot -s'
+alias zsp='zslot -p'
+
