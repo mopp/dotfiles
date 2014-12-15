@@ -28,6 +28,7 @@ case ${OSTYPE} in
         export ANDROID_HOME=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools
         export PATH=$ANDROID_HOME:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export PATH=$HOME/.mopp/bin:/usr/local/opt/ruby/bin:$PATH
+        export PATH=/usr/texbin:$PATH
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
 
         export HOMEBREW_VERBOSE
@@ -45,10 +46,10 @@ case ${OSTYPE} in
         # export LDFLAGS="${LDFLAGS} -L/usr/local/lib/llvm-3.5/usr/lib"
 
         alias eclipse='/Applications/eclipse/eclipse'
-        alias gcc='/usr/local/bin/gcc-4.9 -Wall'
-        alias g++='/usr/local/bin/g++-4.9 -Wall'
-        alias clang="clang-3.5 -std=c11 ${CLANG_OPTION}"
-        alias clang++="clang++-3.5 -std=c++11 ${CLANG_OPTION}"
+        # alias gcc='/usr/local/bin/gcc-4.9 -Wall'
+        # alias g++='/usr/local/bin/g++-4.9 -Wall'
+        # alias clang="clang-3.5 -std=c11 ${CLANG_OPTION}"
+        # alias clang++="clang++-3.5 -std=c++11 ${CLANG_OPTION}"
         ;;
     linux*)
         hostname=$(uname -n)
