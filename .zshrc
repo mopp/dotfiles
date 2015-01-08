@@ -17,20 +17,12 @@
 #   DYLD_LIBRARY_PATH
 #   BOOST_ROOT
 #---------------------------------------------------------------------------------------"
-
-
-# export LANG=ja_JP.UTF-8
-
-CLANG_OPTION='-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+export LANG=ja_JP.UTF-8
 
 case ${OSTYPE} in
     darwin*)
-        export ANDROID_HOME=$HOME/Tools/Android/sdk/tools:$HOME/Tools/Android/sdk/platform-tools
-        export PATH=$ANDROID_HOME:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
-        export PATH=$HOME/.mopp/bin:/usr/local/opt/ruby/bin:$PATH
-        export PATH=/usr/texbin:$PATH
+        export PATH=/usr/texbin:$HOME/.mopp/bin:/usr/local/opt/ruby/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
-
         export HOMEBREW_VERBOSE
 
         fpath=(/usr/local/share/zsh-completions $fpath)
@@ -46,57 +38,22 @@ case ${OSTYPE} in
         # export LDFLAGS="${LDFLAGS} -L/usr/local/lib/llvm-3.5/usr/lib"
 
         alias eclipse='/Applications/eclipse/eclipse'
-        # alias gcc='/usr/local/bin/gcc-4.9 -Wall'
-        # alias g++='/usr/local/bin/g++-4.9 -Wall'
-        # alias clang="clang-3.5 -std=c11 ${CLANG_OPTION}"
-        # alias clang++="clang++-3.5 -std=c++11 ${CLANG_OPTION}"
         ;;
     linux*)
-        hostname=$(uname -n)
-        case $hostname in
-            march*)
-                export GOPATH=$HOME/.mopp/go
-                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$GOPATH/bin:$PATH
-                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
-                export XDG_CONFIG_HOME=$HOME/.config/
-                export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
-                export LD_LIBRARY_PATH=$(llvm-config --libdir)
+        export GOPATH=$HOME/.mopp/go
+        export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$GOPATH/bin:$PATH
+        export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
+        export XDG_CONFIG_HOME=$HOME/.config/
 
-                export CC='clang'
-                export CXX='clang++'
+        export CC='clang'
+        export CXX='clang++'
 
-                # alias clang="clang -std=c11 ${CLANG_OPTION}"
-                # alias clang++='clang++ -std=c++11 ${CLANG_OPTION}'
-                alias ccp='clang++ -std=c++11 '
+        if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
+            export TERM=fbterm
+            uim-fep
+        fi
 
-                case $hostname in
-                    *_pro)
-                        if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
-                            export TERM=fbterm
-                            uim-fep
-                        fi
-                        ;;
-                esac
-
-                ;;
-            mopuntu*)
-                export CC='/usr/local/bin/clang'
-                export CFLAGS='-I./ -I /usr/local/include/'
-                export CXX='/usr/local/bin/clang++'
-                export CXXFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
-                export LDFLAGS='-L./ -L/usr/local/lib64/ -L/lib64/ -L/usr/lib/x86_64-linux-gnu/'
-                export CPPFLAGS='-I./ -I/usr/local/include/c++/4.9.0/x86_64-linux-gnu/ -I/usr/local/include/c++/4.9.0/ -I/usr/local/include/ -I/usr/include/'
-
-                #末尾にコロンを付けないこと
-                export LIBRARY_PATH=/usr/local/libexec/gcc/x86_64-linux-gnu/4.9.0:/usr/local/lib64:/usr/local/lib32:/usr/local/lib/:/lib64/:/lib32/:/lib/
-                export LD_LIBRARY_PATH=$LIBRARY_PATH
-                export LD_RUN_PATH=$LIBRARY_PATH
-
-                alias clang="clang -std=c11 ${CLANG_OPTION}"
-                alias clang++="clang++ -std=c++11 ${CLANG_OPTION}"
-                ;;
-        esac
-        ;;
+        export JAVA_FONTS=/usr/share/fonts/TTF
 esac
 
 
@@ -106,7 +63,7 @@ case ${TERM} in
         ;;
 esac
 
-# 重複削除
+# Remove duplicate
 typeset -U PATH CDPATH FPATH MANPATH
 
 export EDITOR=vim
@@ -116,7 +73,6 @@ export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS--
 # for Java
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
-export JAVA_FONTS=/usr/share/fonts/TTF
 
 alias cl=clear
 alias clang++='clang++ -Wall'
@@ -131,6 +87,7 @@ function vimman() {
     vim -c 'Ref man '$1 -c 'winc j' -c 'q'
 }
 
+
 function cleanVim() {
     rm -rf ~/.vim/view/*
     rm -rf ~/.vim/unite/*
@@ -140,9 +97,11 @@ function cleanVim() {
     rm ~/.viminfo
 }
 
+
 function reload_zshrc() {
     source ~/.zshrc
 }
+
 
 function man() {
     env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -223,11 +182,9 @@ case ${OSTYPE} in
 esac
 
 ### Others ###
-setopt no_beep              # ビーブ音を鳴らさない
-setopt nolistbeep           # 補完時にビーブ音を鳴らさない
-# setopt correct              # コマンド入力ミス修正
-bindkey -e                  # emacsのキーバインド設定
-
+setopt no_beep      # ビーブ音を鳴らさない
+setopt nolistbeep   # 補完時にビーブ音を鳴らさない
+bindkey -e          # emacsのキーバインド設定
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
 
 # http://blog.himajinworks.net/archives/713
@@ -237,4 +194,3 @@ source ~/Tools/zsh/zslot.zsh
 alias zs=zslot
 alias zss='zslot -s'
 alias zsp='zslot -p'
-
