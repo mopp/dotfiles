@@ -13,10 +13,11 @@ URxvt*background: rgba:3c00/4000/4500/aaaa
 
 ! transparent
 URxvt*transparent:      true
-URxvt*shading:          60
+URxvt*shading:          30
 URxvt*inheritPixmap:    true
 
 ! urxvt*termName: xterm
+URxvt.cjkwidth: 0
 
 ! scroll
 URxvt*saveLines:        12000
