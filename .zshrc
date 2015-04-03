@@ -20,6 +20,10 @@
 export LANG=ja_JP.UTF-8
 
 case ${OSTYPE} in
+    solaris*)
+        export TERM='rxvt'
+        export PATH=/home/grd/m5191121/local.solaris/bin/:$PATH
+        ;;
     darwin*)
         export PATH=/usr/texbin:$HOME/.mopp/bin:/usr/local/opt/ruby/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
@@ -172,6 +176,12 @@ case ${OSTYPE} in
         PROMPT2="%F{039}%B>%b %f"
         SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
         RPROMPT="%F{105}[%~]%f"
+        ;;
+    solaris*)
+        PROMPT="%F{1}%n@%m:%% %f"
+        PROMPT2="%F{2}%B>%b %f"
+        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
+        RPROMPT="%F{4}[%~]%f"
         ;;
     linux*)
         case ${TERM} in
