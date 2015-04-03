@@ -41,9 +41,11 @@ case ${OSTYPE} in
         ;;
     linux*)
         export GOPATH=$HOME/.mopp/go
-        export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.1.0/bin:$GOPATH/bin:$PATH
+        export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.2.0/bin:$GOPATH/bin:$PATH
         export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
         export XDG_CONFIG_HOME=$HOME/.config/
+        export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
+        export LD_LIBRARY_PATH=$(llvm-config --libdir)
 
         export CC='clang'
         export CXX='clang++'
@@ -74,12 +76,16 @@ export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS--
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
+
 alias cl=clear
-alias clang++='clang++ -Wall'
+alias clang='clang -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+alias clang++='clang++ -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
 alias grep='grep --color=auto'
 alias la='ls -ahF --color'
 alias ll='ls -hlF --color'
 alias ls='ls -hF --color'
+alias od='od -tx1 -Ax'
+alias xxd='xxd -a'
 
 
 # functions
@@ -112,6 +118,10 @@ function man() {
         LESS_TERMCAP_ue=$'\E[0m' \
         LESS_TERMCAP_us=$'\E[04;38;5;146m' \
         man "$@"
+}
+
+function calc() {
+    echo $1 | bc
 }
 
 
@@ -189,7 +199,7 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削�
 
 # http://blog.himajinworks.net/archives/713
 export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
-export ZUSER_SLOT_MAX_SLOT_ID=8
+export ZUSER_SLOT_MAX_SLOT_ID=9
 source ~/Tools/zsh/zslot.zsh
 alias zs=zslot
 alias zss='zslot -s'

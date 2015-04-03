@@ -15,10 +15,10 @@ if [ -s ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
 
-dropboxd &
+dropbox &
 pulseaudio --start &
 volumeicon &
-# urxvtd -q -f -o &
+urxvtd -q -f -o &
 
 # for ibus
 # export GTK_IM_MODULE=ibus
