@@ -18,6 +18,8 @@ floating_modifier $mod
 # for_window [title="urxvt"] border 1pixel
 for_window [class="qemu"] floating enable
 for_window [title="QEMU"] floating enable
+for_window [class="feh"] floating enable
+for_window [title="feh"] floating enable
 for_window [class="(?i)rdesktop"] floating disable
 # Assign chrome to workspace 2
 assign [class="chrome"] 2
