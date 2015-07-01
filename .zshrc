@@ -19,7 +19,8 @@
 #---------------------------------------------------------------------------------------"
 export LANG=ja_JP.UTF-8
 
-case ${OSTYPE} in
+HOSTNAME=$(hostname)
+case $OSTYPE in
     solaris*)
         export TERM='rxvt'
         export PATH=/home/grd/m5191121/local.solaris/bin/:$PATH
@@ -44,26 +45,30 @@ case ${OSTYPE} in
         alias eclipse='/Applications/eclipse/eclipse'
         ;;
     linux*)
-        export GOPATH=$HOME/.mopp/go
-        export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.2.0/bin:$GOPATH/bin:$PATH
-        export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
-        export XDG_CONFIG_HOME=$HOME/.config/
-        export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
-        export LD_LIBRARY_PATH=$(llvm-config --libdir)
+        case $HOSTNAME in
+            march_pro)
+                export GOPATH=$HOME/.mopp/go
+                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.2.0/bin:$GOPATH/bin:$PATH
+                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
+                export XDG_CONFIG_HOME=$HOME/.config/
+                export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
+                export LD_LIBRARY_PATH=$(llvm-config --libdir)
+                export JAVA_FONTS=/usr/share/fonts/TTF
 
-        export CC='clang'
-        export CXX='clang++'
+                export CC='clang'
+                export CXX='clang++'
+                alias f='eval $(thefuck $(fc -ln -1))'
 
-        if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
-            export TERM=fbterm
-            uim-fep
-        fi
-
-        export JAVA_FONTS=/usr/share/fonts/TTF
+                if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
+                    export TERM=fbterm
+                    uim-fep
+                fi
+                ;;
+        esac
 esac
 
 
-case ${TERM} in
+case $TERM in
     *rxvt*)
         stty -ixon
         ;;
@@ -80,25 +85,26 @@ export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS--
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
-
+alias octave='octave -q'
+alias R='R -q'
 alias cl=clear
-alias clang='clang -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-alias clang++='clang++ -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+alias clang++='clang++ -std=c++1y -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
 alias grep='grep --color=auto'
 alias la='ls -ahF --color'
 alias ll='ls -hlF --color'
 alias ls='ls -hF --color'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
+alias -g L='| less'
+alias -g M='|more'
+alias -g H='|head'
+alias -g T='|tail'
+
 
 
 # functions
-function vimman() {
-    vim -c 'Ref man '$1 -c 'winc j' -c 'q'
-}
-
-
-function cleanVim() {
+function clean_vim() {
     rm -rf ~/.vim/view/*
     rm -rf ~/.vim/unite/*
     rm -rf ~/.vim/bundle/.neobundle/*
@@ -124,9 +130,21 @@ function man() {
         man "$@"
 }
 
+
 function calc() {
     echo $1 | bc
 }
+
+
+function dict() {
+    grep "$1" ~/tmp/ejdic-hand-txt/ejdic-hand-utf8.txt -E -A 1 -wi --color
+}
+
+
+function urand() {
+    od -vAn -N4 -tu4 < /dev/urandom | tail -n 1 | tr -d ' '
+}
+
 
 
 ### 補完 ###
@@ -207,10 +225,14 @@ setopt nolistbeep   # 補完時にビーブ音を鳴らさない
 bindkey -e          # emacsのキーバインド設定
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
 
+
 # http://blog.himajinworks.net/archives/713
-export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
-export ZUSER_SLOT_MAX_SLOT_ID=9
-source ~/Tools/zsh/zslot.zsh
-alias zs=zslot
-alias zss='zslot -s'
-alias zsp='zslot -p'
+ZSLOT_SRC=~/Tools/zsh/zslot.zsh
+if [ -e $ZSLOT_SRC ]; then
+    export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
+    export ZUSER_SLOT_MAX_SLOT_ID=9
+    source $ZSLOT_SRC
+    alias zs=zslot
+    alias zss='zslot -s'
+    alias zsp='zslot -p'
+fi
