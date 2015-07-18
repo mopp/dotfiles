@@ -134,7 +134,7 @@ bindsym $mod+r mode "resize"
 
 # system commands
 set $out "(L)ock, (E)xit, (S)uspend, (H)ibernate, (R)eboot, (P)oweroff"
-set $i3exit "~/.i3/i3exit"
+set $i3exit "$HOME/.i3/i3exit"
 mode $out {
     bindsym l exec --no-startup-id sh $i3exit lock,       mode "default"
     bindsym e exec --no-startup-id sh $i3exit exit,       mode "default"
