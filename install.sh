@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-DOTFILES_DIR=$HOME/git/dotfiles
+DOTFILES_DIR=$HOME/Workspace/repo/dotfiles
 
 
 command_exists()
@@ -80,6 +80,7 @@ sym_link_conf(){
 # Check commands
 command_exists "git"
 
+mkdir -p $DOTFILES_DIR
 git clone git@github.com:mopp/dotfiles.git $DOTFILES_DIR
 
 sym_link_no_conf ".vimrc"
