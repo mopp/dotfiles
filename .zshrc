@@ -100,7 +100,11 @@ alias -g L='| less'
 alias -g M='|more'
 alias -g H='|head'
 alias -g T='|tail'
-
+if ! type "colordiff" > /dev/null; then
+  alias diff='colordiff -u'
+else
+  alias diff='diff -u'
+fi
 
 
 # functions
