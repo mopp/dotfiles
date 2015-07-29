@@ -70,6 +70,7 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
 set matchpairs+=<:>             " 括弧のハイライト追加
+set visualbell
 if !has('gui_running')
     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 endif
