@@ -63,6 +63,7 @@ if isdirectory(expand('~/.vim/undo'))
 endif
 
 " その他
+set clipboard=unnamed,autoselect
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set timeout                     " マッピングのタイムアウト有効
@@ -134,7 +135,8 @@ endfunction
 
 function! Mopp_copy_to_clipboard()
     silent execute "normal! '<,'>" '"*yy'
-    let @+ = @*
+    let tmp = @*
+    let @+ = tmp
 endfunction
 
 
