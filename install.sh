@@ -58,7 +58,7 @@ sym_link()
     src=$(readlink -f $2)
     [ $# -eq 3 ] && dst=$3 || dst=$HOME/$2
 
-    echo ln -s $src $dst
+    ln -s $src $dst
 
     return 0
 }
@@ -81,7 +81,7 @@ sym_link_conf(){
 command_exists "git"
 
 mkdir -p $DOTFILES_DIR
-git clone git@github.com:mopp/dotfiles.git $DOTFILES_DIR
+git clone https://github.com:mopp/dotfiles.git $DOTFILES_DIR
 
 sym_link_no_conf ".vimrc"
 mkdir -p ~/.vim/bundle
