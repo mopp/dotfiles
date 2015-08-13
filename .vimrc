@@ -1055,7 +1055,6 @@ let g:lightline = {
             \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
             \   'readonly'      : "%{ &readonly ? 'RO' : '' }",
             \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
-            \   'battery'       : "%{ exists(':Battery') ? (battery#battery('Battery: %p%')) : 'N/A' }",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'Mline_mode',
@@ -1063,6 +1062,7 @@ let g:lightline = {
             \   'filename'      : 'Mline_filename',
             \   'fugitive'      : 'Mline_fugitive',
             \   'buflist'       : 'Mline_buflist',
+            \   'battery'       : 'Mline_battery',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -1129,6 +1129,19 @@ function! Mline_fugitive()
         return (t != '') ? ('⎇  ' . t) : ''
     endif
     return ''
+endfunction
+
+function! Mline_battery()
+    if !exists(':Battery')
+        return ''
+    endif
+
+    let per = battery#battery('%p')
+    if per == 'N/A'
+        return ''
+    endif
+
+    return 'Battery: ' . per . '%'
 endfunction
 
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
