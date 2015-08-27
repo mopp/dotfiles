@@ -789,7 +789,11 @@ nnoremap <silent> fvc :VimFilerCreate -status<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_force_overwrite_statusline = 0
-call vimfiler#custom#profile('default', 'context', { 'safe' : 0, })
+let s:bundle = neobundle#get('vimfiler')
+function! s:bundle.hooks.on_source(bundle)
+    call vimfiler#custom#profile('default', 'context', { 'safe' : 0, })
+endfunction
+unlet s:bundle
 function! s:config_vimfiler()
     unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
