@@ -454,7 +454,7 @@ NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' 
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'autoload' : { 'insert' : '1', 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] } }
 NeoBundleLazy 'Shougo/neosnippet-snippets'
-NeoBundleLazy 'Shougo/vimfiler', { 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
+NeoBundleLazy 'Shougo/vimfiler', { 'depends' : [ 'Shougo/unite.vim' ], 'autoload' : { 'function_prefix' : 'vimfiler', 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'bbchung/clighter', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'honza/vim-snippets'
@@ -782,15 +782,15 @@ endfunction
 unlet s:bundle
 
 " VimFiler
-nnoremap <silent> fvs :VimFiler -explorer<CR>
+nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvb :VimFilerBufferDir -explorer<CR>
-nnoremap <silent> fvo :VimFilerTab -status<CR>
-nnoremap <silent> fvc :VimFilerCreate -status<CR>
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
-let g:vimfiler_force_overwrite_statusline = 0
+nnoremap <silent> fvo :VimFilerTab<CR>
+nnoremap <silent> fvc :VimFilerCreate<CR>
 let s:bundle = neobundle#get('vimfiler')
 function! s:bundle.hooks.on_source(bundle)
+    let g:vimfiler_as_default_explorer = 1
+    let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
+    let g:vimfiler_force_overwrite_statusline = 0
     call vimfiler#custom#profile('default', 'context', { 'safe' : 0, })
 endfunction
 unlet s:bundle
@@ -1334,7 +1334,7 @@ augroup general
     " Octave
     autocmd BufWinEnter *.m,*.oct setlocal filetype=octave
 
-    " enable wrap in text.
+    " Enable wrap in text.
     autocmd BufWinEnter *.txt setlocal wrap
 
     " Tex
