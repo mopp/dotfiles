@@ -70,11 +70,9 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
 set matchpairs+=<:>             " 括弧のハイライト追加
-set visualbell
 if !has('gui_running')
     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 endif
-" set spell
 let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
 let g:loaded_gzip          = 1
 let g:loaded_netrwPlugin   = 1
@@ -286,8 +284,6 @@ nnoremap <Leader>w :write<CR>
 "-------------------------------------------------------------------------------"
 " Commands
 "-------------------------------------------------------------------------------"
-command! -nargs=0 Reload execute "edit" expand('%:p')
-
 command! -nargs=0 SpellCheckToggle :setlocal spell!
 
 " カーソル位置のハイライト情報表示
@@ -362,22 +358,6 @@ function! s:drop_buffer(buf)
 endfunction
 command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
 
-if has('mac')
-    " 引数に渡したワードを検索
-    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
-    " カーソル下のワードを検索
-    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
-    " 辞書.app を閉じる
-    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
-    " 辞書にフォーカスを当てる
-    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
-    " キーマッピング
-    nnoremap <silent><Leader>do :<C-u>MacDictCWord<CR>
-    vnoremap <silent><Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
-    nnoremap <silent><Leader>dc :<C-u>MacDictClose<CR>
-    nnoremap <silent><Leader>df :<C-u>MacDictFocus<CR>
-endif
-
 
 "-------------------------------------------------------------------------------"
 " GUI
@@ -450,7 +430,6 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 
 NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
-NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'autoload' : { 'insert' : '1', 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] } }
 NeoBundleLazy 'Shougo/neosnippet-snippets'
@@ -483,20 +462,15 @@ NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-snowdrop', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
-NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
-NeoBundleLazy 'thinca/vim-painter'
-NeoBundleLazy 'thinca/vim-quickrun'
-NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 NeoBundleLazy 'ujihisa/neco-look'
-NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
 " NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
 " NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
@@ -540,7 +514,6 @@ NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'insert' : '1', 'commands' : 
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
 NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
 NeoBundleLazy 'Shougo/neomru.vim', { 'autoload' : { 'unite_sources' : ['file_mru'],} }
-NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
 NeoBundleLazy 'junkblocker/unite-tasklist', { 'autoload' : { 'unite_sources' : [ 'tasklist' ], } }
@@ -574,7 +547,6 @@ nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Line line:all -no-quit
 nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet neosnippet<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
-nnoremap <silent> [Unite]a       :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline = 0
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -878,14 +850,6 @@ let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' :
 let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
 let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc', "outputter/quickfix/open_cmd" : "", "hook/unite_quickfix/enable_exit" : 1, "hook/unite_quickfix/enable_failure" : 1}
 
-" Conque
-let g:ConqueTerm_ReadUnfocused = 1
-let g:ConqueTerm_CloseOnEnd = 1
-let g:ConqueTerm_StartMessages = 0
-let g:ConqueTerm_CWInsert = 0
-let g:ConqueTerm_EscKey = '<C-K>'
-noremap <silent> <Leader>sh :ConqueTermVSplit <C-R>=$SHELL<CR><CR>
-
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
@@ -974,13 +938,6 @@ vmap ab <Plug>(textobj-block-a)
 " Gist
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
-
-" Reanimate
-let g:reanimate_save_dir = expand('~/.vim/reanimate')
-noremap [rr :ReanimateSave <CR>
-noremap ]rr :ReanimateLoad <CR>
-noremap [rn :ReanimateSave <C-R>%<CR>
-noremap ]rn :ReanimateLoad <C-R>%<CR>
 
 " syntastic
 let s:bundle = neobundle#get('syntastic')
@@ -1183,11 +1140,6 @@ command! -nargs=0 Swq :wq sudo:%
 vmap <Enter>    <Plug>(LiveEasyAlign)
 nmap <Leader>aa <Plug>(LiveEasyAlign)
 
-" SrcExpl
-let g:SrcExpl_pluginList = [ "__Tag_List__", "*Unite*", "*VimFiler*"]
-let g:SrcExpl_isUpdateTags = 0
-let g:SrcExpl_gobackKey = '<C-\><C-b>'
-
 " cmdlineplus
 cmap <C-l> <Plug>(cmdlineplus-forward-word)
 cmap <C-j> <Plug>(cmdlineplus-backward-word)
@@ -1255,12 +1207,6 @@ let g:casetrate_leader = '<leader>a'
 " autocmd
 "-------------------------------------------------------------------------------"
 
-" Conque
-function! s:delete_conque_term(buffer_name)
-    let term_obj = conque_term#get_instance(a:buffer_name)
-    call term_obj.close()
-endfunction
-
 " Lisp
 function! s:config_lisp()
     setlocal nocindent
@@ -1294,9 +1240,6 @@ augroup general
     " 状態の保存と復元
     autocmd BufWinLeave ?* if (bufname('%') != '') | silent mkview!  | endif
     autocmd BufWinEnter ?* if (bufname('%') != '') | silent loadview | endif
-
-    " Conque
-    autocmd BufWinLeave zsh* call s:delete_conque_term(expand('%'))
 
     " git
     autocmd FileType git setlocal foldlevel=99

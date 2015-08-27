@@ -85,7 +85,7 @@ export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS--
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
-alias octave='octave -q'
+alias octave='octave-cli -q'
 alias R='R -q'
 alias cl=clear
 alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
