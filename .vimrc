@@ -438,7 +438,7 @@ NeoBundleLazy 'Shougo/vinarise', { 'commands' : 'Vinarise' }
 NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'idanarye/vim-casetrate', { 'commands' : [ { 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] }
-NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : ['v', 'I', 'A' ] }
+NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : [ ['v', 'I', 'A'] ] }
 NeoBundleLazy 'kana/vim-smartchr', { 'insert': 1 }
 NeoBundleLazy 'kana/vim-smartinput', { 'insert': 1 }
 NeoBundleLazy 'kannokanno/previm', { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' }
@@ -453,21 +453,21 @@ NeoBundleLazy 'mopp/autodirmake.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/battery.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'commands' : 'LayoutPlugin' }
 NeoBundleLazy 'mopp/makecomp.vim', { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] }
-NeoBundleLazy 'mopp/marker.vim', { 'mappings' : [ '<Plug>(Marker-auto_mark)' ] }
-NeoBundleLazy 'mopp/next-alter.vim', { 'commands' : 'OpenNAlter', 'mappings'  : [ 'n', '<Plug>(next-alter-open)' ] }
-NeoBundleLazy 'mopp/openvimrc.vim' , { 'mappings' : [ '<Plug>(openvimrc-open)' ] }
+NeoBundleLazy 'mopp/marker.vim', { 'mappings' : [ [ 'n', '<Plug>(Marker-auto_mark)' ] ] }
+NeoBundleLazy 'mopp/next-alter.vim', { 'commands' : 'OpenNAlter', 'mappings'  : [ ['n', '<Plug>(next-alter-open)'] ] }
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'mappings' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] }
 NeoBundleLazy 'mopp/tailCleaner.vim', { 'insert': 1 }
-NeoBundleLazy 'osyo-manga/vim-anzu', { 'mappings' : ['n', '<Plug>' ] }
+NeoBundleLazy 'osyo-manga/vim-anzu', { 'mappings' : [ [ 'n', '<Plug>'] ] }
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] }
-NeoBundleLazy 'scrooloose/nerdcommenter', { 'mappings' : [ 'nx', '<Plug>NERDCommenter' ] }
+NeoBundleLazy 'scrooloose/nerdcommenter', { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] }
 NeoBundleLazy 'scrooloose/syntastic', { 'insert': 1 }
-NeoBundleLazy 'sk1418/blockit', { 'commands' : 'Block', 'mappings' : [ 'v', '<Plug>BlockitVisual' ] }
+NeoBundleLazy 'sk1418/blockit', { 'commands' : 'Block', 'mappings' : [ ['v', '<Plug>BlockitVisual'] ] }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same':1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'commands' : 'help' }
 NeoBundleLazy 'tpope/vim-fugitive', { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] }
-NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ '<Plug>(openbrowser-open)' ], 'function_prefix' : 'openbrowser' }
+NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'function_prefix' : 'openbrowser' }
 NeoBundleLazy 'ujihisa/neco-look'
 
 " NeoBundleLazy 'Nemo157/scala.vim', { 'filetypes' : 'scala' }
@@ -482,7 +482,7 @@ NeoBundleLazy 'ujihisa/neco-look'
 " NeoBundleLazy 'othree/html5.vim', { 'filetypes' : [ 'eruby', 'html' ] }
 " NeoBundleLazy 'verilog.vim', { 'filetypes' : 'verilog' }
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'filetypes' : 'arduino' }
-NeoBundleLazy 'mopp/rik_octave.vim', { 'filetypes' : [ 'octave' ] }
+NeoBundleLazy 'mopp/rik_octave.vim', { 'filetypes' : 'octave' }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
@@ -492,20 +492,20 @@ NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] 
 
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
 
-NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ 'n', '<Plug>' ] }
-NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ 'nv', '<Plug>(operator-replace)' ] }
+NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] ] }
+NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] }
 NeoBundleLazy 'kana/vim-operator-user', { 'function_prefix' : 'operator' }
 
-NeoBundleLazy 'h1mesuke/textobj-wiw', { 'mappings' : [ 'nov', '<Plug>' ] }
-NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ 'ov', '<Plug>' ] }
-NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' : [ 'ov', 'ai', 'ii', 'aI', 'iI' ] }
-NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'mappings' : [ [ 'ov', 'a,w', 'i,w', 'a,w', 'i,w', 'a,b', 'i,b', 'a,e', 'i,e', 'a,ge', 'i,ge',] ] }
+NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
+NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' :  [ [ 'ov', 'ai' , 'ii' , 'aI',  'iI' ] ] }
+NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-user', { 'function_prefix' : 'textobj' }
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'mappings' : [ 'ov', '<Plug>' ] }
-NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'mappings' : [ 'ov', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E' ] }
-NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ 'ov', 'av', 'iv' ] }
-NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ 'ov', '<Plug>' ] }
-NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
+NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E' ] ] }
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ [ 'ov', 'av', 'iv' ] ] }
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] ]}
+NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
 NeoBundleLazy 'Shougo/unite-help', { 'unite_sources' : 'help',}
@@ -514,7 +514,6 @@ NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix'}
 NeoBundleLazy 'thinca/vim-unite-history', { 'unite_sources' : [ 'history/command', 'history/yank', 'history/search' ]}
 NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist'}
-
 
 call neobundle#end()
 
@@ -858,12 +857,12 @@ map <Leader>op <Plug>(openbrowser-open)
 map _ <Plug>(operator-replace)
 
 " operator-surround
-nmap <silent> zs <Plug>(operator-surround-append)
-omap <silent> zs <Plug>(operator-surround-append)
 nmap <silent> zd <Plug>(operator-surround-delete)
-omap <silent> zd <Plug>(operator-surround-delete)
 nmap <silent> zr <Plug>(operator-surround-replace)
+nmap <silent> zs <Plug>(operator-surround-append)
+omap <silent> zd <Plug>(operator-surround-delete)
 omap <silent> zr <Plug>(operator-surround-replace)
+omap <silent> zs <Plug>(operator-surround-append)
 nmap <silent> zss <Plug>(operator-surround-append)<Plug>(textobj-block-i)
 nmap <silent> zdd <Plug>(operator-surround-delete)<Plug>(textobj-block-a)
 nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
@@ -871,13 +870,6 @@ nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
 " vim-expand-region
 vmap K <Plug>(expand_region_expand)
 vmap J <Plug>(expand_region_shrink)
-
-" textobj-wiw
-let g:textobj_wiw_no_default_key_mappings = 0
-map mw <Plug>(textobj-wiw-n)
-map mb <Plug>(textobj-wiw-p)
-map me <Plug>(textobj-wiw-N)
-map mge <Plug>(textobj-wiw-P)
 
 " textobj-line
 omap il <Plug>(textobj-line-i)
