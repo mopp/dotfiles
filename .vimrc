@@ -398,13 +398,10 @@ if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     finish
 endif
 
-" neobundle
+" Neobundle
 if has('vim_starting')
-    " set nocompatible
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
-let g:neobundle#types#git#default_protocol = 'git'
-let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
 call neobundle#begin()
 
@@ -412,12 +409,13 @@ call neobundle#begin()
 " NeoBundle 'kyuhi/vim-emoji-complete'
 " NeoBundle 'FooSoft/vim-argwrap'
 " nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
+" NeoBundleLazy 'taku-o/vim-copypath', {  'commands'  : ['CopyFileName', 'CopyPath'] }
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'linux' : 'make' } }
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
@@ -429,94 +427,90 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 
-NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
-NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
-NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'autoload' : { 'insert' : '1', 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] } }
+NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua')) }
+NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
 NeoBundleLazy 'Shougo/neosnippet-snippets'
-NeoBundleLazy 'Shougo/vimfiler', { 'depends' : [ 'Shougo/unite.vim' ], 'autoload' : { 'function_prefix' : 'vimfiler', 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
-NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
-NeoBundleLazy 'bbchung/clighter', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
+NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'function_prefix' : 'vimfiler', 'commands' : { 'name' : ['VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'complete' : 'customlist,vimfiler#complete' }, 'explorer' : 1 }
+NeoBundleLazy 'Shougo/vinarise', { 'commands' : 'Vinarise' }
+NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'honza/vim-snippets'
-NeoBundleLazy 'idanarye/vim-casetrate', { 'autoload' : { 'commands' : [{ 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] } }
-NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
-NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
-NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
-NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' } }
-NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
-NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
-NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
+NeoBundleLazy 'idanarye/vim-casetrate', { 'commands' : [ { 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] }
+NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : ['v', 'I', 'A' ] }
+NeoBundleLazy 'kana/vim-smartchr', { 'insert': 1 }
+NeoBundleLazy 'kana/vim-smartinput', { 'insert': 1 }
+NeoBundleLazy 'kannokanno/previm', { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' }
+NeoBundleLazy 'koron/nyancat-vim', { 'commands' : [ 'Nyancat', 'Nyancat2',] }
+NeoBundleLazy 'majutsushi/tagbar', { 'commands' : 'TagbarToggle' }
+NeoBundleLazy 'mattn/benchvimrc-vim', { 'commands' : 'BenchVimrc' }
+NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'commands' : 'Gist' }
 NeoBundleLazy 'mattn/learn-vimscript'
-NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
-NeoBundleLazy 'mopp/battery.vim', '', 'loadInsert'
-NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
-NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
-NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
-NeoBundleLazy 'mopp/marker.vim', { 'autoload' : { 'mappings' : [ '<Plug>(Marker-auto_mark)' ] } }
-NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
-NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
-NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
-NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
+NeoBundleLazy 'mattn/webapi-vim', { 'function_prefix' : 'webapi' }
+NeoBundleLazy 'mopp/DoxyDoc.vim', { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] }
+NeoBundleLazy 'mopp/battery.vim', { 'insert': 1 }
+NeoBundleLazy 'mopp/autodirmake.vim', { 'insert': 1 }
+NeoBundleLazy 'mopp/layoutplugin.vim', { 'commands' : 'LayoutPlugin' }
+NeoBundleLazy 'mopp/makecomp.vim', { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] }
+NeoBundleLazy 'mopp/marker.vim', { 'mappings' : [ '<Plug>(Marker-auto_mark)' ] }
+NeoBundleLazy 'mopp/next-alter.vim', { 'commands' : 'OpenNAlter', 'mappings'  : [ 'n', '<Plug>(next-alter-open)' ] }
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'mappings' : [ '<Plug>(openvimrc-open)' ] }
+NeoBundleLazy 'mopp/tailCleaner.vim', { 'insert': 1 }
+NeoBundleLazy 'osyo-manga/vim-anzu', { 'mappings' : ['n', '<Plug>' ] }
 NeoBundleLazy 'osyo-manga/vim-marching'
-NeoBundleLazy 'osyo-manga/vim-snowdrop', { 'autoload' : { 'filetypes' : 'cpp' } }
-NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
-NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
-NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] } }
-NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
-NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
-NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
-NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
-NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
-NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+NeoBundleLazy 'osyo-manga/vim-stargate', { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] }
+NeoBundleLazy 'rhysd/vim-clang-format', { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] }
+NeoBundleLazy 'scrooloose/nerdcommenter', { 'mappings' : [ 'nx', '<Plug>NERDCommenter' ] }
+NeoBundleLazy 'scrooloose/syntastic', { 'insert': 1 }
+NeoBundleLazy 'sk1418/blockit', { 'commands' : 'Block', 'mappings' : [ 'v', '<Plug>BlockitVisual' ] }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same':1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
+NeoBundleLazy 'thinca/vim-ft-help_fold', { 'commands' : 'help' }
+NeoBundleLazy 'tpope/vim-fugitive', { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] }
+NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ '<Plug>(openbrowser-open)' ], 'function_prefix' : 'openbrowser' }
 NeoBundleLazy 'ujihisa/neco-look'
 
-" NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
-" NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
-" NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : ['javascript'] } }
-" NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
-" NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
-" NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
-" NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
-" NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
-" NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
-" NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
-" NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
-" NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
-" NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
-NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
-NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'filetypes': 'ruby', }}
-NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
+" NeoBundleLazy 'Nemo157/scala.vim', { 'filetypes' : 'scala' }
+" NeoBundleLazy 'adimit/prolog.vim', { 'filetypes' : 'prolog' }
+" NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'insert' : 1, 'filetypes' : ['javascript'] }
+" NeoBundleLazy 'awk.vim', { 'filetypes' : 'awk' }
+" NeoBundleLazy 'elzr/vim-json', { 'filetypes' : 'json' }
+" NeoBundleLazy 'gnuplot.vim', { 'filetypes' : 'gnuplot' }
+" NeoBundleLazy 'jelera/vim-javascript-syntax', { 'filetypes' : ['javascript'] }
+" NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'filetypes' : 'javascript' }
+" NeoBundleLazy 'mips.vim', { 'filetypes' : 'mips' }
+" NeoBundleLazy 'othree/html5.vim', { 'filetypes' : [ 'eruby', 'html' ] }
+" NeoBundleLazy 'verilog.vim', { 'filetypes' : 'verilog' }
+" NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'filetypes' : 'arduino' }
+NeoBundleLazy 'mopp/rik_octave.vim', { 'filetypes' : [ 'octave' ] }
+NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
+NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'filetypes' : 'ruby' }
+NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
-NeoBundleLazy 'vim-ruby/vim-ruby', { 'autoload' : { 'filetypes' : [ 'ruby' ] } }
-NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh', 'bash'] } }
+NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
+NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
 
-NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : 'java' } }
+NeoBundleLazy 'yuratomo/java-api-complete', { 'insert' : 1, 'filetypes' : 'java' }
 
-NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
-NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
-NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
+NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ 'n', '<Plug>' ] }
+NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ 'nv', '<Plug>(operator-replace)' ] }
+NeoBundleLazy 'kana/vim-operator-user', { 'function_prefix' : 'operator' }
 
-NeoBundleLazy 'h1mesuke/textobj-wiw', { 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
-NeoBundleLazy 'kana/vim-textobj-function', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-function-' ] ] } }
-NeoBundleLazy 'kana/vim-textobj-indent', { 'autoload' : { 'mappings' : [ [ 'ov', 'ai' ], [ 'ov', 'ii' ], [ 'ov', 'aI' ], [ 'ov', 'iI' ] ] } }
-NeoBundleLazy 'kana/vim-textobj-line', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
-NeoBundleLazy 'kana/vim-textobj-user', { 'autoload' : { 'function_prefix' : 'textobj' } }
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multiblock-' ] ] } }
-NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A' ], [ 'ov', '<Plug>(textobj-multitextobj-B' ], [ 'ov', '<Plug>(textobj-multitextobj-C' ], [ 'ov', '<Plug>(textobj-multitextobj-D' ], [ 'ov', '<Plug>(textobj-multitextobj-E' ] ] } }
-NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'autoload' : { 'mappings' : [ [ 'ov', 'av' ], [ 'ov', 'iv' ] ] } }
-NeoBundleLazy 'sgur/vim-textobj-parameter', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-parameter-' ] ] } }
-NeoBundleLazy 'terryma/vim-expand-region', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(expand_region_' ] ] } }
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'mappings' : [ 'nov', '<Plug>' ] }
+NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' : [ 'ov', 'ai', 'ii', 'aI', 'iI' ] }
+NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'kana/vim-textobj-user', { 'function_prefix' : 'textobj' }
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'mappings' : [ 'ov', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E' ] }
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ 'ov', 'av', 'iv' ] }
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ 'ov', '<Plug>' ] }
+NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ 'ov', '<Plug>' ] }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'insert' : '1', 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
-NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
-NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
-NeoBundleLazy 'Shougo/neomru.vim', { 'autoload' : { 'unite_sources' : ['file_mru'],} }
-NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
-NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
-NeoBundleLazy 'junkblocker/unite-tasklist', { 'autoload' : { 'unite_sources' : [ 'tasklist' ], } }
+NeoBundleLazy 'Shougo/unite.vim', { 'insert' : 1, 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
+NeoBundleLazy 'Shougo/unite-help', { 'unite_sources' : 'help',}
+NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline'}
+NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru'}
+NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix'}
+NeoBundleLazy 'thinca/vim-unite-history', { 'unite_sources' : [ 'history/command', 'history/yank', 'history/search' ]}
+NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist'}
 
 
 call neobundle#end()
@@ -548,8 +542,8 @@ nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet neosnippet<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 let g:unite_quickfix_is_multiline = 0
-let s:bundle = neobundle#get('unite.vim')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('unite.vim')
+function! s:hooks.on_source(bundle)
     let g:unite_data_directory = expand('~/.vim/unite')
     let g:unite_source_file_mru_limit = 50
     let g:unite_cursor_line_highlight = 'TabLineSel'
@@ -571,7 +565,6 @@ function! s:bundle.hooks.on_source(bundle)
         let g:unite_source_grep_max_candidates = 200
     endif
 endfunction
-unlet s:bundle
 function! s:on_exe_unite()
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
@@ -582,8 +575,8 @@ function! s:on_exe_unite()
 endfunction
 
 " neocomplete
-let s:bundle = neobundle#get('neocomplete.vim')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('neocomplete.vim')
+function! s:hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#auto_completion_start_length = 3
     let g:neocomplete#min_keyword_length           = 3
@@ -650,7 +643,7 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> <C-l> neocomplete#complete_common_string()
 endfunction
 
-function! s:bundle.hooks.on_post_source(bundle)
+function! s:hooks.on_post_source(bundle)
     if &filetype =~? 'c\|cpp'
         NeoBundleSource vim-marching
     endif
@@ -662,7 +655,6 @@ function! s:bundle.hooks.on_post_source(bundle)
         NeoBundleSource neco-look
     endif
 endfunction
-unlet s:bundle
 
 " neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -682,8 +674,8 @@ function! s:check_clang()
 endfunction
 
 " marching
-let s:bundle = neobundle#get('vim-marching')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-marching')
+function! s:hooks.on_source(bundle)
     let clang_exe = s:check_clang()
     if clang_exe == ''
         return
@@ -699,16 +691,10 @@ function! s:bundle.hooks.on_source(bundle)
 
     set updatetime=500
 endfunction
-unlet s:bundle
-
-" snowdrop
-let g:snowdrop#libclang_path = has('mac') ? '/Library/Developer/CommandLineTools/usr/lib' : '/usr/local/lib'
-let g:snowdrop#libclang_file = has('mac') ? 'libclang.dylib' : 'libclang.so'
-let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
-let s:bundle = neobundle#get('vim-clang-format')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-clang-format')
+function! s:hooks.on_source(bundle)
     let g:clang_format#auto_format_on_insert_leave = 0
     let g:clang_format#auto_formatexpr = 1
     let g:clang_format#style_options = {
@@ -737,7 +723,6 @@ function! s:bundle.hooks.on_source(bundle)
         endif
     endfor
 endfunction
-unlet s:bundle
 
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
@@ -747,25 +732,23 @@ let g:NERDSpaceDelims = 1
 nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
-let s:bundle = neobundle#get('nerdcommenter')
-function! s:bundle.hooks.on_post_source(bundle)
+let s:hooks = neobundle#get_hooks('nerdcommenter')
+function! s:hooks.on_post_source(bundle)
     doautocmd NERDCommenter BufEnter
 endfunction
-unlet s:bundle
 
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
 nnoremap <silent> fvc :VimFilerCreate<CR>
-let s:bundle = neobundle#get('vimfiler')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vimfiler')
+function! s:hooks.on_source(bundle)
     let g:vimfiler_as_default_explorer = 1
     let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
     let g:vimfiler_force_overwrite_statusline = 0
     call vimfiler#custom#profile('default', 'context', { 'safe' : 0, })
 endfunction
-unlet s:bundle
 function! s:config_vimfiler()
     unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
@@ -784,8 +767,8 @@ let g:tagbar_compact = 1
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
 " Smartinput
-let s:bundle = neobundle#get('vim-smartinput')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-smartinput')
+function! s:hooks.on_source(bundle)
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
@@ -831,18 +814,16 @@ function! s:bundle.hooks.on_source(bundle)
     call smartinput#map_to_trigger('i', '*', '*', '*')
     call smartinput#define_rule({ 'char' : '*', 'at' : 'defparameter \*\%#', 'input' : '*<Left>', 'filetype' : [ 'lisp' ]})
 endfunction
-unlet s:bundle
 
 " Smartchr
-let s:bundle = neobundle#get('vim-smartchr')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-smartchr')
+function! s:hooks.on_source(bundle)
     inoremap <expr> , smartchr#one_of(', ', '->', ' => ')
 
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
     endif
 endfunction
-unlet s:bundle
 
 " FIXME: QuickRun
 let g:quickrun_config = {}
@@ -940,8 +921,8 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
 " syntastic
-let s:bundle = neobundle#get('syntastic')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('syntastic')
+function! s:hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
     let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
     let t = s:check_clang()
@@ -951,7 +932,6 @@ function! s:bundle.hooks.on_source(bundle)
     let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
     let g:syntastic_loc_list_height      = 5
 endfunction
-unlet s:bundle
 
 " rainbow parenthesis
 let g:rainbow_active = 1
@@ -984,11 +964,10 @@ let g:layoutplugin#is_append_vimrc = 1
 map <Leader>sm <Plug>(smalls)
 
 " fugitive
-let s:bundle = neobundle#get('vim-fugitive')
-function! s:bundle.hooks.on_post_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-fugitive')
+function! s:hooks.on_post_source(bundle)
     doautoall fugitive BufNewFile
 endfunction
-unlet s:bundle
 
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
@@ -1140,23 +1119,6 @@ command! -nargs=0 Swq :wq sudo:%
 vmap <Enter>    <Plug>(LiveEasyAlign)
 nmap <Leader>aa <Plug>(LiveEasyAlign)
 
-" cmdlineplus
-cmap <C-l> <Plug>(cmdlineplus-forward-word)
-cmap <C-j> <Plug>(cmdlineplus-backward-word)
-cmap <C-k> <Plug>(cmdlineplus-killline)
-cmap <C-\><C-\> <Plug>(cmdlineplus-escape-special)
-cmap <C-\>i <Plug>(cmdlineplus-escape-input)
-cmap <C-y> <Plug>(cmdlineplus-yank)
-cmap <C-\><C-c> <Plug>(cmdlineplus-yank-clipboard)
-cmap <C-\>f <Plug>(cmdlineplus-f)
-cmap <C-\>F <Plug>(cmdlineplus-F)
-cmap <C-\>t <Plug>(cmdlineplus-t)
-cmap <C-\>T <Plug>(cmdlineplus-T)
-cmap <C-\>; <Plug>(cmdlineplus-;)
-cmap <C-\>, <Plug>(cmdlineplus-,)
-cmap <C-\>d <Plug>(cmdlineplus-df)
-cmap <C-\>D <Plug>(cmdlineplus-dF)
-
 " smartnumber
 let g:snumber_enable_startup = 1
 nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
@@ -1179,8 +1141,8 @@ let g:ruby_space_errors = 1
 
 " Clighter
 let g:clighter_libclang_file='/usr/local/lib/libclang.so'
-let s:bundle = neobundle#get('clighter')
-function! s:bundle.hooks.on_post_source(bundle)
+let s:hooks = neobundle#get_hooks('clighter')
+function! s:hooks.on_post_source(bundle)
     let g:clighter_occurrences_mode = 1
     hi m_decl cterm=bold
     hi link clighterMacroInstantiation Define
@@ -1197,7 +1159,6 @@ function! s:bundle.hooks.on_post_source(bundle)
     hi link clighterMemberRefExpr      None
     hi link clighterNamespace          None
 endfunction
-unlet s:bundle
 
 " Casetrate
 let g:casetrate_leader = '<leader>a'
