@@ -63,7 +63,9 @@ if isdirectory(expand('~/.vim/undo'))
 endif
 
 " その他
-set clipboard=unnamed,autoselect
+if !has('nvim')
+    set clipboard=unnamed,autoselect
+endif
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set timeout                     " マッピングのタイムアウト有効
@@ -427,6 +429,7 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 
+NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('nvim')) }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua')) }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
 NeoBundleLazy 'Shougo/neosnippet-snippets'
@@ -446,8 +449,8 @@ NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'commands' : '
 NeoBundleLazy 'mattn/learn-vimscript'
 NeoBundleLazy 'mattn/webapi-vim', { 'function_prefix' : 'webapi' }
 NeoBundleLazy 'mopp/DoxyDoc.vim', { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] }
-NeoBundleLazy 'mopp/battery.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/autodirmake.vim', { 'insert': 1 }
+NeoBundleLazy 'mopp/battery.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'commands' : 'LayoutPlugin' }
 NeoBundleLazy 'mopp/makecomp.vim', { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] }
 NeoBundleLazy 'mopp/marker.vim', { 'mappings' : [ '<Plug>(Marker-auto_mark)' ] }
@@ -487,7 +490,7 @@ NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
 
-NeoBundleLazy 'yuratomo/java-api-complete', { 'insert' : 1, 'filetypes' : 'java' }
+NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ 'n', '<Plug>' ] }
 NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ 'nv', '<Plug>(operator-replace)' ] }
@@ -504,7 +507,7 @@ NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ 'ov', 'av', 'iv'
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ 'ov', '<Plug>' ] }
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ 'ov', '<Plug>' ] }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'insert' : 1, 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
+NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
 NeoBundleLazy 'Shougo/unite-help', { 'unite_sources' : 'help',}
 NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline'}
 NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru'}
@@ -572,6 +575,26 @@ function! s:on_exe_unite()
     nmap <buffer> x <Plug>(unite_quick_match_choose_action)
     nnoremap <buffer><expr> l unite#smart_map('l', unite#do_action('default'))
     nnoremap <buffer><expr> t unite#do_action('tabopen')
+endfunction
+
+function! s:load_complement_sources() abort
+    if &filetype =~? 'c\|cpp'
+        NeoBundleSource vim-marching
+    endif
+
+    if has('ruby')
+        let g:alpaca_english_enable = 1
+        NeoBundleSource alpaca_english
+    else
+        NeoBundleSource neco-look
+    endif
+endfunction
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+let s:hooks = neobundle#get_hooks('deoplete.vim')
+function! s:hooks.on_post_source(bundle)
+    call s:load_complement_sources()
 endfunction
 
 " neocomplete
@@ -644,16 +667,7 @@ function! s:hooks.on_source(bundle)
 endfunction
 
 function! s:hooks.on_post_source(bundle)
-    if &filetype =~? 'c\|cpp'
-        NeoBundleSource vim-marching
-    endif
-
-    if has('ruby')
-        let g:alpaca_english_enable = 1
-        NeoBundleSource alpaca_english
-    else
-        NeoBundleSource neco-look
-    endif
+    call s:load_complement_sources()
 endfunction
 
 " neosnippet
@@ -1199,8 +1213,8 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* if (bufname('%') != '') | silent mkview!  | endif
-    autocmd BufWinEnter ?* if (bufname('%') != '') | silent loadview | endif
+    autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
+    autocmd BufWinEnter * if (bufname('%') != '') | silent loadview | endif
 
     " git
     autocmd FileType git setlocal foldlevel=99
