@@ -1206,7 +1206,7 @@ augroup general
 
     " 状態の保存と復元
     autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
-    autocmd BufWinEnter * if (bufname('%') != '') | silent loadview | endif
+    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
 
     " git
     autocmd FileType git setlocal foldlevel=99
