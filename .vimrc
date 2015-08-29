@@ -106,6 +106,10 @@ let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h   = 1
 let g:tex_conceal      = ''
 
+" for neovim
+if has('nvim')
+    set wildmode=full
+endif
 
 "-------------------------------------------------------------------------------"
 " Functions
@@ -409,8 +413,6 @@ call neobundle#begin()
 
 " NeoBundle 'ap/vim-css-color'
 " NeoBundle 'kyuhi/vim-emoji-complete'
-" NeoBundle 'FooSoft/vim-argwrap'
-" nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
 " NeoBundleLazy 'taku-o/vim-copypath', {  'commands'  : ['CopyFileName', 'CopyPath'] }
 
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -429,6 +431,7 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 
+NeoBundleLazy 'FooSoft/vim-argwrap', { 'function_prefix' : 'argwrap' }
 NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('nvim')) }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua')) }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
@@ -496,7 +499,7 @@ NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] 
 NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] }
 NeoBundleLazy 'kana/vim-operator-user', { 'function_prefix' : 'operator' }
 
-NeoBundleLazy 'h1mesuke/textobj-wiw', { 'mappings' : [ [ 'ov', 'a,w', 'i,w', 'a,w', 'i,w', 'a,b', 'i,b', 'a,e', 'i,e', 'a,ge', 'i,ge',] ] }
+NeoBundleLazy '1mesuke/textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' :  [ [ 'ov', 'ai' , 'ii' , 'aI',  'iI' ] ] }
 NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
@@ -1169,6 +1172,8 @@ endfunction
 " Casetrate
 let g:casetrate_leader = '<leader>a'
 
+" argwrap
+nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
 
 "-------------------------------------------------------------------------------"
 " autocmd
