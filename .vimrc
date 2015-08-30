@@ -1077,7 +1077,7 @@ function! Mline_git()
         endif
 
         " Check untracked files
-        if system('git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch --') != ''
+        if system('git ls-files --exclude-standard --others') != ''
             let str = str . '%'
         endif
 
