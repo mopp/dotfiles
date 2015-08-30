@@ -512,12 +512,11 @@ NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] 
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
-NeoBundleLazy 'Shougo/unite-help', { 'unite_sources' : 'help',}
-NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline'}
-NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru'}
-NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix'}
-NeoBundleLazy 'thinca/vim-unite-history', { 'unite_sources' : [ 'history/command', 'history/yank', 'history/search' ]}
-NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist'}
+NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
+NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
+NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix' }
+NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist' }
+NeoBundleLazy 'tsukkee/unite-tag', { 'unite_sources' : [ 'tag', 'tag/file', 'tag/include' ] }
 
 call neobundle#end()
 
@@ -532,19 +531,10 @@ nnoremap [Unite] <Nop>
 nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]k       :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
-nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Files file_mru<CR>
-nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Sources source<CR>
+nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Files file_rec/async:!<CR>
+nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Sources source<CR>
 nnoremap <silent> [Unite]g       :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
-nnoremap <silent> [Unite]<Space> :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
-nnoremap <silent> [Unite]hc      :<C-u>Unite -buffer-name=History history/command<CR>
-nnoremap <silent> [Unite]hy      :<C-u>Unite -buffer-name=History history/yank<CR>
-nnoremap <silent> [Unite]hs      :<C-u>Unite -buffer-name=History history/search<CR>
-nnoremap <silent> [Unite]hl      :<C-u>Unite -buffer-name=Help help<CR>
-nnoremap <silent> [Unite]ma      :<C-u>Unite -buffer-name=Mappings mapping<CR>
-nnoremap <silent> [Unite]me      :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> [Unite]o       :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
-nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet neosnippet<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 let g:unite_quickfix_is_multiline = 0
