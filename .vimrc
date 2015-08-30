@@ -510,14 +510,14 @@ NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ [ 'ov', 'av', 'i
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] ]}
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
-NeoBundleLazy 'lambdalisue/unite-grep-vcs', { 'unite_sources' : ['grep/git', 'grep/hg'] }
-NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
 NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
-NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix' }
+NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
+NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
 NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist' }
-NeoBundleLazy 'tsukkee/unite-tag', { 'unite_sources' : [ 'tag', 'tag/file', 'tag/include' ] }
 NeoBundleLazy 'kmnk/vim-unite-giti', { 'unite_sources' : [ 'giti', 'giti/branch', 'giti/branch_all', 'giti/config', 'giti/log', 'giti/remote', 'giti/status' ] }
+NeoBundleLazy 'lambdalisue/unite-grep-vcs', { 'unite_sources' : ['grep/git', 'grep/hg'] }
+NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix' }
+NeoBundleLazy 'tsukkee/unite-tag', { 'unite_sources' : [ 'tag', 'tag/file', 'tag/include' ] }
 
 call neobundle#end()
 
@@ -598,8 +598,13 @@ function! s:load_complement_sources() abort
 endfunction
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
-let s:hooks = neobundle#get_hooks('deoplete.vim')
+let s:hooks = neobundle#get_hooks('deoplete.nvim')
+function! s:hooks.on_source(bundle)
+    let g:deoplete#enable_at_startup            = 1
+    let g:deoplete#enable_ignore_case           = 0
+    let g:deoplete#enable_smart_case            = 1
+    let g:deoplete#auto_completion_start_length = 3
+endfunction
 function! s:hooks.on_post_source(bundle)
     call s:load_complement_sources()
 endfunction
