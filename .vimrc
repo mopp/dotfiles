@@ -517,6 +517,7 @@ NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix' }
 NeoBundleLazy 'junkblocker/unite-tasklist', { 'unite_sources' : 'tasklist' }
 NeoBundleLazy 'tsukkee/unite-tag', { 'unite_sources' : [ 'tag', 'tag/file', 'tag/include' ] }
+NeoBundleLazy 'kmnk/vim-unite-giti', { 'unite_sources' : [ 'giti', 'giti/branch', 'giti/branch_all', 'giti/config', 'giti/log', 'giti/remote', 'giti/status' ] }
 
 call neobundle#end()
 
@@ -530,11 +531,12 @@ endif
 nnoremap [Unite] <Nop>
 nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]k       :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
 nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Files file_rec/async:!<CR>
 nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> [Unite]g       :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
+nnoremap <silent> [Unite]g       :<C-u>Unite -buffer-name=Giti giti<CR>
+nnoremap <silent> [Unite]p       :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
 nnoremap <silent> [Unite]o       :<C-u>Unite -buffer-name=Outlines outline<CR>
+nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Lines line<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 let g:unite_quickfix_is_multiline = 0
@@ -1065,8 +1067,7 @@ endfunction
 
 function! Mline_fugitive()
     if &modifiable && &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
-        let t = fugitive#head()
-        return (t != '') ? ('⎇  ' . t) : ''
+        return fugitive#head()
     endif
     return ''
 endfunction
