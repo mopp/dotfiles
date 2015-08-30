@@ -438,7 +438,6 @@ NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo
 NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'function_prefix' : 'vimfiler', 'commands' : { 'name' : ['VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'complete' : 'customlist,vimfiler#complete' }, 'explorer' : 1 }
 NeoBundleLazy 'Shougo/vinarise', { 'commands' : 'Vinarise' }
-NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'idanarye/vim-casetrate', { 'commands' : [ { 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] }
 NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : [ ['v', 'I', 'A'] ] }
@@ -467,7 +466,7 @@ NeoBundleLazy 'rhysd/vim-clang-format', { 'commands' : [ 'ClangFormat', 'ClangFo
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] }
 NeoBundleLazy 'scrooloose/syntastic', { 'insert': 1 }
 NeoBundleLazy 'sk1418/blockit', { 'commands' : 'Block', 'mappings' : [ ['v', '<Plug>BlockitVisual'] ] }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same':1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same' : 1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'commands' : 'help' }
 NeoBundleLazy 'tpope/vim-fugitive', { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] }
 NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'function_prefix' : 'openbrowser' }
@@ -492,7 +491,9 @@ NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
+NeoBundleLazy 'rust-lang/rust.vim', { 'filetypes' : 'rust' }
 
+NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] ] }
@@ -1174,6 +1175,7 @@ let g:casetrate_leader = '<leader>a'
 
 " argwrap
 nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
