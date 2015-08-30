@@ -511,6 +511,7 @@ NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] 
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'commands' : [ { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'} ], 'function_prefix' : 'unite' }
+NeoBundleLazy 'lambdalisue/unite-grep-vcs', { 'unite_sources' : ['grep/git', 'grep/hg'] }
 NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
 NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'unite_sources' : 'quickfix' }
@@ -527,13 +528,22 @@ if !has('vim_starting')
 endif
 
 " Unite
+function! s:unite_smart_grep()
+    if unite#sources#grep_git#is_available()
+        Unite grep/git:. -buffer-name=search-buffer
+    elseif unite#sources#grep_hg#is_available()
+        Unite grep/hg:. -buffer-name=search-buffer
+    else
+        Unite grep:. -buffer-name=search-buffer
+    endif
+endfunction
 nnoremap [Unite] <Nop>
 nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Files file_rec/async:!<CR>
 nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> [Unite]g       :<C-u>Unite -buffer-name=Giti giti<CR>
-nnoremap <silent> [Unite]p       :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
+nnoremap <silent> [Unite]gi      :<C-u>Unite -buffer-name=Giti giti<CR>
+nnoremap <silent> [Unite]gg      :<C-u>call <SID>unite_smart_grep()<CR>
 nnoremap <silent> [Unite]o       :<C-u>Unite -buffer-name=Outlines outline<CR>
 nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Lines line<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
