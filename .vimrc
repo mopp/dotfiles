@@ -468,7 +468,6 @@ NeoBundleLazy 'scrooloose/syntastic', { 'insert': 1 }
 NeoBundleLazy 'sk1418/blockit', { 'commands' : 'Block', 'mappings' : [ ['v', '<Plug>BlockitVisual'] ] }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same' : 1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'commands' : 'help' }
-NeoBundleLazy 'tpope/vim-fugitive', { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] }
 NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'function_prefix' : 'openbrowser' }
 NeoBundleLazy 'ujihisa/neco-look'
 
@@ -568,8 +567,11 @@ function! s:on_exe_unite()
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
     nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+    nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+    imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+    nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
     nnoremap <buffer><expr> l unite#smart_map('l', unite#do_action('default'))
-    nnoremap <buffer><expr> t unite#do_action('tabopen')
+    nnoremap <buffer><expr> <C-t> unite#do_action('tabopen')
 endfunction
 
 function! s:load_complement_sources() abort
@@ -965,12 +967,6 @@ let g:layoutplugin#is_append_vimrc = 1
 " small
 map <Leader>sm <Plug>(smalls)
 
-" fugitive
-let s:hooks = neobundle#get_hooks('vim-fugitive')
-function! s:hooks.on_post_source(bundle)
-    doautoall fugitive BufNewFile
-endfunction
-
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
 
@@ -979,7 +975,7 @@ let g:lightline = {
             \ 'enable'      : { 'tabline' : 0 },
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
-            \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
+            \   'left'  : [ [ 'mode', 'paste' ], [ 'git' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
             \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ], [ 'battery' ] ],
             \ },
             \ 'inactive' : {
@@ -999,12 +995,12 @@ let g:lightline = {
             \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
             \ },
             \ 'component_function' : {
-            \   'mode'          : 'Mline_mode',
-            \   'modified'      : 'Mline_modified',
-            \   'filename'      : 'Mline_filename',
-            \   'fugitive'      : 'Mline_fugitive',
-            \   'buflist'       : 'Mline_buflist',
-            \   'battery'       : 'Mline_battery',
+            \   'mode'     : 'Mline_mode',
+            \   'modified' : 'Mline_modified',
+            \   'filename' : 'Mline_filename',
+            \   'git'      : 'Mline_git',
+            \   'buflist'  : 'Mline_buflist',
+            \   'battery'  : 'Mline_battery',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -1012,13 +1008,12 @@ let g:lightline = {
 
 let s:p = { 'normal': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'inactive': {}, }
 let s:cp = {
-            \ 'fg'      : [ '#9e9e9e', 247 ], 'glay'    : [ '#303030', 236 ],
-            \ 'dark'    : [ '#0E1119', 232 ], 'light'   : [ '#e4e4e4', 254 ],
-            \ 'purple'  : [ '#875fd7',  98 ], 'blue'    : [ '#00afff',  39 ],
-            \ 'orange'  : [ '#d75f00', 166 ], 'red'     : [ '#ff0000', 196 ],
+            \ 'fg':     [ '#9e9e9e', 247 ], 'glay':   [ '#303030', 236 ], 'dark':      [ '#0E1119', 232 ],
+            \ 'light':  [ '#e4e4e4', 254 ], 'purple': [ '#875fd7',  98 ], 'blue':      [ '#00afff',  39 ],
+            \ 'orange': [ '#d75f00', 166 ], 'red':    [ '#ff0000', 196 ], 'deep_glay': [ '#2e2930', 235 ],
             \ }
-let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, [ '#2e2930', 235 ] ], }
-let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange, s:cp.dark ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
+let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, s:cp.deep_glay ], }
+let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange,  s:cp.deep_glay ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
 let s:p.normal.middle   = [ s:pa.base_glay ]
 let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ], [s:cp.blue, s:cp.glay ] ]
 let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
@@ -1065,9 +1060,28 @@ function! Mline_filename()
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
-function! Mline_fugitive()
-    if &modifiable && &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
-        return fugitive#head()
+function! Mline_git()
+    if (&modifiable) && (&filetype !~? 'unite\|vimfiler') && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
+        let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
+
+        " Not added changes
+        call system('git diff --no-ext-diff --quiet --exit-code')
+        if v:shell_error == 1
+            let str = str . '*'
+        endif
+
+        " Not committed changes
+        call system('git diff-index --cached --quiet HEAD --')
+        if v:shell_error == 1
+            let str = str . '+'
+        endif
+
+        " Check untracked files
+        if system('git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch --') != ''
+            let str = str . '%'
+        endif
+
+        return str
     endif
     return ''
 endfunction
