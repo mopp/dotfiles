@@ -17,7 +17,7 @@
 #   DYLD_LIBRARY_PATH
 #   BOOST_ROOT
 #---------------------------------------------------------------------------------------"
-export LANG=ja_JP.UTF-8
+#export LANG=ja_JP.UTF-8
 
 HOSTNAME=$(hostname)
 case $OSTYPE in
