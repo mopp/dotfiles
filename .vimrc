@@ -499,13 +499,13 @@ NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] 
 NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] }
 NeoBundleLazy 'kana/vim-operator-user', { 'function_prefix' : 'operator' }
 
-NeoBundleLazy 'rhysd/vim-textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' :  [ [ 'ov', 'ai' , 'ii' , 'aI',  'iI' ] ] }
 NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-user', { 'function_prefix' : 'textobj' }
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E' ] ] }
+NeoBundleLazy 'rhysd/vim-textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ [ 'ov', 'av', 'iv' ] ] }
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] ]}
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
