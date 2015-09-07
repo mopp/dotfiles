@@ -94,6 +94,15 @@ sym_link_no_conf ".zshrc"
 sym_link_no_conf ".gitconfig"
 sym_link_no_conf ".vrapperrc"
 
+ask "Do you want to install zslot ?"
+TOOLS_DIR=~/Tools/
+if [ $? -eq 1 ]; then
+    if [ ! -e $TOOLS_DIR ]; then
+        mkdir $TOOLS_DIR
+    fi
+    git clone https://github.com/kmhjs/zslot.git $TOOLS_DIR
+fi
+
 os_type=$(uname)
 case "${os_type}" in
     Darwin*)
