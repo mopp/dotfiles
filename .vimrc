@@ -395,6 +395,55 @@ endif
 
 
 "-------------------------------------------------------------------------------"
+" autocmd.
+"-------------------------------------------------------------------------------"
+" Not depend on any plugin.
+augroup noplugin
+    autocmd!
+
+    " .vimrc
+    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+
+    " 挿入モード解除時に自動でpasteをoff
+    autocmd InsertLeave * setlocal nopaste
+
+    " 状態の保存と復元
+    autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
+    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+
+    " git
+    autocmd FileType git setlocal foldlevel=99
+
+    " nask
+    autocmd BufWinEnter *.nas nested setlocal filetype=nasm
+
+    " json
+    autocmd BufWinEnter *.json nested setlocal filetype=json
+
+    " Arduino
+    autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
+
+    " markdown
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
+
+    " gnuplot
+    autocmd BufWinEnter *.plt nested setlocal filetype=gnuplot
+
+    " Lisp
+    autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
+
+    " Octave
+    autocmd BufWinEnter *.m,*.oct setlocal filetype=octave
+
+    " Enable wrap in text.
+    autocmd BufWinEnter *.txt setlocal wrap
+
+    " Tex
+    autocmd BufWinEnter *.tex setlocal spell wrap
+augroup END
+
+
+"-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
 " neobundleが存在しない場合これ以降を読み込まない
@@ -1198,17 +1247,8 @@ nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
 
 
 "-------------------------------------------------------------------------------"
-" autocmd
+" autocmd for plugin.
 "-------------------------------------------------------------------------------"
-
-" Lisp
-function! s:config_lisp()
-    setlocal nocindent
-    setlocal nosmartindent
-    setlocal lisp
-    setlocal lispwords=define
-endfunction
-
 " for lightline
 function! s:update_syntastic()
     if &filetype == 'scala'
@@ -1222,21 +1262,9 @@ function! s:update_syntastic()
     call lightline#update()
 endfunction
 
-augroup general
+" Depend on any plugin.
+augroup plugin
     autocmd!
-
-    " .vimrc
-    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
-
-    " 挿入モード解除時に自動でpasteをoff
-    autocmd InsertLeave * setlocal nopaste
-
-    " 状態の保存と復元
-    autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
-    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
-
-    " git
-    autocmd FileType git setlocal foldlevel=99
 
     " VimFiler
     autocmd FileType vimfiler call s:config_vimfiler()
@@ -1244,38 +1272,11 @@ augroup general
     " Unite
     autocmd FileType unite call s:on_exe_unite()
 
-    " Lisp
-    autocmd FileType lisp call s:config_lisp()
-
-    " nask
-    autocmd BufWinEnter *.nas nested setlocal filetype=nasm
-
-    " json
-    autocmd BufWinEnter *.json nested setlocal filetype=json
-
-    " Arduino
-    autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
-
-    " markdown
-    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
-
-    " gnuplot
-    autocmd BufWinEnter *.plt nested setlocal filetype=gnuplot
-
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 
     " lightline
     autocmd BufWritePost * call s:update_syntastic()
-
-    " Octave
-    autocmd BufWinEnter *.m,*.oct setlocal filetype=octave
-
-    " Enable wrap in text.
-    autocmd BufWinEnter *.txt setlocal wrap
-
-    " Tex
-    autocmd BufWinEnter *.tex setlocal spell wrap
 augroup END
 
 syntax enable           " 強調表示有効
