@@ -499,7 +499,7 @@ NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] 
 NeoBundleLazy 'kana/vim-operator-replace', { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] }
 NeoBundleLazy 'kana/vim-operator-user', { 'function_prefix' : 'operator' }
 
-NeoBundleLazy '1mesuke/textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
+NeoBundleLazy 'rhysd/vim-textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-function', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'kana/vim-textobj-indent', { 'mappings' :  [ [ 'ov', 'ai' , 'ii' , 'aI',  'iI' ] ] }
 NeoBundleLazy 'kana/vim-textobj-line', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
