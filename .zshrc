@@ -46,22 +46,22 @@ case $OSTYPE in
         ;;
     linux*)
         case $HOSTNAME in
-            march_pro)
-                export GOPATH=$HOME/.mopp/go
-                export PATH=$HOME/.mopp/bin:$HOME/.gem/ruby/2.2.0/bin:$GOPATH/bin:$PATH
-                export MANPATH=$HOME/.mopp/share/man:$HOME/.mopp/cross/share/man:/usr/local/share/man/:/usr/share/man/:$MANPATH
-                export XDG_CONFIG_HOME=$HOME/.config/
-                export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
-                export LD_LIBRARY_PATH=$(llvm-config --libdir)
+            flan)
+                export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
+                export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
                 export JAVA_FONTS=/usr/share/fonts/TTF
+                export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+                # export XDG_CONFIG_HOME=$HOME/.config/
+                # export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
+                # export LD_LIBRARY_PATH=$(llvm-config --libdir)
 
-                export CC='clang'
-                export CXX='clang++'
-                alias f='eval $(thefuck $(fc -ln -1))'
+                # export CC='clang'
+                # export CXX='clang++'
+                # alias f='eval $(thefuck $(fc -ln -1))'
 
                 if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
                     export TERM=fbterm
-                    uim-fep
+                    #uim-fep
                 fi
                 ;;
         esac
@@ -232,12 +232,13 @@ bindkey -e          # emacsのキーバインド設定
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Ctrl+wで､直前の/までを削除する｡
 
 
-# http://blog.himajinworks.net/archives/713
-ZSLOT_SRC=~/Tools/zsh/zslot.zsh
+# https://github.com/kmhjs/zslot.git
+ZSLOT_SRC=~/Tools/zslot/src/
+fpath=($ZSLOT_SRC $fpath)
+autoload -Uz zslot
 if [ -e $ZSLOT_SRC ]; then
     export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
     export ZUSER_SLOT_MAX_SLOT_ID=9
-    source $ZSLOT_SRC
     alias zs=zslot
     alias zss='zslot -s'
     alias zsp='zslot -p'
