@@ -81,7 +81,7 @@ sym_link_conf(){
 command_exists "git"
 
 mkdir -p $DOTFILES_DIR
-git clone https://github.com:mopp/dotfiles.git $DOTFILES_DIR
+git clone https://github.com/mopp/dotfiles.git $DOTFILES_DIR
 
 sym_link_no_conf ".vimrc"
 mkdir -p ~/.vim/bundle
@@ -101,6 +101,7 @@ case "${os_type}" in
     Linux*)
         sym_link_conf ".xinitrc"
         sym_link_conf ".Xdefaults"
+        sym_link_conf ".Xmodmap"
 
         ask "Do you setup i3 window manager config files ?"
         if [ $? -eq 1 ]; then
