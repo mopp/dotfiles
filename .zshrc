@@ -150,6 +150,10 @@ function urand() {
     od -vAn -N4 -tu4 < /dev/urandom | tail -n 1 | tr -d ' '
 }
 
+function rank_du() {
+    du -s * | sort -nr
+}
+
 
 
 ### 補完 ###
