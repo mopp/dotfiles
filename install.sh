@@ -7,9 +7,10 @@ DOTFILES_DIR=$HOME/Workspace/repo/dotfiles
 command_exists()
 {
     if ! type "$1" &> /dev/null; then
-        echo "$1 not found"
+        echo "$1 command not found."
         return 1
     fi
+    return 0
 }
 
 
@@ -79,6 +80,9 @@ sym_link_conf(){
 
 # Check commands
 command_exists "git"
+if [ $? -eq 1 ]; then
+    exit 1
+fi
 
 mkdir -p $DOTFILES_DIR
 git clone https://github.com/mopp/dotfiles.git $DOTFILES_DIR
