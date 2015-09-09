@@ -1,5 +1,14 @@
 #!/bin/sh
 
+command_exists()
+{
+    if ! type "$1" &> /dev/null; then
+        echo "$1 command not found."
+        return 1
+    fi
+    return 0
+}
+
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -33,20 +42,13 @@ fi
 
 HOSTNAME=$(hostname)
 case $HOSTNAME in
-    rosetta)
-        urxvtd -q -f -o &
-
-        exec i3
-        ;;
-    march_pro)
+    flan)
         dropbox &
-        pulseaudio --start &
-        volumeicon &
         urxvtd -q -f -o &
 
         # for uim
-        export GTK_IM_MODULE=uim
-        export QT_IM_MODULE=uim
+        export GTK_IM_MODULE=xim
+        export QT_IM_MODULE=xim
         export XMODIFIERS=@im=uim
         export XIM_PROGRAM=uim-xim
         uim-xim --async &
@@ -63,5 +65,16 @@ case $HOSTNAME in
         fi
 
         exec i3
+        ;;
+    *)
+        command_exists "urxvtd"
+        if [ $? -eq 0 ]; then
+            urxvtd -q -f -o &
+        fi
+
+        command_exists "i3"
+        if [ $? -eq 1 ]; then
+            exec i3
+        fi
         ;;
 esac
