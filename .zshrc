@@ -51,20 +51,19 @@ case $OSTYPE in
                 export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
                 export JAVA_FONTS=/usr/share/fonts/TTF
                 export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-                # export XDG_CONFIG_HOME=$HOME/.config/
-                # export PYTHONPATH=$HOME/Tools/clang_llvm/llvm/tools/clang/bindings/python/
-                # export LD_LIBRARY_PATH=$(llvm-config --libdir)
 
-                # export CC='clang'
-                # export CXX='clang++'
-                # alias f='eval $(thefuck $(fc -ln -1))'
+                # https://wiki.archlinuxjp.org/index.php/VDPAU
+                export LIBVA_DRIVER_NAME=vdpau
 
-                if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
-                    export TERM=fbterm
-                    #uim-fep
-                fi
+                export CC='clang'
+                export CXX='clang++'
+
                 ;;
         esac
+        if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
+            export TERM=fbterm
+        fi
+        ;;
 esac
 
 
@@ -103,9 +102,9 @@ alias -g M='|more'
 alias -g H='|head'
 alias -g T='|tail'
 if ! type "colordiff" > /dev/null; then
-  alias diff='colordiff -u'
+    alias diff='colordiff -u'
 else
-  alias diff='diff -u'
+    alias diff='diff -u'
 fi
 
 
