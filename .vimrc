@@ -440,6 +440,9 @@ augroup noplugin
 
     " Tex
     autocmd BufWinEnter *.tex setlocal spell wrap
+
+    " sh
+    autocmd BufWinEnter *.sh setlocal filetype=sh
 augroup END
 
 
