@@ -106,10 +106,6 @@ let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h   = 1
 let g:tex_conceal      = ''
 
-" for neovim
-if has('nvim')
-    set wildmode=full
-endif
 
 "-------------------------------------------------------------------------------"
 " Functions
@@ -444,6 +440,78 @@ augroup noplugin
     " sh
     autocmd BufWinEnter *.sh setlocal filetype=sh
 augroup END
+
+
+"-------------------------------------------------------------------------------"
+" neovim.
+"-------------------------------------------------------------------------------"
+" Copy and modify from mapping source in unite.vim
+function! s:get_mapping_list(map_cmd) abort
+    redir => mapping_str
+    silent! execute a:map_cmd
+    redir END
+
+    let mapping_list = []
+    let mapping_lines = split(mapping_str, '\n')
+    let mapping_lines = filter(copy(mapping_lines), "v:val =~ '\\s\\+\\*\\?@'") + filter(copy(mapping_lines), "v:val !~ '\\s\\+\\*\\?@'")
+    for line in map(mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
+        " attribute
+        let attr = ''
+
+        " right
+        let map_rhs = matchstr(line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
+        if map_rhs =~ '^\*\s.*'
+            let map_rhs = map_rhs[2:]
+            let attr = '*'
+        endif
+
+        " left
+        let map_lhs = matchstr(line, '^\a*\s*\zs\S\+')
+        if map_lhs =~ '^<SNR>' || map_lhs =~ '^<Plug>'
+            continue
+        endif
+        let map_lhs = substitute(map_lhs, '<NL>', '<C-j>', 'g')
+        let map_lhs = substitute(map_lhs, '\(<.*>\)', '\1', 'g')
+
+        call add(mapping_list, [map_lhs, map_rhs, attr])
+    endfor
+
+    return mapping_list
+endfunction
+
+if has('nvim')
+    set wildmode=full
+
+    let s:is_term_map_enable = 1
+    function! s:toggle_terminal_map() abort
+        if s:is_term_map_enable == 1
+            let g:toggle_mapinfo_list = <SID>get_mapping_list('tmap')
+            " Disable
+            for mapinfo in g:toggle_mapinfo_list
+                echo mapinfo[0]
+                execute 'tunmap' mapinfo[0]
+            endfor
+            let s:is_term_map_enable = 0
+        else
+            " Enable
+            for mapinfo in g:toggle_mapinfo_list
+                let map_cmd = (mapinfo[2] == '*') ? ('tnoremap') : ('tmap')
+                execute map_cmd mapinfo[0] mapinfo[1]
+            endfor
+            let s:is_term_map_enable = 1
+        endif
+    endfunction
+
+    command! -nargs=0 ToggleTerminaMap call <SID>toggle_terminal_map()
+
+    tnoremap <ESC> <C-\><C-n>
+    tnoremap <C-w><C-h> <C-\><C-n><C-w>h
+    tnoremap <C-w><C-j> <C-\><C-n><C-w>j
+    tnoremap <C-w><C-k> <C-\><C-n><C-w>k
+    tnoremap <C-w><C-l> <C-\><C-n><C-w>l
+    nnoremap <Leader>tm :terminal
+    nnoremap <Leader>vst :vsplit term://zsh
+endif
 
 
 "-------------------------------------------------------------------------------"
@@ -842,7 +910,7 @@ let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
-nnoremap <silent> tb :<C-U>TagbarToggle<CR>
+nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
 
 " Smartinput
 let s:hooks = neobundle#get_hooks('vim-smartinput')
