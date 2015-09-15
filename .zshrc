@@ -53,11 +53,11 @@ case $OSTYPE in
                 export GEM_HOME=$(ruby -e 'print Gem.user_dir')
 
                 # https://wiki.archlinuxjp.org/index.php/VDPAU
-                export LIBVA_DRIVER_NAME=vdpau
+                # export LIBVA_DRIVER_NAME=vdpau
 
-                export CC='clang'
-                export CXX='clang++'
-
+                # export CC='clang'
+                # export CXX='clang++'
+                source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
                 ;;
         esac
         if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
@@ -101,7 +101,7 @@ alias -g L='| less'
 alias -g M='|more'
 alias -g H='|head'
 alias -g T='|tail'
-if ! type "colordiff" > /dev/null; then
+if [ -x "$(which colordiff)" ]; then
     alias diff='colordiff -u'
 else
     alias diff='diff -u'
@@ -157,8 +157,6 @@ function rank_du() {
 
 
 ### 補完 ###
-autoload -U compinit
-compinit -u
 zmodload zsh/mathfunc;
 setopt auto_list            # 補完候補を一覧表示
 setopt auto_menu            # <TAB>で補完候補切り替え
@@ -174,6 +172,7 @@ zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _
 zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
 zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
+autoload -U compinit;compinit
 
 ### Move ###
 setopt auto_cd      # ディレクトリ名のみで移動
