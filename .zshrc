@@ -107,6 +107,10 @@ else
     alias diff='diff -u'
 fi
 
+if [ -x "$(which colormake)" ]; then
+    alias make='colormake'
+fi
+
 
 # functions
 function clean_vim() {
