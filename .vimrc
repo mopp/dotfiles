@@ -505,12 +505,12 @@ if has('nvim')
     command! -nargs=0 ToggleTerminaMap call <SID>toggle_terminal_map()
 
     tnoremap <ESC> <C-\><C-n>
-    tnoremap <C-w><C-h> <C-\><C-n><C-w>h
-    tnoremap <C-w><C-j> <C-\><C-n><C-w>j
-    tnoremap <C-w><C-k> <C-\><C-n><C-w>k
-    tnoremap <C-w><C-l> <C-\><C-n><C-w>l
+    tnoremap <C-w>h <C-\><C-n><C-w>h
+    tnoremap <C-w>j <C-\><C-n><C-w>j
+    tnoremap <C-w>k <C-\><C-n><C-w>k
+    tnoremap <C-w>l <C-\><C-n><C-w>l
     nnoremap <Leader>tm :terminal
-    nnoremap <Leader>vst :vsplit term://zsh
+    nnoremap <Leader>vst :vsplit term://zsh<CR>
 endif
 
 
