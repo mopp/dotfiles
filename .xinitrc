@@ -47,11 +47,11 @@ case $HOSTNAME in
         urxvtd -q -f -o &
 
         # for uim
-        export GTK_IM_MODULE=xim
-        export QT_IM_MODULE=xim
-        export XMODIFIERS=@im=uim
-        export XIM_PROGRAM=uim-xim
+        export GTK_IM_MODULE="uim"
+        export QT_IM_MODULE="uim"
         uim-xim --async &
+        export XMODIFIERS="@im=uim"
+        export XIM_PROGRAM="uim-xim"
         uim-toolbar-gtk3-systray &
 
         xinput --set-prop     'Logitech M315/M235' 'Device Accel Constant Deceleration' 1.0
