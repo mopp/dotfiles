@@ -33,7 +33,7 @@ ask()
 
 is_create_sym_link()
 {
-    ask "Do you want to create symbolic link $1 ?"
+    ask "Do you want to link $1 ?"
 }
 
 
@@ -59,7 +59,8 @@ sym_link()
     src=$(readlink -f $2)
     [ $# -eq 3 ] && dst=$3 || dst=$HOME/$2
 
-    ln -s $src $dst
+    echo $src $dst
+    # ln -s $src $dst
 
     return 0
 }
@@ -84,15 +85,19 @@ if [ $? -eq 1 ]; then
     exit 1
 fi
 
-mkdir -p $DOTFILES_DIR
-git clone https://github.com/mopp/dotfiles.git $DOTFILES_DIR
+if [ ! -e $DOTFILES_DIR ]; then
+    git clone https://github.com/mopp/dotfiles.git $DOTFILES_DIR
+fi
 
 sym_link_no_conf ".vimrc"
 mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/backup
 mkdir -p ~/.vim/undo
 mkdir -p ~/.vim/view
-git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+NEOBUNDLE_DIR=~/.vim/bundle/neobundle.vim
+if [ ! -e $NEOBUNDLE_DIR ]; then
+    git clone https://github.com/Shougo/neobundle.vim $NEOBUNDLE_DIR
+fi
 
 sym_link_no_conf ".zshrc"
 sym_link_no_conf ".gitconfig"
@@ -116,7 +121,7 @@ case "${os_type}" in
         sym_link_conf ".Xdefaults"
         sym_link_conf ".Xmodmap"
 
-        ask "Do you setup i3 window manager config files ?"
+        ask "Do you want to link i3 window manager config files ?"
         if [ $? -eq 1 ]; then
             mkdir -p ~/.i3
             sym_link_no_conf "i3_config" "$HOME/.i3/config"
