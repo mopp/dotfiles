@@ -1290,8 +1290,13 @@ let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
 " Clighter
-let g:clighter_libclang_file='/usr/lib/libclang.so'
 let s:hooks = neobundle#get_hooks('clighter')
+function! s:hooks.on_source(bundle)
+    let g:clighter_libclang_file = '/usr/local/lib/libclang.so'
+    if filereadable(g:clighter_libclang_file) == 0
+        let g:clighter_libclang_file = '/usr/lib/libclang.so'
+    endif
+endfunction
 function! s:hooks.on_post_source(bundle)
     let g:clighter_occurrences_mode = 1
     hi m_decl cterm=bold
