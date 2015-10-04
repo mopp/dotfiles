@@ -439,6 +439,9 @@ augroup noplugin
 
     " sh
     autocmd BufWinEnter *.sh setlocal filetype=sh
+
+    " toml
+    autocmd BufWinEnter *.toml setlocal filetype=toml
 augroup END
 
 
@@ -553,11 +556,12 @@ NeoBundle 'tpope/vim-repeat'
 
 NeoBundleLazy 'FooSoft/vim-argwrap', { 'function_prefix' : 'argwrap' }
 NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('nvim')) }
-NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua')) }
+NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua') || has('nvim')) }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
 NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'function_prefix' : 'vimfiler', 'commands' : { 'name' : ['VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'complete' : 'customlist,vimfiler#complete' }, 'explorer' : 1 }
 NeoBundleLazy 'Shougo/vinarise', { 'commands' : 'Vinarise' }
+
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'idanarye/vim-casetrate', { 'commands' : [ { 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] }
 NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : [ ['v', 'I', 'A'] ] }
@@ -574,6 +578,7 @@ NeoBundleLazy 'mopp/DoxyDoc.vim', { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] 
 NeoBundleLazy 'mopp/autodirmake.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/battery.vim', { 'insert': 1 }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'commands' : 'LayoutPlugin' }
+NeoBundleLazy 'mopp/learn-markdown.vim'
 NeoBundleLazy 'mopp/makecomp.vim', { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] }
 NeoBundleLazy 'mopp/marker.vim', { 'mappings' : [ [ 'n', '<Plug>(Marker-auto_mark)' ] ] }
 NeoBundleLazy 'mopp/next-alter.vim', { 'commands' : 'OpenNAlter', 'mappings'  : [ ['n', '<Plug>(next-alter-open)'] ] }
@@ -603,6 +608,7 @@ NeoBundleLazy 'ujihisa/neco-look'
 " NeoBundleLazy 'othree/html5.vim', { 'filetypes' : [ 'eruby', 'html' ] }
 " NeoBundleLazy 'verilog.vim', { 'filetypes' : 'verilog' }
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'filetypes' : 'arduino' }
+NeoBundleLazy 'cespare/vim-toml', { 'filetypes' : 'toml' }
 NeoBundleLazy 'mopp/rik_octave.vim', { 'filetypes' : 'octave' }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'filetypes' : 'ruby' }
