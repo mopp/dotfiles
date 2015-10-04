@@ -618,7 +618,7 @@ NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
 NeoBundleLazy 'rust-lang/rust.vim', { 'filetypes' : 'rust' }
 
-NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
+" NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] ] }
@@ -849,24 +849,39 @@ let s:hooks = neobundle#get_hooks('vim-clang-format')
 function! s:hooks.on_source(bundle)
     let g:clang_format#auto_format_on_insert_leave = 0
     let g:clang_format#auto_formatexpr = 1
+    let flags = [
+                \ 'AfterClass: false',
+                \ 'AfterControlStatement: false',
+                \ 'AfterEnum: false',
+                \ 'AfterFunction: false',
+                \ 'AfterNamespace: true',
+                \ 'AfterObjCDeclaration: true',
+                \ 'AfterStruct: false',
+                \ 'AfterUnion: false',
+                \ 'BeforeCatch: false',
+                \ 'BeforeElse: false',
+                \ 'IndentBraces: true',
+                \ ]
     let g:clang_format#style_options = {
-                \ 'AccessModifierOffset'                : -4,
-                \ 'AlignTrailingComments'               : 'true',
-                \ 'AllowShortFunctionsOnASingleLine'    : 'false',
-                \ 'AllowShortIfStatementsOnASingleLine' : 'false',
-                \ 'AllowShortLoopsOnASingleLine'        : 'false',
-                \ 'AlwaysBreakTemplateDeclarations'     : 'true',
-                \ 'BinPackParameters'                   : 'false',
-                \ 'BreakBeforeBraces'                   : 'Linux',
-                \ 'ColumnLimit'                         : '0',
-                \ 'IndentCaseLabels'                    : 'true',
-                \ 'MaxEmptyLinesToKeep'                 : '3',
-                \ 'PointerBindsToType'                  : 'true',
-                \ 'Standard'                            : 'Auto',
-                \ 'TabWidth'                            : '4',
-                \ 'UseTab'                              : 'Never',
-                \ 'IndentWidth'                         : '4',
+                \ 'AccessModifierOffset':                -4,
+                \ 'AlignTrailingComments':               'true',
+                \ 'AllowShortFunctionsOnASingleLine':    'false',
+                \ 'AllowShortIfStatementsOnASingleLine': 'false',
+                \ 'AllowShortLoopsOnASingleLine':        'false',
+                \ 'AlwaysBreakTemplateDeclarations':     'true',
+                \ 'BinPackParameters':                   'false',
+                \ 'BreakBeforeBraces':                   'Linux',
+                \ 'BraceWrapping':                       '{' . join(flags, ',') . '}',
+                \ 'ColumnLimit':                         '0',
+                \ 'IndentCaseLabels':                    'true',
+                \ 'MaxEmptyLinesToKeep':                 '3',
+                \ 'PointerBindsToType':                  'true',
+                \ 'Standard':                            'Auto',
+                \ 'TabWidth':                            '4',
+                \ 'UseTab':                              'Never',
+                \ 'IndentWidth':                         '4',
                 \ }
+
 
     for t in [ 'clang-format-3.5', 'clang-format-3.4', 'clang-format' ]
         if executable(t)
