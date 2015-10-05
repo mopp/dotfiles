@@ -1216,8 +1216,10 @@ function! Mline_filename()
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
+let g:mline_git_cache = ''
+let g:mline_git_counter = 32
 function! Mline_git()
-    if (&modifiable) && (&filetype !~? 'unite\|vimfiler') && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
+    if (g:mline_git_counter == 32) && (&modifiable) && (&filetype !~? 'unite\|vimfiler') && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
         let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
 
         " Not added changes
@@ -1237,12 +1239,21 @@ function! Mline_git()
             let str = str . '%'
         endif
 
-        return str
+        let g:mline_git_counter = 0
+        let g:mline_git_cache = str
     endif
-    return ''
+    let g:mline_git_counter += 1
+    return g:mline_git_cache
 endfunction
 
+let g:mline_battery_cache = ''
+let g:mline_battery_counter = 128
 function! Mline_battery()
+    if (g:mline_battery_counter != 128)
+        let g:mline_battery_counter += 1
+        return g:mline_battery_cache
+    endif
+
     if !exists(':Battery')
         return ''
     endif
@@ -1252,7 +1263,8 @@ function! Mline_battery()
         return ''
     endif
 
-    return 'Battery: ' . per . '%'
+    let g:Mline_battery = 'Battery: ' . per . '%'
+    return g:Mline_battery
 endfunction
 
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
