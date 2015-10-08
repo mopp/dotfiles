@@ -54,9 +54,9 @@ case $OSTYPE in
 
                 # https://wiki.archlinuxjp.org/index.php/VDPAU
                 # export LIBVA_DRIVER_NAME=vdpau
+                export CC='clang'
+                export CXX='clang++'
 
-                # export CC='clang'
-                # export CXX='clang++'
                 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
                 ;;
             rosetta)
@@ -116,11 +116,6 @@ else
     alias diff='diff -u'
 fi
 
-if [ -x "$(which colormake)" ]; then
-    alias make='colormake'
-fi
-
-
 # functions
 function clean_vim() {
     rm -rf ~/.vim/view/*
@@ -165,6 +160,17 @@ function urand() {
 
 function rank_du() {
     du -s * | sort -nr
+}
+
+
+function switch_cc_cxx() {
+    if [[ $CC == "gcc" ]]; then
+        export CC='clang'
+        export CXX='clang++'
+    else
+        export CC='gcc'
+        export CXX='g++'
+    fi
 }
 
 
