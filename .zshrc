@@ -59,6 +59,15 @@ case $OSTYPE in
                 # export CXX='clang++'
                 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
                 ;;
+            rosetta)
+                export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
+                export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
+                export JAVA_FONTS=/usr/share/fonts/TTF
+                export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+
+                export CC='clang++'
+                export CXX='clang++'
+                ;;
         esac
         if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
             export TERM=fbterm
