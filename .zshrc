@@ -45,30 +45,24 @@ case $OSTYPE in
         alias eclipse='/Applications/eclipse/eclipse'
         ;;
     linux*)
+        export CC='clang'
+        export CXX='clang++'
+        export JAVA_FONTS=/usr/share/fonts/TTF
+        export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
+        if [[ -x $(which ruby) ]]; then
+            export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+            export PATH=$GEM_HOME/bin/:$PATH
+        fi
+
         case $HOSTNAME in
             flan)
-                export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
-                export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
-                export JAVA_FONTS=/usr/share/fonts/TTF
-                export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-
                 # https://wiki.archlinuxjp.org/index.php/VDPAU
                 # export LIBVA_DRIVER_NAME=vdpau
-                export CC='clang'
-                export CXX='clang++'
 
                 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
                 ;;
-            rosetta)
-                export PATH=$HOME/.gem/ruby/2.2.0/bin:$PATH
-                export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
-                export JAVA_FONTS=/usr/share/fonts/TTF
-                export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-
-                export CC='clang++'
-                export CXX='clang++'
-                ;;
         esac
+
         if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
             export TERM=fbterm
         fi
