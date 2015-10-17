@@ -6,7 +6,7 @@ DOTFILES_DIR=$HOME/Workspace/repo/dotfiles
 
 command_exists()
 {
-    if ! type "$1" > /dev/null; then
+    if [[ -x $(which "${1}") ]]; then
         return 0
     fi
 
@@ -17,7 +17,7 @@ command_exists()
 
 ask()
 {
-    while read -p "$1 [y/n] " ans ; do
+    while read -p "${1} [y/n] " ans ; do
         case $ans in
             [Yy]*)
                 return 1
@@ -34,7 +34,7 @@ ask()
 
 is_create_sym_link()
 {
-    ask "Do you want to link $1 ?"
+    ask "Do you want to link ${1} ?"
 }
 
 
@@ -46,7 +46,7 @@ sym_link()
     fi
 
     if [ ! -e $DOTFILES_DIR/$2 ]; then
-        echo "$2 is NOT exist."
+        echo "${2} is NOT exist."
         return 1
     fi
 
