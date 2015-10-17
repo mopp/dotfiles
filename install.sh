@@ -6,11 +6,12 @@ DOTFILES_DIR=$HOME/Workspace/repo/dotfiles
 
 command_exists()
 {
-    if ! type "$1" &> /dev/null; then
-        echo "$1 command not found."
-        return 1
+    if ! type "$1" > /dev/null; then
+        return 0
     fi
-    return 0
+
+    echo "$1 command not found."
+    return 1
 }
 
 
@@ -60,7 +61,7 @@ sym_link()
     [ $# -eq 3 ] && dst=$3 || dst=$HOME/$2
 
     echo $src $dst
-    # ln -s $src $dst
+    ln -s $src $dst
 
     return 0
 }
