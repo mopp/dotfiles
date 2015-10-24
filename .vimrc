@@ -77,7 +77,7 @@ if !has('gui_running')
 endif
 let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
 let g:loaded_gzip          = 1
-let g:loaded_netrwPlugin   = 1
+"let g:loaded_netrwPlugin   = 1 " Spellfileのダウンロードにnetrwが必要になるので無効化しない
 let g:loaded_rrhelper      = 1
 let g:loaded_tar           = 1
 let g:loaded_tarPlugin     = 1
@@ -1084,7 +1084,8 @@ let g:gist_open_browser_after_post = 1
 let s:hooks = neobundle#get_hooks('syntastic')
 function! s:hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
-    let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+    " let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+    let op = '-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
     let t = s:check_clang()
     let g:syntastic_c_compiler           = ((t == '') ? 'gcc' : t)
     let g:syntastic_cpp_compiler         = ((t == '') ? 'g++' : t . '++')
