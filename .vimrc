@@ -546,7 +546,7 @@ NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'l
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'luochen1990/rainbow'
+NeoBundle 'luochen1990/rainbow', { 'disabled' : (has('nvim')) }
 NeoBundle 'mopp/mopbuf.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/smartnumber.vim'
