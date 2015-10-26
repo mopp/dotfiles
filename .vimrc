@@ -654,15 +654,6 @@ if !has('vim_starting')
 endif
 
 " Unite
-function! s:unite_smart_grep()
-    if unite#sources#grep_git#is_available()
-        Unite grep/git:. -buffer-name=search-buffer
-    elseif unite#sources#grep_hg#is_available()
-        Unite grep/hg:. -buffer-name=search-buffer
-    else
-        Unite grep:. -buffer-name=search-buffer
-    endif
-endfunction
 nnoremap [Unite] <Nop>
 nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
@@ -675,27 +666,37 @@ nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Lines line<CR>
 nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 let g:unite_quickfix_is_multiline = 0
+function! s:unite_smart_grep()
+    if unite#sources#grep_git#is_available()
+        Unite grep/git -buffer-name=Search
+    elseif unite#sources#grep_hg#is_available()
+        Unite grep/hg -buffer-name=Search
+    else
+        Unite grep -buffer-name=Search
+    endif
+endfunction
 let s:hooks = neobundle#get_hooks('unite.vim')
 function! s:hooks.on_source(bundle)
-    let g:unite_data_directory = expand('~/.vim/unite')
-    let g:unite_source_file_mru_limit = 50
-    let g:unite_cursor_line_highlight = 'TabLineSel'
-    let g:unite_enable_short_source_names = 1
+    let g:unite_data_directory             = expand('~/.vim/unite')
+    let g:unite_source_file_mru_limit      = 50
+    let g:unite_cursor_line_highlight      = 'TabLineSel'
+    let g:unite_enable_short_source_names  = 1
     let g:unite_source_history_yank_enable = 1
     let g:unite_force_overwrite_statusline = 0
     let g:unite_source_grep_max_candidates = 200
-    let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
-    if executable('pt')
-        " for the platinum searcher
-        let g:unite_source_grep_command = 'pt'
-        let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+    let g:unite_source_bookmark_directory  = expand('~/.vim/bookmark')
+    if executable('hw')
+        " for highway
+        let g:unite_source_grep_command       = 'hw'
+        let g:unite_source_grep_default_opts  = '--no-group --no-color'
         let g:unite_source_grep_recursive_opt = ''
-        let g:unite_source_grep_encoding = 'utf-8'
-    elseif executable('ag')
-        " for the silver searcher
-        let g:unite_source_grep_command = 'ag'
-        let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-        let g:unite_source_grep_max_candidates = 200
+        let g:unite_source_grep_encoding      = 'utf-8'
+    elseif executable('pt')
+        " for the platinum searcher
+        let g:unite_source_grep_command       = 'pt'
+        let g:unite_source_grep_default_opts  = '--nogroup --nocolor'
+        let g:unite_source_grep_recursive_opt = ''
+        let g:unite_source_grep_encoding      = 'utf-8'
     endif
 endfunction
 function! s:on_exe_unite()
@@ -1084,8 +1085,7 @@ let g:gist_open_browser_after_post = 1
 let s:hooks = neobundle#get_hooks('syntastic')
 function! s:hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
-    " let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-    let op = '-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+    let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
     let t = s:check_clang()
     let g:syntastic_c_compiler           = ((t == '') ? 'gcc' : t)
     let g:syntastic_cpp_compiler         = ((t == '') ? 'g++' : t . '++')
