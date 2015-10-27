@@ -29,10 +29,13 @@ set softtabstop=4    " <Tab>, <BS>が対応する空白の数
 set tabstop=4        " 画面上で<Tab>文字が占める幅
 set formatoptions+=j " 行連結の時自動でコメント解除して連結
 
-" エンコーディング関連
-set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
-set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
-set fileformats=unix,mac,dos                " 改行文字設定
+" Encoding
+" Changing encoding in Vim at runtime is undefined behavior.
+if has('vim_starting')
+    set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
+    set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
+    set fileformats=unix,mac,dos                " 改行文字設定
+endif
 
 " 検索と補完
 set hlsearch            " 検索結果強調-:nohで解除
@@ -54,7 +57,7 @@ set foldtext=Mopp_fold()    " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
-set history=500                 " コマンドの保存履歴数
+set history=1000                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
@@ -484,6 +487,7 @@ endfunction
 
 if has('nvim')
     set wildmode=full
+    set mouse=
 
     let s:is_term_map_enable = 1
     function! s:toggle_terminal_map() abort
