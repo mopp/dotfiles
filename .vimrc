@@ -67,7 +67,7 @@ endif
 
 " その他
 if !has('nvim')
-    set clipboard=unnamed,autoselect
+    set clipboard=
 endif
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
@@ -138,9 +138,13 @@ endfunction
 
 
 function! Mopp_copy_to_clipboard()
-    silent execute "normal! '<,'>" '"*yy'
-    let tmp = @*
-    let @+ = tmp
+    let store = @@
+    silent normal gvy
+    let selected = @@
+    let @@ = store
+
+    let @+ = selected
+    let @* = selected
 endfunction
 
 
@@ -158,13 +162,6 @@ endfunction
 " imap / inoremap |    -     |  @   |       -        |     -      |  -   |    -     |
 " cmap / cnoremap |    -     |  -   |       @        |     -      |  -   |    -     |
 "-----------------------------------------------------------------------------------"
-
-" Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
-" if has('mac') && !has('gui_running')
-"     for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
-"         execute 'set <M-'.i.'>='.i
-"     endfor
-" endif
 
 let g:mapleader = ' '
 
