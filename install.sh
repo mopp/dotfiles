@@ -96,8 +96,8 @@ mkdir -p ~/.vim/backup
 mkdir -p ~/.vim/undo
 mkdir -p ~/.vim/view
 mkdir -p ~/.config/nvim
+ln -s ~/.vim ~/.config/nvim
 sym_link_no_conf ".vimrc" "~/.config/nvim/init.vim"
-ln -s ~/.vim ~/.nvim
 NEOBUNDLE_DIR=~/.vim/bundle/neobundle.vim
 if [ ! -e $NEOBUNDLE_DIR ]; then
     git clone https://github.com/Shougo/neobundle.vim $NEOBUNDLE_DIR
