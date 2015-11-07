@@ -731,7 +731,10 @@ function! s:hooks.on_source(bundle)
     let g:deoplete#enable_at_startup            = 1
     let g:deoplete#enable_ignore_case           = 0
     let g:deoplete#enable_smart_case            = 1
-    let g:deoplete#auto_completion_start_length = 3
+    let g:deoplete#auto_completion_start_length = 2
+    let g:deoplete#omni_patterns                = {}
+    let g:deoplete#omni_patterns.c              = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:deoplete#omni_patterns.cpp            = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 endfunction
 function! s:hooks.on_post_source(bundle)
     call s:load_complement_sources()
@@ -741,8 +744,8 @@ endfunction
 let s:hooks = neobundle#get_hooks('neocomplete.vim')
 function! s:hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
-    let g:neocomplete#auto_completion_start_length = 3
-    let g:neocomplete#min_keyword_length           = 3
+    let g:neocomplete#auto_completion_start_length = 2
+    let g:neocomplete#min_keyword_length           = 2
     let g:neocomplete#enable_ignore_case           = 0
     let g:neocomplete#enable_smart_case            = 1
     let g:neocomplete#enable_cursor_hold_i         = 1
@@ -950,15 +953,15 @@ function! s:hooks.on_source(bundle)
                 \ ['%',     "smartchr#loop(' % ', '%')"],
                 \ ['*',     "smartchr#loop(' * ', '*')"],
                 \ ['<Bar>', "smartchr#loop(' | ', ' || ', '|')"],
-                \ [',',     "smartchr#loop(', ', ',')"]]
+                \ [',',     "smartchr#loop(', ', '->', ' => ')"]]
 
     for i in lst
         call smartinput#map_to_trigger('i', i[0], i[0], i[0])
-        call smartinput#define_rule({ 'char' : i[0], 'at' : '\%#',                                      'input' : '<C-R>=' . i[1] . '<CR>'})
+        call smartinput#define_rule({ 'char' : i[0], 'at' : '\%#', 'input' : '<C-R>=' . i[1] . '<CR>'})
         if i[0] == '%'
-            call smartinput#define_rule({'char' : i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',          'input' : i[0]})
+            call smartinput#define_rule({'char' : i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : i[0]})
         endif
-        call smartinput#define_rule({ 'char' : i[0], 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',  'input' : i[0] })
+        call smartinput#define_rule({ 'char' : i[0], 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#', 'input' : i[0] })
     endfor
 
     call smartinput#define_rule({'char' : '>', 'at' : ' < \%#', 'input' : '<BS><BS><BS><><Left>'})
@@ -987,18 +990,10 @@ endfunction
 " Smartchr
 let s:hooks = neobundle#get_hooks('vim-smartchr')
 function! s:hooks.on_source(bundle)
-    inoremap <expr> , smartchr#one_of(', ', '->', ' => ')
-
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
     endif
 endfunction
-
-" FIXME: QuickRun
-let g:quickrun_config = {}
-let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ' :vertical rightbelow', 'runner' : 'vimproc' }
-let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
-let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc', "outputter/quickfix/open_cmd" : "", "hook/unite_quickfix/enable_exit" : 1, "hook/unite_quickfix/enable_failure" : 1}
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
