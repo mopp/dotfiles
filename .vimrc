@@ -428,9 +428,6 @@ augroup noplugin
     " Lisp
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
 
-    " Octave
-    autocmd BufWinEnter *.m,*.oct setlocal filetype=octave
-
     " Enable wrap in text.
     autocmd BufWinEnter *.txt setlocal wrap
 
@@ -558,12 +555,14 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundleLazy 'FooSoft/vim-argwrap', { 'function_prefix' : 'argwrap' }
 NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('nvim')) }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/neosnippet', 'insert' : 1, 'disabled' : (!has('lua') || has('nvim')) }
-NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
-NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'function_prefix' : 'vimfiler', 'commands' : { 'name' : ['VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'complete' : 'customlist,vimfiler#complete' }, 'explorer' : 1 }
 NeoBundleLazy 'Shougo/vinarise', { 'commands' : 'Vinarise' }
 
+NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets', 'fo60213/matlab-snippets' ], 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] }
+NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'honza/vim-snippets'
+NeoBundleLazy 'fo60213/matlab-snippets'
+
 NeoBundleLazy 'idanarye/vim-casetrate', { 'commands' : [ { 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] }
 NeoBundleLazy 'kana/vim-niceblock', { 'mappings' : [ ['v', 'I', 'A'] ] }
 NeoBundleLazy 'kana/vim-smartchr', { 'insert': 1 }
@@ -610,7 +609,7 @@ NeoBundleLazy 'ujihisa/neco-look'
 " NeoBundleLazy 'verilog.vim', { 'filetypes' : 'verilog' }
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'filetypes' : 'arduino' }
 NeoBundleLazy 'cespare/vim-toml', { 'filetypes' : 'toml' }
-NeoBundleLazy 'mopp/rik_octave.vim', { 'filetypes' : 'octave' }
+NeoBundleLazy 'pycckuu/MatlabFilesEdition', { 'filetypes' : 'matlab' }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
@@ -735,6 +734,9 @@ function! s:hooks.on_source(bundle)
     let g:deoplete#omni_patterns                = {}
     let g:deoplete#omni_patterns.c              = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:deoplete#omni_patterns.cpp            = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:deoplete#omni#input_patterns          = {}
+    let g:deoplete#omni#input_patterns.c        = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:deoplete#omni#input_patterns.cpp      = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 endfunction
 function! s:hooks.on_post_source(bundle)
     call s:load_complement_sources()
@@ -818,6 +820,7 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 set conceallevel=2 concealcursor=i
 let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
+let g:neosnippet#enable_snipmate_compatibility = 1
 
 function! s:check_clang()
     for t in ['clang-3.5', 'clang-3.4', 'clang']
