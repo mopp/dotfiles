@@ -1,2 +1,1 @@
 pkg prefix ~/.octave ~/.octave;
-graphics_toolkit("gnuplot");
