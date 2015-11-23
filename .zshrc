@@ -51,7 +51,7 @@ case $OSTYPE in
         export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
         if [[ -x $(which ruby) ]]; then
             export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-            export PATH=$GEM_HOME/bin/:$PATH
+            # export PATH=$GEM_HOME/bin/:$PATH
         fi
 
         case $HOSTNAME in

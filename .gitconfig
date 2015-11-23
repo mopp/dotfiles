@@ -8,6 +8,7 @@
 [core]
     editor = vim
     pager = less
+	quotepath = false
 [github]
     user = mopp
 [alias]
