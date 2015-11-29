@@ -611,14 +611,13 @@ NeoBundleLazy 'ujihisa/neco-look'
 NeoBundleLazy 'cespare/vim-toml', { 'filetypes' : 'toml' }
 NeoBundleLazy 'pycckuu/MatlabFilesEdition', { 'filetypes' : 'matlab' }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
-NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
 NeoBundleLazy 'rust-lang/rust.vim', { 'filetypes' : 'rust' }
 
-" NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
+NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'mappings' : [ [ 'n', '<Plug>' ] ] }
@@ -727,16 +726,12 @@ endfunction
 " Deoplete
 let s:hooks = neobundle#get_hooks('deoplete.nvim')
 function! s:hooks.on_source(bundle)
-    let g:deoplete#enable_at_startup            = 1
-    let g:deoplete#enable_ignore_case           = 0
-    let g:deoplete#enable_smart_case            = 1
-    let g:deoplete#auto_completion_start_length = 2
-    let g:deoplete#omni_patterns                = {}
-    let g:deoplete#omni_patterns.c              = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:deoplete#omni_patterns.cpp            = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-    let g:deoplete#omni#input_patterns          = {}
-    let g:deoplete#omni#input_patterns.c        = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:deoplete#omni#input_patterns.cpp      = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:deoplete#enable_at_startup  = 1
+    let g:deoplete#enable_ignore_case = 0
+    let g:deoplete#enable_smart_case  = 1
+    let g:deoplete#omni_patterns      = {}
+    let g:deoplete#omni_patterns.c    = '[^. *\t](\.|->)\w*'
+    let g:deoplete#omni_patterns.cpp  = '[^. *\t](\.|->|::)\w*'
 endfunction
 function! s:hooks.on_post_source(bundle)
     call s:load_complement_sources()
@@ -1313,9 +1308,6 @@ nmap [Mark]m <Plug>(Marker-auto_mark)
 nnoremap [Mark]n ]`
 nnoremap [Mark]p [`
 nnoremap [Mark]l :<C-u>marks<CR>
-
-" neocomplete-rsense
-let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
 
 " vim-ruby
 let g:ruby_indent_access_modifier_style = 'indent'
