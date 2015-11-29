@@ -61,6 +61,9 @@ case $OSTYPE in
 
                 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
                 ;;
+            rosetta)
+                export TERM=xterm-256color
+                ;;
         esac
 
         if grep '^fbterm' /proc/$PPID/cmdline > /dev/null; then
