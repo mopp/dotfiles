@@ -1,5 +1,5 @@
 #---------------------------------------------------------------------------------------"
-# 環境変数設定
+# Environment variables.
 #   CC              C compiler command
 #   CFLAGS          C compiler flags
 #   LDFLAGS         linker flags, e.g. -L<lib dir> if you have libraries in a nonstandard directory <lib dir>
@@ -26,7 +26,7 @@ case $OSTYPE in
         export PATH=/home/grd/m5191121/local.solaris/bin/:$PATH
         ;;
     darwin*)
-        export PATH=/usr/texbin:$HOME/.mopp/bin:/usr/local/opt/ruby/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
+        export PATH=/usr/texbin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:$PATH
         export MANPATH=$HOME/.mopp/share/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/share/man:$MANPATH
         export HOMEBREW_VERBOSE
 
@@ -36,24 +36,11 @@ case $OSTYPE in
         [[ -e $(alias run-help) ]] && unalias run-help
         autoload run-help
         export HELPDIR=/usr/local/share/zsh/helpfiles
-
-        # export CC='clang-3.5'
-        # export CXX='clang++-3.5 -stdlib=libc++'
-        # export CXXFLAGS="${CXXFLAGS} -nostdinc++ -I/usr/local/lib/llvm-3.5/lib/c++/v1"
-        # export LDFLAGS="${LDFLAGS} -L/usr/local/lib/llvm-3.5/usr/lib"
-
         alias eclipse='/Applications/eclipse/eclipse'
         ;;
     linux*)
-        export CC='clang'
-        export CXX='clang++'
         export JAVA_FONTS=/usr/share/fonts/TTF
         export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
-        if [[ -x $(which ruby) ]]; then
-            export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-            export PATH=$GEM_HOME/bin/:$PATH
-        fi
-
         case $HOSTNAME in
             flan)
                 # https://wiki.archlinuxjp.org/index.php/VDPAU
@@ -72,6 +59,16 @@ case $OSTYPE in
         ;;
 esac
 
+# Ruby setting.
+if [[ -x $(which ruby) ]]; then
+    export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+    export PATH=$GEM_HOME/bin/:$PATH
+fi
+
+if [[ -d $HOME/.rbenv ]]; then
+    export PATH=$HOME/.rbenv/bin/:$PATH
+    eval "$(rbenv init -)"
+fi
 
 case $TERM in
     *rxvt*)
@@ -161,12 +158,12 @@ function rank_du() {
 
 
 function switch_cc_cxx() {
-    if [[ $CC == "gcc" ]]; then
-        export CC='clang'
-        export CXX='clang++'
-    else
+    if [ $CC = "" -o $CC = "clang" ]; then
         export CC='gcc'
         export CXX='g++'
+    else
+        export CC='clang'
+        export CXX='clang++'
     fi
 }
 
