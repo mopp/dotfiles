@@ -119,6 +119,10 @@ fi
 os_type=$(uname)
 case "${os_type}" in
     Darwin*)
+        ask "Do you want to install homebrew ?"
+        if [ $? -eq 1 ]; then
+            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        fi
         ;;
     Linux*)
         sym_link_conf ".xinitrc"
