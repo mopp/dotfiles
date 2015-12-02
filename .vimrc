@@ -533,10 +533,6 @@ endif
 
 call neobundle#begin()
 
-" NeoBundle 'ap/vim-css-color'
-" NeoBundle 'kyuhi/vim-emoji-complete'
-" NeoBundleLazy 'taku-o/vim-copypath', {  'commands'  : ['CopyFileName', 'CopyPath'] }
-
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'LeafCage/yankround.vim'
@@ -598,25 +594,21 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'mappings' : [ [ 'n', '<Plug>(openbrows
 NeoBundleLazy 'ujihisa/neco-look'
 
 " NeoBundleLazy 'Nemo157/scala.vim', { 'filetypes' : 'scala' }
-" NeoBundleLazy 'adimit/prolog.vim', { 'filetypes' : 'prolog' }
 " NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'insert' : 1, 'filetypes' : ['javascript'] }
 " NeoBundleLazy 'awk.vim', { 'filetypes' : 'awk' }
-" NeoBundleLazy 'elzr/vim-json', { 'filetypes' : 'json' }
-" NeoBundleLazy 'gnuplot.vim', { 'filetypes' : 'gnuplot' }
-" NeoBundleLazy 'jelera/vim-javascript-syntax', { 'filetypes' : ['javascript'] }
-" NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'filetypes' : 'javascript' }
-" NeoBundleLazy 'mips.vim', { 'filetypes' : 'mips' }
-" NeoBundleLazy 'othree/html5.vim', { 'filetypes' : [ 'eruby', 'html' ] }
-" NeoBundleLazy 'verilog.vim', { 'filetypes' : 'verilog' }
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'filetypes' : 'arduino' }
 NeoBundleLazy 'cespare/vim-toml', { 'filetypes' : 'toml' }
-NeoBundleLazy 'pycckuu/MatlabFilesEdition', { 'filetypes' : 'matlab' }
+NeoBundleLazy 'gnuplot.vim', { 'filetypes' : 'gnuplot' }
+NeoBundleLazy 'jelera/vim-javascript-syntax', { 'filetypes' : ['javascript'] }
+NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'filetypes' : 'javascript' }
+NeoBundleLazy 'othree/html5.vim', { 'filetypes' : [ 'eruby', 'html' ] }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'filetypes' : 'markdown' }
+NeoBundleLazy 'pycckuu/MatlabFilesEdition', { 'filetypes' : 'matlab' }
+NeoBundleLazy 'rust-lang/rust.vim', { 'filetypes' : 'rust' }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
-NeoBundleLazy 'rust-lang/rust.vim', { 'filetypes' : 'rust' }
 
 NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
@@ -997,9 +989,6 @@ endfunction
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
-" SuddenDeath
-map <Leader>x <Plug>(operator-suddendeath)
-
 " Open-Browser
 map <Leader>op <Plug>(openbrowser-open)
 
@@ -1115,9 +1104,6 @@ nmap <C-n> <Plug>(yankround-next)
 
 " LayoutPlugin
 let g:layoutplugin#is_append_vimrc = 1
-
-" small
-map <Leader>sm <Plug>(smalls)
 
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
@@ -1296,7 +1282,6 @@ command! -nargs=0 Swq :wq sudo:%
 
 " easy-align
 vmap <Enter>    <Plug>(LiveEasyAlign)
-nmap <Leader>aa <Plug>(LiveEasyAlign)
 
 " smartnumber
 let g:snumber_enable_startup = 1
@@ -1365,7 +1350,7 @@ function! s:update_syntastic()
     call lightline#update()
 endfunction
 
-" Depend on any plugin.
+" Depending on some plugins.
 augroup plugin
     autocmd!
 
@@ -1382,5 +1367,5 @@ augroup plugin
     autocmd BufWritePost * call s:update_syntastic()
 augroup END
 
-syntax enable           " 強調表示有効
-colorscheme mopkai      " syntaxコマンドよりもあとにすること
+syntax enable
+colorscheme mopkai  " It should be after entax command.
