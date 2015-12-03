@@ -13,6 +13,6 @@
     user = mopp
 [alias]
     graph = log --graph --decorate --oneline
-    logs = log --stat
+    logs = log --stat --decorate --color --graph
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
