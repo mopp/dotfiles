@@ -57,8 +57,8 @@ sym_link()
         fi
     fi
 
-    src=$(readlink -f $2)
-    [ $# -eq 3 ] && dst=$3 || dst=$HOME/$2
+    src=$DOTFILES_DIR/$2
+    dst=$HOME/$3
 
     echo $src $dst
     ln -s $src $dst
@@ -95,9 +95,10 @@ mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/backup
 mkdir -p ~/.vim/undo
 mkdir -p ~/.vim/view
-mkdir -p ~/.config/nvim
+mkdir -p ~/.config/
 ln -s ~/.vim ~/.config/nvim
-sym_link_no_conf ".vimrc" "~/.config/nvim/init.vim"
+sym_link_no_conf ".vimrc" ".config/nvim/init.vim"
+
 NEOBUNDLE_DIR=~/.vim/bundle/neobundle.vim
 if [ ! -e $NEOBUNDLE_DIR ]; then
     git clone https://github.com/Shougo/neobundle.vim $NEOBUNDLE_DIR
