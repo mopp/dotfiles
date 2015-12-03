@@ -62,11 +62,11 @@ esac
 # Ruby setting.
 if [[ -x $(which ruby) ]]; then
     export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-    export PATH=$GEM_HOME/bin/:$PATH
+    export PATH=$GEM_HOME/bin:$PATH
 fi
 
 if [[ -d $HOME/.rbenv ]]; then
-    export PATH=$HOME/.rbenv/bin/:$PATH
+    export PATH=$HOME/.rbenv/bin:$PATH
     eval "$(rbenv init -)"
 fi
 
