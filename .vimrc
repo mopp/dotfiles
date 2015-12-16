@@ -609,6 +609,8 @@ NeoBundleLazy 'vim-jp/cpp-vim', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
+NeoBundleLazy 'Shirk/vim-gas', { 'filetypes' : 'gas' }
+
 
 NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
