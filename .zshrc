@@ -39,6 +39,7 @@ case $OSTYPE in
         alias eclipse='/Applications/eclipse/eclipse'
         ;;
     linux*)
+        export LD_LIBRARY_PATH=$HOME/Workspace/hpc/openmpi/lib
         export JAVA_FONTS=/usr/share/fonts/TTF
         export MANPATH=/usr/local/share/man/:/usr/share/man/:$MANPATH
         case $HOSTNAME in
@@ -70,14 +71,35 @@ if [[ -d $HOME/.rbenv ]]; then
     eval "$(rbenv init -)"
 fi
 
+# Remove duplicate
+typeset -U PATH CDPATH FPATH MANPATH
+
 case $TERM in
     *rxvt*)
         stty -ixon
         ;;
 esac
 
-# Remove duplicate
-typeset -U PATH CDPATH FPATH MANPATH
+
+### 補完 ###
+autoload -U compinit
+compinit -u
+# zmodload zsh/mathfunc;
+setopt auto_list            # 補完候補を一覧表示
+setopt auto_menu            # <TAB>で補完候補切り替え
+setopt list_packed          # 補完候補を詰めて表示
+setopt list_types           # 補完候補にファイル種類表示
+setopt auto_param_slash     # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
+setopt magic_equal_subst    # コマンドラインの引数で --prefix=/usr などの = 以降でも補完できる
+zstyle ':completion:*:default' menu select=2        # 補完候補での現在カーソル位置強調
+zstyle ':completion:*' list-colors ''               # 補完候補に色付け
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # 大文字小文字無視
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
+zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
+zstyle ':completion:*:options' description 'yes'
+
 
 export EDITOR=vim
 export PAGER=less
@@ -100,10 +122,17 @@ alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
 alias pdflatex='pdflatex -interaction=nonstopmode -halt-on-error'
 alias aspell='aspell --lang=en -c -t'
+alias objdump='objdump -M intel'
 alias -g L='| less'
 alias -g M='|more'
 alias -g H='|head'
 alias -g T='|tail'
+
+if [ -x "$(which colormake)" ]; then
+    alias make='colormake'
+    compdef _make colormake
+fi
+
 if [ -x "$(which colordiff)" ]; then
     alias diff='colordiff -u'
 else
@@ -166,26 +195,6 @@ function switch_cc_cxx() {
         export CXX='clang++'
     fi
 }
-
-
-
-### 補完 ###
-zmodload zsh/mathfunc;
-setopt auto_list            # 補完候補を一覧表示
-setopt auto_menu            # <TAB>で補完候補切り替え
-setopt list_packed          # 補完候補を詰めて表示
-setopt list_types           # 補完候補にファイル種類表示
-setopt auto_param_slash     # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
-setopt magic_equal_subst    # コマンドラインの引数で --prefix=/usr などの = 以降でも補完できる
-zstyle ':completion:*:default' menu select=2        # 補完候補での現在カーソル位置強調
-zstyle ':completion:*' list-colors ''               # 補完候補に色付け
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # 大文字小文字無視
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
-zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
-zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
-zstyle ':completion:*:options' description 'yes'
-autoload -U compinit;compinit
 
 ### Move ###
 setopt auto_cd      # ディレクトリ名のみで移動
