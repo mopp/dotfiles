@@ -6,7 +6,6 @@
 [color]
     ui = auto
 [core]
-    editor = vim
     pager = less
 	quotepath = false
 [github]

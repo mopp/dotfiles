@@ -225,8 +225,8 @@ alias -g H='|head'
 alias -g T='|tail'
 
 if [[ -x "$(which colormake)" ]]; then
-    alias normal_make='make'
-    alias make='colormake'
+    # alias normal_make='make'
+    # alias make='colormake'
     compdef _make colormake
 fi
 
