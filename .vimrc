@@ -610,7 +610,7 @@ NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'filetypes' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'filetypes' : [ 'zsh', 'sh', 'bash'] }
 NeoBundleLazy 'Shirk/vim-gas', { 'filetypes' : 'gas' }
-
+NeoBundleLazy 'shima-529/C-prototype.vim', {'filetypes' : 'c' }
 
 NeoBundleLazy 'bbchung/clighter', { 'filetypes' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'filetypes' : 'java' }
@@ -1334,6 +1334,11 @@ let g:casetrate_leader = '<leader>a'
 
 " argwrap
 nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
+
+" c-prototype
+let g:c_prototype_no_default_keymappings = 1
+let g:c_prototype_remove_var_name = 1
+let g:c_prototype_insert_point = 2
 
 
 "-------------------------------------------------------------------------------"
