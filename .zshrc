@@ -85,6 +85,9 @@ if [[ -d $HOME/.rbenv ]]; then
     eval "$(rbenv init -)"
 fi
 
+# Setting for R.
+export R_LIBS_USER=$HOME/.config/r/
+
 # Setting for zslot.
 # https://github.com/kmhjs/zslot.git
 ZSLOT_SRC=~/Tools/zslot/src/
@@ -206,7 +209,7 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
 
 # aliases
 alias octave='octave-cli -q'
-alias R='R -q'
+alias R='R -q --vanilla'
 alias cl=clear
 alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
 alias clang++='clang++ -std=c++1y -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
