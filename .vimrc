@@ -542,6 +542,7 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow', { 'disabled' : (has('nvim')) }
+NeoBundle 'mhinz/vim-startify'
 NeoBundle 'mopp/mopbuf.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/smartnumber.vim'
@@ -629,6 +630,7 @@ NeoBundleLazy 'rhysd/vim-textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ [ 'ov', 'av', 'iv' ] ] }
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] ]}
 NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
+NeoBundleLazy 'haya14busa/vim-operator-flashy', { 'mappings' : [ 'ov', '<plug>(operator-flashy)'] }
 
 NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
 NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
@@ -1340,6 +1342,18 @@ let g:c_prototype_no_default_keymappings = 1
 let g:c_prototype_remove_var_name = 1
 let g:c_prototype_insert_point = 2
 
+" vim-operator-flashy
+map y <Plug>(operator-flashy)
+nmap Y <Plug>(operator-flashy)
+let g:operator#flashy#group = 'Error'
+
+" startify
+let g:startify_relative_path = 1
+let g:startify_bookmarks = [
+            \ { 'v': '~/.vimrc' },
+            \ { 's': '~/.zshrc' },
+            \ ]
+
 
 "-------------------------------------------------------------------------------"
 " autocmd for plugin.
@@ -1372,6 +1386,9 @@ augroup plugin
 
     " lightline
     autocmd BufWritePost * call s:update_syntastic()
+
+    " startify
+    autocmd User Startified setlocal cursorline
 augroup END
 
 syntax enable
