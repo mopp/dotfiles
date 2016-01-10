@@ -21,6 +21,8 @@ for_window [title="QEMU"] floating enable
 for_window [class="feh"] floating enable
 for_window [title="feh"] floating enable
 for_window [class="(?i)rdesktop"] floating disable
+for_window [title="Figure*"] floating enable
+
 # Assign chrome to workspace 2
 assign [class="chrome"] 2
 
