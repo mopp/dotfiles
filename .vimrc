@@ -628,8 +628,7 @@ NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'mappings' : [ [ 'ov', '<
 NeoBundleLazy 'rhysd/vim-textobj-wiw', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
 NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'mappings' : [ [ 'ov', 'av', 'iv' ] ] }
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'mappings' : [ [ 'ov', '<Plug>' ] ]}
-NeoBundleLazy 'terryma/vim-expand-region', { 'mappings' : [ [ 'ov', '<Plug>' ] ] }
-NeoBundleLazy 'haya14busa/vim-operator-flashy', { 'mappings' : [ [ 'ov', '<plug>(operator-flashy)' ] ] }
+NeoBundleLazy 'haya14busa/vim-operator-flashy', { 'mappings' : [ [ 'nv', '<Plug>' ] ] }
 
 NeoBundleLazy 'Shougo/neomru.vim', { 'unite_sources' : 'file_mru' }
 NeoBundleLazy 'Shougo/unite-outline', { 'unite_sources' : 'outline' }
@@ -1008,10 +1007,6 @@ omap <silent> zs <Plug>(operator-surround-append)
 nmap <silent> zss <Plug>(operator-surround-append)<Plug>(textobj-block-i)
 nmap <silent> zdd <Plug>(operator-surround-delete)<Plug>(textobj-block-a)
 nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
-
-" vim-expand-region
-vmap K <Plug>(expand_region_expand)
-vmap J <Plug>(expand_region_shrink)
 
 " textobj-line
 omap il <Plug>(textobj-line-i)
