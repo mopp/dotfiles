@@ -541,7 +541,7 @@ NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'l
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'luochen1990/rainbow', { 'disabled' : (has('nvim')) }
+NeoBundle 'luochen1990/rainbow'
 NeoBundle 'mopp/mopbuf.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/smartnumber.vim'
@@ -564,7 +564,8 @@ NeoBundleLazy 'idanarye/vim-casetrate', { 'on_cmd' : { 'name' : 'Casetrate', 'co
 NeoBundleLazy 'kana/vim-niceblock', { 'on_map' : [ 'x', 'I', 'A' ] }
 NeoBundleLazy 'kana/vim-smartchr', { 'on_i' : 1 }
 NeoBundleLazy 'kana/vim-smartinput', { 'on_i' : 1 }
-NeoBundleLazy 'kannokanno/previm', { 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' }
+" NeoBundleLazy 'kannokanno/previm', { 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' }
+NeoBundleLazy 'set0gut1/previm', { 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' }
 NeoBundleLazy 'koron/nyancat-vim', { 'on_cmd' : [ 'Nyancat', 'Nyancat2',] }
 NeoBundleLazy 'majutsushi/tagbar', { 'on_cmd' : 'TagbarToggle' }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'on_cmd' : 'BenchVimrc' }
@@ -1364,6 +1365,8 @@ augroup plugin
 
     " lightline
     autocmd BufWritePost * call s:update_syntastic()
+
+    autocmd FileType markdown setlocal conceallevel=0
 augroup END
 
 syntax enable
