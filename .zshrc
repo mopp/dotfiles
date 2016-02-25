@@ -88,6 +88,11 @@ fi
 # Setting for R.
 export R_LIBS_USER=$HOME/.config/r/
 
+# Setting for cargo.
+if [[ -d $HOME/.cargo/ ]]; then
+    export PATH=$HOME/.cargo/bin:$PATH
+fi
+
 # Setting for zslot.
 # https://github.com/kmhjs/zslot.git
 ZSLOT_SRC=~/Tools/zslot/src/
