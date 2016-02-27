@@ -102,7 +102,7 @@ set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
 set list
-set listchars=tab:>\ ,trail:\|,extends:<,precedes:<
+set listchars=tab:>-,trail:\ ,extends:<,precedes:<
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 let g:lisp_rainbow     = 1
 let g:lisp_instring    = 1
@@ -421,7 +421,7 @@ augroup noplugin
     autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
 
     " markdown
-    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
 
     " gnuplot
     autocmd BufWinEnter *.plt nested setlocal filetype=gnuplot
@@ -548,6 +548,7 @@ NeoBundle 'mopp/smartnumber.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
+NeoBundle 'bronson/vim-trailing-whitespace'
 
 NeoBundleLazy 'FooSoft/vim-argwrap', { 'function_prefix' : 'argwrap' }
 NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'on_i' : 1, 'disabled' : (!has('nvim')) }
@@ -724,6 +725,7 @@ function! s:hooks.on_source(bundle)
     let g:deoplete#enable_at_startup  = 1
     let g:deoplete#enable_ignore_case = 0
     let g:deoplete#enable_smart_case  = 1
+    let g:deoplete#max_list = 30
     let g:deoplete#omni_patterns      = {}
     let g:deoplete#omni_patterns.c    = '[^. *\t](\.|->)\w*'
     let g:deoplete#omni_patterns.cpp  = '[^. *\t](\.|->|::)\w*'
@@ -1334,6 +1336,16 @@ nmap Y <Plug>(operator-flashy)
 let g:operator#flashy#group = 'Error'
 
 
+" vim-markdown
+let g:vim_markdown_conceal = 0
+
+" previm
+let g:previm_show_header = 0
+
+" vim-trailing-whitespace
+let g:extra_whitespace_ignored_filetypes = [ 'unite', 'markdown', 'help' ]
+
+
 "-------------------------------------------------------------------------------"
 " autocmd for plugin.
 "-------------------------------------------------------------------------------"
@@ -1365,8 +1377,6 @@ augroup plugin
 
     " lightline
     autocmd BufWritePost * call s:update_syntastic()
-
-    autocmd FileType markdown setlocal conceallevel=0
 augroup END
 
 syntax enable
