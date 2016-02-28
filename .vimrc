@@ -362,6 +362,16 @@ function! s:drop_buffer(buf)
 endfunction
 command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
 
+function! s:remove_tail_space()
+    if &filetype == 'markdown'
+        return
+    endif
+
+    let c = getpos('.')
+    g/.*\s$/normal $gelD
+    call setpos('.', c)
+endfunction
+
 
 "-------------------------------------------------------------------------------"
 " GUI
@@ -408,6 +418,8 @@ augroup noplugin
     " 状態の保存と復元
     autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
     autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+
+    autocmd BufWritePre * silent call s:remove_tail_space()
 
     " git
     autocmd FileType git setlocal foldlevel=99
@@ -582,7 +594,6 @@ NeoBundleLazy 'mopp/learn-markdown.vim'
 NeoBundleLazy 'mopp/makecomp.vim', { 'on_cmd' : { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } }
 NeoBundleLazy 'mopp/next-alter.vim', { 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] }
-NeoBundleLazy 'mopp/tailCleaner.vim', { 'on_i' : 1 }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'on_map' : [ [ 'n', '<Plug>' ] ] }
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'on_cmd' : { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } }
