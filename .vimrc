@@ -104,6 +104,7 @@ set t_Co=256
 set list
 set listchars=tab:>-,trail:\ ,extends:<,precedes:<
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+set updatetime=500
 let g:lisp_rainbow     = 1
 let g:lisp_instring    = 1
 let g:lispsyntax_clisp = 1
@@ -598,6 +599,8 @@ NeoBundleLazy 'ujihisa/neco-look'
 " NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'on_i' : 1, 'on_ft' : ['javascript'] }
 " NeoBundleLazy 'awk.vim', { 'on_ft' : 'awk' }
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'on_ft' : 'arduino' }
+NeoBundleLazy 'Shirk/vim-gas', { 'on_ft' : 'gas' }
+NeoBundleLazy 'bbchung/clighter', { 'on_ft' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'cespare/vim-toml', { 'on_ft' : 'toml' }
 NeoBundleLazy 'gnuplot.vim', { 'on_ft' : 'gnuplot' }
 NeoBundleLazy 'jelera/vim-javascript-syntax', { 'on_ft' : 'javascript' }
@@ -606,14 +609,11 @@ NeoBundleLazy 'othree/html5.vim', { 'on_ft' : [ 'eruby', 'html' ] }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'on_ft' : 'markdown' }
 NeoBundleLazy 'pycckuu/MatlabFilesEdition', { 'on_ft' : 'matlab' }
 NeoBundleLazy 'rust-lang/rust.vim', { 'on_ft' : 'rust' }
+NeoBundleLazy 'shima-529/C-prototype.vim', { 'on_ft' : 'c' }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'on_ft' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'on_ft' : 'ruby' }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'on_ft' : [ 'zsh', 'sh', 'bash' ] }
-NeoBundleLazy 'Shirk/vim-gas', { 'on_ft' : 'gas' }
-NeoBundleLazy 'shima-529/C-prototype.vim', { 'on_ft' : 'c' }
-
-NeoBundleLazy 'bbchung/clighter', { 'on_ft' : [ 'c', 'cpp' ] }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'on_ft' : 'java' }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'on_map' : [ [ 'n', '<Plug>' ] ] }
@@ -722,17 +722,18 @@ endfunction
 " Deoplete
 let s:hooks = neobundle#get_hooks('deoplete.nvim')
 function! s:hooks.on_source(bundle)
-    let g:deoplete#enable_at_startup  = 1
-    let g:deoplete#enable_ignore_case = 0
-    let g:deoplete#enable_smart_case  = 1
-    let g:deoplete#max_list = 30
-    let g:deoplete#omni_patterns      = {}
-    let g:deoplete#omni_patterns.c    = '[^. *\t](\.|->)\w*'
-    let g:deoplete#omni_patterns.cpp  = '[^. *\t](\.|->|::)\w*'
+    let g:deoplete#enable_at_startup     = 1
+    let g:deoplete#enable_ignore_case    = 0
+    let g:deoplete#enable_smart_case     = 1
+    let g:deoplete#max_list              = 30
+    let g:deoplete#omni_patterns         = {}
+    let g:deoplete#omni_patterns.c       = '[^. *\t](\.|->)\w*'
+    let g:deoplete#omni_patterns.cpp     = '[^. *\t](\.|->|::)\w*'
 endfunction
 function! s:hooks.on_post_source(bundle)
     call s:load_complement_sources()
 endfunction
+
 
 " neocomplete
 let s:hooks = neobundle#get_hooks('neocomplete.vim')
@@ -840,8 +841,6 @@ function! s:hooks.on_source(bundle)
     let g:marching_debug = 1
     let g:marching_include_paths = split(&path, ',')
     let g:marching#clang_command#options = { 'cpp' : '-Wall -std=gnu++1y', 'c' : '-Wall -std=c11' }
-
-    set updatetime=500
 endfunction
 
 " clang-format
@@ -1335,7 +1334,6 @@ map y <Plug>(operator-flashy)
 nmap Y <Plug>(operator-flashy)
 let g:operator#flashy#group = 'Error'
 
-
 " vim-markdown
 let g:vim_markdown_conceal = 0
 
@@ -1344,7 +1342,6 @@ let g:previm_show_header = 0
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'unite', 'markdown', 'help' ]
-
 
 "-------------------------------------------------------------------------------"
 " autocmd for plugin.
