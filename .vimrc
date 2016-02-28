@@ -512,7 +512,7 @@ if has('nvim')
     tnoremap <C-w>j <C-\><C-n><C-w>j
     tnoremap <C-w>k <C-\><C-n><C-w>k
     tnoremap <C-w>l <C-\><C-n><C-w>l
-    nnoremap <Leader>tm :terminal
+    nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
 endif
 
@@ -540,6 +540,8 @@ NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'linux' : 'make' } }
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
@@ -549,7 +551,6 @@ NeoBundle 'mopp/smartnumber.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'bronson/vim-trailing-whitespace'
 
 NeoBundleLazy 'FooSoft/vim-argwrap', { 'function_prefix' : 'argwrap' }
 NeoBundleLazy 'Shougo/deoplete.nvim', { 'depends' : 'Shougo/neosnippet', 'on_i' : 1, 'disabled' : (!has('nvim')) }
@@ -566,7 +567,6 @@ NeoBundleLazy 'idanarye/vim-casetrate', { 'on_cmd' : { 'name' : 'Casetrate', 'co
 NeoBundleLazy 'kana/vim-niceblock', { 'on_map' : [ 'x', 'I', 'A' ] }
 NeoBundleLazy 'kana/vim-smartchr', { 'on_i' : 1 }
 NeoBundleLazy 'kana/vim-smartinput', { 'on_i' : 1 }
-" NeoBundleLazy 'kannokanno/previm', { 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' }
 NeoBundleLazy 'set0gut1/previm', { 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' }
 NeoBundleLazy 'koron/nyancat-vim', { 'on_cmd' : [ 'Nyancat', 'Nyancat2',] }
 NeoBundleLazy 'majutsushi/tagbar', { 'on_cmd' : 'TagbarToggle' }
@@ -590,7 +590,6 @@ NeoBundleLazy 'rhysd/vim-clang-format', { 'on_cmd' : [ 'ClangFormat', 'ClangForm
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] }
 NeoBundleLazy 'scrooloose/syntastic', { 'on_i' : 1 }
 NeoBundleLazy 'sk1418/blockit', { 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'stay_same' : 1, 'build' : { 'mac' : 'rm Gemfile.lock && bundle', 'linux' : 'rm Gemfile.lock && bundle' }, 'on_unite' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ] }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'on_cmd' : 'help' }
 NeoBundleLazy 'tyru/open-browser.vim', { 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'function_prefix' : 'openbrowser' }
 NeoBundleLazy 'ujihisa/neco-look'
@@ -904,10 +903,10 @@ function! s:hooks.on_post_source(bundle)
 endfunction
 
 " VimFiler
-nnoremap <silent> fvs :VimFilerExplorer<CR>
-nnoremap <silent> fvb :VimFilerBufferDir -explorer<CR>
-nnoremap <silent> fvo :VimFilerTab<CR>
-nnoremap <silent> fvc :VimFilerCreate<CR>
+nnoremap <silent> <Leader>fvs :VimFilerExplorer<CR>
+nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
+nnoremap <silent> <Leader>fvo :VimFilerTab<CR>
+nnoremap <silent> <Leader>fvc :VimFilerCreate<CR>
 let s:hooks = neobundle#get_hooks('vimfiler')
 function! s:hooks.on_source(bundle)
     let g:vimfiler_as_default_explorer = 1
@@ -1128,7 +1127,7 @@ let g:lightline = {
             \   'filetype'      : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : &filetype }",
             \   'fileencoding'  : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : (strlen(&fenc) ? &fenc : &enc) }",
             \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
-            \   'readonly'      : "%{ &readonly ? 'RO' : '' }",
+            \   'readonly'      : "%{ &filetype !~? 'vimfiler\\|tagbar\\|unite' && &readonly ? 'RO' : '' }",
             \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
             \ },
             \ 'component_function' : {
@@ -1187,9 +1186,6 @@ function! Mline_filename()
     if &filetype == 'unite'
         return unite#get_status_string()
     elseif &filetype == 'vimfiler'
-        if winwidth(0) <= 20
-            return ''
-        endif
         return vimfiler#get_status_string()
     elseif &filetype == 'tagbar'
         return g:lightline.fname
@@ -1200,7 +1196,11 @@ endfunction
 let g:mline_git_cache = ''
 let g:mline_git_counter = 32
 function! Mline_git()
-    if (g:mline_git_counter == 32) && (&modifiable) && (&filetype !~? 'unite\|vimfiler') && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
+    if &filetype =~? 'unite\|vimfiler\|tagbar'
+        return ''
+    endif
+
+    if (g:mline_git_counter == 32) && (&modifiable) && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
         let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
 
         " Not added changes
@@ -1230,6 +1230,10 @@ endfunction
 let g:mline_battery_cache = ''
 let g:mline_battery_counter = 128
 function! Mline_battery()
+    if &filetype =~? 'unite\|vimfiler\|tagbar'
+        return ''
+    endif
+
     if (g:mline_battery_counter != 128)
         let g:mline_battery_counter += 1
         return g:mline_battery_cache
@@ -1252,6 +1256,10 @@ let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
 let g:mopbuf_settings['auto_open_each_tab'] = 0
 let g:mopbuf_settings['sort_order'] = 'mru'
 function! Mline_buflist()
+    if (&filetype == 'unite') || (&filetype == 'vimfiler') || (&filetype == 'tagbar')
+        return ''
+    endif
+
     if mopbuf#managed_buffer_num() <= 4 && mopbuf#is_show_display_buffer() == 0
         return mopbuf#get_buffers_str_exclude(bufnr(''))
     endif
@@ -1342,6 +1350,10 @@ let g:previm_show_header = 0
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'unite', 'markdown', 'help' ]
+
+" vim-gitgutter
+let g:gitgutter_map_keys = 0
+
 
 "-------------------------------------------------------------------------------"
 " autocmd for plugin.
