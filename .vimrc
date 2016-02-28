@@ -102,7 +102,7 @@ set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
 set list
-set listchars=tab:>-,trail:\ ,extends:<,precedes:<
+set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 set updatetime=500
 let g:lisp_rainbow     = 1
