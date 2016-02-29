@@ -576,7 +576,7 @@ call dein#add('mattn/learn-vimscript')
 call dein#add('mattn/webapi-vim')
 call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
 call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_i' : 1 })
-call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery' })
+call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
 call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
 call dein#add('mopp/learn-markdown.vim')
 call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
@@ -1069,8 +1069,8 @@ let g:lightline = {
             \ 'enable'      : { 'tabline' : 0 },
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
-            \   'left'  : [ [ 'mode', 'paste' ], [ 'git' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
-            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ], [ 'battery' ] ],
+            \   'left'  : [ [ 'mode', 'paste' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
+            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ] ],
             \ },
             \ 'inactive' : {
             \   'left'  : [ [ 'filename' ] ],
@@ -1092,9 +1092,7 @@ let g:lightline = {
             \   'mode'     : 'Mline_mode',
             \   'modified' : 'Mline_modified',
             \   'filename' : 'Mline_filename',
-            \   'git'      : 'Mline_git',
             \   'buflist'  : 'Mline_buflist',
-            \   'battery'  : 'Mline_battery',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -1148,67 +1146,6 @@ function! Mline_filename()
         return g:lightline.fname
     endif
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
-endfunction
-
-let g:mline_git_cache = ''
-let g:mline_git_counter = 0
-function! Mline_git()
-    if &filetype =~? 'unite\|vimfiler\|tagbar'
-        return ''
-    endif
-
-    if g:mline_git_counter <= 64
-        let g:mline_git_counter += 1
-        return g:mline_git_cache
-    endif
-
-    if (&modifiable) && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
-        let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
-
-        " Not added changes
-        call system('git diff --no-ext-diff --quiet --exit-code')
-        if v:shell_error == 1
-            let str = str . '*'
-        endif
-
-        " Not committed changes
-        call system('git diff-index --cached --quiet HEAD --')
-        if v:shell_error == 1
-            let str = str . '+'
-        endif
-
-        " Check untracked files
-        if system('git ls-files --exclude-standard --others') != ''
-            let str = str . '%'
-        endif
-
-        let g:mline_git_cache = str
-    endif
-
-    let g:mline_git_counter = 0
-    return g:mline_git_cache
-endfunction
-
-let g:mline_battery_cache = ''
-let g:mline_battery_counter = 0
-function! Mline_battery()
-    if &filetype =~? 'unite\|vimfiler\|tagbar'
-        return ''
-    endif
-
-    if (g:mline_battery_counter <= 256)
-        let g:mline_battery_counter += 1
-        return g:mline_battery_cache
-    endif
-    let g:mline_battery_counter = 0
-
-    let per = battery#battery('%p')
-    if per == 'N/A'
-        return ''
-    endif
-
-    let g:mline_battery_cache = 'Battery: ' . per . '%'
-    return g:mline_battery_cache
 endfunction
 
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
@@ -1330,7 +1267,7 @@ function! s:update_syntastic()
     SyntasticCheck
     call lightline#update()
 endfunction
-"
+
 " Depending on some plugins.
 augroup plugin
     autocmd!
