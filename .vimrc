@@ -1070,7 +1070,7 @@ let g:lightline = {
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
             \   'left'  : [ [ 'mode', 'paste' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
-            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ] ],
+            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ], ],
             \ },
             \ 'inactive' : {
             \   'left'  : [ [ 'filename' ] ],
@@ -1105,12 +1105,12 @@ let s:cp = {
             \ 'orange': [ '#d75f00', 166 ], 'red':    [ '#ff0000', 196 ], 'deep_glay': [ '#2e2930', 235 ],
             \ }
 let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, s:cp.deep_glay ], }
-let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange,  s:cp.deep_glay ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
+let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
 let s:p.normal.middle   = [ s:pa.base_glay ]
-let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ], [s:cp.blue, s:cp.glay ] ]
-let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
-let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
-let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
+let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ] ]
+let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
+let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
+let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
 let s:p.inactive.left   = [ [ [ '#4e4e4e', 239 ], s:cp.dark ] ]
 let s:p.inactive.middle = [ [ s:cp.fg, [ '#000000',  16 ] ] ]
 let s:p.inactive.right  = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ] ]
@@ -1146,6 +1146,71 @@ function! Mline_filename()
         return g:lightline.fname
     endif
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
+endfunction
+
+let g:mline_git_cache = ''
+let g:mline_git_counter = 0
+function! Mline_git()
+    return ''
+
+    if &filetype =~? 'unite\|vimfiler\|tagbar'
+        return ''
+    endif
+
+    if g:mline_git_counter <= 64
+        let g:mline_git_counter += 1
+        return g:mline_git_cache
+    endif
+
+    if (&modifiable) && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
+        let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
+
+        " Not added changes
+        call system('git diff --no-ext-diff --quiet --exit-code')
+        if v:shell_error == 1
+            let str = str . '*'
+        endif
+
+        " Not committed changes
+        call system('git diff-index --cached --quiet HEAD --')
+        if v:shell_error == 1
+            let str = str . '+'
+        endif
+
+        " Check untracked files
+        if system('git ls-files --exclude-standard --others') != ''
+            let str = str . '%'
+        endif
+
+        let g:mline_git_cache = str
+    endif
+
+    let g:mline_git_counter = 0
+    return g:mline_git_cache
+endfunction
+
+let g:mline_battery_cache = ''
+let g:mline_battery_counter = 0
+function! Mline_battery()
+    return ''
+
+    if &filetype =~? 'unite\|vimfiler\|tagbar'
+        return ''
+    endif
+
+    if (g:mline_battery_counter <= 256)
+        let g:mline_battery_counter += 1
+        return g:mline_battery_cache
+    endif
+    let g:mline_battery_counter = 0
+
+    let per = battery#battery('%p')
+    if per == 'N/A'
+        return ''
+    endif
+
+    let g:mline_battery_cache = 'Battery: ' . per . '%'
+    return g:mline_battery_cache
 endfunction
 
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
@@ -1267,7 +1332,7 @@ function! s:update_syntastic()
     SyntasticCheck
     call lightline#update()
 endfunction
-
+"
 " Depending on some plugins.
 augroup plugin
     autocmd!
