@@ -531,121 +531,135 @@ endif
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
-if !isdirectory(expand('~/.vim/bundle/repos/github.com/Shougo/dein.vim'))
-    syntax enable
-    colorscheme desert
-    finish
+let s:dein_path = expand('~/.vim/bundle/repos/github.com/Shougo/dein.vim')
+if !isdirectory(s:dein_path)
+    if !executable('git')
+        syntax enable
+        colorscheme desert
+        finish
+    endif
+
+    execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:dein_path
 endif
 
 " dein.vim
-let g:dein#install_progress_type='echo'
-set runtimepath^=~/.vim/bundle/repos/github.com/Shougo/dein.vim
+execute 'set runtimepath^='.s:dein_path
+
 call dein#begin('~/.vim/bundle/')
 
-call dein#add('Shougo/dein.vim')
+if dein#load_cache()
+    call dein#add('Shougo/dein.vim')
 
-call dein#add('Shougo/deoplete.nvim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : has('nvim') })
-call dein#add('Shougo/neocomplete.vim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : (has('lua') && !has('nvim')) })
+    call dein#add('Shougo/deoplete.nvim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : has('nvim') })
+    call dein#add('Shougo/neocomplete.vim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : (has('lua') && !has('nvim')) })
 
-call dein#add('Shougo/neosnippet', { 'lazy' : 1 , 'depends' : 'vim-snippets' })
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('honza/vim-snippets', { 'lazy' : 1 })
-call dein#add('fo60213/matlab-snippets')
+    call dein#add('Shougo/neosnippet', { 'lazy' : 1 , 'depends' : 'vim-snippets' })
+    call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('honza/vim-snippets', { 'lazy' : 1 })
+    call dein#add('fo60213/matlab-snippets')
 
-call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
-call dein#add('LeafCage/yankround.vim')
-call dein#add('Lokaltog/vim-easymotion')
-call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ] })
-call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
-call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
-call dein#add('Yggdroot/indentLine')
-call dein#add('airblade/vim-gitgutter')
-call dein#add('bronson/vim-trailing-whitespace')
-call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
-call dein#add('itchyny/lightline.vim')
-call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
-call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
-call dein#add('kana/vim-smartchr')
-call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1 })
-call dein#add('koron/nyancat-vim', { 'lazy' : 1, 'on_cmd' : [ 'Nyancat', 'Nyancat2',] })
-call dein#add('luochen1990/rainbow')
-call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
-call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
-call dein#add('mattn/gist-vim', { 'lazy' : 1, 'depends' : 'webapi-vim', 'on_cmd' : 'Gist' })
-call dein#add('mattn/learn-vimscript')
-call dein#add('mattn/webapi-vim')
-call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
-call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_i' : 1 })
-call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
-call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
-call dein#add('mopp/learn-markdown.vim')
-call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
-call dein#add('mopp/mopbuf.vim')
-call dein#add('mopp/mopkai.vim')
-call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
-call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
-call dein#add('mopp/smartnumber.vim')
-call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
-call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
-call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
-call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
-call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] })
-call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
-call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
-call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
-call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
-call dein#add('thinca/vim-visualstar')
-call dein#add('tpope/vim-repeat')
-call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
-call dein#add('ujihisa/neco-look')
+    call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
+    call dein#add('LeafCage/yankround.vim')
+    call dein#add('godlygeek/tabular')
+    call dein#add('Lokaltog/vim-easymotion')
+    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ] })
+    call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
+    call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
+    call dein#add('Yggdroot/indentLine')
+    call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_i' : 1 })
+    call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
+    call dein#add('itchyny/lightline.vim')
+    call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
+    call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
+    call dein#add('kana/vim-smartchr')
+    call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1 })
+    call dein#add('koron/nyancat-vim', { 'lazy' : 1, 'on_cmd' : [ 'Nyancat', 'Nyancat2',] })
+    call dein#add('luochen1990/rainbow')
+    call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
+    call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
+    call dein#add('mattn/gist-vim', { 'lazy' : 1, 'depends' : 'webapi-vim', 'on_cmd' : 'Gist' })
+    call dein#add('mattn/learn-vimscript')
+    call dein#add('mattn/webapi-vim')
+    call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
+    call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_i' : 1 })
+    call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
+    call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
+    call dein#add('mopp/learn-markdown.vim')
+    call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
+    call dein#add('mopp/mopbuf.vim')
+    call dein#add('mopp/mopkai.vim')
+    call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
+    call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
+    call dein#add('mopp/smartnumber.vim')
+    call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
+    call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
+    call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
+    call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
+    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] })
+    call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
+    call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
+    call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
+    call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
+    call dein#add('thinca/vim-visualstar')
+    call dein#add('tpope/vim-repeat')
+    call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
+    call dein#add('ujihisa/neco-look')
 
-call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
-call dein#add('Shirk/vim-gas')
-call dein#add('ahayman/vim-nodejs-complete')
-call dein#add('awk.vim')
-call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
-call dein#add('cespare/vim-toml')
-call dein#add('gnuplot.vim')
-call dein#add('jelera/vim-javascript-syntax')
-call dein#add('jiangmiao/simple-javascript-indenter')
-call dein#add('othree/html5.vim')
-call dein#add('plasticboy/vim-markdown')
-call dein#add('pycckuu/MatlabFilesEdition')
-call dein#add('rust-lang/rust.vim', { 'lazy' : 1, 'on_ft' : 'rust' })
-call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
-call dein#add('thinca/vim-ft-help_fold')
-call dein#add('vim-jp/cpp-vim')
-call dein#add('vim-jp/vimdoc-ja')
-call dein#add('vim-ruby/vim-ruby')
-call dein#add('vim-scripts/Arduino-syntax-file')
-call dein#add('vim-scripts/sh.vim--Cla')
-call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
+    call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
+    call dein#add('Shirk/vim-gas')
+    call dein#add('ahayman/vim-nodejs-complete')
+    call dein#add('awk.vim')
+    call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
+    call dein#add('cespare/vim-toml')
+    call dein#add('gnuplot.vim')
+    call dein#add('jelera/vim-javascript-syntax')
+    call dein#add('jiangmiao/simple-javascript-indenter')
+    call dein#add('othree/html5.vim')
+    call dein#add('plasticboy/vim-markdown')
+    call dein#add('pycckuu/MatlabFilesEdition')
+    call dein#add('rust-lang/rust.vim', { 'lazy' : 1, 'on_ft' : 'rust' })
+    call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
+    call dein#add('thinca/vim-ft-help_fold')
+    call dein#add('vim-jp/cpp-vim')
+    call dein#add('vim-jp/vimdoc-ja')
+    call dein#add('vim-ruby/vim-ruby')
+    call dein#add('vim-scripts/Arduino-syntax-file')
+    call dein#add('vim-scripts/sh.vim--Cla')
+    call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
 
-call dein#add('haya14busa/vim-operator-flashy', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-call dein#add('kana/vim-operator-replace', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-call dein#add('kana/vim-operator-user')
-call dein#add('rhysd/vim-operator-surround', { 'on_map' : [ [ 'n', '<Plug>' ] ] })
+    call dein#add('haya14busa/vim-operator-flashy', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-replace', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-user')
+    call dein#add('rhysd/vim-operator-surround', { 'on_map' : [ [ 'n', '<Plug>' ] ] })
 
-call dein#add('kana/vim-textobj-function', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-call dein#add('kana/vim-textobj-indent', { 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
-call dein#add('kana/vim-textobj-line', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-call dein#add('kana/vim-textobj-user')
-call dein#add('osyo-manga/vim-textobj-multiblock', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-call dein#add('osyo-manga/vim-textobj-multitextobj', { 'on_map' : [ [ 'ox', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B' ] ] })
-call dein#add('rhysd/vim-textobj-wiw', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-call dein#add('rhysd/vim-textobj-word-column', { 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
-call dein#add('sgur/vim-textobj-parameter', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('kana/vim-textobj-function', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('kana/vim-textobj-indent', { 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
+    call dein#add('kana/vim-textobj-line', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('kana/vim-textobj-user')
+    call dein#add('osyo-manga/vim-textobj-multiblock', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('osyo-manga/vim-textobj-multitextobj', { 'on_map' : [ [ 'ox', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B' ] ] })
+    call dein#add('rhysd/vim-textobj-wiw', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('rhysd/vim-textobj-word-column', { 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
+    call dein#add('sgur/vim-textobj-parameter', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
 
-call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'depends': [ 'neomru.vim', 'unite-outline', 'unite-tasklist', 'vim-unite-giti', 'unite-grep-vcs', 'unite-quickfix', 'unite-tag' ]})
-call dein#add('Shougo/neomru.vim', { 'lazy': 1 })
-call dein#add('Shougo/unite-outline')
-call dein#add('junkblocker/unite-tasklist')
-call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, })
-call dein#add('lambdalisue/unite-grep-vcs')
-call dein#add('osyo-manga/unite-quickfix')
-call dein#add('tsukkee/unite-tag')
+    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'depends': [ 'neomru.vim', 'unite-outline', 'unite-tasklist', 'vim-unite-giti', 'unite-grep-vcs', 'unite-quickfix', 'unite-tag' ]})
+    call dein#add('Shougo/neomru.vim', { 'lazy': 1 })
+    call dein#add('Shougo/unite-outline')
+    call dein#add('junkblocker/unite-tasklist')
+    call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, })
+    call dein#add('lambdalisue/unite-grep-vcs')
+    call dein#add('osyo-manga/unite-quickfix')
+    call dein#add('tsukkee/unite-tag')
+
+    call dein#save_cache()
+endif
 
 call dein#end()
+
+if dein#check_install()
+    call dein#install()
+endif
 
 filetype plugin indent on
 
@@ -1148,71 +1162,6 @@ function! Mline_filename()
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
-let g:mline_git_cache = ''
-let g:mline_git_counter = 0
-function! Mline_git()
-    return ''
-
-    if &filetype =~? 'unite\|vimfiler\|tagbar'
-        return ''
-    endif
-
-    if g:mline_git_counter <= 64
-        let g:mline_git_counter += 1
-        return g:mline_git_cache
-    endif
-
-    if (&modifiable) && (executable('git')) && (finddir('.git', getcwd() . ';') != '')
-        let str = substitute(matchstr(system('git branch'), '\*\s.*\n'), '\*\s*\|\s*\n', '', 'g')
-
-        " Not added changes
-        call system('git diff --no-ext-diff --quiet --exit-code')
-        if v:shell_error == 1
-            let str = str . '*'
-        endif
-
-        " Not committed changes
-        call system('git diff-index --cached --quiet HEAD --')
-        if v:shell_error == 1
-            let str = str . '+'
-        endif
-
-        " Check untracked files
-        if system('git ls-files --exclude-standard --others') != ''
-            let str = str . '%'
-        endif
-
-        let g:mline_git_cache = str
-    endif
-
-    let g:mline_git_counter = 0
-    return g:mline_git_cache
-endfunction
-
-let g:mline_battery_cache = ''
-let g:mline_battery_counter = 0
-function! Mline_battery()
-    return ''
-
-    if &filetype =~? 'unite\|vimfiler\|tagbar'
-        return ''
-    endif
-
-    if (g:mline_battery_counter <= 256)
-        let g:mline_battery_counter += 1
-        return g:mline_battery_cache
-    endif
-    let g:mline_battery_counter = 0
-
-    let per = battery#battery('%p')
-    if per == 'N/A'
-        return ''
-    endif
-
-    let g:mline_battery_cache = 'Battery: ' . per . '%'
-    return g:mline_battery_cache
-endfunction
-
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
 let g:mopbuf_settings['auto_open_each_tab'] = 0
 let g:mopbuf_settings['sort_order'] = 'mru'
@@ -1311,7 +1260,7 @@ let g:vim_markdown_conceal = 0
 let g:previm_show_header = 0
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'unite', 'markdown', 'help' ]
+let g:extra_whitespace_ignored_filetypes = [ 'unite', 'help' ]
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
