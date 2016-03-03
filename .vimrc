@@ -560,7 +560,7 @@ if dein#load_cache()
 
     call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
     call dein#add('LeafCage/yankround.vim')
-    call dein#add('godlygeek/tabular')
+    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : ['Tabularize', 'AddTabularPattern'] })
     call dein#add('Lokaltog/vim-easymotion')
     call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ] })
     call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
@@ -631,19 +631,17 @@ if dein#load_cache()
     call dein#add('haya14busa/vim-operator-flashy', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-replace', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-user')
-    call dein#add('rhysd/vim-operator-surround', { 'on_map' : [ [ 'n', '<Plug>' ] ] })
 
-    call dein#add('kana/vim-textobj-function', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-    call dein#add('kana/vim-textobj-indent', { 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
-    call dein#add('kana/vim-textobj-line', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
+    call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
+    call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'al', 'il' ] ] })
     call dein#add('kana/vim-textobj-user')
-    call dein#add('osyo-manga/vim-textobj-multiblock', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-    call dein#add('osyo-manga/vim-textobj-multitextobj', { 'on_map' : [ [ 'ox', '<Plug>(textobj-multitextobj-A', '<Plug>(textobj-multitextobj-B' ] ] })
-    call dein#add('rhysd/vim-textobj-wiw', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
-    call dein#add('rhysd/vim-textobj-word-column', { 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
-    call dein#add('sgur/vim-textobj-parameter', { 'on_map' : [ [ 'ox', '<Plug>' ] ] })
+    call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
+    call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
 
-    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'depends': [ 'neomru.vim', 'unite-outline', 'unite-tasklist', 'vim-unite-giti', 'unite-grep-vcs', 'unite-quickfix', 'unite-tag' ]})
+    call dein#add('machakann/vim-sandwich')
+
+    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'depends': [ 'neomru.vim', 'vim-unite-giti' ]})
     call dein#add('Shougo/neomru.vim', { 'lazy': 1 })
     call dein#add('Shougo/unite-outline')
     call dein#add('junkblocker/unite-tasklist')
@@ -967,70 +965,13 @@ nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 " Open-Browser
 map <Leader>op <Plug>(openbrowser-open)
 
+" vim-operator-flashy
+map y <Plug>(operator-flashy)
+nmap Y <Plug>(operator-flashy)
+let g:operator#flashy#group = 'Error'
+
 " operator-replace
 map _ <Plug>(operator-replace)
-
-" operator-surround
-nmap <silent> zd <Plug>(operator-surround-delete)
-nmap <silent> zr <Plug>(operator-surround-replace)
-nmap <silent> zs <Plug>(operator-surround-append)
-omap <silent> zd <Plug>(operator-surround-delete)
-omap <silent> zr <Plug>(operator-surround-replace)
-omap <silent> zs <Plug>(operator-surround-append)
-nmap <silent> zss <Plug>(operator-surround-append)<Plug>(textobj-block-i)
-nmap <silent> zdd <Plug>(operator-surround-delete)<Plug>(textobj-block-a)
-nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
-
-" textobj-line
-omap il <Plug>(textobj-line-i)
-omap al <Plug>(textobj-line-a)
-vmap il <Plug>(textobj-line-i)
-vmap al <Plug>(textobj-line-a)
-
-" textobj-multiblock
-let g:textobj_multiblock_blocks = [ ['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['"', '"'], ["'", "'"], ['\_^\s*\<function\>.*', '\_^\s*endfunction\_$'], ['\_^\s*\<if\>.*', '\_^\s*\<endif\>\s*\_$'], ]
-
-" textobj-parameter
-omap i, <Plug>(textobj-parameter-i)
-omap a, <Plug>(textobj-parameter-a)
-
-" textobj-multitextobj
-let g:textobj_multitextobj_textobjects_group_i = {
-            \   "A" : [
-            \       "\<Plug>(textobj-wiw-i)",
-            \       "iw",
-            \    ],
-            \   "B" : [
-            \       "it",
-            \       "\<Plug>(textobj-multiblock-i)",
-            \    ],
-            \}
-let g:textobj_multitextobj_textobjects_group_a = {
-            \   "A" : [
-            \       "\<Plug>(textobj-wiw-a)",
-            \       "aw",
-            \    ],
-            \   "B" : [
-            \       "at",
-            \       "\<Plug>(textobj-multiblock-a)",
-            \    ],
-            \}
-omap <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
-omap <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
-omap <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
-omap <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
-vmap <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
-vmap <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
-vmap <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
-vmap <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
-omap iw <Plug>(textobj-word-i)
-omap aw <Plug>(textobj-word-a)
-omap ib <Plug>(textobj-block-i)
-omap ab <Plug>(textobj-block-a)
-vmap iw <Plug>(textobj-word-i)
-vmap aw <Plug>(textobj-word-a)
-vmap ib <Plug>(textobj-block-i)
-vmap ab <Plug>(textobj-block-a)
 
 " Gist
 let g:gist_detect_filetype = 1
@@ -1247,11 +1188,6 @@ nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
 let g:c_prototype_no_default_keymappings = 1
 let g:c_prototype_remove_var_name = 1
 let g:c_prototype_insert_point = 2
-
-" vim-operator-flashy
-map y <Plug>(operator-flashy)
-nmap Y <Plug>(operator-flashy)
-let g:operator#flashy#group = 'Error'
 
 " vim-markdown
 let g:vim_markdown_conceal = 0
