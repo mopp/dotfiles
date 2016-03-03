@@ -260,8 +260,8 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " 空行を追加
-nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<CR>", v:count1)<CR>
-" nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
+nnoremap <silent> <CR>      :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor<CR>
+nnoremap <silent> <Leader>O :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor<CR>
 
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
@@ -602,7 +602,6 @@ if dein#load_cache()
     call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
     call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
     call dein#add('thinca/vim-visualstar')
-    call dein#add('tpope/vim-repeat')
     call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
     call dein#add('ujihisa/neco-look')
 
@@ -631,6 +630,8 @@ if dein#load_cache()
     call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-user')
+    call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ]})
+    call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
 
     call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
     call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
@@ -945,6 +946,15 @@ let g:operator#flashy#group = 'Error'
 
 " operator-replace
 map _ <Plug>(operator-replace)
+
+" operator-camelize
+map <Leader>ca <Plug>(operator-camelize-toggle)
+
+" exchange
+nmap <Leader>cx <Plug>(Exchange)
+xmap <Leader>cx <Plug>(Exchange)
+nmap <Leader>cy <Plug>(ExchangeClear)
+nmap <Leader>cy <Plug>(ExchangeLine)
 
 " Gist
 let g:gist_detect_filetype = 1
