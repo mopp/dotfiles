@@ -560,7 +560,6 @@ if dein#load_cache()
 
     call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
     call dein#add('LeafCage/yankround.vim')
-    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : ['Tabularize', 'AddTabularPattern'] })
     call dein#add('Lokaltog/vim-easymotion')
     call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ] })
     call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
@@ -568,6 +567,7 @@ if dein#load_cache()
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_i' : 1 })
     call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : ['Tabularize', 'AddTabularPattern'] })
     call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
     call dein#add('itchyny/lightline.vim')
     call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
@@ -628,8 +628,8 @@ if dein#load_cache()
     call dein#add('vim-scripts/sh.vim--Cla')
     call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
 
-    call dein#add('haya14busa/vim-operator-flashy', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-    call dein#add('kana/vim-operator-replace', { 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-user')
 
     call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
@@ -733,7 +733,6 @@ if dein#tap('deoplete.nvim') && has('nvim')
     let g:deoplete#omni_patterns.cpp     = '[^. *\t](\.|->|::)\w*'
 endif
 
-
 " neocomplete
 if dein#tap('neocomplete.vim') && !has('nvim')
     let g:neocomplete#enable_at_startup            = 1
@@ -806,59 +805,47 @@ endif
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 set conceallevel=2 concealcursor=i
-" let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
 let g:neosnippet#enable_snipmate_compatibility = 1
 
 " marching
-if dein#tap('vim-marching')
-    let g:marching_enable_neocomplete = 1
-    let g:marching#clang_command#options = { 'cpp' : '-Wall -std=gnu++1y', 'c' : '-Wall -std=c11' }
-endif
+let g:marching_enable_neocomplete = 1
+let g:marching#clang_command#options = { 'cpp' : '-Wall -std=gnu++1y', 'c' : '-Wall -std=c11' }
 
 " clang-format
-if dein#tap('vim-clang-format')
-    let g:clang_format#auto_format_on_insert_leave = 0
-    let g:clang_format#auto_formatexpr = 1
-    let flags = [
-                \ 'AfterClass: false',
-                \ 'AfterControlStatement: false',
-                \ 'AfterEnum: false',
-                \ 'AfterFunction: true',
-                \ 'AfterNamespace: true',
-                \ 'AfterObjCDeclaration: true',
-                \ 'AfterStruct: false',
-                \ 'AfterUnion: false',
-                \ 'BeforeCatch: false',
-                \ 'BeforeElse: false',
-                \ 'IndentBraces: false',
-                \ ]
-    let g:clang_format#style_options = {
-                \ 'AccessModifierOffset':                -4,
-                \ 'AlignTrailingComments':               'true',
-                \ 'AllowShortFunctionsOnASingleLine':    'false',
-                \ 'AllowShortIfStatementsOnASingleLine': 'false',
-                \ 'AllowShortLoopsOnASingleLine':        'false',
-                \ 'AlwaysBreakTemplateDeclarations':     'true',
-                \ 'BinPackParameters':                   'false',
-                \ 'BreakBeforeBraces':                   'Custom',
-                \ 'BraceWrapping':                       '{' . join(flags, ',') . '}',
-                \ 'ColumnLimit':                         '0',
-                \ 'IndentCaseLabels':                    'true',
-                \ 'MaxEmptyLinesToKeep':                 '3',
-                \ 'PointerBindsToType':                  'true',
-                \ 'Standard':                            'Auto',
-                \ 'TabWidth':                            '4',
-                \ 'UseTab':                              'Never',
-                \ 'IndentWidth':                         '4',
-                \ }
-
-    for t in [ 'clang-format-3.5', 'clang-format-3.4', 'clang-format' ]
-        if executable(t)
-            let g:clang_format#command = t
-            break
-        endif
-    endfor
-endif
+let g:clang_format#auto_format_on_insert_leave = 0
+let g:clang_format#auto_formatexpr = 1
+let flags = [
+            \ 'AfterClass: false',
+            \ 'AfterControlStatement: false',
+            \ 'AfterEnum: false',
+            \ 'AfterFunction: true',
+            \ 'AfterNamespace: true',
+            \ 'AfterObjCDeclaration: true',
+            \ 'AfterStruct: false',
+            \ 'AfterUnion: false',
+            \ 'BeforeCatch: false',
+            \ 'BeforeElse: false',
+            \ 'IndentBraces: false',
+            \ ]
+let g:clang_format#style_options = {
+            \ 'AccessModifierOffset':                -4,
+            \ 'AlignTrailingComments':               'true',
+            \ 'AllowShortFunctionsOnASingleLine':    'false',
+            \ 'AllowShortIfStatementsOnASingleLine': 'false',
+            \ 'AllowShortLoopsOnASingleLine':        'false',
+            \ 'AlwaysBreakTemplateDeclarations':     'true',
+            \ 'BinPackParameters':                   'false',
+            \ 'BreakBeforeBraces':                   'Custom',
+            \ 'BraceWrapping':                       '{' . join(flags, ',') . '}',
+            \ 'ColumnLimit':                         '0',
+            \ 'IndentCaseLabels':                    'true',
+            \ 'MaxEmptyLinesToKeep':                 '3',
+            \ 'PointerBindsToType':                  'true',
+            \ 'Standard':                            'Auto',
+            \ 'TabWidth':                            '4',
+            \ 'UseTab':                              'Never',
+            \ 'IndentWidth':                         '4',
+            \ }
 
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
@@ -868,21 +855,17 @@ let g:NERDSpaceDelims = 1
 nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
-if dein#tap('nerdcommenter')
-    execute 'autocmd mopp User dein#post_source#' . g:dein#name 'doautocmd NERDCommenter BufEnter'
-endif
+autocmd mopp User dein#post_source#nerdcommenter doautocmd NERDCommenter BufEnter
 
 " VimFiler
 nnoremap <silent> <Leader>fvs :VimFilerExplorer<CR>
 nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> <Leader>fvo :VimFilerTab<CR>
 nnoremap <silent> <Leader>fvc :VimFilerCreate<CR>
-if dein#tap('vimfiler')
-    let g:vimfiler_as_default_explorer = 1
-    let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
-    let g:vimfiler_force_overwrite_statusline = 0
-    execute 'autocmd mopp User dein#post_source#' . g:dein#name "call vimfiler#custom#profile('default', 'context', { 'safe' : 0, })"
-endif
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
+let g:vimfiler_force_overwrite_statusline = 0
+autocmd mopp User dein#post_source#vimfiler call vimfiler#custom#profile('default', 'context', { 'safe' : 0 })
 function! s:config_vimfiler()
     unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
@@ -947,17 +930,7 @@ function! s:hooks_on_post_source_smartinput()
     call smartinput#map_to_trigger('i', '*', '*', '*')
     call smartinput#define_rule({ 'char' : '*', 'at' : 'defparameter \*\%#', 'input' : '*<Left>', 'filetype' : [ 'lisp' ]})
 endfunction
-
-if dein#tap('vim-smartinput')
-    execute 'autocmd mopp User dein#post_source#' . g:dein#name 'call s:hooks_on_post_source_smartinput()'
-endif
-
-" Smartchr
-if dein#tap('vim-smartchr')
-    if &filetype ==? 'lisp'
-        inoremap <expr> ; smartchr#loop('; ', ';')
-    endif
-endif
+autocmd mopp User dein#post_source#vim-smartinput call s:hooks_on_post_source_smartinput()
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
@@ -978,16 +951,14 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
 " syntastic
-if dein#tap('syntastic')
-    let g:syntastic_mode_map = { 'mode' : 'passive' }
-    let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-    let is_clang = executable('clang')
-    let g:syntastic_c_compiler           = ((is_clang == 0) ? 'gcc' : 'clang')
-    let g:syntastic_cpp_compiler         = ((is_clang == 0) ? 'g++' : 'clang++')
-    let g:syntastic_c_compiler_options   = ($USER == 'mopp' ? '-std=c11 ' : '') . op
-    let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
-    let g:syntastic_loc_list_height      = 5
-end
+let g:syntastic_mode_map = { 'mode' : 'passive' }
+let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+let is_clang = executable('clang')
+let g:syntastic_c_compiler           = ((is_clang == 0) ? 'gcc' : 'clang')
+let g:syntastic_cpp_compiler         = ((is_clang == 0) ? 'g++' : 'clang++')
+let g:syntastic_c_compiler_options   = ($USER == 'mopp' ? '-std=c11 ' : '') . op
+let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
+let g:syntastic_loc_list_height      = 5
 
 " rainbow parenthesis
 let g:rainbow_active = 1
@@ -1151,16 +1122,6 @@ let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
 " Clighter
-if dein#tap('clighter')
-    let g:clighter_autostart = 0
-    let g:clighter_occurrences_mode = 0
-    let g:clighter_libclang_file = '/usr/local/lib/libclang.so'
-    if filereadable(g:clighter_libclang_file) == 0
-        let g:clighter_libclang_file = '/usr/lib/libclang.so'
-    endif
-    execute 'autocmd mopp User dein#post_source#' . g:dein#name 'call s:hooks_on_post_source_clighter()'
-endif
-
 function! s:hooks_on_post_source_clighter()
     hi m_decl cterm=bold
     " hi link clighterMacroInstantiation Define
@@ -1177,6 +1138,14 @@ function! s:hooks_on_post_source_clighter()
     hi link clighterMemberRefExpr      None
     hi link clighterNamespace          None
 endfunction
+
+let g:clighter_autostart = 0
+let g:clighter_occurrences_mode = 0
+let g:clighter_libclang_file = '/usr/local/lib/libclang.so'
+if filereadable(g:clighter_libclang_file) == 0
+    let g:clighter_libclang_file = '/usr/lib/libclang.so'
+endif
+autocmd mopp User dein#post_source#clighter call s:hooks_on_post_source_clighter()
 
 " Casetrate
 let g:casetrate_leader = '<leader>a'
@@ -1217,7 +1186,7 @@ function! s:update_syntastic()
     SyntasticCheck
     call lightline#update()
 endfunction
-"
+
 " Depending on some plugins.
 augroup plugin
     autocmd!
