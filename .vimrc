@@ -602,6 +602,7 @@ if dein#load_cache()
     call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
     call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
     call dein#add('thinca/vim-visualstar')
+    call dein#add('tpope/vim-repeat')
     call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
     call dein#add('ujihisa/neco-look')
 
@@ -1175,7 +1176,7 @@ let g:vim_markdown_conceal = 0
 let g:previm_show_header = 0
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'unite', 'help' ]
+let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
