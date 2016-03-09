@@ -110,6 +110,7 @@ let g:lisp_instring    = 1
 let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h   = 1
 let g:tex_conceal      = ''
+let g:tex_flavor       = 'latex'
 
 
 "-------------------------------------------------------------------------------"
@@ -165,7 +166,8 @@ endfunction
 " cmap / cnoremap |    -     |  -   |       @        |     -      |  -   |    -     |
 "-----------------------------------------------------------------------------------"
 
-let g:mapleader = ' '
+let g:mapleader      = ' '
+let g:maplocalleader = '\'
 
 " 矯正
 inoremap <BS> <Nop>
@@ -441,17 +443,19 @@ augroup mopp
     " Lisp
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
 
-    " Enable wrap in text.
+    " text.
     autocmd BufWinEnter *.txt setlocal wrap
 
     " Tex
-    autocmd BufWinEnter *.tex setlocal spell wrap
+    autocmd BufWinEnter *.tex setlocal spell wrap nocursorline
 
     " sh
     autocmd BufWinEnter *.sh setlocal filetype=sh
 
     " toml
     autocmd BufWinEnter *.toml setlocal filetype=toml
+
+    autocmd BufWinEnter *.sc setlocal filetype=c
 augroup END
 
 
@@ -561,7 +565,7 @@ if dein#load_cache()
     call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Lokaltog/vim-easymotion')
-    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ] })
+    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir' ] })
     call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
     call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
@@ -615,10 +619,11 @@ if dein#load_cache()
     call dein#add('gnuplot.vim')
     call dein#add('jelera/vim-javascript-syntax')
     call dein#add('jiangmiao/simple-javascript-indenter')
+    call dein#add('lervag/vimtex', { 'lazy' : 1, 'on_ft' : 'tex' })
     call dein#add('othree/html5.vim')
     call dein#add('plasticboy/vim-markdown')
     call dein#add('pycckuu/MatlabFilesEdition')
-    call dein#add('rust-lang/rust.vim', { 'lazy' : 1, 'on_ft' : 'rust' })
+    call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
     call dein#add('thinca/vim-ft-help_fold')
     call dein#add('vim-jp/cpp-vim')
@@ -863,7 +868,6 @@ autocmd mopp User dein#post_source#nerdcommenter doautocmd NERDCommenter BufEnte
 nnoremap <silent> <Leader>fvs :VimFilerExplorer<CR>
 nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> <Leader>fvo :VimFilerTab<CR>
-nnoremap <silent> <Leader>fvc :VimFilerCreate<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_force_overwrite_statusline = 0
@@ -1180,6 +1184,15 @@ let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
+
+" vimtex
+let g:vimtex_latexmk_continuous = 0
+" let g:vimtex_latexmk_options    = '-pdf -quiet'
+let g:vimtex_index_split_pos    = 'vertical rightbelow'
+let g:vimtex_index_split_width  = 35
+if has('unix')
+    let g:vimtex_view_general_viewer = 'evince'
+endif
 
 
 "-------------------------------------------------------------------------------"
