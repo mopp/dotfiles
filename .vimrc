@@ -70,6 +70,7 @@ endif
 if !has('nvim')
     set clipboard=
 endif
+set dictionary=/usr/share/dict/words
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set timeout                     " マッピングのタイムアウト有効
@@ -535,23 +536,24 @@ endif
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
-let s:dein_path = expand('~/.vim/bundle/repos/github.com/Shougo/dein.vim')
-if !isdirectory(s:dein_path)
+let s:DEIN_BASE_PATH = '~/.vim/bundle/'
+let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
+if !isdirectory(s:DEIN_PATH)
     if !executable('git')
         syntax enable
         colorscheme desert
         finish
     endif
 
-    execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:dein_path
+    execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
 endif
 
 " dein.vim
-execute 'set runtimepath^='.s:dein_path
+execute 'set runtimepath^=' . s:DEIN_PATH
 
-call dein#begin('~/.vim/bundle/')
+if dein#load_state(s:DEIN_BASE_PATH)
+    call dein#begin(s:DEIN_BASE_PATH)
 
-if dein#load_cache()
     call dein#add('Shougo/dein.vim')
 
     call dein#add('Shougo/deoplete.nvim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : has('nvim') })
@@ -593,21 +595,21 @@ if dein#load_cache()
     call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
     call dein#add('mopp/mopbuf.vim')
     call dein#add('mopp/mopkai.vim')
-    call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ 'n', '<Plug>(next-alter-open)' ] })
-    call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ 'n', '<Plug>(openvimrc-open)' ] })
+    call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
+    call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
     call dein#add('mopp/smartnumber.vim')
-    call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ 'n', '<Plug>' ] })
+    call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
     call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
     call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
     call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
-    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ 'nx', '<Plug>NERDCommenter' ] })
+    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] })
     call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
     call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
-    call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ 'x', '<Plug>BlockitVisual' ] })
+    call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
     call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
-    call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ 'n', '<Plug>(openbrowser-open)' ], 'on_func' : 'openbrowser' })
+    call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
     call dein#add('ujihisa/neco-look')
 
     call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
@@ -616,9 +618,8 @@ if dein#load_cache()
     call dein#add('awk.vim')
     call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
     call dein#add('cespare/vim-toml')
-    call dein#add('gnuplot.vim')
+    call dein#add('gnuplot.vim', {'lazy':1, 'on_ft' : 'gnuplot'})
     call dein#add('jelera/vim-javascript-syntax')
-    call dein#add('jiangmiao/simple-javascript-indenter')
     call dein#add('lervag/vimtex')
     call dein#add('othree/html5.vim')
     call dein#add('plasticboy/vim-markdown')
@@ -633,18 +634,18 @@ if dein#load_cache()
     call dein#add('vim-scripts/sh.vim--Cla')
     call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
 
-    call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ 'nx', '<Plug>' ] })
-    call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ 'nx', '<Plug>' ] })
+    call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-user')
-    call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ 'nx', '<Plug>' ]})
-    call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ 'nx', '<Plug>' ] })
+    call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ]})
+    call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
 
-    call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ 'ox', 'af', 'if', 'aF', 'iF' ] })
-    call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] })
-    call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ 'ox', 'al', 'il' ] })
+    call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
+    call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
+    call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'al', 'il' ] ] })
     call dein#add('kana/vim-textobj-user')
-    call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ 'ox', 'av', 'iv' ] })
-    call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ 'ox', 'a,', 'i,', 'i2,' ] })
+    call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
+    call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
 
     call dein#add('machakann/vim-sandwich')
 
@@ -657,10 +658,10 @@ if dein#load_cache()
     call dein#add('osyo-manga/unite-quickfix')
     call dein#add('tsukkee/unite-tag')
 
-    call dein#save_cache()
-endif
+    call dein#end()
 
-call dein#end()
+    call dein#save_state()
+endif
 
 if dein#check_install()
     call dein#install()
@@ -691,30 +692,26 @@ function! s:unite_smart_grep()
     endif
 endfunction
 
-if dein#tap('unite.vim')
-    let g:unite_data_directory             = expand('~/.vim/unite')
-    let g:unite_source_file_mru_limit      = 50
-    let g:unite_cursor_line_highlight      = 'TabLineSel'
-    let g:unite_enable_short_source_names  = 1
-    let g:unite_source_history_yank_enable = 1
-    let g:unite_force_overwrite_statusline = 0
-    let g:unite_source_grep_max_candidates = 200
-    let g:unite_source_bookmark_directory  = expand('~/.vim/bookmark')
-    let g:unite_quickfix_is_multiline      = 0
+let g:unite_source_file_mru_limit      = 50
+let g:unite_cursor_line_highlight      = 'TabLineSel'
+let g:unite_enable_short_source_names  = 1
+let g:unite_source_history_yank_enable = 1
+let g:unite_force_overwrite_statusline = 0
+let g:unite_source_grep_max_candidates = 200
+let g:unite_quickfix_is_multiline      = 0
 
-    if executable('hw')
-        " for highway
-        let g:unite_source_grep_command       = 'hw'
-        let g:unite_source_grep_default_opts  = '--no-group --no-color'
-        let g:unite_source_grep_recursive_opt = ''
-        let g:unite_source_grep_encoding      = 'utf-8'
-    elseif executable('pt')
-        " for the platinum searcher
-        let g:unite_source_grep_command       = 'pt'
-        let g:unite_source_grep_default_opts  = '--nogroup --nocolor'
-        let g:unite_source_grep_recursive_opt = ''
-        let g:unite_source_grep_encoding      = 'utf-8'
-    endif
+if executable('hw')
+    " for highway
+    let g:unite_source_grep_command       = 'hw'
+    let g:unite_source_grep_default_opts  = '--no-group --no-color'
+    let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_encoding      = 'utf-8'
+elseif executable('pt')
+    " for the platinum searcher
+    let g:unite_source_grep_command       = 'pt'
+    let g:unite_source_grep_default_opts  = '--nogroup --nocolor'
+    let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_encoding      = 'utf-8'
 endif
 
 function! s:on_exe_unite()
@@ -751,7 +748,6 @@ if dein#tap('neocomplete.vim') && !has('nvim')
     let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#enable_auto_delimiter        = 1
     let g:neocomplete#lock_buffer_name_pattern     = '^zsh.*'
-    let g:neocomplete#data_directory               = expand('~/.vim/neocomplete')
     let g:neocomplete#enable_prefetch              = 1
 
     " 外部オムニ補完関数を直接呼び出す
@@ -869,7 +865,6 @@ nnoremap <silent> <Leader>fvs :VimFilerExplorer<CR>
 nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> <Leader>fvo :VimFilerTab<CR>
 let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_force_overwrite_statusline = 0
 autocmd mopp User dein#post_source#vimfiler call vimfiler#custom#profile('default', 'context', { 'safe' : 0 })
 function! s:config_vimfiler()
