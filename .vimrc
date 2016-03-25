@@ -448,7 +448,7 @@ augroup mopp
     autocmd BufWinEnter *.txt setlocal wrap
 
     " Tex
-    autocmd BufWinEnter *.tex setlocal spell wrap nocursorline
+    autocmd BufWinEnter,FilterWritePost *.tex setlocal spell wrap nocursorline
 
     " sh
     autocmd BufWinEnter *.sh setlocal filetype=sh
@@ -565,6 +565,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('fo60213/matlab-snippets')
 
     call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
+    call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Lokaltog/vim-easymotion')
     call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFilerExplorer', 'VimFilerTab', 'VimFilerBufferDir' ] })
@@ -573,14 +574,14 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_i' : 1 })
     call dein#add('bronson/vim-trailing-whitespace')
-    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : ['Tabularize', 'AddTabularPattern'] })
+    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : [ 'Tabularize', 'AddTabularPattern' ] })
     call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
     call dein#add('itchyny/lightline.vim')
     call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
     call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
     call dein#add('kana/vim-smartchr')
     call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1 })
-    call dein#add('koron/nyancat-vim', { 'lazy' : 1, 'on_cmd' : [ 'Nyancat', 'Nyancat2',] })
+    call dein#add('koron/nyancat-vim', { 'lazy''on_cmd' : [ 'Nyancat', 'Nyancat2' ] })
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
     call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
@@ -602,6 +603,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
     call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
     call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
+    call dein#add('rickhowe/diffchar.vim')
     call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] })
     call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
     call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
@@ -618,6 +620,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('awk.vim')
     call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
     call dein#add('cespare/vim-toml')
+    call dein#add('digitaltoad/vim-pug')
     call dein#add('gnuplot.vim', {'lazy':1, 'on_ft' : 'gnuplot'})
     call dein#add('jelera/vim-javascript-syntax')
     call dein#add('lervag/vimtex')
@@ -632,6 +635,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('vim-ruby/vim-ruby')
     call dein#add('vim-scripts/Arduino-syntax-file')
     call dein#add('vim-scripts/sh.vim--Cla')
+    call dein#add('wavded/vim-stylus')
     call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
 
     call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
@@ -809,6 +813,9 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 set conceallevel=2 concealcursor=i
 let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#scope_aliases = {}
+let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
+let g:neosnippet#scope_aliases['pug'] = 'jade'
 
 " marching
 let g:marching_enable_neocomplete = 1
@@ -1182,9 +1189,9 @@ let g:gitgutter_map_keys = 0
 
 " vimtex
 let g:vimtex_latexmk_continuous = 0
-" let g:vimtex_latexmk_options    = '-pdf -quiet'
 let g:vimtex_index_split_pos    = 'vertical rightbelow'
 let g:vimtex_index_split_width  = 35
+let g:vimtex_fold_enabled = 1
 if has('unix')
     let g:vimtex_view_general_viewer = 'evince'
 endif
