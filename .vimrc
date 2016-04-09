@@ -455,8 +455,6 @@ augroup mopp
 
     " toml
     autocmd BufWinEnter *.toml setlocal filetype=toml
-
-    autocmd BufWinEnter *.sc setlocal filetype=c
 augroup END
 
 
@@ -568,7 +566,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Lokaltog/vim-easymotion')
-    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFilerExplorer', 'VimFilerTab', 'VimFilerBufferDir' ] })
+    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call vimfiler#custom#profile("default", "context", { "safe" : 0 })' })
     call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
     call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
@@ -580,7 +578,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
     call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
     call dein#add('kana/vim-smartchr')
-    call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1 })
+    call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1, 'hook_post_source' : 'call Hook_on_post_source_smartinput()'})
     call dein#add('koron/nyancat-vim', { 'lazy''on_cmd' : [ 'Nyancat', 'Nyancat2' ] })
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
@@ -604,7 +602,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
     call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
     call dein#add('rickhowe/diffchar.vim')
-    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ] })
+    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source' : 'doautocmd NERDCommenter BufEnter'})
     call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
     call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
     call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
@@ -618,7 +616,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shirk/vim-gas')
     call dein#add('ahayman/vim-nodejs-complete')
     call dein#add('awk.vim')
-    call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
+    call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ], 'hook_post_source' : 'call Hook_on_post_source_clighter()' })
     call dein#add('cespare/vim-toml')
     call dein#add('digitaltoad/vim-pug')
     call dein#add('gnuplot.vim', {'lazy':1, 'on_ft' : 'gnuplot'})
@@ -650,6 +648,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-textobj-user')
     call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
     call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
+    " call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1, 'on_ft' : [ 'tex', 'markdown', 'txt' ], 'hook_post_source' : 'call textobj#sentence#init()'})
+    call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1 })
 
     call dein#add('machakann/vim-sandwich')
 
@@ -865,15 +865,13 @@ let g:NERDSpaceDelims = 1
 nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
-autocmd mopp User dein#post_source#nerdcommenter doautocmd NERDCommenter BufEnter
 
 " VimFiler
-nnoremap <silent> <Leader>fvs :VimFilerExplorer<CR>
+nnoremap <silent> <Leader>fvs :VimFiler -explorer<CR>
+nnoremap <silent> <Leader>fvo :VimFiler -tab<CR>
 nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
-nnoremap <silent> <Leader>fvo :VimFilerTab<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
-autocmd mopp User dein#post_source#vimfiler call vimfiler#custom#profile('default', 'context', { 'safe' : 0 })
 function! s:config_vimfiler()
     unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
@@ -892,7 +890,7 @@ let g:tagbar_compact = 1
 nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
 
 " Smartinput
-function! s:hooks_on_post_source_smartinput()
+function! Hook_on_post_source_smartinput()
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
@@ -938,7 +936,6 @@ function! s:hooks_on_post_source_smartinput()
     call smartinput#map_to_trigger('i', '*', '*', '*')
     call smartinput#define_rule({ 'char' : '*', 'at' : 'defparameter \*\%#', 'input' : '*<Left>', 'filetype' : [ 'lisp' ]})
 endfunction
-autocmd mopp User dein#post_source#vim-smartinput call s:hooks_on_post_source_smartinput()
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
@@ -1139,7 +1136,7 @@ let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
 " Clighter
-function! s:hooks_on_post_source_clighter()
+function! Hook_on_post_source_clighter()
     hi m_decl cterm=bold
     " hi link clighterMacroInstantiation Define
     hi link clighterTypeRef            Type
@@ -1162,7 +1159,6 @@ let g:clighter_libclang_file = '/usr/local/lib/libclang.so'
 if filereadable(g:clighter_libclang_file) == 0
     let g:clighter_libclang_file = '/usr/lib/libclang.so'
 endif
-autocmd mopp User dein#post_source#clighter call s:hooks_on_post_source_clighter()
 
 " Casetrate
 let g:casetrate_leader = '<leader>a'
@@ -1191,10 +1187,13 @@ let g:gitgutter_map_keys = 0
 let g:vimtex_latexmk_continuous = 0
 let g:vimtex_index_split_pos    = 'vertical rightbelow'
 let g:vimtex_index_split_width  = 35
-let g:vimtex_fold_enabled = 1
+" let g:vimtex_fold_enabled = 1
 if has('unix')
     let g:vimtex_view_general_viewer = 'evince'
 endif
+
+" textobj-sentence
+let g:textobj#sentence#select = 'n'
 
 
 "-------------------------------------------------------------------------------"
@@ -1219,6 +1218,9 @@ augroup plugin
 
     " VimFiler
     autocmd FileType vimfiler call s:config_vimfiler()
+
+    " textobj-sentence
+    autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
 
     " Unite
     autocmd FileType unite call s:on_exe_unite()
