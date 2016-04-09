@@ -100,10 +100,12 @@ if [ -e $ZSLOT_SRC ]; then
     export FPATH=$ZSLOT_SRC:$FPATH
     autoload -Uz zslot
     export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
-    export ZUSER_SLOT_MAX_SLOT_ID=9
+    source $ZUSER_SLOT_FILE_NAME
+    setopt CDABLE_VARS
+    setopt AUTO_CD
     alias zs=zslot
     alias zss='zslot -s'
-    alias zsp='zslot -p'
+    alias zsa='zslot -a'
 fi
 
 # Setting for EDITOR.
