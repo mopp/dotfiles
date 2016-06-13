@@ -1230,6 +1230,10 @@ augroup plugin
 
     " lightline
     autocmd BufWritePost * call s:update_syntastic()
+
+    " To avoid mess indent in perl.
+    autocmd BufWinEnter *.pl nested :RainbowToggleOff
+    autocmd BufWinLeave *.pl nested :RainbowToggleOn
 augroup END
 
 syntax enable
