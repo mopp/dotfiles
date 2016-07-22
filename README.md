@@ -1,7 +1,16 @@
-## dotfiles
-This is some configuration files
+# dotfiles
+Configuration files.
 
 
-## Setup
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/mopp/dotfiles/master/install.sh)"  
-sh -c "$(wget -qO https://raw.githubusercontent.com/mopp/dotfiles/master/install.sh)"
+# Powered by
+[Dotbot](https://github.com/anishathalye/dotbot)  
+Copyright (c) 2014-2016 Anish Athalye.  
+Licensed under MIT
+
+
+# Setup
+```shell
+git clone https://github.com/mopp/dotfiles.git
+cd dotfiles
+./install 
+```
