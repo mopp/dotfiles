@@ -1,0 +1,14 @@
+- defaults:
+    link:
+        relink: true
+        create: true
+
+- link:
+    ~/.fbtermrc: .fbtermrc
+    ~/.vrapperrc: .vrapperrc
+    ~/.Xdefaults: .Xdefaults
+    ~/.xinitrc: .xinitrc
+    ~/.Xmodmap: .Xmodmap
+    ~/.i3status.conf: .i3status.conf
+    ~/.i3/config: i3_config
+    ~/.i3/i3exit: i3exit
