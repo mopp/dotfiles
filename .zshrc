@@ -19,7 +19,6 @@
 #---------------------------------------------------------------------------------------"
 export LANG=en_US.UTF-8
 
-# Setting for each OS.
 case $OSTYPE in
     solaris*)
         export TERM='rxvt'
@@ -66,34 +65,57 @@ case $OSTYPE in
         ;;
 esac
 
-# Setting for each terminal.
+# For terminals.
 case $TERM in
     *rxvt*)
         stty -ixon
         ;;
 esac
 
-# Setting for Ruby.
+# For Ruby.
 if [[ -x $(which ruby) ]]; then
     export GEM_HOME=$(ruby -e 'print Gem.user_dir')
     export PATH=$GEM_HOME/bin:$PATH
 fi
 
-# Setting for rbenv.
+# For rbenv.
 if [[ -d $HOME/.rbenv ]]; then
     export PATH=$HOME/.rbenv/bin:$PATH
     eval "$(rbenv init -)"
 fi
 
-# Setting for R.
-export R_LIBS_USER=$HOME/.config/r/
+# For nvm.
+if [[ -x $(which nvm) ]]; then
+    export NVM_DIR="$HOME/.nvm"
+    source /usr/share/nvm/nvm.sh
+    source /usr/share/nvm/install-nvm-exec
+fi
 
-# Setting for cargo.
+# For R.
+if [[ -x $(which R) ]]; then
+    export R_LIBS_USER=$HOME/.config/r/
+fi
+
+# For cargo.
 if [[ -d $HOME/.cargo/ ]]; then
     export PATH=$HOME/.cargo/bin:$PATH
 fi
 
-# Setting for zslot.
+# For colormake.
+if [[ -x "$(which colormake)" ]]; then
+    alias maken='make'
+    alias makec='colormake'
+    compdef _make colormake
+fi
+
+# For colordiff.
+if [[ -x "$(which colordiff)" ]]; then
+    alias diff='colordiff -u'
+else
+    alias diff='diff -u'
+fi
+
+# For zslot.
 # https://github.com/kmhjs/zslot.git
 ZSLOT_SRC=~/Tools/zslot/src/
 if [ -e $ZSLOT_SRC ]; then
@@ -108,7 +130,7 @@ if [ -e $ZSLOT_SRC ]; then
     alias zsa='zslot -a'
 fi
 
-# Setting for EDITOR.
+# For EDITOR variable.
 if [[ -x $(which nvim) ]]; then
     export EDITOR=nvim
 elif [[ -x $(which vim) ]]; then
@@ -116,20 +138,41 @@ elif [[ -x $(which vim) ]]; then
 else
     export EDITOR=vi
 fi
+
+# For less.
 export PAGER=less
 export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
 
+# Aliases
+alias octave='octave-cli -q'
+alias R='R -q --vanilla'
+alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+alias clang++='clang++ -std=c++1y -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+alias grep='grep --color=auto'
+alias la='ls -ahF --color'
+alias ll='ls -hlF --color'
+alias ls='ls -hF --color'
+alias od='od -tx1 -Ax'
+alias xxd='xxd -a'
+alias pdflatex='pdflatex -interaction=nonstopmode -halt-on-error'
+alias aspell='aspell --lang=en -c -t'
+alias objdump='objdump -M intel'
+alias -g L='| less'
+alias -g M='|more'
+alias -g H='|head'
+alias -g T='|tail'
+
+
+
 # Remove duplicate in environment variables.
 typeset -U PATH CDPATH FPATH MANPATH
 
-
 # Complement
-autoload -U compinit
+autoload -Uz compinit
 compinit -u
-# zmodload zsh/mathfunc;
 setopt auto_list
 setopt auto_menu
 setopt list_packed
@@ -145,11 +188,9 @@ zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
 zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
 
-
 # Move.
 setopt auto_cd      # moving only directory name.
 setopt auto_pushd   # add directory stack during cd moving.
-
 
 # History.
 HISTFILE=~/.zsh_history
@@ -159,7 +200,7 @@ setopt inc_append_history
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
-
+setopt share_history
 
 # Prompt
 # PROMPT : Normal prompt.
@@ -202,7 +243,6 @@ case $OSTYPE in
         ;;
 esac
 
-
 # Others
 setopt no_beep
 setopt nolistbeep
@@ -214,47 +254,16 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
 [[ -n "${key[PageDown]}" ]]  && bindkey  "${key[PageDown]}"  history-beginning-search-forward
 
 
-# aliases
-alias octave='octave-cli -q'
-alias R='R -q --vanilla'
-alias cl=clear
-alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-alias clang++='clang++ -std=c++1y -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-alias grep='grep --color=auto'
-alias la='ls -ahF --color'
-alias ll='ls -hlF --color'
-alias ls='ls -hF --color'
-alias od='od -tx1 -Ax'
-alias xxd='xxd -a'
-alias pdflatex='pdflatex -interaction=nonstopmode -halt-on-error'
-alias aspell='aspell --lang=en -c -t'
-alias objdump='objdump -M intel'
-alias -g L='| less'
-alias -g M='|more'
-alias -g H='|head'
-alias -g T='|tail'
-
-if [[ -x "$(which colormake)" ]]; then
-    # alias normal_make='make'
-    # alias make='colormake'
-    compdef _make colormake
-fi
-
-if [[ -x "$(which colordiff)" ]]; then
-    alias diff='colordiff -u'
-else
-    alias diff='diff -u'
-fi
-
-
-# functions
+# Functions
 function clean_vim() {
     rm -rf ~/.vim/view/*
     rm -rf ~/.vim/unite/*
     rm -rf ~/.vim/bundle/.neobundle/*
     rm -rf ~/.vim/vimfiler/*
     rm -rf ~/.vim/neocomplete/*
+    rm -rf ~/.vim/bundle/temp/
     rm ~/.viminfo
+    rm -rf ~/.local/share/nvim/
 }
 
 function reload_zshrc() {
@@ -296,4 +305,8 @@ function switch_cc_cxx() {
         export CC='clang'
         export CXX='clang++'
     fi
+}
+
+function conv_timestamp() {
+    date --date="@$1" '+%Y/%m/%d %H:%M:%S'
 }
