@@ -65,6 +65,91 @@ case $OSTYPE in
         ;;
 esac
 
+
+# Complement
+autoload -Uz compinit
+compinit -u
+setopt auto_list
+setopt auto_menu
+setopt list_packed
+setopt list_types
+setopt auto_param_slash
+setopt magic_equal_subst
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
+zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
+zstyle ':completion:*:options' description 'yes'
+
+# Move.
+setopt auto_cd      # moving only directory name.
+setopt auto_pushd   # add directory stack during cd moving.
+
+# History.
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
+setopt inc_append_history
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt share_history
+
+# Prompt
+# PROMPT : Normal prompt.
+# PROMPT2: Multiline prompt.
+# SPROMPT: Miss command prompt.
+# RPROMPT: Right prompt
+setopt prompt_subst
+setopt re_match_pcre
+setopt transient_rprompt
+autoload -U colors
+colors
+case $OSTYPE in
+    darwin*)
+        PROMPT="%F{161}%n@%m:%% %f"
+        PROMPT2="%F{039}%B>%b %f"
+        SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
+        RPROMPT="%F{105}[%~]%f"
+        ;;
+    solaris*)
+        PROMPT="%F{1}%n@%m:%% %f"
+        PROMPT2="%F{2}%B>%b %f"
+        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
+        RPROMPT="%F{4}[%~]%f"
+        ;;
+    linux*)
+        case $TERM in
+            rxvt*)
+                PROMPT="%F{161}%n@%m:%% %f"
+                PROMPT2="%F{039}%B>%b %f"
+                SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
+                RPROMPT="%F{105}[%~]%f"
+                ;;
+            *)
+                PROMPT="%F{1}%n@%m:%% %f"
+                PROMPT2="%F{2}%B>%b %f"
+                SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
+                RPROMPT="%F{4}[%~]%f"
+                ;;
+        esac
+        ;;
+esac
+
+# Others
+setopt no_beep
+setopt nolistbeep
+bindkey -e
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
+
+# Only past commands beginning with the current input would have been shown.
+[[ -n "${key[PageUp]}"   ]]  && bindkey  "${key[PageUp]}"    history-beginning-search-backward
+[[ -n "${key[PageDown]}" ]]  && bindkey  "${key[PageDown]}"  history-beginning-search-forward
+
+
 # For terminals.
 case $TERM in
     *rxvt*)
@@ -166,92 +251,8 @@ alias -g H='|head'
 alias -g T='|tail'
 
 
-
 # Remove duplicate in environment variables.
 typeset -U PATH CDPATH FPATH MANPATH
-
-# Complement
-autoload -Uz compinit
-compinit -u
-setopt auto_list
-setopt auto_menu
-setopt list_packed
-setopt list_types
-setopt auto_param_slash
-setopt magic_equal_subst
-zstyle ':completion:*:default' menu select=2
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
-zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
-zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
-zstyle ':completion:*:options' description 'yes'
-
-# Move.
-setopt auto_cd      # moving only directory name.
-setopt auto_pushd   # add directory stack during cd moving.
-
-# History.
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=$HISTSIZE
-setopt inc_append_history
-setopt hist_ignore_dups
-setopt hist_ignore_all_dups
-setopt hist_reduce_blanks
-setopt share_history
-
-# Prompt
-# PROMPT : Normal prompt.
-# PROMPT2: Multiline prompt.
-# SPROMPT: Miss command prompt.
-# RPROMPT: Right prompt
-setopt prompt_subst
-setopt re_match_pcre
-setopt transient_rprompt
-autoload -U colors
-colors
-case $OSTYPE in
-    darwin*)
-        PROMPT="%F{161}%n@%m:%% %f"
-        PROMPT2="%F{039}%B>%b %f"
-        SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
-        RPROMPT="%F{105}[%~]%f"
-        ;;
-    solaris*)
-        PROMPT="%F{1}%n@%m:%% %f"
-        PROMPT2="%F{2}%B>%b %f"
-        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
-        RPROMPT="%F{4}[%~]%f"
-        ;;
-    linux*)
-        case $TERM in
-            rxvt*)
-                PROMPT="%F{161}%n@%m:%% %f"
-                PROMPT2="%F{039}%B>%b %f"
-                SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
-                RPROMPT="%F{105}[%~]%f"
-                ;;
-            *)
-                PROMPT="%F{1}%n@%m:%% %f"
-                PROMPT2="%F{2}%B>%b %f"
-                SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
-                RPROMPT="%F{4}[%~]%f"
-                ;;
-        esac
-        ;;
-esac
-
-# Others
-setopt no_beep
-setopt nolistbeep
-bindkey -e
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
-
-# Only past commands beginning with the current input would have been shown.
-[[ -n "${key[PageUp]}"   ]]  && bindkey  "${key[PageUp]}"    history-beginning-search-backward
-[[ -n "${key[PageDown]}" ]]  && bindkey  "${key[PageDown]}"  history-beginning-search-forward
 
 
 # Functions
