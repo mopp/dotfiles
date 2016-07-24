@@ -5,10 +5,12 @@
 
 - link:
     ~/.config/nvim/init.vim: .vimrc
-    ~/.vim: ~/.config/nvim/
     ~/.vimrc: .vimrc
     ~/.zshrc: .zshrc
     ~/.gitconfig: .gitconfig
     ~/.latexmkrc: .latexmkrc
     ~/.octaverc: .octaverc
     ~/.fehbg: .fehbg
+
+- shell:
+    - ln -s ~/.config/nvim/ ~/.vim
