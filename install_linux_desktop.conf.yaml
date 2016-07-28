@@ -6,7 +6,7 @@
 - link:
     ~/.fbtermrc: .fbtermrc
     ~/.vrapperrc: .vrapperrc
-    ~/.Xdefaults: .Xdefaults
+    ~/.Xresources: .Xresources
     ~/.xinitrc: .xinitrc
     ~/.Xmodmap: .Xmodmap
     ~/.i3status.conf: .i3status.conf
