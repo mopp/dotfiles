@@ -1,6 +1,7 @@
 [user]
     name  = mopp
     email = ac.kxp165@gmail.com
+    useConfigOnly = true
 [push]
     default = matching
 [color]
