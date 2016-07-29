@@ -3,6 +3,8 @@
         relink: true
         create: true
 
+- clean: ['~']
+
 - link:
     ~/.config/nvim/init.vim: .vimrc
     ~/.vimrc: .vimrc
@@ -13,4 +15,4 @@
     ~/.fehbg: .fehbg
 
 - shell:
-    - ln -s ~/.config/nvim/ ~/.vim
+    - ln -s ~/.config/nvim ~/.vim
