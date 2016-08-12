@@ -26,7 +26,7 @@ URxvt.shading:       30
 URxvt.transparent:   true
 URxvt.inheritPixmap: true
 
-URxvt.font:        xft:MyricaM M:size=13:antialias=true:style=Regular
+URxvt.font:        xft:Ricty:size=13:antialias=true:style=Regular
 URxvt.cjkwidth:    0
 URxvt.preeditType: OverTheSpot
 URxvt.inputMethod: uim
