@@ -4,6 +4,7 @@
         create: true
 
 - link:
+    ~/.fehbg: .fehbg
     ~/.fbtermrc: .fbtermrc
     ~/.vrapperrc: .vrapperrc
     ~/.Xresources: .Xresources

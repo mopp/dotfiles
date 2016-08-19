@@ -8,11 +8,8 @@
 - link:
     ~/.config/nvim/init.vim: .vimrc
     ~/.vimrc: .vimrc
+    ~/.vim: ~/.config/nvim
     ~/.zshrc: .zshrc
     ~/.gitconfig: .gitconfig
     ~/.latexmkrc: .latexmkrc
     ~/.octaverc: .octaverc
-    ~/.fehbg: .fehbg
-
-- shell:
-    - ln -s ~/.config/nvim ~/.vim
