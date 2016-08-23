@@ -13,3 +13,6 @@
     ~/.gitconfig: .gitconfig
     ~/.latexmkrc: .latexmkrc
     ~/.octaverc: .octaverc
+
+- shell:
+  - mkdir -p ~/.config/nvim/backup ~/.config/nvim/swap ~/.config/nvim/undo
