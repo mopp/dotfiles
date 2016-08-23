@@ -53,7 +53,7 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-
 " 折りたたみ
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示
-set foldmethod=indent       " 折畳の判別
+set foldmethod=syntax       " 折畳の判別
 set foldtext=Mopp_fold()    " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
@@ -455,6 +455,8 @@ augroup mopp
 
     " toml
     autocmd BufWinEnter *.toml setlocal filetype=toml
+
+    autocmd BufWinEnter *.m setlocal foldmethod=indent
 augroup END
 
 
@@ -560,7 +562,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/neosnippet', { 'lazy' : 1 , 'depends' : 'vim-snippets' })
     call dein#add('Shougo/neosnippet-snippets')
     call dein#add('honza/vim-snippets', { 'lazy' : 1 })
-    call dein#add('fo60213/matlab-snippets')
 
     call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
     call dein#add('Konfekt/FastFold')
@@ -614,17 +615,17 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
     call dein#add('Shirk/vim-gas')
-    call dein#add('ahayman/vim-nodejs-complete')
     call dein#add('awk.vim')
     call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ], 'hook_post_source' : 'call Hook_on_post_source_clighter()' })
     call dein#add('cespare/vim-toml')
+    call dein#add('daeyun/vim-matlab', {'lazy':1, 'on_ft' : 'matlab'})
     call dein#add('digitaltoad/vim-pug')
     call dein#add('gnuplot.vim', {'lazy':1, 'on_ft' : 'gnuplot'})
     call dein#add('jelera/vim-javascript-syntax')
     call dein#add('lervag/vimtex')
     call dein#add('othree/html5.vim')
+    call dein#add('pangloss/vim-javascript', { 'lazy' : 1, 'on_ft' : 'javascript' })
     call dein#add('plasticboy/vim-markdown')
-    call dein#add('pycckuu/MatlabFilesEdition')
     call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
     call dein#add('thinca/vim-ft-help_fold')
@@ -787,7 +788,6 @@ if dein#tap('neocomplete.vim') && !has('nvim')
     " neocompleteが呼び出すオムニ補完関数名
     let g:neocomplete#sources#omni#functions = get(g:, 'neocomplete#sources#omni#functions', {})
     let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
-    let g:neocomplete#sources#omni#functions.javascript = 'javascriptcomplete#CompleteJS'
 
     " オムニ補完関数呼び出し時の条件
     let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
