@@ -1,117 +1,165 @@
-" Vimrc By mopp :)
-" __      __  _                              ____             __  __
-" \ \    / / (_)                            |  _ \           |  \/  |
-"  \ \  / /   _   _ __ ___    _ __    ___   | |_) |  _   _   | \  / | ___  _ __  _ __
-"   \ \/ /   | | | '_ ` _ \  | '__|  / __|  |  _ <  | | | |  | |\/| |/ _ \| '_ \| '_ \
-"    \  /    | | | | | | | | | |    | (__   | |_) | | |_| |  | |  | | (_) | |_) | |_) |
-"     \/     |_| |_| |_| |_| |_|     \___|  |____/   \__, |  |_|  |_|\___/| .__/| .__/
-"                                                     __/ |               | |   | |
-"                                                    |___/                |_|   |_|
-"---------------------------------------------------------------------------------------"
+" __   ___                 __           __  __
+" \ \ / (_)_ __  _ _ __   / _|___ _ _  |  \/  |___ _ __ _ __
+"  \ V /| | '  \| '_/ _| |  _/ _ \ '_| | |\/| / _ \ '_ \ '_ \
+"   \_/ |_|_|_|_|_| \__| |_| \___/_|   |_|  |_\___/ .__/ .__/
+"                                                 |_|  |_|
+
+" Indent.
+set autoindent
+set backspace=2
+set breakindent
+set expandtab
+set shiftwidth=4
+set smartindent
+set smarttab
+set softtabstop=4
+set tabstop=4
+
+" Encoding.
+if has('vim_starting')
+    " Changing encoding in Vim at runtime is undefined behavior.
+    set encoding=utf-8
+    set fileencodings=utf-8,sjis,cp932,euc-jp
+    set fileformats=unix,mac,dos
+endif
+
+" Appearance
+set ambiwidth=double
+set noarabicshape
+set cmdheight=2
+set cursorline
+set display=lastline
+set conceallevel=2
+
+" Folding.
+set foldenable
+set foldcolumn=1
+set foldmethod=indent
+set foldtext=Mopp_fold() " TODO
+
+" Safety.
+set backup
+set backupdir=~/.vim/backup
+set directory=~/.vim/swap
+
+" Search.
+set hlsearch
+set ignorecase
+set incsearch
+
+" Others.
+set belloff=all
+set completeopt=menu
+set confirm
+set dictionary=/usr/share/dict/words
+set formatoptions+=tjrol
+set history=1000
+set helplang=ja
+
 
 " バックアップファイルと一時ファイル設定
-if isdirectory(expand('~/.vim/backup'))
-    set backupdir=~/.vim/backup
-    set directory=~/.vim/backup
-endif
-set backup
-set writebackup     " 上書き前にバックアップ作成
-set swapfile
-
-" インデント設定
-set backspace=2      " Backspaceの動作
-set autoindent
-set smartindent
-set expandtab        " <Tab>の代わりに空白
-set shiftwidth=4     " 自動インデントなどでずれる幅
-set smarttab         " 行頭に<Tab>でshiftwidth分インデント
-set softtabstop=4    " <Tab>, <BS>が対応する空白の数
-set tabstop=4        " 画面上で<Tab>文字が占める幅
-set formatoptions+=j " 行連結の時自動でコメント解除して連結
-set belloff=all
-
-" Encoding
-" Changing encoding in Vim at runtime is undefined behavior.
-if has('vim_starting')
-    set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
-    set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
-    set fileformats=unix,mac,dos                " 改行文字設定
-endif
-
-" 検索と補完
-set hlsearch            " 検索結果強調-:nohで解除
-set incsearch           " インクリメンタルサーチを有効
-set ignorecase          " 大文字小文字無視
-set smartcase           " 大文字があれば通常の検索
-set completeopt=menu    " 挿入モードでの補完設定
-set wildmenu            " コマンドの補完候補を表示
-let c = substitute($PWD, '[\r\|\n].*', '', 'g')
-let &path = c . '/,' . c . '/include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
-unlet c
-set cscopequickfix=s-,c-,d-,i-,t-,e-
-
-" 折りたたみ
-set foldenable
-set foldcolumn=3            " 左側に折りたたみガイド表示
-set foldmethod=syntax       " 折畳の判別
-set foldtext=Mopp_fold()    " 折りたたみ時の表示設定
-set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-
-" 履歴など
-set history=1000                 " コマンドの保存履歴数
-set viminfo='1000,<500,f1       " viminfoへの保存設定
-set viewoptions=cursor,folds    " :mkviewで保存する設定
-if isdirectory(expand('~/.vim/undo'))
-    set undodir=~/.vim/undo
-    set undofile
-endif
-
-" その他
-if !has('nvim')
-    set clipboard=
-endif
-set dictionary=/usr/share/dict/words
-set helplang=ja                 " ヘルプ検索で日本語を優先
-set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
-set timeout                     " マッピングのタイムアウト有効
-set timeoutlen=1000             " マッピングのタイムアウト時間
-set ttimeoutlen=0               " キーコードのタイムアウト時間
-set matchpairs+=<:>             " 括弧のハイライト追加
-if !has('gui_running')
-    set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
-endif
-let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
-let g:loaded_gzip          = 1
-"let g:loaded_netrwPlugin   = 1 " Spellfileのダウンロードにnetrwが必要になるので無効化しない
-let g:loaded_rrhelper      = 1
-let g:loaded_tar           = 1
-let g:loaded_tarPlugin     = 1
-let g:loaded_vimballPlugin = 1
-let g:loaded_zip           = 1
-let g:loaded_zipPlugin     = 1
-
-" 外観設定
-set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
-set cmdheight=2         " コマンドラインの行数
-set cursorline          " 現在行に下線表示
-set laststatus=2        " ステータスラインを表示する時
-set nowrap              " はみ出しの折り返し設定
-set number              " 行番号表示
-set ruler               " カーソルの現在地表示
-set showcmd             " 入力中のコマンド表示
-set showmatch           " 括弧強調
-set showtabline=2       " タブバーを常に表示
-set t_Co=256
-set list
-set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
-set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
-set updatetime=500
-let g:lisp_rainbow     = 1
-let g:lisp_instring    = 1
-let g:lispsyntax_clisp = 1
-let g:c_syntax_for_h   = 1
-let g:tex_conceal      = ''
-let g:tex_flavor       = 'latex'
+" if isdirectory(expand('~/.vim/backup'))
+"     set backupdir=~/.vim/backup
+"     set directory=~/.vim/backup
+" endif
+" set backup
+" set writebackup     " 上書き前にバックアップ作成
+" set swapfile
+"
+" " インデント設定
+" set backspace=2      " Backspaceの動作
+" set autoindent
+" set smartindent
+" set expandtab        " <Tab>の代わりに空白
+" set shiftwidth=4     " 自動インデントなどでずれる幅
+" set smarttab         " 行頭に<Tab>でshiftwidth分インデント
+" set softtabstop=4    " <Tab>, <BS>が対応する空白の数
+" set tabstop=4        " 画面上で<Tab>文字が占める幅
+" set formatoptions+=j " 行連結の時自動でコメント解除して連結
+" set belloff=all
+"
+" " Encoding
+" " Changing encoding in Vim at runtime is undefined behavior.
+" if has('vim_starting')
+"     set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
+"     set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
+"     set fileformats=unix,mac,dos                " 改行文字設定
+" endif
+"
+" " 検索と補完
+" set hlsearch            " 検索結果強調-:nohで解除
+" set incsearch           " インクリメンタルサーチを有効
+" set ignorecase          " 大文字小文字無視
+" set smartcase           " 大文字があれば通常の検索
+" set completeopt=menu    " 挿入モードでの補完設定
+" set wildmenu            " コマンドの補完候補を表示
+" let c = substitute($PWD, '[\r\|\n].*', '', 'g')
+" let &path = c . '/,' . c . '/include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
+" unlet c
+" set cscopequickfix=s-,c-,d-,i-,t-,e-
+"
+" " 折りたたみ
+" set foldenable
+" set foldcolumn=3            " 左側に折りたたみガイド表示
+" set foldmethod=syntax       " 折畳の判別
+" set foldtext=Mopp_fold()    " 折りたたみ時の表示設定
+" set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
+"
+" " 履歴など
+" set history=1000                 " コマンドの保存履歴数
+" set viminfo='1000,<500,f1       " viminfoへの保存設定
+" set viewoptions=cursor,folds    " :mkviewで保存する設定
+" if isdirectory(expand('~/.vim/undo'))
+"     set undodir=~/.vim/undo
+"     set undofile
+" endif
+"
+" " その他
+" if !has('nvim')
+"     set clipboard=
+" endif
+" set dictionary=/usr/share/dict/words
+" set helplang=ja                 " ヘルプ検索で日本語を優先
+" set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
+" set timeout                     " マッピングのタイムアウト有効
+" set timeoutlen=1000             " マッピングのタイムアウト時間
+" set ttimeoutlen=0               " キーコードのタイムアウト時間
+" set matchpairs+=<:>             " 括弧のハイライト追加
+" if !has('gui_running')
+"     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
+" endif
+" let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
+" let g:loaded_gzip          = 1
+" "let g:loaded_netrwPlugin   = 1 " Spellfileのダウンロードにnetrwが必要になるので無効化しない
+" let g:loaded_rrhelper      = 1
+" let g:loaded_tar           = 1
+" let g:loaded_tarPlugin     = 1
+" let g:loaded_vimballPlugin = 1
+" let g:loaded_zip           = 1
+" let g:loaded_zipPlugin     = 1
+"
+" " 外観設定
+" set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
+" set cmdheight=2         " コマンドラインの行数
+" set cursorline          " 現在行に下線表示
+" set laststatus=2        " ステータスラインを表示する時
+" set nowrap              " はみ出しの折り返し設定
+" set number              " 行番号表示
+" set ruler               " カーソルの現在地表示
+" set showcmd             " 入力中のコマンド表示
+" set showmatch           " 括弧強調
+" set showtabline=2       " タブバーを常に表示
+" set t_Co=256
+" set list
+" set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
+" set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+" set updatetime=500
+" let g:lisp_rainbow     = 1
+" let g:lisp_instring    = 1
+" let g:lispsyntax_clisp = 1
+" let g:c_syntax_for_h   = 1
+" let g:tex_conceal      = ''
+" let g:tex_flavor       = 'latex'
 
 
 "-------------------------------------------------------------------------------"
@@ -380,13 +428,7 @@ endfunction
 " GUI
 "-------------------------------------------------------------------------------"
 if has('gui_running')
-    " gm
-    set guioptions-=e
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=r
-    set guioptions-=l
-    set guioptions-=L
+    set guioptions-=emTrlL
 
     let no_buffers_menu = 1
 
@@ -418,8 +460,8 @@ augroup mopp
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
-    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+    " autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
+    " autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
 
     autocmd BufWritePre * silent call s:remove_tail_space()
 
@@ -811,7 +853,7 @@ endif
 " neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-set conceallevel=2 concealcursor=i
+" set conceallevel=2 concealcursor=i
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
