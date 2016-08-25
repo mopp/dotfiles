@@ -42,7 +42,7 @@ set nowrap
 set foldenable
 set foldcolumn=1
 set foldmethod=indent
-set foldtext=Mopp_fold()
+set foldtext=Mopp_gen_fold_text()
 
 " Safety.
 set backup
@@ -74,7 +74,7 @@ set helplang=ja
 set langnoremap
 set lazyredraw
 set matchpairs+=<:>
-set mouse=a
+set mouse=
 set regexpengine=2
 set updatetime=500
 set virtualedit=block
@@ -102,36 +102,7 @@ let g:tex_conceal      = ''
 let g:tex_flavor       = 'latex'
 
 
-"-------------------------------------------------------------------------------"
-" Functions
-"-------------------------------------------------------------------------------"
-function! Mopp_fold()
-    let head = '+' . join(map(range(&shiftwidth * v:foldlevel - 2), '"-"'), '') . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
-    let tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
-    let space_size = (winwidth(0) - &foldcolumn - strdisplaywidth(head) - strdisplaywidth(tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
-    return printf('%s%' . space_size . 'S%s', head, '', tail)
-endfunction
-
-function! Mopp_paste(register, paste_type, paste_cmd)
-    let reg_type = getregtype(a:register)
-    let store = getreg(a:register)
-    call setreg(a:register, store, a:paste_type)
-    exe 'normal "' . a:register . a:paste_cmd
-    call setreg(a:register, store, reg_type)
-endfunction
-
-function! Mopp_copy_to_clipboard()
-    let store = @@
-    silent normal gvy
-    let selected = @@
-    let @@ = store
-
-    let @+ = selected
-    let @* = selected
-endfunction
-
-
-"----------------------------------------------------------------------------
+"---------------------------------------------------------------------------"
 " Mappings                                                                  |
 "---------------------------------------------------------------------------|
 " Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
@@ -144,16 +115,23 @@ endfunction
 " map! / noremap!  |    -   |   @    |    @    |   -    |   -    |    -     |
 " imap / inoremap  |    -   |   @    |    -    |   -    |   -    |    -     |
 " cmap / cnoremap  |    -   |   -    |    @    |   -    |   -    |    -     |
-"----------------------------------------------------------------------------
+"---------------------------------------------------------------------------"
 
+" Set <Leader> and <LocalLeader>.
 let g:mapleader      = ' '
 let g:maplocalleader = '\'
 
 noremap j gj
 noremap k gk
+noremap ; :
+noremap : ;
 
-" 移動
-cnoremap <C-A> <Home>
+" Avoiding getting <NUL> from <C-Space>
+map <NUL> <C-Space>
+map! <NUL> <C-Space>
+
+" Movings.
+noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
@@ -167,108 +145,125 @@ noremap <C-K> gg
 noremap <C-H> ^
 noremap <C-L> $
 
-" バッファ操作
-noremap <silent> [B :<C-U>bfirst<CR>
-noremap <silent> ]B :<C-U>blast<CR>
-noremap <silent> [b :<C-U>bprevious<CR>
-noremap <silent> ]b :<C-U>bnext<CR>
+" Switching buffer.
+nnoremap <silent> [B :<C-U>bfirst<CR>
+nnoremap <silent> ]B :<C-U>blast<CR>
+nnoremap <silent> [b :<C-U>bprevious<CR>
+nnoremap <silent> ]b :<C-U>bnext<CR>
 
-" Tab操作
-noremap <Leader>to :tabnew<Space>
-noremap <Leader>tc :tabclose<CR>
-noremap <Leader>j gT
-noremap <Leader>k gt
-
-" 画面分割
-noremap <Leader>sp :split<Space>
-noremap <Leader>vsp :vsplit<Space>
-
-" ロケーションリスト移動
+" Managing location list.
 nnoremap <silent> [o :lprevious<CR>
 nnoremap <silent> ]o :lnext<CR>
 nnoremap <silent> [O :<C-u>lfirst<CR>
 nnoremap <silent> ]O :<C-u>llast<CR>
 
-" Windowサイズ変更
+" Managing tab.
+noremap <Leader>to :tabnew<Space>
+noremap <Leader>tc :tabclose<CR>
+noremap <Leader>j gT
+noremap <Leader>k gt
+
+" Spliting window.
+noremap <Leader>sp :split<Space>
+noremap <Leader>vsp :vsplit<Space>
+
+" Changing window size.
 noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
 noremap <silent> <S-Right> :<C-U>wincmd ><CR>
 noremap <silent> <S-Up>    :<C-U>wincmd -<CR>
 noremap <silent> <S-Down>  :<C-U>wincmd +<CR>
 
-" <C-Space> で <NUL> が来るため
-map <NUL> <C-Space>
-map! <NUL> <C-Space>
-
 " Yank & Paste
+function! s:paste_with_register(register, paste_type, paste_cmd) abort
+    let reg_type = getregtype(a:register)
+    let store = getreg(a:register)
+    call setreg(a:register, store, a:paste_type)
+    exe 'normal "' . a:register . a:paste_cmd
+    call setreg(a:register, store, reg_type)
+endfunction
+
+function! s:copy_to_clipboard() abort
+    let store = @@
+    silent normal gvy
+    let selected = @@
+    let @@ = store
+
+    let @+ = selected
+    let @* = selected
+endfunction
+
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-xnoremap <silent> <C-Space>  :<C-U>call Mopp_copy_to_clipboard()<CR>
-nnoremap <silent> <Leader>lp :<C-U>call Mopp_paste(v:register, 'l', 'p')<CR>
-nnoremap <silent> <Leader>lP :<C-U>call Mopp_paste(v:register, 'l', 'P')<CR>
-nnoremap <silent> <Leader>cp :<C-U>call Mopp_paste(v:register, 'c', 'p')<CR>
-nnoremap <silent> <Leader>cP :<C-U>call Mopp_paste(v:register, 'c', 'P')<CR>
-nnoremap <silent> mlp :<C-U>call Mopp_paste('*', 'l', 'p')<CR>
-nnoremap <silent> mlP :<C-U>call Mopp_paste('*', 'l', 'P')<CR>
-nnoremap <silent> mcp :<C-U>call Mopp_paste('*', 'c', 'p')<CR>
-nnoremap <silent> mcP :<C-U>call Mopp_paste('*', 'c', 'P')<CR>
-nnoremap <silent> mp  :<C-U>call Mopp_paste('*', 'l', 'p')<CR>
+xnoremap <silent> <C-Space>  :<C-U>call <SID>copy_to_clipboard()<CR>
+nnoremap <silent> <Leader>lp :<C-U>call <SID>paste_with_register(v:register, 'l', 'p')<CR>
+nnoremap <silent> <Leader>lP :<C-U>call <SID>paste_with_register(v:register, 'l', 'P')<CR>
+nnoremap <silent> <Leader>cp :<C-U>call <SID>paste_with_register(v:register, 'c', 'p')<CR>
+nnoremap <silent> <Leader>cP :<C-U>call <SID>paste_with_register(v:register, 'c', 'P')<CR>
+nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('*', 'l', 'p')<CR>
+nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('*', 'l', 'P')<CR>
+nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('*', 'c', 'p')<CR>
+nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('*', 'c', 'P')<CR>
+nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('*', 'l', 'p')<CR>
 
-" 入れ替え
-noremap ; :
-noremap : ;
-
-" カーソル下のwordをhelpする
-" nnoremap <silent> <Leader>h :vertical aboveleft help <C-R><C-W><CR>
+" Open help of a word under the cursor.
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :tab help <C-R><C-W><CR>
 
-" カレントウィンドウのカレントディレクトリを変更
+" Change current directory of current window.
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
-" 検索ハイライト消去
+" Turning off highlight of search resutls.
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
-" 空行を追加
+" Adding blank lines.
 nnoremap <silent> <CR>      :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor<CR>
 nnoremap <silent> <Leader>O :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor<CR>
 
-" Tagが複数あればリスト表示
+" Open list if there are multiple tags.
 nnoremap <C-]> g<C-]>zz
 
-" xでレジスタを汚さない
-" nnoremap x "_x
-" nnoremap X "_X
-
-" マクロ
-noremap Q @@
-
-" http://vim-users.jp/2011/04/hack214/
-onoremap ( t(
-onoremap ) t)
-onoremap ; t;
-onoremap < t<
-onoremap > t>
-onoremap [ t[
-onoremap ] t]
+" Repeat the previous macro.
+nnoremap Q @@
 
 nnoremap <Leader>w :write<CR>
 
 
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
+" Functions
+"----------------------------------------------------------------------------"
+function! Mopp_gen_fold_text() abort
+    let head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    let tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
+    let num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(head) - strdisplaywidth(tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
+    return join([head, repeat(' ', num_spaces), tail], '')
+endfunction
+
+function! s:remove_tail_spaces() abort
+    if &filetype == 'markdown'
+        return
+    endif
+
+    let c = getpos('.')
+    g/.*\s$/normal $gelD
+    call setpos('.', c)
+endfunction
+
+
+"----------------------------------------------------------------------------"
 " Commands
-"-------------------------------------------------------------------------------"
-command! -nargs=0 SpellCheckToggle :setlocal spell!
+"----------------------------------------------------------------------------"
+command! SpellCheckToggle :setlocal spell!
 
-" カーソル位置のハイライト情報表示
-command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
+" Echo highlight name of an object under the cursor.
+command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-function! s:to_bin(number)
-    let map = {   '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
-                \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
-                \ '8' : '1000', '9' : '1001', 'a' : '1010', 'b' : '1011',
-                \ 'c' : '1100', 'd' : '1101', 'e' : '1110', 'f' : '1111'
-                \ }
-    return join(map(split(printf('%x', a:number), '\zs'), 'map[v:val]'), ' ')
+" TODO
+let s:dec_hex_map = { '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
+            \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
+            \ '8' : '1000', '9' : '1001', 'a' : '1010', 'b' : '1011',
+            \ 'c' : '1100', 'd' : '1101', 'e' : '1110', 'f' : '1111' }
+function! s:to_bin(number) abort
+    return join(map(split(printf('%x', a:number), '\zs'), 's:dec_hex_map[v:val]'), ' ')
 endfunction
 
 " 式を実行させてその返り値を指定した基数の数値で出力する.
@@ -300,12 +295,12 @@ inoremap <silent><expr> <C-G>h <SID>exp_conv(input('= '), 16)
 imap <C-G><C-B> <C-G>b
 imap <C-G><C-H> <C-G>h
 
-function! s:str2nr_possible(str)
-    return (len(substitute(a:str, '\d*', '', 'g')) == 0 ) ? str2nr(a:str) : a:str
+function! s:str2number_if_possible(str) abort
+    return (match(a:str, '[^0-9]') == -1) ? str2nr(a:str) : a:str
 endfunction
 
-function! s:tab_buffer(buf)
-    let b = s:str2nr_possible(a:buf)
+function! s:tab_buffer(buf) abort
+    let b = s:str2number_if_possible(a:buf)
 
     if bufexists(b) == 0
         echoerr string(b) . ' NOT exists buffer'
@@ -316,8 +311,8 @@ function! s:tab_buffer(buf)
 endfunction
 command! -nargs=1 -complete=buffer TabBuffer :call <SID>tab_buffer(<q-args>)
 
-function! s:drop_buffer(buf)
-    let b = s:str2nr_possible(a:buf)
+function! s:drop_buffer(buf) abort
+    let b = s:str2number_if_possible(a:buf)
 
     if type(b) == type(0)
         if bufexists(b) == 0
@@ -331,25 +326,13 @@ function! s:drop_buffer(buf)
 endfunction
 command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
 
-function! s:remove_tail_space()
-    if &filetype == 'markdown'
-        return
-    endif
 
-    let c = getpos('.')
-    g/.*\s$/normal $gelD
-    call setpos('.', c)
-endfunction
-
-
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 " GUI
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 if has('gui_running')
-    set guioptions-=emTrlL
-
     let no_buffers_menu = 1
-
+    set guioptions-=emTrlL
     set mousehide
     set vb
     set t_vb=
@@ -365,99 +348,79 @@ if has('gui_running')
 endif
 
 
-"-------------------------------------------------------------------------------"
-" autocmd.
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
+" autocmd
+"----------------------------------------------------------------------------"
 augroup mopp
     autocmd!
 
-    " .vimrc
+    " Reload .vimrc
     autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
-    " 挿入モード解除時に自動でpasteをoff
+    " Turning off paste when escape insert mode.
     autocmd InsertLeave * setlocal nopaste
 
-    " 状態の保存と復元
-    " autocmd BufWinLeave * if (bufname('%') != '') | silent mkview!  | endif
-    " autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+    " Store and load view.
+    autocmd BufWinLeave * if (bufname('%') != '') | mkview!          | endif
+    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
 
-    autocmd BufWritePre * silent call s:remove_tail_space()
+    " Remove spaces at tail.
+    autocmd BufWritePre * silent call s:remove_tail_spaces()
 
-    " git
-    autocmd FileType git setlocal foldlevel=99
-
-    " nask
-    autocmd BufWinEnter *.nas nested setlocal filetype=nasm
-
-    " json
-    autocmd BufWinEnter *.json nested setlocal filetype=json
-
-    " Arduino
-    autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
-
-    " markdown
-    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
-
-    " gnuplot
-    autocmd BufWinEnter *.plt nested setlocal filetype=gnuplot
-
-    " Lisp
+    " Filetype local settings.
+    autocmd FileType git  setlocal nofoldenable
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
+    autocmd FileType tex  setlocal wrap spell nocursorline
+    autocmd FileType text setlocal wrap
 
-    " text.
-    autocmd BufWinEnter *.txt setlocal wrap
-
-    " Tex
-    autocmd BufWinEnter,FilterWritePost *.tex setlocal spell wrap nocursorline
-
-    " sh
-    autocmd BufWinEnter *.sh setlocal filetype=sh
-
-    " toml
-    autocmd BufWinEnter *.toml setlocal filetype=toml
-
-    autocmd BufWinEnter *.m setlocal foldmethod=indent
+    " Detecting filetypes.
+    autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
+    autocmd BufWinEnter *.plt                nested setlocal filetype=gnuplot
+    autocmd BufWinEnter *.sh                 nested setlocal filetype=sh
+    autocmd BufWinEnter *.toml               nested setlocal filetype=toml
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
+    autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
 augroup END
 
 
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 " neovim.
-"-------------------------------------------------------------------------------"
-" Copy and modify from mapping source in unite.vim
-function! s:get_mapping_list(map_cmd) abort
-    redir => mapping_str
-    silent! execute a:map_cmd
-    redir END
-
-    let mapping_list = []
-    let mapping_lines = split(mapping_str, '\n')
-    let mapping_lines = filter(copy(mapping_lines), "v:val =~ '\\s\\+\\*\\?@'") + filter(copy(mapping_lines), "v:val !~ '\\s\\+\\*\\?@'")
-    for line in map(mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
-        " attribute
-        let attr = ''
-
-        " right
-        let map_rhs = matchstr(line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
-        if map_rhs =~ '^\*\s.*'
-            let map_rhs = map_rhs[2:]
-            let attr = '*'
-        endif
-
-        " left
-        let map_lhs = matchstr(line, '^\a*\s*\zs\S\+')
-        if map_lhs =~ '^<SNR>' || map_lhs =~ '^<Plug>'
-            continue
-        endif
-        let map_lhs = substitute(map_lhs, '<NL>', '<C-j>', 'g')
-        let map_lhs = substitute(map_lhs, '\(<.*>\)', '\1', 'g')
-
-        call add(mapping_list, [map_lhs, map_rhs, attr])
-    endfor
-
-    return mapping_list
-endfunction
-
+"----------------------------------------------------------------------------"
 if has('nvim')
+    " Copy and modify from mapping source in unite.vim
+    function! s:get_mapping_list(map_cmd) abort
+        redir => mapping_str
+        silent! execute a:map_cmd
+        redir END
+
+        let mapping_list = []
+        let mapping_lines = split(mapping_str, '\n')
+        let mapping_lines = filter(copy(mapping_lines), "v:val =~ '\\s\\+\\*\\?@'") + filter(copy(mapping_lines), "v:val !~ '\\s\\+\\*\\?@'")
+        for line in map(mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
+            " attribute
+            let attr = ''
+
+            " right
+            let map_rhs = matchstr(line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
+            if map_rhs =~ '^\*\s.*'
+                let map_rhs = map_rhs[2:]
+                let attr = '*'
+            endif
+
+            " left
+            let map_lhs = matchstr(line, '^\a*\s*\zs\S\+')
+            if map_lhs =~ '^<SNR>' || map_lhs =~ '^<Plug>'
+                continue
+            endif
+            let map_lhs = substitute(map_lhs, '<NL>', '<C-j>', 'g')
+            let map_lhs = substitute(map_lhs, '\(<.*>\)', '\1', 'g')
+
+            call add(mapping_list, [map_lhs, map_rhs, attr])
+        endfor
+
+        return mapping_list
+    endfunction
+
     let s:is_term_map_enable = 1
     function! s:toggle_terminal_map() abort
         if s:is_term_map_enable == 1
@@ -478,7 +441,7 @@ if has('nvim')
         endif
     endfunction
 
-    command! -nargs=0 ToggleTerminaMap call <SID>toggle_terminal_map()
+    command! ToggleTerminaMap call <SID>toggle_terminal_map()
 
     tnoremap <ESC> <C-\><C-n>
     tnoremap <C-w>h <C-\><C-n><C-w>h
@@ -490,141 +453,148 @@ if has('nvim')
 endif
 
 
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 " Plugin
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 let s:DEIN_BASE_PATH = '~/.vim/bundle/'
 let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
 if !isdirectory(s:DEIN_PATH)
-    if !executable('git')
+    let answer = confirm('Would you like to download all plugins ?', "&Yes\n&No", 2)
+    if (answer == 1) && (executable('git') == 1)
+        execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
+    else
+        set number
         syntax enable
         colorscheme desert
         finish
     endif
-
-    execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
 endif
 
 " dein.vim
-execute 'set runtimepath^=' . s:DEIN_PATH
+execute 'set runtimepath+=' . s:DEIN_PATH
 
-if dein#load_state(s:DEIN_BASE_PATH)
+" if dein#load_state(s:DEIN_BASE_PATH)
     call dein#begin(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
+    call dein#add('haya14busa/dein-command.vim')
 
-    call dein#add('Shougo/deoplete.nvim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : has('nvim') })
-    call dein#add('Shougo/neocomplete.vim', { 'lazy' : 1, 'depends' : 'neosnippet', 'on_i' : 1, 'if' : (has('lua') && !has('nvim')) })
+    call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': has('nvim') })
+    call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': (has('lua') && !has('nvim')) })
 
-    call dein#add('Shougo/neosnippet', { 'lazy' : 1 , 'depends' : 'vim-snippets' })
+    let common_opt = { 'lazy': 1, 'on_source': [ 'deoplete.nvim', 'neocomplete.vim' ] }
+    call dein#add('Shougo/neco-syntax')
+    call dein#add('Shougo/neco-vim', common_opt)
+    call dein#add('Shougo/neoinclude.vim', common_opt)
     call dein#add('Shougo/neosnippet-snippets')
-    call dein#add('honza/vim-snippets', { 'lazy' : 1 })
-
-    call dein#add('FooSoft/vim-argwrap', { 'lazy' : 1, 'on_func' : 'argwrap' })
-    call dein#add('Konfekt/FastFold')
-    call dein#add('LeafCage/yankround.vim')
-    call dein#add('Lokaltog/vim-easymotion')
-    call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call vimfiler#custom#profile("default", "context", { "safe" : 0 })' })
-    call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
-    call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
-    call dein#add('Yggdroot/indentLine')
-    call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_i' : 1 })
-    call dein#add('bronson/vim-trailing-whitespace')
-    call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : [ 'Tabularize', 'AddTabularPattern' ] })
-    call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
-    call dein#add('itchyny/lightline.vim')
-    call dein#add('itchyny/vim-parenmatch')
-    call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
-    call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
-    call dein#add('kana/vim-smartchr')
-    call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_i' : 1, 'hook_post_source' : 'call Hook_on_post_source_smartinput()'})
-    call dein#add('koron/nyancat-vim', { 'lazy''on_cmd' : [ 'Nyancat', 'Nyancat2' ] })
-    call dein#add('luochen1990/rainbow')
-    call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
-    call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
-    call dein#add('mattn/gist-vim', { 'lazy' : 1, 'depends' : 'webapi-vim', 'on_cmd' : 'Gist' })
-    call dein#add('mattn/learn-vimscript')
-    call dein#add('mattn/webapi-vim')
-    call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
-    call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_i' : 1 })
-    call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
-    call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
-    call dein#add('mopp/learn-markdown.vim')
-    call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
-    call dein#add('mopp/mopbuf.vim')
-    call dein#add('mopp/mopkai.vim')
-    call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
-    call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
-    call dein#add('mopp/smartnumber.vim')
-    call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
-    call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
-    call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
-    call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
-    call dein#add('rickhowe/diffchar.vim')
-    call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source' : 'doautocmd NERDCommenter BufEnter'})
-    call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_i' : 1 })
-    call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
-    call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
-    call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
-    call dein#add('thinca/vim-visualstar')
-    call dein#add('tpope/vim-repeat')
-    call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
+    call dein#add('Shougo/neosnippet.vim', common_opt)
+    call dein#add('fishbullet/deoplete-ruby')
+    call dein#add('honza/vim-snippets', common_opt)
+    call dein#add('zchee/deoplete-jedi')
     call dein#add('ujihisa/neco-look')
 
-    call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
-    call dein#add('Shirk/vim-gas')
-    call dein#add('awk.vim')
-    call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ], 'hook_post_source' : 'call Hook_on_post_source_clighter()' })
-    call dein#add('cespare/vim-toml')
-    call dein#add('daeyun/vim-matlab', {'lazy':1, 'on_ft' : 'matlab'})
-    call dein#add('digitaltoad/vim-pug')
-    call dein#add('gnuplot.vim', {'lazy':1, 'on_ft' : 'gnuplot'})
-    call dein#add('jelera/vim-javascript-syntax')
-    call dein#add('lervag/vimtex')
-    call dein#add('othree/html5.vim')
-    call dein#add('pangloss/vim-javascript', { 'lazy' : 1, 'on_ft' : 'javascript' })
-    call dein#add('plasticboy/vim-markdown')
-    call dein#add('rust-lang/rust.vim')
-    call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
-    call dein#add('thinca/vim-ft-help_fold')
-    call dein#add('vim-jp/cpp-vim')
-    call dein#add('vim-jp/vimdoc-ja')
-    call dein#add('vim-ruby/vim-ruby')
-    call dein#add('vim-scripts/Arduino-syntax-file')
-    call dein#add('vim-scripts/sh.vim--Cla')
-    call dein#add('wavded/vim-stylus')
-    call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
-
-    call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-    call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-    call dein#add('kana/vim-operator-user')
-    call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ]})
-    call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-
-    call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
-    call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
-    call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'al', 'il' ] ] })
-    call dein#add('kana/vim-textobj-user')
-    call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
-    call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
-    " call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1, 'on_ft' : [ 'tex', 'markdown', 'txt' ], 'hook_post_source' : 'call textobj#sentence#init()'})
-    call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1 })
-
-    call dein#add('machakann/vim-sandwich')
-
-    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'depends': [ 'neomru.vim', 'vim-unite-giti' ]})
-    call dein#add('Shougo/neomru.vim', { 'lazy': 1 })
+    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'hook_post_source': 'call Hook_post_source_unite()'})
     call dein#add('Shougo/unite-outline')
     call dein#add('junkblocker/unite-tasklist')
-    call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, })
+    call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, 'on_source': 'unite.vim' })
     call dein#add('lambdalisue/unite-grep-vcs')
     call dein#add('osyo-manga/unite-quickfix')
     call dein#add('tsukkee/unite-tag')
 
-    call dein#end()
+    call dein#add('FooSoft/vim-argwrap', { 'lazy': 1, 'on_func': 'argwrap' })
+    call dein#add('Konfekt/FastFold')
+    call dein#add('LeafCage/yankround.vim')
+    " call dein#add('Lokaltog/vim-easymotion')
+    " call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
+    " call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call vimfiler#custom#profile("default", "context", { "safe" : 0 })' })
+    " call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
+    " call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
+    " call dein#add('Yggdroot/indentLine')
+    " call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
+    " call dein#add('bronson/vim-trailing-whitespace')
+    " call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : [ 'Tabularize', 'AddTabularPattern' ] })
+    " call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
+    " call dein#add('itchyny/lightline.vim')
+    " call dein#add('itchyny/vim-parenmatch')
+    " call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
+    " call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
+    " call dein#add('kana/vim-smartchr')
+    " call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_event' : 'InsertEnter', 'hook_post_source' : 'call Hook_on_post_source_smartinput()'})
+    " call dein#add('koron/nyancat-vim', { 'lazy''on_cmd' : [ 'Nyancat', 'Nyancat2' ] })
+    " call dein#add('luochen1990/rainbow')
+    " call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
+    " call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
+    " call dein#add('mattn/gist-vim', { 'lazy' : 1, 'depends' : 'webapi-vim', 'on_cmd' : 'Gist' })
+    " call dein#add('mattn/learn-vimscript')
+    " call dein#add('mattn/webapi-vim')
+    " call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
+    " call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
+    " call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
+    " call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
+    " call dein#add('mopp/learn-markdown.vim')
+    " call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
+    " call dein#add('mopp/mopbuf.vim')
+    call dein#add('mopp/mopkai.vim')
+    " call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
+    " call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
+    " call dein#add('mopp/smartnumber.vim')
+    " call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
+    " call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
+    " call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
+    " call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
+    " call dein#add('rickhowe/diffchar.vim')
+    " call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source' : 'doautocmd NERDCommenter BufEnter'})
+    " call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
+    " call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
+    " call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
+    " call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
+    " call dein#add('thinca/vim-visualstar')
+    " call dein#add('tpope/vim-repeat')
+    " call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
 
+    " call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
+    " call dein#add('Shirk/vim-gas')
+    " call dein#add('awk.vim')
+    " call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ], 'hook_post_source' : 'call Hook_on_post_source_clighter()' })
+    " call dein#add('cespare/vim-toml')
+    " call dein#add('daeyun/vim-matlab')
+    " call dein#add('digitaltoad/vim-pug')
+    " call dein#add('gnuplot.vim')
+    " call dein#add('jelera/vim-javascript-syntax')
+    " call dein#add('lervag/vimtex')
+    " call dein#add('othree/html5.vim')
+    " call dein#add('pangloss/vim-javascript')
+    " call dein#add('plasticboy/vim-markdown')
+    " call dein#add('rust-lang/rust.vim')
+    " call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
+    " call dein#add('thinca/vim-ft-help_fold')
+    " call dein#add('vim-jp/cpp-vim')
+    call dein#add('vim-jp/vimdoc-ja')
+    " call dein#add('vim-ruby/vim-ruby')
+    " call dein#add('vim-scripts/Arduino-syntax-file')
+    " call dein#add('vim-scripts/sh.vim--Cla')
+    " call dein#add('wavded/vim-stylus')
+    " call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
+
+    " call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    " call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+    " call dein#add('kana/vim-operator-user')
+    " call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ]})
+    " call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
+
+    " call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
+    " call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
+    " call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'al', 'il' ] ] })
+    " call dein#add('kana/vim-textobj-user')
+    " call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
+    " call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
+    " call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1 })
+
+    " call dein#add('machakann/vim-sandwich')
+
+    call dein#end()
     call dein#save_state()
-endif
+" endif
 
 if dein#check_install()
     call dein#install()
@@ -632,7 +602,70 @@ endif
 
 filetype plugin indent on
 
-" Unite
+" deoplete.nvim
+if dein#tap('deoplete.nvim') && has('nvim')
+    let g:deoplete#enable_at_startup  = 1
+    let g:deoplete#omni_patterns      = {}
+    let g:deoplete#omni_patterns.c    = '[^. *\t](\.|->)\w*'
+    let g:deoplete#omni_patterns.cpp  = '[^. *\t](\.|->|::)\w*'
+endif
+
+" neocomplete.vim
+if dein#tap('neocomplete.vim') && !has('nvim')
+    let g:neocomplete#enable_at_startup            = 1
+    let g:neocomplete#enable_cursor_hold_i         = 1
+    let g:neocomplete#enable_insert_char_pre       = 1
+    let g:neocomplete#enable_auto_delimiter        = 1
+    let g:neocomplete#lock_buffer_name_pattern     = '^zsh.*'
+    let g:neocomplete#enable_prefetch              = 1
+
+    " Call omni function directly
+    let g:neocomplete#force_overwrite_completefunc     = 1
+    let g:neocomplete#force_omni_input_patterns        = get(g:, 'neocomplete#force_omni_input_patterns', {})
+    let g:neocomplete#force_omni_input_patterns.c      = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.objc   = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
+
+    let g:neocomplete#same_filetypes     = get(g:, 'neocomplete#same_filetypes', {})
+    let g:neocomplete#same_filetypes.c   = 'cpp'
+    let g:neocomplete#same_filetypes.cpp = 'c'
+
+    let g:neocomplete#text_mode_filetypes           = get(g:, 'neocomplete#text_mode_filetypes', {})
+    let g:neocomplete#text_mode_filetypes.markdown  = 1
+    let g:neocomplete#text_mode_filetypes.gitcommit = 1
+    let g:neocomplete#text_mode_filetypes.text      = 1
+    let g:neocomplete#text_mode_filetypes.txt       = 1
+
+    let g:neocomplete#delimiter_patterns     = get(g:, 'neocomplete#delimiter_patterns', {})
+    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
+    let g:neocomplete#delimiter_patterns.cpp = [ '::' ]
+    let g:neocomplete#delimiter_patterns.c   = [ '.' ]
+
+    let g:neocomplete#skip_auto_completion_time = ''
+    let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
+
+    let g:neocomplete#sources#vim#complete_functions          = get(g:, 'neocomplete#sources#vim#complete_functions', {})
+    let g:neocomplete#sources#vim#complete_functions.Unite    = 'unite#complete_source'
+    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
+    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
+
+    imap <C-g><C-q> <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-g><C-u> <Plug>(neocomplete_start_unite_complete)
+    inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
+    inoremap <expr> <C-l> neocomplete#complete_common_string()
+endif
+
+" neosnippet.vim
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+let g:neosnippet#scope_aliases = {}
+let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
+let g:neosnippet#scope_aliases['pug'] = 'jade'
+
+" unite.vim
 nnoremap [Unite] <Nop>
 nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re :<C-u>UniteResume<CR>
@@ -645,7 +678,7 @@ nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Lines line<CR>
 nnoremap <silent> [Unite]t  :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 
-function! s:unite_smart_grep()
+function! s:unite_smart_grep() abort
     if unite#sources#grep_git#is_available()
         Unite grep/git -buffer-name=Search
     elseif unite#sources#grep_hg#is_available()
@@ -655,29 +688,21 @@ function! s:unite_smart_grep()
     endif
 endfunction
 
-let g:unite_source_file_mru_limit      = 50
-let g:unite_cursor_line_highlight      = 'TabLineSel'
-let g:unite_enable_short_source_names  = 1
-let g:unite_source_history_yank_enable = 1
-let g:unite_force_overwrite_statusline = 0
-let g:unite_source_grep_max_candidates = 200
-let g:unite_quickfix_is_multiline      = 0
-
 if executable('hw')
-    " for highway
+    " For highway.
     let g:unite_source_grep_command       = 'hw'
     let g:unite_source_grep_default_opts  = '--no-group --no-color'
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_encoding      = 'utf-8'
 elseif executable('pt')
-    " for the platinum searcher
+    " For the platinum searcher.
     let g:unite_source_grep_command       = 'pt'
     let g:unite_source_grep_default_opts  = '--nogroup --nocolor'
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_encoding      = 'utf-8'
 endif
 
-function! s:on_exe_unite()
+function! s:on_filetype_unite() abort
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -689,91 +714,50 @@ function! s:on_exe_unite()
     nnoremap <buffer><expr> <C-t> unite#do_action('tabopen')
 endfunction
 
-" Deoplete
-if dein#tap('deoplete.nvim') && has('nvim')
-    let g:deoplete#enable_at_startup     = 1
-    let g:deoplete#enable_ignore_case    = 0
-    let g:deoplete#enable_smart_case     = 1
-    let g:deoplete#max_list              = 30
-    let g:deoplete#omni_patterns         = {}
-    let g:deoplete#omni_patterns.c       = '[^. *\t](\.|->)\w*'
-    let g:deoplete#omni_patterns.cpp     = '[^. *\t](\.|->|::)\w*'
-endif
+function! Hook_post_source_unite() abort
+    call unite#custom#profile('default', 'context', { 'start_insert': 1, 'prompt': '>' })
+endfunction
 
-" neocomplete
-if dein#tap('neocomplete.vim') && !has('nvim')
-    let g:neocomplete#enable_at_startup            = 1
-    let g:neocomplete#auto_completion_start_length = 2
-    let g:neocomplete#min_keyword_length           = 2
-    let g:neocomplete#enable_ignore_case           = 0
-    let g:neocomplete#enable_smart_case            = 1
-    let g:neocomplete#enable_cursor_hold_i         = 1
-    let g:neocomplete#enable_insert_char_pre       = 1
-    let g:neocomplete#enable_auto_delimiter        = 1
-    let g:neocomplete#lock_buffer_name_pattern     = '^zsh.*'
-    let g:neocomplete#enable_prefetch              = 1
+" vim-argwrap
+nnoremap <silent> <leader>aw :<C-u>call argwrap#toggle()<CR>
 
-    " 外部オムニ補完関数を直接呼び出す
-    let g:neocomplete#force_overwrite_completefunc     = 1
-    let g:neocomplete#force_omni_input_patterns        = get(g:, 'neocomplete#force_omni_input_patterns', {})
-    let g:neocomplete#force_omni_input_patterns.c      = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-    let g:neocomplete#force_omni_input_patterns.objc   = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
-    " 数字記号類以外の後に.か->が来た場合に補完実行する
+" yankround.vim
+let g:yankround_use_region_hl = 1
+let g:yankround_region_hl_groupname = 'Error'
+nmap p <Plug>(yankround-p)
+xmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap gp <Plug>(yankround-gp)
+xmap gp <Plug>(yankround-gp)
+nmap gP <Plug>(yankround-gP)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
 
-    " 補完時に参照する他のfiletype
-    let g:neocomplete#same_filetypes = get(g:, 'neocomplete#same_filetypes', {})
-    let g:neocomplete#same_filetypes.c = 'cpp'
-    let g:neocomplete#same_filetypes.cpp = 'c'
 
-    " 英単語補完用に以下のfiletypeをtextと同様に扱う
-    let g:neocomplete#text_mode_filetypes = get(g:, 'neocomplete#text_mode_filetypes', {})
-    let g:neocomplete#text_mode_filetypes.markdown = 1
-    let g:neocomplete#text_mode_filetypes.gitcommit = 1
-    let g:neocomplete#text_mode_filetypes.text = 1
-    let g:neocomplete#text_mode_filetypes.txt = 1
+"----------------------------------------------------------------------------"
+" autocmd for plugin
+"----------------------------------------------------------------------------"
+augroup plugin
+    autocmd!
 
-    let g:neocomplete#delimiter_patterns = get(g:, 'neocomplete#delimiter_patterns', {})
-    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
-    let g:neocomplete#delimiter_patterns.cpp = [ '::' ]
-    let g:neocomplete#delimiter_patterns.c = [ '.' ]
+    autocmd VimEnter * call dein#call_hook('post_source')
+    autocmd FileType unite call s:on_filetype_unite()
+augroup END
 
-    let g:neocomplete#skip_auto_completion_time = ''
-    let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
+syntax enable
+colorscheme mopkai  " It should be after entax command.
 
-    " neocompleteが呼び出すオムニ補完関数名
-    let g:neocomplete#sources#omni#functions = get(g:, 'neocomplete#sources#omni#functions', {})
-    let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
 
-    " オムニ補完関数呼び出し時の条件
-    let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
-    let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-    let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#sources#omni#input_patterns.javascript = '[^.[:digit:] *\t]\.'
 
-    " コマンドの引数補完時に呼び出される
-    let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
-    let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
-    let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
-    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
-    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-    imap <C-g><C-q> <Plug>(neocomplete_start_unite_quick_match)
-    imap <C-g><C-u> <Plug>(neocomplete_start_unite_complete)
-    inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
-    inoremap <expr> <C-l> neocomplete#complete_common_string()
-endif
 
-" neosnippet
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-" set conceallevel=2 concealcursor=i
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#scope_aliases = {}
-let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
-let g:neosnippet#scope_aliases['pug'] = 'jade'
+
+
+
+
+finish
+
+let g:echodoc_enable_at_startup = 1
 
 " marching
 let g:marching_enable_neocomplete = 1
@@ -830,7 +814,7 @@ nnoremap <silent> <Leader>fvo :VimFiler -tab<CR>
 nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
-function! s:config_vimfiler()
+function! s:config_vimfiler() abort
     unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
@@ -848,7 +832,7 @@ let g:tagbar_compact = 1
 nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
 
 " Smartinput
-function! Hook_on_post_source_smartinput()
+function! Hook_on_post_source_smartinput() abort
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
@@ -949,13 +933,6 @@ nmap # <Plug>(anzu-sharp-with-echo)
 " OpenVimrc
 nmap <silent> <Leader>ev <Plug>(openvimrc-open)
 
-" yankround
-let g:yankround_dir = '~/.vim/yankround'
-nmap p <Plug>(yankround-p)
-nmap P <Plug>(yankround-P)
-nmap <C-p> <Plug>(yankround-prev)
-nmap <C-n> <Plug>(yankround-next)
-
 " LayoutPlugin
 let g:layoutplugin#is_append_vimrc = 1
 
@@ -1016,7 +993,7 @@ let s:p.normal.error    = [ [ s:cp.dark, s:cp.red ] ]
 let s:p.normal.warning  = [ [ s:cp.dark, [ '#ffd700', 220 ] ] ]
 let g:lightline#colorscheme#mopkai#palette = lightline#colorscheme#flatten(s:p)
 
-function! Mline_mode()
+function! Mline_mode() abort
     if &filetype == 'unite'
         return 'Unite'
     elseif &filetype == 'vimfiler'
@@ -1028,14 +1005,14 @@ function! Mline_mode()
     endif
 endfunction
 
-function! Mline_modified()
+function! Mline_modified() abort
     if &filetype == 'unite' || !&modifiable
         return ''
     endif
     return &modified ? '[+]' : '[-]'
 endfunction
 
-function! Mline_filename()
+function! Mline_filename() abort
     if &filetype == 'unite'
         return unite#get_status_string()
     elseif &filetype == 'vimfiler'
@@ -1049,7 +1026,7 @@ endfunction
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
 let g:mopbuf_settings['auto_open_each_tab'] = 0
 let g:mopbuf_settings['sort_order'] = 'mru'
-function! Mline_buflist()
+function! Mline_buflist() abort
     if (&filetype == 'unite') || (&filetype == 'vimfiler') || (&filetype == 'tagbar')
         return ''
     endif
@@ -1094,7 +1071,7 @@ let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
 " Clighter
-function! Hook_on_post_source_clighter()
+function! Hook_on_post_source_clighter() abort
     hi m_decl cterm=bold
     " hi link clighterMacroInstantiation Define
     hi link clighterTypeRef            Type
@@ -1120,9 +1097,6 @@ endif
 
 " Casetrate
 let g:casetrate_leader = '<leader>a'
-
-" argwrap
-nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
 
 " c-prototype
 let g:c_prototype_no_default_keymappings = 1
@@ -1158,11 +1132,11 @@ let g:parenmatch_highlight = 0
 hi link ParenMatch MatchParen
 
 
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 " autocmd for plugin.
-"-------------------------------------------------------------------------------"
+"----------------------------------------------------------------------------"
 " for lightline
-function! s:update_syntastic()
+function! s:update_syntastic() abort
     if &filetype == 'scala'
         return
     endif
@@ -1178,19 +1152,12 @@ endfunction
 augroup plugin
     autocmd!
 
-    " VimFiler
+    autocmd VimEnter * call dein#call_hook('post_source')
+    autocmd FileType help setlocal foldcolumn=0
     autocmd FileType vimfiler call s:config_vimfiler()
-
-    " textobj-sentence
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
-
-    " Unite
     autocmd FileType unite call s:on_exe_unite()
-
-    " Java
     autocmd CompleteDone *.java call javaapi#showRef()
-
-    " lightline
     autocmd BufWritePost * call s:update_syntastic()
 
     " To avoid mess indent in perl.
