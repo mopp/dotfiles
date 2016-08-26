@@ -504,14 +504,14 @@ execute 'set runtimepath+=' . s:DEIN_PATH
     call dein#add('FooSoft/vim-argwrap', { 'lazy': 1, 'on_func': 'argwrap' })
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
-    " call dein#add('Lokaltog/vim-easymotion')
-    " call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
-    " call dein#add('Shougo/vimfiler', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_path' : '.*/', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call vimfiler#custom#profile("default", "context", { "safe" : 0 })' })
-    " call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
-    " call dein#add('Shougo/vinarise', { 'on_cmd' : 'Vinarise' })
-    " call dein#add('Yggdroot/indentLine')
-    " call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
-    " call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
+    call dein#add('Shougo/vimfiler.vim', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call Hook_post_source_vimfiler()' })
+    call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
+    call dein#add('Shougo/vinarise.vim', { 'on_cmd' : 'Vinarise' })
+    call dein#add('Yggdroot/indentLine')
+    call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
+    call dein#add('bronson/vim-trailing-whitespace')
+    " call dein#add('easymotion/vim-easymotion')
     " call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : [ 'Tabularize', 'AddTabularPattern' ] })
     " call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
     " call dein#add('itchyny/lightline.vim')
@@ -690,17 +690,15 @@ endfunction
 
 if executable('hw')
     " For highway.
-    let g:unite_source_grep_command       = 'hw'
-    let g:unite_source_grep_default_opts  = '--no-group --no-color'
-    let g:unite_source_grep_recursive_opt = ''
-    let g:unite_source_grep_encoding      = 'utf-8'
+    let g:unite_source_grep_command      = 'hw'
+    let g:unite_source_grep_default_opts = '--no-group --no-color'
 elseif executable('pt')
     " For the platinum searcher.
-    let g:unite_source_grep_command       = 'pt'
-    let g:unite_source_grep_default_opts  = '--nogroup --nocolor'
-    let g:unite_source_grep_recursive_opt = ''
-    let g:unite_source_grep_encoding      = 'utf-8'
+    let g:unite_source_grep_command      = 'pt'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
 endif
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_grep_encoding      = 'utf-8'
 
 function! s:on_filetype_unite() abort
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
@@ -733,6 +731,34 @@ nmap gP <Plug>(yankround-gP)
 nmap <C-p> <Plug>(yankround-prev)
 nmap <C-n> <Plug>(yankround-next)
 
+" echodoc.vim
+let g:echodoc_enable_at_startup = 1
+
+" vimfiler
+nnoremap <silent> <Leader>fvs :VimFiler -explorer<CR>
+nnoremap <silent> <Leader>fvo :VimFiler -tab<CR>
+nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_force_overwrite_statusline = 0
+function! s:on_filetype_vimfiler() abort
+    unmap <buffer> <Space>
+    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+    nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
+    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+    nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
+endfunction
+
+function! Hook_post_source_vimfiler() abort
+    call vimfiler#custom#profile('default', 'context', { 'safe': 0, 'edit_action': 'tabopen' })
+endfunction
+
+" vim-gitgutter
+let g:gitgutter_map_keys = 0
+
+" vim-trailing-whitespace
+let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
+
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
@@ -742,6 +768,7 @@ augroup plugin
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType unite call s:on_filetype_unite()
+    autocmd FileType vimfiler call s:on_filetype_vimfiler()
 augroup END
 
 syntax enable
@@ -757,7 +784,10 @@ colorscheme mopkai  " It should be after entax command.
 
 finish
 
-let g:echodoc_enable_at_startup = 1
+
+" vim-easymotion
+let g:EasyMotion_leader_key = '<Leader>e'
+
 
 " marching
 let g:marching_enable_neocomplete = 1
@@ -799,29 +829,11 @@ let g:clang_format#style_options = {
             \ 'IndentWidth':                         '4',
             \ }
 
-" easymotion
-let g:EasyMotion_leader_key = '<Leader>e'
-
 " NERDCommenter
 let g:NERDSpaceDelims = 1
 nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
-
-" VimFiler
-nnoremap <silent> <Leader>fvs :VimFiler -explorer<CR>
-nnoremap <silent> <Leader>fvo :VimFiler -tab<CR>
-nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_force_overwrite_statusline = 0
-function! s:config_vimfiler() abort
-    unmap <buffer> <Space>
-    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
-    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
-endfunction
 
 " TagBar
 let g:tagbar_width = 35
@@ -1112,9 +1124,6 @@ let g:previm_show_header = 0
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
 
-" vim-gitgutter
-let g:gitgutter_map_keys = 0
-
 " vimtex
 let g:vimtex_latexmk_continuous = 0
 let g:vimtex_index_split_pos    = 'vertical rightbelow'
@@ -1154,7 +1163,6 @@ augroup plugin
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType vimfiler call s:config_vimfiler()
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
     autocmd FileType unite call s:on_exe_unite()
     autocmd CompleteDone *.java call javaapi#showRef()
