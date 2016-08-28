@@ -25,7 +25,7 @@ endif
 set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
-set cursorline
+" set cursorline
 set display=lastline
 set laststatus=2
 set list
@@ -67,7 +67,6 @@ set smartcase
 " Others.
 set belloff=all
 set completeopt=menu
-set confirm
 set dictionary=/usr/share/dict/words
 set formatoptions+=tjrol
 set helplang=ja
@@ -158,14 +157,14 @@ nnoremap <silent> [O :<C-u>lfirst<CR>
 nnoremap <silent> ]O :<C-u>llast<CR>
 
 " Managing tab.
-noremap <Leader>to :tabnew<Space>
-noremap <Leader>tc :tabclose<CR>
-noremap <Leader>j gT
-noremap <Leader>k gt
+nnoremap <Leader>to :tabnew<Space>
+nnoremap <Leader>tc :tabclose<CR>
+nnoremap <Leader>j gT
+nnoremap <Leader>k gt
 
 " Spliting window.
-noremap <Leader>sp :split<Space>
-noremap <Leader>vsp :vsplit<Space>
+nnoremap <Leader>sp :split<Space>
+nnoremap <Leader>vsp :vsplit<Space>
 
 " Changing window size.
 noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
@@ -209,15 +208,12 @@ nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('*', 'l', 'p')<CR>
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :tab help <C-R><C-W><CR>
 
-" Change current directory of current window.
-nnoremap <Leader>cd :lcd %:p:h<CR>
-
-" Turning off highlight of search resutls.
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
-
 " Adding blank lines.
 nnoremap <silent> <CR>      :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor<CR>
 nnoremap <silent> <Leader>O :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor<CR>
+
+" Change current directory of current window.
+nnoremap <silent> <Leader>cd :<C-u>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nnoremap <C-]> g<C-]>zz
@@ -225,7 +221,13 @@ nnoremap <C-]> g<C-]>zz
 " Repeat the previous macro.
 nnoremap Q @@
 
-nnoremap <Leader>w :write<CR>
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
+nnoremap <silent> <Leader>w :<C-u>write<CR>
+if has('nvim')
+    nnoremap <silent> <Leader>ev :<C-u>tab drop $MYVIMRC<CR>
+else
+    nnoremap <silent> <Leader>ev :<C-u>tabnew $MYVIMRC<CR>
+endif
 
 
 "----------------------------------------------------------------------------"
@@ -473,7 +475,7 @@ endif
 " dein.vim
 execute 'set runtimepath+=' . s:DEIN_PATH
 
-" if dein#load_state(s:DEIN_BASE_PATH)
+if dein#load_state(s:DEIN_BASE_PATH)
     call dein#begin(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
@@ -501,100 +503,88 @@ execute 'set runtimepath+=' . s:DEIN_PATH
     call dein#add('osyo-manga/unite-quickfix')
     call dein#add('tsukkee/unite-tag')
 
+    call dein#add('haya14busa/vim-operator-flashy', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-replace', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>' ] ] })
+    call dein#add('kana/vim-operator-user')
+    call dein#add('tommcdo/vim-exchange', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>(Exchange)', '<Plug>(ExchangeClear)', '<Plug>(ExchangeLine)' ] ]})
+    call dein#add('tyru/operator-camelize.vim', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>' ] ] })
+
+    call dein#add('kana/vim-textobj-function', { 'lazy': 1, 'on_map': [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
+    call dein#add('kana/vim-textobj-indent', { 'lazy': 1, 'on_map':  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
+    call dein#add('kana/vim-textobj-line', { 'lazy': 1, 'on_map': [ [ 'ox', 'al', 'il' ] ] })
+    call dein#add('kana/vim-textobj-user')
+    call dein#add('reedes/vim-textobj-sentence', { 'lazy': 1 })
+    call dein#add('rhysd/vim-textobj-word-column', { 'lazy': 1, 'on_map': [ [ 'ox', 'av', 'iv' ] ] })
+    call dein#add('sgur/vim-textobj-parameter', { 'lazy': 1, 'on_map': [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
+
+    call dein#add('machakann/vim-sandwich')
+
+    call dein#add('Chiel92/vim-autoformat', { 'lazy': 1, 'on_cmd': 'Autoformat' })
     call dein#add('FooSoft/vim-argwrap', { 'lazy': 1, 'on_func': 'argwrap' })
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('Shougo/vimfiler.vim', { 'lazy' : 1, 'depends' : 'unite.vim', 'on_func' : 'vimfiler', 'on_cmd' : [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source' : 'call Hook_post_source_vimfiler()' })
-    call dein#add('Shougo/vimproc.vim', { 'build' : 'make' })
-    call dein#add('Shougo/vinarise.vim', { 'on_cmd' : 'Vinarise' })
+    call dein#add('Shougo/vimfiler.vim', { 'lazy': 1, 'depends': 'unite.vim', 'on_func': 'vimfiler', 'on_cmd': [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source': 'call Hook_post_source_vimfiler()' })
+    call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
+    call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
-    call dein#add('airblade/vim-gitgutter', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
+    call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'InsertEnter' })
     call dein#add('bronson/vim-trailing-whitespace')
-    " call dein#add('easymotion/vim-easymotion')
-    " call dein#add('godlygeek/tabular', { 'lazy' : 1, 'on_cmd' : [ 'Tabularize', 'AddTabularPattern' ] })
-    " call dein#add('idanarye/vim-casetrate', { 'lazy' : 1, 'on_cmd' : 'Casetrate' })
-    " call dein#add('itchyny/lightline.vim')
-    " call dein#add('itchyny/vim-parenmatch')
-    " call dein#add('junegunn/vim-easy-align', { 'lazy' : 1, 'on_cmd' : 'EasyAlign', 'on_map' : [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
-    " call dein#add('kana/vim-niceblock', { 'lazy' : 1, 'on_map' : [ [ 'x', 'I', 'A' ] ] })
-    " call dein#add('kana/vim-smartchr')
-    " call dein#add('kana/vim-smartinput', { 'lazy' : 1, 'on_event' : 'InsertEnter', 'hook_post_source' : 'call Hook_on_post_source_smartinput()'})
-    " call dein#add('koron/nyancat-vim', { 'lazy''on_cmd' : [ 'Nyancat', 'Nyancat2' ] })
-    " call dein#add('luochen1990/rainbow')
-    " call dein#add('majutsushi/tagbar', { 'lazy' : 1, 'on_cmd' : 'TagbarToggle' })
-    " call dein#add('mattn/benchvimrc-vim', { 'lazy' : 1, 'on_cmd' : 'BenchVimrc' })
-    " call dein#add('mattn/gist-vim', { 'lazy' : 1, 'depends' : 'webapi-vim', 'on_cmd' : 'Gist' })
-    " call dein#add('mattn/learn-vimscript')
-    " call dein#add('mattn/webapi-vim')
-    " call dein#add('mopp/DoxyDoc.vim', { 'lazy' : 1, 'on_cmd' : [ 'DoxyDoc', 'DoxyDocAuthor' ] })
-    " call dein#add('mopp/autodirmake.vim', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
-    " call dein#add('mopp/battery.vim', { 'lazy' : 1, 'on_func' : 'battery', 'on_cmd' : 'Battery' })
-    " call dein#add('mopp/layoutplugin.vim', { 'lazy' : 1, 'on_cmd' : 'LayoutPlugin' })
-    " call dein#add('mopp/learn-markdown.vim')
-    " call dein#add('mopp/makecomp.vim', { 'lazy' : 1, 'on_cmd' : 'Make' })
-    " call dein#add('mopp/mopbuf.vim')
+    call dein#add('easymotion/vim-easymotion')
+    call dein#add('godlygeek/tabular', { 'lazy': 1, 'on_cmd': [ 'Tabularize', 'AddTabularPattern' ] })
+    call dein#add('idanarye/vim-casetrate', { 'lazy': 1, 'on_cmd': 'Casetrate' })
+    call dein#add('itchyny/lightline.vim')
+    call dein#add('itchyny/vim-parenmatch')
+    call dein#add('junegunn/vim-easy-align', { 'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
+    call dein#add('kana/vim-niceblock', { 'lazy': 1, 'on_map': [ [ 'x', 'I', 'A' ] ] })
+    call dein#add('kana/vim-smartchr')
+    call dein#add('kana/vim-smartinput', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
+    call dein#add('kannokanno/previm', { 'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown' })
+    call dein#add('luochen1990/rainbow')
+    call dein#add('majutsushi/tagbar', { 'lazy': 1, 'on_cmd': 'TagbarToggle' })
+    call dein#add('mattn/benchvimrc-vim', { 'lazy': 1, 'on_cmd': 'BenchVimrc' })
+    call dein#add('mattn/gist-vim', { 'lazy': 1, 'on_cmd': 'Gist' })
+    call dein#add('mattn/learn-vimscript')
+    call dein#add('mattn/webapi-vim')
+    call dein#add('mopp/DoxyDoc.vim', { 'lazy': 1, 'on_cmd': [ 'DoxyDoc', 'DoxyDocAuthor' ] })
+    call dein#add('mopp/autodirmake.vim', { 'lazy': 1, 'on_event': 'InsertEnter' })
+    call dein#add('mopp/layoutplugin.vim', { 'lazy': 1, 'on_cmd': 'LayoutPlugin' })
+    call dein#add('mopp/learn-markdown.vim')
     call dein#add('mopp/mopkai.vim')
-    " call dein#add('mopp/next-alter.vim', { 'lazy' : 1, 'on_cmd' : 'OpenNAlter', 'on_map'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
-    " call dein#add('mopp/openvimrc.vim' , { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openvimrc-open)' ] ] })
-    " call dein#add('mopp/smartnumber.vim')
-    " call dein#add('osyo-manga/vim-anzu', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>' ] ] })
-    " call dein#add('osyo-manga/vim-marching', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ] })
-    " call dein#add('osyo-manga/vim-stargate', { 'lazy' : 1, 'on_cmd' : 'StargateInclude' } )
-    " call dein#add('rhysd/vim-clang-format', { 'lazy' : 1, 'on_cmd' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] })
-    " call dein#add('rickhowe/diffchar.vim')
-    " call dein#add('scrooloose/nerdcommenter', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source' : 'doautocmd NERDCommenter BufEnter'})
-    " call dein#add('scrooloose/syntastic', { 'lazy' : 1, 'on_event' : 'InsertEnter' })
-    " call dein#add('set0gut1/previm', { 'lazy' : 1, 'on_cmd' : 'PrevimOpen', 'on_ft' : 'markdown' })
-    " call dein#add('sk1418/blockit', { 'lazy' : 1, 'on_cmd' : 'Block', 'on_map' : [ [ 'x', '<Plug>BlockitVisual' ] ] })
-    " call dein#add('sudo.vim', { 'lazy' : 1, 'on_cmd' : ['Sw', 'Swq']})
-    " call dein#add('thinca/vim-visualstar')
-    " call dein#add('tpope/vim-repeat')
-    " call dein#add('tyru/open-browser.vim', { 'lazy' : 1, 'on_map' : [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func' : 'openbrowser' })
+    call dein#add('mopp/next-alter.vim', { 'lazy': 1, 'on_cmd': 'OpenNAlter', 'on_map' : [ [ 'n', '<Plug>(next-alter-open)' ] ] })
+    call dein#add('mopp/smartnumber.vim')
+    call dein#add('osyo-manga/vim-anzu', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>' ] ] })
+    call dein#add('osyo-manga/vim-marching', { 'lazy': 1, 'on_ft': [ 'c', 'cpp' ] })
+    call dein#add('osyo-manga/vim-stargate', { 'lazy': 1, 'on_cmd': 'StargateInclude' })
+    call dein#add('rickhowe/diffchar.vim', { 'lazy':  &diff == 0, 'on_if': '&diff' })
+    call dein#add('scrooloose/nerdcommenter', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
+    call dein#add('scrooloose/syntastic', { 'lazy': 1, 'on_event': 'InsertEnter' })
+    call dein#add('sk1418/blockit', { 'lazy': 1, 'on_cmd': 'Block', 'on_map': [ [ 'x', '<Plug>BlockitVisual' ] ] })
+    call dein#add('sudo.vim', { 'lazy': 1, 'on_cmd': [ 'Sw', 'Swq' ] })
+    call dein#add('thinca/vim-visualstar')
+    call dein#add('tpope/vim-repeat')
+    call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
 
-    " call dein#add('Nemo157/scala.vim', { 'lazy' : 1, 'on_ft' : 'scala' })
-    " call dein#add('Shirk/vim-gas')
-    " call dein#add('awk.vim')
-    " call dein#add('bbchung/clighter', { 'lazy' : 1, 'on_ft' : [ 'c', 'cpp' ], 'hook_post_source' : 'call Hook_on_post_source_clighter()' })
-    " call dein#add('cespare/vim-toml')
-    " call dein#add('daeyun/vim-matlab')
-    " call dein#add('digitaltoad/vim-pug')
-    " call dein#add('gnuplot.vim')
-    " call dein#add('jelera/vim-javascript-syntax')
-    " call dein#add('lervag/vimtex')
-    " call dein#add('othree/html5.vim')
-    " call dein#add('pangloss/vim-javascript')
-    " call dein#add('plasticboy/vim-markdown')
-    " call dein#add('rust-lang/rust.vim')
-    " call dein#add('shima-529/C-prototype.vim', { 'lazy' : 1, 'on_ft' : 'c' })
-    " call dein#add('thinca/vim-ft-help_fold')
-    " call dein#add('vim-jp/cpp-vim')
+    " call dein#add('bbchung/clighter', { 'lazy': 1, 'on_ft': [ 'c', 'cpp' ], 'hook_post_source': 'call Hook_on_post_source_clighter()' })
+    call dein#add('Shirk/vim-gas')
+    call dein#add('cespare/vim-toml')
+    call dein#add('daeyun/vim-matlab')
+    call dein#add('digitaltoad/vim-pug')
+    call dein#add('gnuplot.vim')
+    call dein#add('jelera/vim-javascript-syntax')
+    call dein#add('lervag/vimtex')
+    call dein#add('plasticboy/vim-markdown')
+    call dein#add('rust-lang/rust.vim')
+    call dein#add('shima-529/C-prototype.vim', { 'lazy': 1, 'on_ft': 'c' })
+    call dein#add('thinca/vim-ft-help_fold')
+    call dein#add('vim-jp/cpp-vim')
     call dein#add('vim-jp/vimdoc-ja')
-    " call dein#add('vim-ruby/vim-ruby')
-    " call dein#add('vim-scripts/Arduino-syntax-file')
-    " call dein#add('vim-scripts/sh.vim--Cla')
-    " call dein#add('wavded/vim-stylus')
-    " call dein#add('yuratomo/java-api-complete', { 'lazy' : 1, 'on_ft' : 'java' })
-
-    " call dein#add('haya14busa/vim-operator-flashy', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-    " call dein#add('kana/vim-operator-replace', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-    " call dein#add('kana/vim-operator-user')
-    " call dein#add('tommcdo/vim-exchange', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ]})
-    " call dein#add('tyru/operator-camelize.vim', { 'lazy' : 1, 'on_map' : [ [ 'nx', '<Plug>' ] ] })
-
-    " call dein#add('kana/vim-textobj-function', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'af', 'if', 'aF', 'iF' ] ] })
-    " call dein#add('kana/vim-textobj-indent', { 'lazy' : 1, 'on_map' :  [ [ 'ox', 'ai' , 'ii' , 'aI',  'iI' ] ] })
-    " call dein#add('kana/vim-textobj-line', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'al', 'il' ] ] })
-    " call dein#add('kana/vim-textobj-user')
-    " call dein#add('rhysd/vim-textobj-word-column', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'av', 'iv' ] ] })
-    " call dein#add('sgur/vim-textobj-parameter', { 'lazy' : 1, 'on_map' : [ [ 'ox', 'a,', 'i,', 'i2,' ] ] })
-    " call dein#add('reedes/vim-textobj-sentence', { 'lazy' : 1 })
-
-    " call dein#add('machakann/vim-sandwich')
+    call dein#add('vim-ruby/vim-ruby')
+    call dein#add('vim-scripts/sh.vim--Cla')
 
     call dein#end()
     call dein#save_state()
-" endif
+endif
 
 if dein#check_install()
     call dein#install()
@@ -658,9 +648,9 @@ if dein#tap('neocomplete.vim') && !has('nvim')
 endif
 
 " neosnippet.vim
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
+imap <C-s> <Plug>(neosnippet_expand_or_jump)
+smap <C-s> <Plug>(neosnippet_expand_or_jump)
+xmap <C-s> <Plug>(neosnippet_expand_target)
 let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
 let g:neosnippet#scope_aliases['pug'] = 'jade'
@@ -688,6 +678,7 @@ function! s:unite_smart_grep() abort
     endif
 endfunction
 
+let g:unite_force_overwrite_statusline = 0
 if executable('hw')
     " For highway.
     let g:unite_source_grep_command      = 'hw'
@@ -715,6 +706,26 @@ endfunction
 function! Hook_post_source_unite() abort
     call unite#custom#profile('default', 'context', { 'start_insert': 1, 'prompt': '>' })
 endfunction
+
+" vim-operator-flashy
+map y <Plug>(operator-flashy)
+map Y <Plug>(operator-flashy)$
+let g:operator#flashy#group = 'Error'
+
+" operator-replace
+map _ <Plug>(operator-replace)
+
+" vim-exchange
+nmap <Leader>cx <Plug>(Exchange)
+xmap <Leader>X <Plug>(Exchange)
+nmap <Leader>cxc <Plug>(ExchangeClear)
+nmap <Leader>cxx <Plug>(ExchangeLine)
+
+" operator-camelize.vim
+map <Leader>ca <Plug>(operator-camelize-toggle)
+
+" textobj-sentence
+let g:textobj#sentence#select = 'n'
 
 " vim-argwrap
 nnoremap <silent> <leader>aw :<C-u>call argwrap#toggle()<CR>
@@ -759,96 +770,133 @@ let g:gitgutter_map_keys = 0
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
 
+" vim-casetrate
+let g:casetrate_leader = '<leader>a'
 
-"----------------------------------------------------------------------------"
-" autocmd for plugin
-"----------------------------------------------------------------------------"
-augroup plugin
-    autocmd!
-
-    autocmd VimEnter * call dein#call_hook('post_source')
-    autocmd FileType unite call s:on_filetype_unite()
-    autocmd FileType vimfiler call s:on_filetype_vimfiler()
-augroup END
-
-syntax enable
-colorscheme mopkai  " It should be after entax command.
-
-
-
-
-
-
-
-
-
-finish
-
-
-" vim-easymotion
-let g:EasyMotion_leader_key = '<Leader>e'
-
-
-" marching
-let g:marching_enable_neocomplete = 1
-let g:marching#clang_command#options = { 'cpp' : '-Wall -std=gnu++1y', 'c' : '-Wall -std=c11' }
-
-" clang-format
-let g:clang_format#auto_format_on_insert_leave = 0
-let g:clang_format#auto_formatexpr = 1
-let flags = [
-            \ 'AfterClass: false',
-            \ 'AfterControlStatement: false',
-            \ 'AfterEnum: false',
-            \ 'AfterFunction: true',
-            \ 'AfterNamespace: true',
-            \ 'AfterObjCDeclaration: true',
-            \ 'AfterStruct: false',
-            \ 'AfterUnion: false',
-            \ 'BeforeCatch: false',
-            \ 'BeforeElse: false',
-            \ 'IndentBraces: false',
-            \ ]
-let g:clang_format#style_options = {
-            \ 'AccessModifierOffset':                -4,
-            \ 'AlignTrailingComments':               'true',
-            \ 'AllowShortFunctionsOnASingleLine':    'false',
-            \ 'AllowShortIfStatementsOnASingleLine': 'false',
-            \ 'AllowShortLoopsOnASingleLine':        'false',
-            \ 'AlwaysBreakTemplateDeclarations':     'true',
-            \ 'BinPackParameters':                   'false',
-            \ 'BreakBeforeBraces':                   'Custom',
-            \ 'BraceWrapping':                       '{' . join(flags, ',') . '}',
-            \ 'ColumnLimit':                         '0',
-            \ 'IndentCaseLabels':                    'true',
-            \ 'MaxEmptyLinesToKeep':                 '3',
-            \ 'PointerBindsToType':                  'true',
-            \ 'Standard':                            'Auto',
-            \ 'TabWidth':                            '4',
-            \ 'UseTab':                              'Never',
-            \ 'IndentWidth':                         '4',
+" lightline.vim
+let g:lightline = {
+            \ 'colorscheme': 'mopkai',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'modified' ], [ 'readonly', 'spell' ], ],
+            \   'right': [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
+            \ },
+            \ 'inactive': {
+            \   'left': [ [ 'filename', 'modified' ] ],
+            \   'right': [ [ 'filetype' ] ]
+            \ },
+            \ 'tabline': {
+            \   'left': [ [ 'tabs' ]  ],
+            \   'right': []
+            \ },
+            \ 'tab': {
+            \   'active':   [ 'tabnum', 'filename', 'modified' ],
+            \   'inactive': [ 'tabnum', 'filename', 'modified' ]
+            \ },
+            \ 'tabline_separator': { 'left': '', 'right': '' },
+            \ 'tabline_subseparator': { 'left': '', 'right': '' },
+            \ 'component': {
+            \   'readonly'      : "%{ (Lightline_is_visible() && &readonly) ? 'RO' : '' }",
+            \   'filetype'      : "%{ !Lightline_is_visible() ? '' : &filetype }",
+            \   'fileencoding'  : "%{ !Lightline_is_visible() ? '' : (strlen(&fenc) ? &fenc : &enc) }",
+            \   'fileformat'    : "%{ !Lightline_is_visible() ? '' : &fileformat }",
+            \   'lineinfo'      : "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
+            \   'percent'       : "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
+            \ },
+            \ 'component_visible_condition': {
+            \   'filetype':     'Lightline_is_visible()',
+            \   'fileencoding': 'Lightline_is_visible()',
+            \   'fileformat':   'Lightline_is_visible()',
+            \   'percent':      'Lightline_is_visible()',
+            \ },
+            \ 'component_function': {
+            \   'mode':     'Lightline_mode',
+            \   'modified': 'Lightline_modified',
+            \   'filename': 'Lightline_filename',
+            \ },
+            \ 'component_expand': { 'syntastic' : 'SyntasticStatuslineFlag', },
+            \ 'component_type'  : { 'syntastic' : 'error', }
             \ }
 
-" NERDCommenter
-let g:NERDSpaceDelims = 1
-nmap <Leader><Leader> <Plug>NERDCommenterToggle
-vmap <Leader><Leader> <Plug>NERDCommenterNested
-nmap <Leader>cs <plug>NERDCommenterSexy
+let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|unite\|help'
 
-" TagBar
-let g:tagbar_width = 35
-let g:tagbar_autoshowtag = 1
-let g:tagbar_autofocus = 1
-let g:tagbar_sort = 0
-let g:tagbar_compact = 1
-nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
+function! Lightline_is_visible() abort
+    return (&filetype !~? g:lightline_invisible_filetype_pattern) && (60 <= winwidth(0))
+endfunction
 
-" Smartinput
+function! Lightline_mode() abort
+    if &filetype == 'unite'
+        return 'Unite'
+    elseif &filetype == 'vimfiler'
+        return winwidth(0) <= 35 ?  '' : 'VimFiler'
+    elseif &filetype == 'tagbar'
+        return 'Tagbar'
+    endif
+
+    return lightline#mode()
+endfunction
+
+function! Lightline_modified() abort
+    return ((&filetype =~? g:lightline_invisible_filetype_pattern) || (&modifiable == 0)) ? ('') : (&modified ? '[+]' : '[-]')
+endfunction
+
+function! Lightline_filename() abort
+    if &filetype == 'unite'
+        return unite#get_status_string()
+    elseif &filetype == 'vimfiler'
+        return vimfiler#get_status_string()
+    elseif &filetype == 'tagbar'
+        return g:lightline.fname
+    endif
+
+    return '' != expand('%:t') ? expand('%:t') : '[No Name]'
+endfunction
+
+let s:p = {
+            \ 'normal': {
+            \   'left':    [ [ '#080808', '#00afff', 232,  39 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \   'middle':  [ [ '#9e9e9e', '#303030', 247, 236 ] ],
+            \   'right':   [ [ '#9e9e9e', '#080808', 247, 237 ], [ '#875fd7', '#080808',  98, 232 ] ],
+            \   'warning': [ [ '#9e9e9e', '#ffdf5f', 247, 221 ] ],
+            \   'error':   [ [ '#eeeeee', '#d70000', 255, 160 ] ]
+            \ },
+            \ 'insert': {
+            \   'left':   [ [ '#080808', '#87ff00', 232, 118 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \ },
+            \ 'replace': {
+            \   'left':   [ [ '#080808', '#ff0087', 232, 198 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \ },
+            \ 'visual': {
+            \   'left':   [ [ '#080808', '#d7ff5f', 232, 191 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \ },
+            \ 'inactive': {
+            \   'left':   [ [ '#9e9e9e', '#080808', 247, 232 ] ],
+            \   'middle': [ [ '#9e9e9e', '#303030', 247, 236 ] ],
+            \   'right':  [ [ '#875fd7', '#080808',  98, 232 ] ]
+            \ },
+            \ 'tabline': {
+            \   'tabsel': [ [ '#080808', '#ff0087', 232, 198 ] ],
+            \   'left':   [ [ '#080808', '#c6c6c6', 232, 251 ] ],
+            \   'middle': [ [ '#080808', '#c6c6c6', 232, 251 ] ],
+            \   'right':  [ [ '#080808', '#c6c6c6', 232, 251 ] ],
+            \ }
+            \ }
+let g:lightline#colorscheme#mopkai#palette = s:p
+
+" vim-parenmatch
+let g:parenmatch_highlight = 0
+hi link ParenMatch MatchParen
+
+" vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" vim-smartinput
 function! Hook_on_post_source_smartinput() abort
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
-    let lst = [   ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
+    let lst = [
+                \ ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
                 \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
                 \ ['+',     "smartchr#loop(' + ', '++', '+')"],
                 \ ['-',     "smartchr#loop(' - ', '--', '-')"],
@@ -857,7 +905,8 @@ function! Hook_on_post_source_smartinput() abort
                 \ ['%',     "smartchr#loop(' % ', '%')"],
                 \ ['*',     "smartchr#loop(' * ', '*')"],
                 \ ['<Bar>', "smartchr#loop(' | ', ' || ', '|')"],
-                \ [',',     "smartchr#loop(', ', '->', ' => ')"]]
+                \ [',',     "smartchr#loop(', ', '->', ' => ')"]
+                \ ]
 
     for i in lst
         call smartinput#map_to_trigger('i', i[0], i[0], i[0])
@@ -891,32 +940,63 @@ function! Hook_on_post_source_smartinput() abort
     call smartinput#define_rule({ 'char' : '*', 'at' : 'defparameter \*\%#', 'input' : '*<Left>', 'filetype' : [ 'lisp' ]})
 endfunction
 
-" learn-vimscript
-nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
+" previm
+let g:previm_show_header = 0
 
-" Open-Browser
-map <Leader>op <Plug>(openbrowser-open)
+" rainbow
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+            \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87' ],
+            \   'ctermfgs': [ '242', '33', '197', '98', '172', '36' ],
+            \   'separately' : { '*': {}, 'vim' : {} },
+            \   }
 
-" vim-operator-flashy
-map y <Plug>(operator-flashy)
-nmap Y <Plug>(operator-flashy)
-let g:operator#flashy#group = 'Error'
+" tagBar
+let g:tagbar_autoshowtag = 1
+let g:tagbar_autofocus   = 1
+let g:tagbar_sort        = 0
+let g:tagbar_compact     = 1
+nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
 
-" operator-replace
-map _ <Plug>(operator-replace)
+function! Tagbar_status_func(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
+    return lightline#statusline(0)
+endfunction
+let g:tagbar_status_func = 'Tagbar_status_func'
 
-" operator-camelize
-map <Leader>ca <Plug>(operator-camelize-toggle)
-
-" exchange
-nmap <Leader>cx <Plug>(Exchange)
-xmap <Leader>cx <Plug>(Exchange)
-nmap <Leader>cy <Plug>(ExchangeClear)
-nmap <Leader>cy <Plug>(ExchangeLine)
-
-" Gist
+" gist-vim
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
+
+" layoutplugin.vim
+let g:layoutplugin#is_append_vimrc = 1
+
+" next-alter.vim
+nmap <Leader>an <Plug>(next-alter-open)
+let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
+
+" smartnumber.vim
+let g:snumber_enable_startup = 1
+nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
+
+" mopkai.vim
+let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER != 'mopp'))
+
+" vim-anzu
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+nmap * <Plug>(anzu-star-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)
+
+" vim-marching
+let g:marching_enable_neocomplete = 1
+
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+nmap <Leader>cb <Plug>NERDCommenterToggle
+vmap <Leader>cb <Plug>NERDCommenterNested
+nmap <Leader>cs <plug>NERDCommenterSexy
+vmap <Leader>cs <plug>NERDCommenterSexy
 
 " syntastic
 let g:syntastic_mode_map = { 'mode' : 'passive' }
@@ -928,201 +1008,15 @@ let g:syntastic_c_compiler_options   = ($USER == 'mopp' ? '-std=c11 ' : '') . op
 let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
 let g:syntastic_loc_list_height      = 5
 
-" rainbow parenthesis
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-            \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ],
-            \   'ctermfgs': [ '242', '33', '197', '98', '172', '36', ],
-            \   'separately' : { '*': {}, 'vim' : {} },
-            \   }
-
-" anzu
-nmap n <Plug>(anzu-n-with-echo)
-nmap N <Plug>(anzu-N-with-echo)
-nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
-
-" OpenVimrc
-nmap <silent> <Leader>ev <Plug>(openvimrc-open)
-
-" LayoutPlugin
-let g:layoutplugin#is_append_vimrc = 1
-
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
 
-" lightline
-let g:lightline = {
-            \ 'enable'      : { 'tabline' : 0 },
-            \ 'colorscheme' : 'mopkai',
-            \ 'active' : {
-            \   'left'  : [ [ 'mode', 'paste' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
-            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ], ],
-            \ },
-            \ 'inactive' : {
-            \   'left'  : [ [ 'filename' ] ],
-            \   'right' : [ [ 'percent' ], [ 'filetype' ] ]
-            \ },
-            \ 'separator'       : { 'left' : '',  'right' : ''  },
-            \ 'subseparator'    : { 'left' : '|', 'right' : '|' },
-            \ 'component' : {
-            \   'lineinfo'      : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' ? '' : printf('%03d:%03d', line('.'), col('.')) }",
-            \   'percent'       : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
-            \   'fileformat'    : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : &fileformat }",
-            \   'filetype'      : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : &filetype }",
-            \   'fileencoding'  : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : (strlen(&fenc) ? &fenc : &enc) }",
-            \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
-            \   'readonly'      : "%{ &filetype !~? 'vimfiler\\|tagbar\\|unite' && &readonly ? 'RO' : '' }",
-            \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
-            \ },
-            \ 'component_function' : {
-            \   'mode'     : 'Mline_mode',
-            \   'modified' : 'Mline_modified',
-            \   'filename' : 'Mline_filename',
-            \   'buflist'  : 'Mline_buflist',
-            \ },
-            \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
-            \ 'component_type'      : { 'syntastic' : 'error', },
-            \ }
-
-let s:p = { 'normal': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'inactive': {}, }
-let s:cp = {
-            \ 'fg':     [ '#9e9e9e', 247 ], 'glay':   [ '#303030', 236 ], 'dark':      [ '#0E1119', 232 ],
-            \ 'light':  [ '#e4e4e4', 254 ], 'purple': [ '#875fd7',  98 ], 'blue':      [ '#00afff',  39 ],
-            \ 'orange': [ '#d75f00', 166 ], 'red':    [ '#ff0000', 196 ], 'deep_glay': [ '#2e2930', 235 ],
-            \ }
-let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, s:cp.deep_glay ], }
-let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
-let s:p.normal.middle   = [ s:pa.base_glay ]
-let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ] ]
-let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
-let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
-let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2] ]
-let s:p.inactive.left   = [ [ [ '#4e4e4e', 239 ], s:cp.dark ] ]
-let s:p.inactive.middle = [ [ s:cp.fg, [ '#000000',  16 ] ] ]
-let s:p.inactive.right  = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ] ]
-let s:p.normal.error    = [ [ s:cp.dark, s:cp.red ] ]
-let s:p.normal.warning  = [ [ s:cp.dark, [ '#ffd700', 220 ] ] ]
-let g:lightline#colorscheme#mopkai#palette = lightline#colorscheme#flatten(s:p)
-
-function! Mline_mode() abort
-    if &filetype == 'unite'
-        return 'Unite'
-    elseif &filetype == 'vimfiler'
-        return winwidth(0) <= 35 ?  '' : 'VimFiler'
-    elseif &filetype == 'tagbar'
-        return 'Tagbar'
-    else
-        return lightline#mode()
-    endif
-endfunction
-
-function! Mline_modified() abort
-    if &filetype == 'unite' || !&modifiable
-        return ''
-    endif
-    return &modified ? '[+]' : '[-]'
-endfunction
-
-function! Mline_filename() abort
-    if &filetype == 'unite'
-        return unite#get_status_string()
-    elseif &filetype == 'vimfiler'
-        return vimfiler#get_status_string()
-    elseif &filetype == 'tagbar'
-        return g:lightline.fname
-    endif
-    return '' != expand('%:t') ? expand('%:t') : '[No Name]'
-endfunction
-
-let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
-let g:mopbuf_settings['auto_open_each_tab'] = 0
-let g:mopbuf_settings['sort_order'] = 'mru'
-function! Mline_buflist() abort
-    if (&filetype == 'unite') || (&filetype == 'vimfiler') || (&filetype == 'tagbar')
-        return ''
-    endif
-
-    if mopbuf#managed_buffer_num() <= 4 && mopbuf#is_show_display_buffer() == 0
-        return mopbuf#get_buffers_str_exclude(bufnr(''))
-    endif
-
-    let g:mopbuf_settings.auto_open_each_tab = 1
-
-    return ''
-endfunction
-
-function! Tagbar_status_func(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-    return lightline#statusline(0)
-endfunction
-let g:tagbar_status_func = 'Tagbar_status_func'
-
-" next-alter
-nmap <Leader>an <Plug>(next-alter-open)
-let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
-" let g:next_alter#open_option = 'vertical topleft'
-
-" mopkai
-let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER != 'mopp'))
-
 " sudo.vim
-command! -nargs=0 Sw :w sudo:%
-command! -nargs=0 Swq :wq sudo:%
+command! Sw :w sudo:%
+command! Swq :wq sudo:%
 
-" easy-align
-vmap <Enter> <Plug>(LiveEasyAlign)
-
-" smartnumber
-let g:snumber_enable_startup = 1
-nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
-
-" vim-ruby
-let g:ruby_indent_access_modifier_style = 'indent'
-let g:ruby_operators = 1
-let g:ruby_space_errors = 1
-
-" Clighter
-function! Hook_on_post_source_clighter() abort
-    hi m_decl cterm=bold
-    " hi link clighterMacroInstantiation Define
-    hi link clighterTypeRef            Type
-    hi link clighterVarDecl            m_decl
-    hi link clighterStructDecl         m_decl
-    hi link clighterClassDecl          m_decl
-    hi link clighterEnumDecl           m_decl
-    hi link clighterEnumConstantDecl   Number
-    hi link clighterDeclRefExprEnum    Identifier
-    hi link clighterCursorSymbolRef    IncSearch
-    hi link clighterFunctionDecl       None
-    hi link clighterDeclRefExprCall    None
-    hi link clighterMemberRefExpr      None
-    hi link clighterNamespace          None
-endfunction
-
-let g:clighter_autostart = 0
-let g:clighter_occurrences_mode = 0
-let g:clighter_libclang_file = '/usr/local/lib/libclang.so'
-if filereadable(g:clighter_libclang_file) == 0
-    let g:clighter_libclang_file = '/usr/lib/libclang.so'
-endif
-
-" Casetrate
-let g:casetrate_leader = '<leader>a'
-
-" c-prototype
-let g:c_prototype_no_default_keymappings = 1
-let g:c_prototype_remove_var_name = 1
-let g:c_prototype_insert_point = 2
-
-" vim-markdown
-let g:vim_markdown_conceal = 0
-
-" previm
-let g:previm_show_header = 0
-
-" vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
+" open-browser.vim
+map <Leader>op <Plug>(openbrowser-open)
 
 " vimtex
 let g:vimtex_latexmk_continuous = 0
@@ -1133,44 +1027,43 @@ if has('unix')
     let g:vimtex_view_general_viewer = 'evince'
 endif
 
-" textobj-sentence
-let g:textobj#sentence#select = 'n'
+" vim-markdown
+let g:vim_markdown_conceal = 0
 
-" Parenmatch
-let g:parenmatch_highlight = 0
-hi link ParenMatch MatchParen
+" c-prototype
+let g:c_prototype_no_default_keymappings = 1
+let g:c_prototype_remove_var_name = 1
+let g:c_prototype_insert_point = 2
+
+" vim-ruby
+let g:ruby_indent_access_modifier_style = 'indent'
+let g:ruby_operators = 1
+let g:ruby_space_errors = 1
 
 
 "----------------------------------------------------------------------------"
-" autocmd for plugin.
+" autocmd for plugin
 "----------------------------------------------------------------------------"
-" for lightline
 function! s:update_syntastic() abort
     if &filetype == 'scala'
         return
     endif
 
-    if 0 == dein#is_sourced('syntastic')
+    if dein#is_sourced('syntastic') == 0
         call dein#source('syntastic')
     endif
     SyntasticCheck
     call lightline#update()
 endfunction
 
-" Depending on some plugins.
 augroup plugin
     autocmd!
 
     autocmd VimEnter * call dein#call_hook('post_source')
-    autocmd FileType help setlocal foldcolumn=0
+    autocmd FileType unite call s:on_filetype_unite()
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
-    autocmd FileType unite call s:on_exe_unite()
-    autocmd CompleteDone *.java call javaapi#showRef()
+    autocmd FileType vimfiler call s:on_filetype_vimfiler()
     autocmd BufWritePost * call s:update_syntastic()
-
-    " To avoid mess indent in perl.
-    autocmd BufWinEnter *.pl nested :RainbowToggleOff
-    autocmd BufWinLeave *.pl nested :RainbowToggleOn
 augroup END
 
 syntax enable
