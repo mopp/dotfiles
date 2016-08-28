@@ -1,0 +1,32 @@
+---
+AccessModifierOffset:                -4
+AlignTrailingComments:               true
+AllowShortFunctionsOnASingleLine:    false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine:        false
+AlwaysBreakTemplateDeclarations:     true
+BinPackParameters:                   false
+BreakBeforeBraces:                   Custom
+BraceWrapping:
+  AfterClass:            false
+  AfterControlStatement: false
+  AfterEnum:             false
+  AfterFunction:         true
+  AfterNamespace:        true
+  AfterObjCDeclaration:  true
+  AfterStruct:           false
+  AfterUnion:            false
+  BeforeCatch:           false
+  BeforeElse:            false
+  IndentBraces:          false
+ColumnLimit: 0
+IndentCaseLabels: true
+MaxEmptyLinesToKeep: 3
+DerivePointerAlignment: false
+PointerAlignment: Left
+Standard: Auto
+TabWidth: 4
+UseTab: Never
+IndentWidth: 4
+...
+
