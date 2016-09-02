@@ -9,7 +9,7 @@ exec --no-startup-id urxvtc
 set $mod Mod1
 
 # Font for window titles.
-font pango:MyricaM M 14px
+font pango:Ricty 20px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
