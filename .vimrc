@@ -21,11 +21,11 @@ if has('vim_starting')
     set fileformats=unix,mac,dos
 endif
 
-" Appearance
+" Appearance.
 set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
-" set cursorline
+set cursorline
 set display=lastline
 set laststatus=2
 set list
@@ -125,7 +125,7 @@ noremap k gk
 noremap ; :
 noremap : ;
 
-" Avoiding getting <NUL> from <C-Space>
+" Avoiding getting <NUL> from <C-Space>.
 map <NUL> <C-Space>
 map! <NUL> <C-Space>
 
