@@ -1,5 +1,5 @@
 ! Xft settings.
-Xft.dpi:       144
+Xft.dpi:       134.4
 Xft.antialias: true
 Xft.rgba:      rgb
 Xft.hinting:   true
