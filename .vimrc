@@ -528,7 +528,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
-    call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'InsertEnter' })
+    call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'BufWritePost' })
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('easymotion/vim-easymotion')
     call dein#add('godlygeek/tabular', { 'lazy': 1, 'on_cmd': [ 'Tabularize', 'AddTabularPattern' ] })
@@ -571,8 +571,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('daeyun/vim-matlab')
     call dein#add('digitaltoad/vim-pug')
     call dein#add('gnuplot.vim')
-    call dein#add('jelera/vim-javascript-syntax')
     call dein#add('lervag/vimtex')
+    call dein#add('pangloss/vim-javascript')
     call dein#add('plasticboy/vim-markdown')
     call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', { 'lazy': 1, 'on_ft': 'c' })
@@ -651,6 +651,7 @@ endif
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
 let g:neosnippet#scope_aliases['pug'] = 'jade'
@@ -761,7 +762,7 @@ function! s:on_filetype_vimfiler() abort
 endfunction
 
 function! Hook_post_source_vimfiler() abort
-    call vimfiler#custom#profile('default', 'context', { 'safe': 0, 'edit_action': 'tabopen' })
+    call vimfiler#custom#profile('default', 'context', { 'safe': 0 })
 endfunction
 
 " vim-gitgutter
@@ -769,6 +770,9 @@ let g:gitgutter_map_keys = 0
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
+
+" vim-easymotion
+map <Leader>e <Plug>(easymotion-prefix)
 
 " vim-casetrate
 let g:casetrate_leader = '<leader>a'
@@ -795,12 +799,12 @@ let g:lightline = {
             \ 'tabline_separator': { 'left': '', 'right': '' },
             \ 'tabline_subseparator': { 'left': '', 'right': '' },
             \ 'component': {
-            \   'readonly'      : "%{ (Lightline_is_visible() && &readonly) ? 'RO' : '' }",
-            \   'filetype'      : "%{ !Lightline_is_visible() ? '' : &filetype }",
-            \   'fileencoding'  : "%{ !Lightline_is_visible() ? '' : (strlen(&fenc) ? &fenc : &enc) }",
-            \   'fileformat'    : "%{ !Lightline_is_visible() ? '' : &fileformat }",
-            \   'lineinfo'      : "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
-            \   'percent'       : "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
+            \   'readonly':     "%{ (Lightline_is_visible() && &readonly) ? 'RO' : '' }",
+            \   'filetype':     "%{ !Lightline_is_visible() ? '' : &filetype }",
+            \   'fileencoding': "%{ !Lightline_is_visible() ? '' : (strlen(&fenc) ? &fenc : &enc) }",
+            \   'fileformat':   "%{ !Lightline_is_visible() ? '' : &fileformat }",
+            \   'lineinfo':     "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
+            \   'percent':      "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
             \ },
             \ 'component_visible_condition': {
             \   'filetype':     'Lightline_is_visible()',
@@ -993,7 +997,8 @@ let g:marching_enable_neocomplete = 1
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
-nmap <Leader>cb <Plug>NERDCommenterToggle
+nmap <Leader><Leader> <Plug>NERDCommenterToggle
+xmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader>cb <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
 vmap <Leader>cs <plug>NERDCommenterSexy
@@ -1017,6 +1022,9 @@ command! Swq :wq sudo:%
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
+
+" vim-matlab
+let g:matlab_auto_mappings = 0
 
 " vimtex
 let g:vimtex_latexmk_continuous = 0
