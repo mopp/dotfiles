@@ -36,6 +36,7 @@ case $HOSTNAME in
     flan)
         dropbox &
         urxvtd -q -f -o &
+        sh ~/.fehbg &
 
         # for uim
         export GTK_IM_MODULE="uim"

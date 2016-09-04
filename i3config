@@ -2,7 +2,6 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # startup
-exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id urxvtc
 
 # set $mod Mod4
@@ -136,7 +135,7 @@ bindsym $mod+r mode "resize"
 
 # system commands
 set $out "(L)ock, (E)xit, (S)uspend, (H)ibernate, (R)eboot, (P)oweroff"
-set $i3exit "$HOME/.i3/i3exit"
+set $i3exit "$HOME/.config/i3/i3exit"
 mode $out {
     bindsym l exec --no-startup-id sh $i3exit lock,       mode "default"
     bindsym e exec --no-startup-id sh $i3exit exit,       mode "default"
