@@ -154,6 +154,7 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
 case $TERM in
     *rxvt*)
         stty -ixon
+        stty stop undef
         ;;
 esac
 
@@ -226,7 +227,7 @@ fi
 
 # For less.
 export PAGER=less
-export LESS='-R -f -X --LINE-NUMBERS --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
+export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
