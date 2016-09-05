@@ -51,7 +51,7 @@ case $HOSTNAME in
             #   The default monitor size is 2560x1440
             # It becomes (1920x1080) * 1.4 = (2688x1512) if scale is 1.4x1.4.
             # Next, its X position begins from 2688 if you would like to put default monitor on the right of the external monitor.
-            xrandr --output HDMI1 --primary --scale 1.4x1.4 --output eDP1 --auto --panning 2560x1440+2688+0 --right-of HDMI1
+            xrandr --output HDMI1 --primary --scale 1.4x1.4 --panning 2688x1512 --output eDP1 --auto --panning 2560x1440+2688+0 --right-of HDMI1
             # (1920x1080) * 1.3 = (2496x1404)
             # (1920x1080) * 1.2 = (2304x1296)
         fi
