@@ -2,6 +2,7 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # startup
+exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id urxvtc
 
 # set $mod Mod4
