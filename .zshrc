@@ -18,6 +18,7 @@
 #   BOOST_ROOT
 #---------------------------------------------------------------------------------------"
 export LANG=en_US.UTF-8
+export XDG_HOME_CONFIG=$HOME/.config
 
 case $OSTYPE in
     solaris*)

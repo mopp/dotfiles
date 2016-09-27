@@ -221,6 +221,12 @@ nnoremap <C-]> g<C-]>zz
 " Repeat the previous macro.
 nnoremap Q @@
 
+" Search something in the current visual range only.
+vnoremap <M-/> <Esc>/\%V
+
+" Replace the all selected areas.
+vnoremap <C-r> "hy:%s/\V<C-r>h//g<left><left>
+
 nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
 nnoremap <silent> <Leader>w :<C-u>write<CR>
 if has('nvim')
