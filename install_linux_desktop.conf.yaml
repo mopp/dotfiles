@@ -6,7 +6,6 @@
 - link:
     ~/.fehbg: .fehbg
     ~/.fbtermrc: .fbtermrc
-    ~/.vrapperrc: .vrapperrc
     ~/.Xresources: .Xresources
     ~/.xinitrc: .xinitrc
     ~/.Xmodmap: .Xmodmap
