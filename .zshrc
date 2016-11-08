@@ -204,7 +204,7 @@ fi
 
 # For zslot.
 # https://github.com/kmhjs/zslot.git
-ZSLOT_SRC=~/Tools/zslot/src/
+ZSLOT_SRC=~/repo/zslot/src/
 if [ -e $ZSLOT_SRC ]; then
     export FPATH=$ZSLOT_SRC:$FPATH
     autoload -Uz zslot

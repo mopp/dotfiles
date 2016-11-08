@@ -16,4 +16,6 @@
     ~/.clang-format: .clang-format
 
 - shell:
-  - mkdir -p ~/.config/nvim/backup ~/.config/nvim/swap ~/.config/nvim/undo
+    - mkdir -p ~/.config/nvim/backup ~/.config/nvim/swap ~/.config/nvim/undo
+    - if [ ! -e ~/repo/zslot ]; then git clone https://github.com/kmhjs/zslot.git ~/repo/zslot ;fi
+    - touch ~/.zslot_info
