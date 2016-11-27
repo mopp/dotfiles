@@ -380,6 +380,7 @@ augroup mopp
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType tex  setlocal wrap spell nocursorline
     autocmd FileType text setlocal wrap
+    autocmd FileType help setlocal foldcolumn=0
 
     " Detecting filetypes.
     autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
@@ -493,7 +494,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     let common_opt = { 'lazy': 1, 'on_source': [ 'deoplete.nvim', 'neocomplete.vim' ] }
     call dein#add('Shougo/neco-syntax')
     call dein#add('Shougo/neco-vim', common_opt)
-    call dein#add('Shougo/neoinclude.vim', common_opt)
+    " call dein#add('Shougo/neoinclude.vim', common_opt)
     call dein#add('Shougo/neosnippet-snippets')
     call dein#add('Shougo/neosnippet.vim', common_opt)
     call dein#add('fishbullet/deoplete-ruby')
@@ -501,13 +502,13 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('zchee/deoplete-jedi')
     call dein#add('ujihisa/neco-look')
 
-    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_func': 'unite', 'on_cmd': 'Unite', 'hook_post_source': 'call Hook_post_source_unite()'})
+    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_source': 'denite.nvim' })
+    call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_func': 'denite', 'on_cmd': 'Denite', 'hook_post_source': 'call Hook_post_source_denite()'})
+    call dein#add('Shougo/neoyank.vim')
     call dein#add('Shougo/unite-outline')
-    call dein#add('junkblocker/unite-tasklist')
     call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, 'on_source': 'unite.vim' })
     call dein#add('lambdalisue/unite-grep-vcs')
     call dein#add('osyo-manga/unite-quickfix')
-    call dein#add('tsukkee/unite-tag')
 
     call dein#add('haya14busa/vim-operator-flashy', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>' ] ] })
     call dein#add('kana/vim-operator-replace', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>' ] ] })
@@ -571,7 +572,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
 
-    " call dein#add('bbchung/clighter', { 'lazy': 1, 'on_ft': [ 'c', 'cpp' ], 'hook_post_source': 'call Hook_on_post_source_clighter()' })
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
     call dein#add('daeyun/vim-matlab')
@@ -643,12 +643,9 @@ if dein#tap('neocomplete.vim') && !has('nvim')
     let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
     let g:neocomplete#sources#vim#complete_functions          = get(g:, 'neocomplete#sources#vim#complete_functions', {})
-    let g:neocomplete#sources#vim#complete_functions.Unite    = 'unite#complete_source'
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-    imap <C-g><C-q> <Plug>(neocomplete_start_unite_quick_match)
-    imap <C-g><C-u> <Plug>(neocomplete_start_unite_complete)
     inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
     inoremap <expr> <C-l> neocomplete#complete_common_string()
 endif
@@ -662,56 +659,47 @@ let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
 let g:neosnippet#scope_aliases['pug'] = 'jade'
 
-" unite.vim
-nnoremap [Unite] <Nop>
-nmap <Leader>f [Unite]
-nnoremap <silent> [Unite]re :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]f  :<C-u>Unite -buffer-name=Files file_rec/async:!<CR>
-nnoremap <silent> [Unite]s  :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> [Unite]gi :<C-u>Unite -buffer-name=Giti giti<CR>
-nnoremap <silent> [Unite]gg :<C-u>call <SID>unite_smart_grep()<CR>
-nnoremap <silent> [Unite]o  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Lines line<CR>
-nnoremap <silent> [Unite]t  :<C-u>Unite -buffer-name=TaskList tasklist<CR>
-nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
+" denite.nvim
+nnoremap [Denite] <Nop>
+nmap <Leader>f [Denite]
+nnoremap <silent> [Denite]re :<C-u>Denite -resume<CR>
+nnoremap <silent> [Denite]b  :<C-u>Denite buffer<CR>
+nnoremap <silent> [Denite]f  :<C-u>Denite file_rec<CR>
+nnoremap <silent> [Denite]gg :<C-u>Denite grep<CR>
+nnoremap <silent> [Denite]l  :<C-u>Denite line<CR>
+nnoremap <silent> [Denite]gi :<C-u>Denite unite:giti<CR>
+nnoremap <silent> [Denite]o  :<C-u>Denite unite:outline<CR>
+nnoremap <silent> [Denite]q  :<C-u>Denite unite:quickfix -no-quit -direction=botright<CR>
+nnoremap <silent> [Denite]s  :<C-u>Denite unite:source<CR>
+nnoremap <silent> [Denite]t  :<C-u>Denite unite:tasklist<CR>
 
-function! s:unite_smart_grep() abort
-    if unite#sources#grep_git#is_available()
-        Unite grep/git -buffer-name=Search
-    elseif unite#sources#grep_hg#is_available()
-        Unite grep/hg -buffer-name=Search
-    else
-        Unite grep -buffer-name=Search
+function! Hook_post_source_denite() abort
+    call denite#custom#option('default', 'statusline', v:false)
+    call denite#custom#option('default', 'vertical_preview', v:true)
+    call denite#custom#map('insert', '<C-j>', 'move_to_next_line')
+    call denite#custom#map('insert', '<C-k>', 'move_to_prev_line')
+
+    if executable('rg')
+        " For ripgrep.
+        call denite#custom#var('file_rec', 'command', [ 'rg', '--files', '--glob', '!.git' ])
+        call denite#custom#var('grep', 'command', [ 'rg' ])
+        call denite#custom#var('grep', 'default_opts', [ '--vimgrep', '--no-heading' ])
+        call denite#custom#var('grep', 'recursive_opts', [])
+        call denite#custom#var('grep', 'separator', ['--'])
+        call denite#custom#var('grep', 'final_opts', [])
+    elseif executable('hw')
+        " For highway.
+        call denite#custom#var('grep', 'command', [ 'hw' ])
+        call denite#custom#var('grep', 'default_opts', [ '--no-group', '--no-group' ])
+        call denite#custom#var('grep', 'recursive_opts', [])
+        call denite#custom#var('grep', 'separator', [])
+    elseif executable('pt')
+        " For the platinum searcher.
+        call denite#custom#var('grep', 'command', [ 'pt' ])
+        call denite#custom#var('grep', 'default_opts', [ '--nogroup', '--nocolor', '--smart-case', '--hidden' ])
+        call denite#custom#var('grep', 'recursive_opts', [])
+        call denite#custom#var('grep', 'separator', [])
     endif
-endfunction
-
-let g:unite_force_overwrite_statusline = 0
-if executable('hw')
-    " For highway.
-    let g:unite_source_grep_command      = 'hw'
-    let g:unite_source_grep_default_opts = '--no-group --no-color'
-elseif executable('pt')
-    " For the platinum searcher.
-    let g:unite_source_grep_command      = 'pt'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-endif
-let g:unite_source_grep_recursive_opt = ''
-let g:unite_source_grep_encoding      = 'utf-8'
-
-function! s:on_filetype_unite() abort
-    imap <buffer> <TAB> <Plug>(unite_select_next_line)
-    imap <buffer> jj <Plug>(unite_insert_leave)
-    nmap <buffer> ' <Plug>(unite_quick_match_default_action)
-    nmap <buffer> x <Plug>(unite_quick_match_choose_action)
-    nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
-    imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
-    nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
-    nnoremap <buffer><expr> l unite#smart_map('l', unite#do_action('default'))
-    nnoremap <buffer><expr> <C-t> unite#do_action('tabopen')
-endfunction
-
-function! Hook_post_source_unite() abort
-    call unite#custom#profile('default', 'context', { 'start_insert': 1, 'prompt': '>' })
 endfunction
 
 " vim-operator-flashy
@@ -773,9 +761,14 @@ endfunction
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
+nmap <Leader>gn <Plug>GitGutterPrevHunk
+nmap <Leader>gp <Plug>GitGutterNextHunk
+nmap <Leader>gs <Plug>GitGutterStageHunk
+nmap <Leader>gu <Plug>GitGutterUndoHunk
+nmap <Leader>gv <Plug>GitGutterPreviewHunk
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'unite', 'help']
+let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'denite', 'help']
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -787,7 +780,7 @@ let g:casetrate_leader = '<leader>a'
 let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
-            \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'modified' ], [ 'readonly', 'spell' ], ],
+            \   'left': [ [ 'mode', 'denite', 'paste' ], [ 'filename', 'modified' ], [ 'readonly', 'spell' ], ],
             \   'right': [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
             \ },
             \ 'inactive': {
@@ -820,6 +813,7 @@ let g:lightline = {
             \ },
             \ 'component_function': {
             \   'mode':     'Lightline_mode',
+            \   'denite':   'Lightline_denite',
             \   'modified': 'Lightline_modified',
             \   'filename': 'Lightline_filename',
             \ },
@@ -827,15 +821,15 @@ let g:lightline = {
             \ 'component_type'  : { 'syntastic' : 'error', }
             \ }
 
-let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|unite\|help'
+let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|denite\|help'
 
 function! Lightline_is_visible() abort
     return (&filetype !~? g:lightline_invisible_filetype_pattern) && (60 <= winwidth(0))
 endfunction
 
 function! Lightline_mode() abort
-    if &filetype == 'unite'
-        return 'Unite'
+    if &filetype == 'denite'
+        return 'Denite'
     elseif &filetype == 'vimfiler'
         return winwidth(0) <= 35 ?  '' : 'VimFiler'
     elseif &filetype == 'tagbar'
@@ -849,9 +843,13 @@ function! Lightline_modified() abort
     return ((&filetype =~? g:lightline_invisible_filetype_pattern) || (&modifiable == 0)) ? ('') : (&modified ? '[+]' : '[-]')
 endfunction
 
+function! Lightline_denite() abort
+    return (&filetype != 'denite') ? '' : (substitute(denite#get_status_mode(), '[- ]', '', 'g'))
+endfunction
+
 function! Lightline_filename() abort
-    if &filetype == 'unite'
-        return unite#get_status_string()
+    if &filetype == 'denite'
+        return denite#get_status_sources() . denite#get_status_path() . denite#get_status_linenr()
     elseif &filetype == 'vimfiler'
         return vimfiler#get_status_string()
     elseif &filetype == 'tagbar'
@@ -1074,7 +1072,6 @@ augroup plugin
     autocmd!
 
     autocmd VimEnter * call dein#call_hook('post_source')
-    autocmd FileType unite call s:on_filetype_unite()
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
     autocmd FileType vimfiler call s:on_filetype_vimfiler()
     autocmd BufWritePost * call s:update_syntastic()
