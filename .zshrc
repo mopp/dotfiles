@@ -226,6 +226,8 @@ else
     export EDITOR=vi
 fi
 
+eval "$(fasd --init auto)"
+
 # For less.
 export PAGER=less
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
@@ -262,6 +264,7 @@ function clean_vim() {
     rm -rf ~/.vim/view/*
     rm -rf ~/.vim/unite/*
     rm -rf ~/.vim/bundle/.neobundle/*
+    rm -rf ~/.vim/bundle/.cache/
     rm -rf ~/.vim/vimfiler/*
     rm -rf ~/.vim/neocomplete/*
     rm -rf ~/.vim/bundle/temp/
