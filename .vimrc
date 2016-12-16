@@ -666,6 +666,7 @@ nnoremap <silent> [Denite]re :<C-u>Denite -resume<CR>
 nnoremap <silent> [Denite]b  :<C-u>Denite buffer<CR>
 nnoremap <silent> [Denite]f  :<C-u>Denite file_rec<CR>
 nnoremap <silent> [Denite]gg :<C-u>Denite grep<CR>
+nnoremap <silent> [Denite]gw :<C-u>DeniteCursorWord grep<CR>
 nnoremap <silent> [Denite]l  :<C-u>Denite line<CR>
 nnoremap <silent> [Denite]gi :<C-u>Denite unite:giti<CR>
 nnoremap <silent> [Denite]o  :<C-u>Denite unite:outline<CR>
@@ -676,8 +677,8 @@ nnoremap <silent> [Denite]t  :<C-u>Denite unite:tasklist<CR>
 function! Hook_post_source_denite() abort
     call denite#custom#option('default', 'statusline', v:false)
     call denite#custom#option('default', 'vertical_preview', v:true)
-    call denite#custom#map('insert', '<C-j>', 'move_to_next_line')
-    call denite#custom#map('insert', '<C-k>', 'move_to_prev_line')
+    call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
 
     if executable('rg')
         " For ripgrep.
@@ -690,7 +691,7 @@ function! Hook_post_source_denite() abort
     elseif executable('hw')
         " For highway.
         call denite#custom#var('grep', 'command', [ 'hw' ])
-        call denite#custom#var('grep', 'default_opts', [ '--no-group', '--no-group' ])
+        call denite#custom#var('grep', 'default_opts', [ '--no-group', '--no-color' ])
         call denite#custom#var('grep', 'recursive_opts', [])
         call denite#custom#var('grep', 'separator', [])
     elseif executable('pt')
@@ -1031,10 +1032,11 @@ map <Leader>op <Plug>(openbrowser-open)
 let g:matlab_auto_mappings = 0
 
 " vimtex
+let g:vimtex_latexmk_options    = '-lualatex -verbose -file-line-error -synctex=1 -interaction=nonstopmode'
 let g:vimtex_latexmk_continuous = 0
 let g:vimtex_index_split_pos    = 'vertical rightbelow'
 let g:vimtex_index_split_width  = 35
-" let g:vimtex_fold_enabled = 1
+let g:vimtex_fold_enabled       = 1
 if has('unix')
     let g:vimtex_view_general_viewer = 'evince'
 endif
