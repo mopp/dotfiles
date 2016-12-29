@@ -261,14 +261,8 @@ typeset -U PATH CDPATH FPATH MANPATH
 
 # Functions
 function clean_vim() {
-    rm -rf ~/.vim/view/*
-    rm -rf ~/.vim/unite/*
-    rm -rf ~/.vim/bundle/.neobundle/*
-    rm -rf ~/.vim/bundle/.cache/
-    rm -rf ~/.vim/vimfiler/*
-    rm -rf ~/.vim/neocomplete/*
     rm -rf ~/.vim/bundle/temp/
-    rm ~/.viminfo
+    rm -rf ~/.vim/bundle/.cache/init.vim/temp
     rm -rf ~/.local/share/nvim/
 }
 

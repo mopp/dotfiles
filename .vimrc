@@ -531,7 +531,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('Shougo/vimfiler.vim', { 'lazy': 1, 'depends': 'unite.vim', 'on_func': 'vimfiler', 'on_cmd': [ 'VimFiler', 'VimFilerBufferDir'], 'hook_post_source': 'call Hook_post_source_vimfiler()' })
+    call dein#add('justinmk/vim-dirvish')
+
     call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
@@ -643,7 +644,6 @@ if dein#tap('neocomplete.vim') && !has('nvim')
     let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
     let g:neocomplete#sources#vim#complete_functions          = get(g:, 'neocomplete#sources#vim#complete_functions', {})
-    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
     inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
@@ -741,25 +741,6 @@ nmap <C-n> <Plug>(yankround-next)
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
-" vimfiler
-nnoremap <silent> <Leader>fvs :VimFiler -explorer<CR>
-nnoremap <silent> <Leader>fvo :VimFiler -tab<CR>
-nnoremap <silent> <Leader>fvb :VimFilerBufferDir -explorer<CR>
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_force_overwrite_statusline = 0
-function! s:on_filetype_vimfiler() abort
-    unmap <buffer> <Space>
-    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
-    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
-endfunction
-
-function! Hook_post_source_vimfiler() abort
-    call vimfiler#custom#profile('default', 'context', { 'safe': 0 })
-endfunction
-
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
 nmap <Leader>gn <Plug>GitGutterPrevHunk
@@ -769,7 +750,7 @@ nmap <Leader>gu <Plug>GitGutterUndoHunk
 nmap <Leader>gv <Plug>GitGutterPreviewHunk
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'vimfiler', 'denite', 'help']
+let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help']
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -822,7 +803,7 @@ let g:lightline = {
             \ 'component_type'  : { 'syntastic' : 'error', }
             \ }
 
-let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|denite\|help'
+let g:lightline_invisible_filetype_pattern = 'dirvish\|tagbar\|denite\|help'
 
 function! Lightline_is_visible() abort
     return (&filetype !~? g:lightline_invisible_filetype_pattern) && (60 <= winwidth(0))
@@ -831,8 +812,8 @@ endfunction
 function! Lightline_mode() abort
     if &filetype == 'denite'
         return 'Denite'
-    elseif &filetype == 'vimfiler'
-        return winwidth(0) <= 35 ?  '' : 'VimFiler'
+    elseif &filetype == 'dirvish'
+        return winwidth(0) <= 35 ?  '' : 'Dirvish'
     elseif &filetype == 'tagbar'
         return 'Tagbar'
     endif
@@ -851,8 +832,6 @@ endfunction
 function! Lightline_filename() abort
     if &filetype == 'denite'
         return denite#get_status_sources() . denite#get_status_path() . denite#get_status_linenr()
-    elseif &filetype == 'vimfiler'
-        return vimfiler#get_status_string()
     elseif &filetype == 'tagbar'
         return g:lightline.fname
     endif
@@ -1054,6 +1033,17 @@ let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
+" vim-dirvish
+nnoremap <Leader>dv :vsplit +Dirvish<CR>:vertical resize 35<CR>
+nnoremap <Leader>dvo :tabnew +Dirvish<CR>
+function! s:setting_dirvish() abort
+    nnoremap <silent><buffer> . :silent keeppatterns g@\v/\.[^\/]+/?$@d<CR>
+    nnoremap <silent><buffer> l :<C-U>.call dirvish#open("edit", 0)<CR>
+    nmap <silent><buffer> h <Plug>(dirvish_up)
+    nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+    xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+endfunction
+
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
@@ -1075,7 +1065,7 @@ augroup plugin
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
-    autocmd FileType vimfiler call s:on_filetype_vimfiler()
+    autocmd FileType dirvish call s:setting_dirvish()
     autocmd BufWritePost * call s:update_syntastic()
 augroup END
 
