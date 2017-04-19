@@ -198,11 +198,11 @@ nnoremap <silent> <Leader>lp :<C-U>call <SID>paste_with_register(v:register, 'l'
 nnoremap <silent> <Leader>lP :<C-U>call <SID>paste_with_register(v:register, 'l', 'P')<CR>
 nnoremap <silent> <Leader>cp :<C-U>call <SID>paste_with_register(v:register, 'c', 'p')<CR>
 nnoremap <silent> <Leader>cP :<C-U>call <SID>paste_with_register(v:register, 'c', 'P')<CR>
-nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('*', 'l', 'p')<CR>
-nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('*', 'l', 'P')<CR>
-nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('*', 'c', 'p')<CR>
-nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('*', 'c', 'P')<CR>
-nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('*', 'l', 'p')<CR>
+nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
+nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
+nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
+nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
+nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
 
 " Open help of a word under the cursor.
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
@@ -494,7 +494,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     let common_opt = { 'lazy': 1, 'on_source': [ 'deoplete.nvim', 'neocomplete.vim' ] }
     call dein#add('Shougo/neco-syntax')
     call dein#add('Shougo/neco-vim', common_opt)
-    " call dein#add('Shougo/neoinclude.vim', common_opt)
+    call dein#add('Shougo/neoinclude.vim', common_opt)
     call dein#add('Shougo/neosnippet-snippets')
     call dein#add('Shougo/neosnippet.vim', common_opt)
     call dein#add('fishbullet/deoplete-ruby')
@@ -502,10 +502,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('zchee/deoplete-jedi')
     call dein#add('ujihisa/neco-look')
 
-    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_source': 'denite.nvim' })
     call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_func': 'denite', 'on_cmd': 'Denite', 'hook_post_source': 'call Hook_post_source_denite()'})
     call dein#add('Shougo/neoyank.vim')
     call dein#add('Shougo/unite-outline')
+    call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_source': 'denite.nvim' })
+    call dein#add('Shougo/vimfiler.vim')
     call dein#add('kmnk/vim-unite-giti', { 'lazy': 1, 'on_source': 'unite.vim' })
     call dein#add('lambdalisue/unite-grep-vcs')
     call dein#add('osyo-manga/unite-quickfix')
@@ -531,7 +532,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('justinmk/vim-dirvish')
 
     call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
@@ -575,10 +575,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
-    call dein#add('daeyun/vim-matlab')
+    call dein#add('derekwyatt/vim-scala')
     call dein#add('digitaltoad/vim-pug')
     call dein#add('gnuplot.vim')
-    call dein#add('lervag/vimtex')
+    call dein#add('hail2u/vim-css3-syntax')
+    call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
     call dein#add('plasticboy/vim-markdown')
     call dein#add('rust-lang/rust.vim')
@@ -702,6 +703,13 @@ function! Hook_post_source_denite() abort
         call denite#custom#var('grep', 'separator', [])
     endif
 endfunction
+
+" vimfiler
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_force_overwrite_statusline = 0
+nnoremap <silent> <Leader>fvs :<C-u>VimFilerExplorer<CR>
+nnoremap <silent> <Leader>fvb :<C-u>VimFilerExplorer<CR>
+nnoremap <silent> <Leader>fvo :<C-u>VimFilerTab<CR>
 
 " vim-operator-flashy
 map y <Plug>(operator-flashy)
@@ -936,7 +944,12 @@ let g:rainbow_active = 1
 let g:rainbow_conf = {
             \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87' ],
             \   'ctermfgs': [ '242', '33', '197', '98', '172', '36' ],
-            \   'separately' : { '*': {}, 'vim' : {} },
+            \   'separately' : {
+            \       '*':   {},
+            \       'vim': {},
+            \       'css': 0,
+            \       'perl': 0,
+            \   },
             \   }
 
 " tagBar
@@ -1010,16 +1023,6 @@ map <Leader>op <Plug>(openbrowser-open)
 " vim-matlab
 let g:matlab_auto_mappings = 0
 
-" vimtex
-let g:vimtex_latexmk_options    = '-lualatex -verbose -file-line-error -synctex=1 -interaction=nonstopmode'
-let g:vimtex_latexmk_continuous = 0
-let g:vimtex_index_split_pos    = 'vertical rightbelow'
-let g:vimtex_index_split_width  = 35
-let g:vimtex_fold_enabled       = 1
-if has('unix')
-    let g:vimtex_view_general_viewer = 'evince'
-endif
-
 " vim-markdown
 let g:vim_markdown_conceal = 0
 
@@ -1032,17 +1035,6 @@ let g:c_prototype_insert_point = 2
 let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_operators = 1
 let g:ruby_space_errors = 1
-
-" vim-dirvish
-nnoremap <Leader>dv :vsplit +Dirvish<CR>:vertical resize 35<CR>
-nnoremap <Leader>dvo :tabnew +Dirvish<CR>
-function! s:setting_dirvish() abort
-    nnoremap <silent><buffer> . :silent keeppatterns g@\v/\.[^\/]+/?$@d<CR>
-    nnoremap <silent><buffer> l :<C-U>.call dirvish#open("edit", 0)<CR>
-    nmap <silent><buffer> h <Plug>(dirvish_up)
-    nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
-    xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
-endfunction
 
 
 "----------------------------------------------------------------------------"
