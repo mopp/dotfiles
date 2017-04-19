@@ -142,6 +142,7 @@ cnoremap <C-N> <Down>
 noremap <C-J> G
 noremap <C-K> gg
 noremap <C-H> ^
+noremap <BS> ^
 noremap <C-L> $
 
 " Switching buffer.
@@ -707,6 +708,7 @@ endfunction
 " vimfiler
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
+let g:vimfiler_safe_mode_by_default = 0
 nnoremap <silent> <Leader>fvs :<C-u>VimFilerExplorer<CR>
 nnoremap <silent> <Leader>fvb :<C-u>VimFilerExplorer<CR>
 nnoremap <silent> <Leader>fvo :<C-u>VimFilerTab<CR>
