@@ -58,4 +58,22 @@ case $HOSTNAME in
 
         exec i3
         ;;
+    rosetta)
+        dropbox &
+        slack &
+        urxvtd -q -f -o &
+
+        # for uim
+        export GTK_IM_MODULE="uim"
+        export QT_IM_MODULE="uim"
+        export XMODIFIERS="@im=uim"
+        export XIM_PROGRAM="uim-xim"
+        uim-xim --async &
+        uim-toolbar-gtk3-systray &
+
+        xinput --set-prop 11 286 -0.75
+        xinput --set-prop 11 291 1
+
+        exec i3
+        ;;
 esac
