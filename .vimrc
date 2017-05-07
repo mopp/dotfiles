@@ -502,6 +502,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('honza/vim-snippets', common_opt)
     call dein#add('zchee/deoplete-jedi')
     call dein#add('ujihisa/neco-look')
+    call dein#add('racer-rust/vim-racer')
 
     call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_func': 'denite', 'on_cmd': 'Denite', 'hook_post_source': 'call Hook_post_source_denite()'})
     call dein#add('Shougo/neoyank.vim')
@@ -569,7 +570,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('scrooloose/nerdcommenter', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
     call dein#add('scrooloose/syntastic', { 'lazy': 1, 'on_event': 'InsertEnter' })
     call dein#add('sk1418/blockit', { 'lazy': 1, 'on_cmd': 'Block', 'on_map': [ [ 'x', '<Plug>BlockitVisual' ] ] })
-    call dein#add('sudo.vim', { 'lazy': 1, 'on_cmd': [ 'Sw', 'Swq' ] })
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
@@ -578,7 +578,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('cespare/vim-toml')
     call dein#add('derekwyatt/vim-scala')
     call dein#add('digitaltoad/vim-pug')
-    call dein#add('gnuplot.vim')
     call dein#add('hail2u/vim-css3-syntax')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
@@ -709,9 +708,12 @@ endfunction
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimfiler_safe_mode_by_default = 0
-nnoremap <silent> <Leader>fvs :<C-u>VimFilerExplorer<CR>
-nnoremap <silent> <Leader>fvb :<C-u>VimFilerExplorer<CR>
-nnoremap <silent> <Leader>fvo :<C-u>VimFilerTab<CR>
+nnoremap <silent> <Leader>fvs :<C-u>VimFiler -explorer<CR>
+nnoremap <silent> <Leader>fvo :<C-u>VimFiler -tab<CR>
+nnoremap <silent> <Leader>fvb :<C-u>VimFilerBufferDir -explorer<CR>
+function! s:config_vimfiler()
+    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+endfunction
 
 " vim-operator-flashy
 map y <Plug>(operator-flashy)
@@ -813,7 +815,7 @@ let g:lightline = {
             \ 'component_type'  : { 'syntastic' : 'error', }
             \ }
 
-let g:lightline_invisible_filetype_pattern = 'dirvish\|tagbar\|denite\|help'
+let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|denite\|help'
 
 function! Lightline_is_visible() abort
     return (&filetype !~? g:lightline_invisible_filetype_pattern) && (60 <= winwidth(0))
@@ -822,8 +824,8 @@ endfunction
 function! Lightline_mode() abort
     if &filetype == 'denite'
         return 'Denite'
-    elseif &filetype == 'dirvish'
-        return winwidth(0) <= 35 ?  '' : 'Dirvish'
+    elseif &filetype == 'vimfiler'
+        return winwidth(0) <= 35 ?  '' : 'VimFiler'
     elseif &filetype == 'tagbar'
         return 'Tagbar'
     endif
@@ -1015,10 +1017,6 @@ let g:syntastic_loc_list_height      = 5
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
 
-" sudo.vim
-command! Sw :w sudo:%
-command! Swq :wq sudo:%
-
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
 
@@ -1059,8 +1057,8 @@ augroup plugin
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
-    autocmd FileType dirvish call s:setting_dirvish()
     autocmd BufWritePost * call s:update_syntastic()
+    autocmd FileType vimfiler call s:config_vimfiler()
 augroup END
 
 syntax enable
