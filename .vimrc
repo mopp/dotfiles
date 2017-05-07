@@ -194,11 +194,7 @@ endfunction
 
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-xnoremap <silent> <C-Space>  :<C-U>call <SID>copy_to_clipboard()<CR>
-nnoremap <silent> <Leader>lp :<C-U>call <SID>paste_with_register(v:register, 'l', 'p')<CR>
-nnoremap <silent> <Leader>lP :<C-U>call <SID>paste_with_register(v:register, 'l', 'P')<CR>
-nnoremap <silent> <Leader>cp :<C-U>call <SID>paste_with_register(v:register, 'c', 'p')<CR>
-nnoremap <silent> <Leader>cP :<C-U>call <SID>paste_with_register(v:register, 'c', 'P')<CR>
+xnoremap <silent> mY  :<C-U>call <SID>copy_to_clipboard()<CR>
 nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
 nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
 nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
