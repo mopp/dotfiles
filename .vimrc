@@ -704,7 +704,7 @@ endfunction
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimfiler_safe_mode_by_default = 0
-nnoremap <silent> <Leader>fvs :<C-u>VimFiler -explorer<CR>
+nnoremap <silent> <Leader>fvs :<C-u>VimFiler -explorer -find<CR>
 nnoremap <silent> <Leader>fvo :<C-u>VimFiler -tab<CR>
 nnoremap <silent> <Leader>fvb :<C-u>VimFilerBufferDir -explorer<CR>
 function! s:config_vimfiler()
