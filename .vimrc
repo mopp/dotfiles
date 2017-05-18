@@ -539,6 +539,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('easymotion/vim-easymotion')
     call dein#add('godlygeek/tabular', { 'lazy': 1, 'on_cmd': [ 'Tabularize', 'AddTabularPattern' ] })
     call dein#add('idanarye/vim-casetrate', { 'lazy': 1, 'on_cmd': 'Casetrate' })
+    call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
     call dein#add('itchyny/vim-parenmatch')
     call dein#add('junegunn/vim-easy-align', { 'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': [ [ 'nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)' ] ] })
@@ -1032,6 +1033,11 @@ let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
+" vim-autoformat
+let g:formatdef_rustfmt = '"rustfmt"'
+let g:formatters_rust = ['rustfmt']
+let g:formatdef_scalafmt = '"scalafmt"'
+let g:formatters_scala = ['scalafmt']
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
