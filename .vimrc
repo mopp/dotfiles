@@ -600,10 +600,12 @@ filetype plugin indent on
 
 " deoplete.nvim
 if dein#tap('deoplete.nvim') && has('nvim')
-    let g:deoplete#enable_at_startup  = 1
-    let g:deoplete#omni_patterns      = {}
-    let g:deoplete#omni_patterns.c    = '[^. *\t](\.|->)\w*'
-    let g:deoplete#omni_patterns.cpp  = '[^. *\t](\.|->|::)\w*'
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#omni_patterns     = {}
+    let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
+    let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
+    let g:deoplete#sources           = {}
+    let g:deoplete#sources._         = ['buffer']
 endif
 
 " neocomplete.vim

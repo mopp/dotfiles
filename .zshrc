@@ -21,15 +21,10 @@ export LANG=en_US.UTF-8
 export XDG_HOME_CONFIG=$HOME/.config
 
 case $OSTYPE in
-    solaris*)
-        export TERM='rxvt'
-        export PATH=/home/grd/m5191121/local.solaris/bin/:$PATH
-        ;;
     darwin*)
         export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
         export PATH=/usr/local/bin:$PATH
         export PATH=/usr/local/sbin:$PATH
-        export PATH=/usr/texbin:$PATH
         export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
         export MANPATH=/usr/local/share/man:$MANPATH
 
@@ -40,8 +35,6 @@ case $OSTYPE in
         [[ -e $(alias run-help) ]] && unalias run-help
         autoload run-help
         export HELPDIR=/usr/local/share/zsh/helpfiles
-
-        alias eclipse='/Applications/eclipse/eclipse'
         ;;
     linux*)
         export JAVA_FONTS=/usr/share/fonts/TTF
@@ -116,12 +109,6 @@ case $OSTYPE in
         SPROMPT="%F{202}correct: %R -> %r [n,y,a,e]? %f"
         RPROMPT="%F{105}[%~]%f"
         ;;
-    solaris*)
-        PROMPT="%F{1}%n@%m:%% %f"
-        PROMPT2="%F{2}%B>%b %f"
-        SPROMPT="%F{3}correct: %R -> %r [n,y,a,e]? %f"
-        RPROMPT="%F{4}[%~]%f"
-        ;;
     linux*)
         case $TERM in
             rxvt*)
@@ -178,11 +165,6 @@ if [[ -x $(which nvm) ]]; then
     source /usr/share/nvm/install-nvm-exec
 fi
 
-# For R.
-if [[ -x $(which R) ]]; then
-    export R_LIBS_USER=$HOME/.config/r/
-fi
-
 # For cargo.
 if [[ -d $HOME/.cargo/ ]]; then
     export PATH=$HOME/.cargo/bin:$PATH
@@ -208,21 +190,6 @@ else
     alias diff='diff -u'
 fi
 
-# For zslot.
-# https://github.com/kmhjs/zslot.git
-ZSLOT_SRC=~/repo/zslot/src/
-if [ -e $ZSLOT_SRC ]; then
-    export FPATH=$ZSLOT_SRC:$FPATH
-    autoload -Uz zslot
-    export ZUSER_SLOT_FILE_NAME=$HOME/.zslot_info
-    source $ZUSER_SLOT_FILE_NAME
-    setopt CDABLE_VARS
-    setopt AUTO_CD
-    alias zs=zslot
-    alias zss='zslot -s'
-    alias zsa='zslot -a'
-fi
-
 # For EDITOR variable.
 if [[ -x $(which nvim) ]]; then
     export EDITOR=nvim
@@ -238,22 +205,13 @@ eval "$(fasd --init auto)"
 export PAGER=less
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 
-export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
-
 # Aliases
-alias octave='octave-cli -q'
-alias R='R -q --vanilla'
-alias clang='clang -std=c11 -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-alias clang++='clang++ -std=c++1y -Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
 alias grep='grep --color=auto'
 alias la='ls -ahF --color'
 alias ll='ls -hlF --color'
 alias ls='ls -hF --color'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
-alias pdflatex='pdflatex -interaction=nonstopmode -halt-on-error'
-alias aspell='aspell --lang=en -c -t'
 alias objdump='objdump -M intel'
 alias -g L='| less'
 alias -g M='|more'
@@ -289,10 +247,6 @@ function man() {
 
 function calc() {
     echo $1 | bc
-}
-
-function dict() {
-    grep "$1" ~/tmp/ejdic-hand-txt/ejdic-hand-utf8.txt -E -A 1 -wi --color
 }
 
 function urand() {
