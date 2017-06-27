@@ -37,6 +37,8 @@ set showmatch
 set showtabline=2
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 set nowrap
+set number
+set relativenumber
 
 " Folding.
 set foldenable
@@ -80,6 +82,7 @@ set virtualedit=block
 set whichwrap=b,s,h,l,<,>,[,]
 set wildignorecase
 set wildmenu
+set virtualedit=all
 
 " Turn off default plugins.
 let g:loaded_2html_plugin  = 1
@@ -535,9 +538,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'BufWritePost' })
+    call dein#add('bogado/file-line')
     call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('chrisbra/NrrwRgn', { 'lazy': 1, 'on_cmd': [ 'NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL' ], 'on_map': [ '<Leader>Nr', '<Leader>nr' ] })
     call dein#add('easymotion/vim-easymotion')
-    call dein#add('editorconfig/editorconfig-vim')
+    call dein#add('editorconfig/editorconfig-vim', { 'lazy': 1 })
     call dein#add('godlygeek/tabular', { 'lazy': 1, 'on_cmd': [ 'Tabularize', 'AddTabularPattern' ] })
     call dein#add('idanarye/vim-casetrate', { 'lazy': 1, 'on_cmd': 'Casetrate' })
     call dein#add('inside/vim-search-pulse')
@@ -548,6 +553,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-smartchr')
     call dein#add('kana/vim-smartinput', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
     call dein#add('kannokanno/previm', { 'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown' })
+    call dein#add('lambdalisue/gina.vim', { 'lazy': 1, 'on_event': 'BufWritePost' })
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', { 'lazy': 1, 'on_cmd': 'TagbarToggle' })
     call dein#add('mattn/benchvimrc-vim', { 'lazy': 1, 'on_cmd': 'BenchVimrc' })
@@ -564,12 +570,16 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-anzu', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>' ] ] })
     call dein#add('osyo-manga/vim-marching', { 'lazy': 1, 'on_ft': [ 'c', 'cpp' ] })
     call dein#add('osyo-manga/vim-stargate', { 'lazy': 1, 'on_cmd': 'StargateInclude' })
+    call dein#add('rhysd/accelerated-jk')
     call dein#add('rickhowe/diffchar.vim', { 'lazy':  &diff == 0, 'on_if': '&diff' })
+    call dein#add('roxma/vim-paste-easy')
     call dein#add('scrooloose/nerdcommenter', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
     call dein#add('scrooloose/syntastic', { 'lazy': 1, 'on_event': 'InsertEnter' })
     call dein#add('sk1418/blockit', { 'lazy': 1, 'on_cmd': 'Block', 'on_map': [ [ 'x', '<Plug>BlockitVisual' ] ] })
+    call dein#add('szw/vim-maximizer', { 'lazy': 1, 'on_cmd': 'MaximizerToggle' })
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
+    call dein#add('tyru/capture.vim', { 'lazy': 1, 'on_cmd': 'Capture' })
     call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
 
     call dein#add('Shirk/vim-gas')
@@ -708,9 +718,9 @@ endfunction
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimfiler_safe_mode_by_default = 0
-nnoremap <silent> <Leader>fvs :<C-u>VimFiler -explorer -find<CR>
-nnoremap <silent> <Leader>fvo :<C-u>VimFiler -tab<CR>
-nnoremap <silent> <Leader>fvb :<C-u>VimFilerBufferDir -explorer<CR>
+nnoremap <silent> <Leader>fvs :<C-u>VimFiler -find -explorer<CR>
+nnoremap <silent> <Leader>fvo :<C-u>VimFiler -find -tab<CR>
+nnoremap <silent> <Leader>fvb :<C-u>VimFilerBufferDir -find -explorer<CR>
 function! s:config_vimfiler()
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
 endfunction
@@ -755,11 +765,6 @@ let g:echodoc_enable_at_startup = 1
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
-nmap <Leader>gn <Plug>GitGutterPrevHunk
-nmap <Leader>gp <Plug>GitGutterNextHunk
-nmap <Leader>gs <Plug>GitGutterStageHunk
-nmap <Leader>gu <Plug>GitGutterUndoHunk
-nmap <Leader>gv <Plug>GitGutterPreviewHunk
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help']
@@ -1041,6 +1046,15 @@ let g:formatdef_rustfmt = '"rustfmt"'
 let g:formatters_rust = ['rustfmt']
 let g:formatdef_scalafmt = '"scalafmt"'
 let g:formatters_scala = ['scalafmt']
+
+" vim-maximizer
+nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
+vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
+inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
+
+" accelerated-jk
+nmap j <Plug>(accelerated_jk_gj)
+nmap k <Plug>(accelerated_jk_gk)
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
