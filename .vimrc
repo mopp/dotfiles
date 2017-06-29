@@ -553,7 +553,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-smartchr')
     call dein#add('kana/vim-smartinput', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
     call dein#add('kannokanno/previm', { 'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown' })
-    call dein#add('lambdalisue/gina.vim', { 'lazy': 1, 'on_event': 'BufWritePost' })
+    call dein#add('lambdalisue/gina.vim')
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', { 'lazy': 1, 'on_cmd': 'TagbarToggle' })
     call dein#add('mattn/benchvimrc-vim', { 'lazy': 1, 'on_cmd': 'BenchVimrc' })
@@ -779,7 +779,7 @@ let g:casetrate_leader = '<leader>a'
 let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
-            \   'left': [ [ 'mode', 'denite', 'paste' ], [ 'filename', 'modified' ], [ 'readonly', 'spell' ], ],
+            \   'left': [ [ 'mode', 'denite', 'paste' ], [ 'filename', 'modified'], [ 'readonly', 'spell' ], [ 'git_status' ]],
             \   'right': [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
             \ },
             \ 'inactive': {
@@ -811,10 +811,11 @@ let g:lightline = {
             \   'percent':      'Lightline_is_visible()',
             \ },
             \ 'component_function': {
-            \   'mode':     'Lightline_mode',
-            \   'denite':   'Lightline_denite',
-            \   'modified': 'Lightline_modified',
-            \   'filename': 'Lightline_filename',
+            \   'mode':       'Lightline_mode',
+            \   'denite':     'Lightline_denite',
+            \   'modified':   'Lightline_modified',
+            \   'filename':   'Lightline_filename',
+            \   'git_status': 'Lightline_git_status',
             \ },
             \ 'component_expand': { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'  : { 'syntastic' : 'error', }
@@ -856,22 +857,34 @@ function! Lightline_filename() abort
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
-let s:p = {
+function! Lightline_git_status() abort
+    if empty(gina#core#get())
+        return ''
+    endif
+
+    let name   = gina#component#repo#branch()
+    let track  = gina#component#repo#track()
+    let status = gina#component#status#preset()
+    return printf('<%s> -> %s : [%s]', name, track, status == '  ' ? 'None' : status)
+endfunction
+
+let g:lightline#colorscheme#mopkai#palette =
+            \ {
             \ 'normal': {
-            \   'left':    [ [ '#080808', '#00afff', 232,  39 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \   'left':    [ [ '#080808', '#00afff', 232,  39 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
             \   'middle':  [ [ '#9e9e9e', '#303030', 247, 236 ] ],
             \   'right':   [ [ '#9e9e9e', '#080808', 247, 237 ], [ '#875fd7', '#080808',  98, 232 ] ],
             \   'warning': [ [ '#9e9e9e', '#ffdf5f', 247, 221 ] ],
             \   'error':   [ [ '#eeeeee', '#d70000', 255, 160 ] ]
             \ },
             \ 'insert': {
-            \   'left':   [ [ '#080808', '#87ff00', 232, 118 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \   'left':   [ [ '#080808', '#87ff00', 232, 118 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
             \ },
             \ 'replace': {
-            \   'left':   [ [ '#080808', '#ff0087', 232, 198 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \   'left':   [ [ '#080808', '#ff0087', 232, 198 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
             \ },
             \ 'visual': {
-            \   'left':   [ [ '#080808', '#d7ff5f', 232, 191 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ] ],
+            \   'left':   [ [ '#080808', '#d7ff5f', 232, 191 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
             \ },
             \ 'inactive': {
             \   'left':   [ [ '#9e9e9e', '#080808', 247, 232 ] ],
@@ -885,7 +898,6 @@ let s:p = {
             \   'right':  [ [ '#080808', '#c6c6c6', 232, 251 ] ],
             \ }
             \ }
-let g:lightline#colorscheme#mopkai#palette = s:p
 
 " vim-parenmatch
 let g:parenmatch_highlight = 0
