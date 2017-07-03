@@ -23,10 +23,13 @@ export XDG_HOME_CONFIG=$HOME/.config
 case $OSTYPE in
     darwin*)
         export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+        export PATH=/usr/local/opt/llvm/bin:$PATH
         export PATH=/usr/local/bin:$PATH
         export PATH=/usr/local/sbin:$PATH
         export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
         export MANPATH=/usr/local/share/man:$MANPATH
+        export LDFLAGS="-L/usr/local/opt/llvm/lib "$LDFLAGS
+        export CPPFLAGS="-I/usr/local/opt/llvm/include "$CPPFLAGS
 
         # Setting for zsh completion and highlight.
         export FPATH=/usr/local/share/zsh-completions:$FPATH
