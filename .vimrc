@@ -459,6 +459,8 @@ if has('nvim')
     tnoremap <C-w>l <C-\><C-n><C-w>l
     nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
+
+    autocmd TermOpen * setlocal nonumber norelativenumber wrap
 endif
 
 
@@ -487,6 +489,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim')
+    call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
 
     call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': has('nvim') })
     call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': (has('lua') && !has('nvim')) })
@@ -534,7 +537,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
 
-    call dein#add('Shougo/vimproc.vim', { 'build': 'make' })
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'BufWritePost' })
@@ -572,7 +574,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-stargate', { 'lazy': 1, 'on_cmd': 'StargateInclude' })
     call dein#add('rhysd/accelerated-jk')
     call dein#add('rickhowe/diffchar.vim', { 'lazy':  &diff == 0, 'on_if': '&diff' })
-    call dein#add('roxma/vim-paste-easy')
+    " call dein#add('roxma/vim-paste-easy')
     call dein#add('scrooloose/nerdcommenter', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
     call dein#add('scrooloose/syntastic', { 'lazy': 1, 'on_event': 'InsertEnter' })
     call dein#add('sk1418/blockit', { 'lazy': 1, 'on_cmd': 'Block', 'on_map': [ [ 'x', '<Plug>BlockitVisual' ] ] })
@@ -593,6 +595,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', { 'lazy': 1, 'on_ft': 'c' })
     call dein#add('thinca/vim-ft-help_fold')
+    call dein#add('vim-erlang/vim-erlang-runtime')
     call dein#add('vim-jp/cpp-vim')
     call dein#add('vim-jp/vimdoc-ja')
     call dein#add('vim-ruby/vim-ruby')
