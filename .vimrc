@@ -537,6 +537,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
 
+    " call dein#add('roxma/vim-paste-easy')
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'BufWritePost' })
@@ -555,7 +556,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-smartchr')
     call dein#add('kana/vim-smartinput', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
     call dein#add('kannokanno/previm', { 'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown' })
-    call dein#add('lambdalisue/gina.vim')
+    call dein#add('lambdalisue/gina.vim', { 'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost' })
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', { 'lazy': 1, 'on_cmd': 'TagbarToggle' })
     call dein#add('mattn/benchvimrc-vim', { 'lazy': 1, 'on_cmd': 'BenchVimrc' })
@@ -574,15 +575,14 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-stargate', { 'lazy': 1, 'on_cmd': 'StargateInclude' })
     call dein#add('rhysd/accelerated-jk')
     call dein#add('rickhowe/diffchar.vim', { 'lazy':  &diff == 0, 'on_if': '&diff' })
-    " call dein#add('roxma/vim-paste-easy')
     call dein#add('scrooloose/nerdcommenter', { 'lazy': 1, 'on_map': [ [ 'nx', '<Plug>NERDCommenter' ] ], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
-    call dein#add('scrooloose/syntastic', { 'lazy': 1, 'on_event': 'InsertEnter' })
     call dein#add('sk1418/blockit', { 'lazy': 1, 'on_cmd': 'Block', 'on_map': [ [ 'x', '<Plug>BlockitVisual' ] ] })
     call dein#add('szw/vim-maximizer', { 'lazy': 1, 'on_cmd': 'MaximizerToggle' })
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', { 'lazy': 1, 'on_cmd': 'Capture' })
     call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
+    call dein#add('w0rp/ale')
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
@@ -783,7 +783,7 @@ let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
             \   'left': [ [ 'mode', 'denite', 'paste' ], [ 'filename', 'modified'], [ 'readonly', 'spell' ], [ 'git_status' ]],
-            \   'right': [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
+            \   'right': [ [ 'ale_status', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
             \ },
             \ 'inactive': {
             \   'left': [ [ 'filename', 'modified' ] ],
@@ -819,9 +819,8 @@ let g:lightline = {
             \   'modified':   'Lightline_modified',
             \   'filename':   'Lightline_filename',
             \   'git_status': 'Lightline_git_status',
+            \   'ale_status': 'Lightline_ale_status',
             \ },
-            \ 'component_expand': { 'syntastic' : 'SyntasticStatuslineFlag', },
-            \ 'component_type'  : { 'syntastic' : 'error', }
             \ }
 
 let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|denite\|help'
@@ -861,7 +860,7 @@ function! Lightline_filename() abort
 endfunction
 
 function! Lightline_git_status() abort
-    if empty(gina#core#get())
+    if (dein#is_sourced('gina.vim') == 0) || empty(gina#core#get())
         return ''
     endif
 
@@ -869,6 +868,15 @@ function! Lightline_git_status() abort
     let track  = gina#component#repo#track()
     let status = gina#component#status#preset()
     return printf('<%s> -> %s : [%s]', name, track, status == '  ' ? 'None' : status)
+endfunction
+
+function! Lightline_ale_status() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? '' : printf('%dW %dE', all_non_errors, all_errors)
 endfunction
 
 let g:lightline#colorscheme#mopkai#palette =
@@ -1024,16 +1032,6 @@ vmap <Leader>cb <Plug>NERDCommenterNested
 nmap <Leader>cs <plug>NERDCommenterSexy
 vmap <Leader>cs <plug>NERDCommenterSexy
 
-" syntastic
-let g:syntastic_mode_map = { 'mode' : 'passive' }
-let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
-let is_clang = executable('clang')
-let g:syntastic_c_compiler           = ((is_clang == 0) ? 'gcc' : 'clang')
-let g:syntastic_cpp_compiler         = ((is_clang == 0) ? 'g++' : 'clang++')
-let g:syntastic_c_compiler_options   = ($USER == 'mopp' ? '-std=c11 ' : '') . op
-let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
-let g:syntastic_loc_list_height      = 5
-
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
 
@@ -1059,8 +1057,6 @@ let g:ruby_space_errors = 1
 " vim-autoformat
 let g:formatdef_rustfmt = '"rustfmt"'
 let g:formatters_rust = ['rustfmt']
-let g:formatdef_scalafmt = '"scalafmt"'
-let g:formatters_scala = ['scalafmt']
 
 " vim-maximizer
 nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
@@ -1071,27 +1067,18 @@ inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
+" ale
+let g:ale_sign_column_always = 1
+
+
 "----------------------------------------------------------------------------"
 " autocmd for plugin
 "----------------------------------------------------------------------------"
-function! s:update_syntastic() abort
-    if &filetype == 'scala'
-        return
-    endif
-
-    if dein#is_sourced('syntastic') == 0
-        call dein#source('syntastic')
-    endif
-    SyntasticCheck
-    call lightline#update()
-endfunction
-
 augroup plugin
     autocmd!
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType txt,markdown,tex call dein#source(['vim-textobj-sentence']) || :call textobj#sentence#init()
-    autocmd BufWritePost * call s:update_syntastic()
     autocmd FileType vimfiler call s:config_vimfiler()
 augroup END
 
