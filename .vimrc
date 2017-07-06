@@ -1069,7 +1069,8 @@ nmap k <Plug>(accelerated_jk_gk)
 
 " ale
 let g:ale_sign_column_always = 1
-
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
