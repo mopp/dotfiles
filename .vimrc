@@ -4,6 +4,16 @@
 "   \_/ |_|_|_|_|_| \__| |_| \___/_|   |_|  |_\___/ .__/ .__/
 "                                                 |_|  |_|
 
+" Encoding.
+if has('vim_starting')
+    " Changing encoding in Vim at runtime is undefined behavior.
+    set encoding=utf-8
+    set fileencodings=utf-8,sjis,cp932,euc-jp
+    set fileformats=unix,mac,dos
+endif
+" This command has to be after `set encoding`.
+scriptencoding utf-8
+
 " Indent.
 set autoindent
 set backspace=2
@@ -12,14 +22,6 @@ set expandtab
 set shiftwidth=4
 set smartindent
 set tabstop=4
-
-" Encoding.
-if has('vim_starting')
-    " Changing encoding in Vim at runtime is undefined behavior.
-    set encoding=utf-8
-    set fileencodings=utf-8,sjis,cp932,euc-jp
-    set fileformats=unix,mac,dos
-endif
 
 " Appearance.
 set ambiwidth=double
@@ -178,21 +180,21 @@ noremap <silent> <S-Down>  :<C-U>wincmd +<CR>
 
 " Yank & Paste
 function! s:paste_with_register(register, paste_type, paste_cmd) abort
-    let reg_type = getregtype(a:register)
-    let store = getreg(a:register)
-    call setreg(a:register, store, a:paste_type)
+    let l:reg_type = getregtype(a:register)
+    let l:store = getreg(a:register)
+    call setreg(a:register, l:store, a:paste_type)
     exe 'normal "' . a:register . a:paste_cmd
-    call setreg(a:register, store, reg_type)
+    call setreg(a:register, l:store, l:reg_type)
 endfunction
 
 function! s:copy_to_clipboard() abort
-    let store = @@
-    silent normal gvy
-    let selected = @@
-    let @@ = store
+    let l:store = @@
+    silent normal! gvy
+    let l:selected = @@
+    let @@ = l:store
 
-    let @+ = selected
-    let @* = selected
+    let @+ = l:selected
+    let @* = l:selected
 endfunction
 
 nnoremap Y y$
@@ -240,20 +242,20 @@ endif
 " Functions
 "----------------------------------------------------------------------------"
 function! Mopp_gen_fold_text() abort
-    let head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
-    let tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
-    let num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(head) - strdisplaywidth(tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
-    return join([head, repeat(' ', num_spaces), tail], '')
+    let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    let l:tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
+    let l:num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(l:head) - strdisplaywidth(l:tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
+    return join([l:head, repeat(' ', l:num_spaces), l:tail], '')
 endfunction
 
 function! s:remove_tail_spaces() abort
-    if &filetype == 'markdown'
+    if &filetype ==# 'markdown'
         return
     endif
 
-    let c = getpos('.')
+    let l:c = getpos('.')
     g/.*\s$/normal $gelD
-    call setpos('.', c)
+    call setpos('.', l:c)
 endfunction
 
 
@@ -276,23 +278,21 @@ endfunction
 
 " 式を実行させてその返り値を指定した基数の数値で出力する.
 function! s:exp_conv(s, base) abort
-    if a:s == ''
+    if a:s ==# ''
         return
     endif
 
     if !(a:base == 2 || a:base == 8 || a:base == 10 || a:base == 16)
-        echoerr "Base is 2, 8, 10, 16 only."
+        echoerr 'Base is 2, 8, 10, 16 only.'
         return
     endif
 
     " execute expression.
-    execute 'let t =' a:s
+    let l:num = str2nr(eval(a:s), 10)
+    let l:str = (a:base == 2) ? (s:to_bin(l:num)) : (printf(((a:base == 10) ? '%d' : ((a:base == 16) ? '0x%x' : '%o')), l:num))
 
-    let num = str2nr(t, 10)
-    let str = (a:base == 2) ? (s:to_bin(num)) : (printf(((a:base == 10) ? "%d" : ((a:base == 16) ? "0x%x" : "%o")), num))
-
-    echomsg str
-    return str
+    echomsg l:str
+    return l:str
 endfunction
 command! -nargs=1 Bin call <SID>exp_conv(<f-args>, 2)
 command! -nargs=1 Dec call <SID>exp_conv(<f-args>, 10)
@@ -308,28 +308,28 @@ function! s:str2number_if_possible(str) abort
 endfunction
 
 function! s:tab_buffer(buf) abort
-    let b = s:str2number_if_possible(a:buf)
+    let l:b = s:str2number_if_possible(a:buf)
 
-    if bufexists(b) == 0
-        echoerr string(b) . ' NOT exists buffer'
+    if bufexists(l:b) == 0
+        echoerr string(l:b) . ' NOT exists buffer'
         return
     endif
 
-    silent execute 'tab sbuffer ' . b
+    silent execute 'tab sbuffer ' . l:b
 endfunction
 command! -nargs=1 -complete=buffer TabBuffer :call <SID>tab_buffer(<q-args>)
 
 function! s:drop_buffer(buf) abort
-    let b = s:str2number_if_possible(a:buf)
+    let l:b = s:str2number_if_possible(a:buf)
 
-    if type(b) == type(0)
-        if bufexists(b) == 0
-            echoerr 'Buffer ' . b . ' NOT exists.'
+    if type(l:b) == type(0)
+        if bufexists(l:b) == 0
+            echoerr 'Buffer ' . l:b . ' NOT exists.'
             return
         endif
-        silent execute 'drop' expand('#' . b . ':p')
+        silent execute 'drop' expand('#' . l:b . ':p')
     else
-        silent execute 'drop' b
+        silent execute 'drop' l:b
     endif
 endfunction
 command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
@@ -339,10 +339,10 @@ command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
 " GUI
 "----------------------------------------------------------------------------"
 if has('gui_running')
-    let no_buffers_menu = 1
+    let g:no_buffers_menu = 1
     set guioptions-=emTrlL
     set mousehide
-    set vb
+    set visualbell
     set t_vb=
 
     if has('mac')
@@ -398,36 +398,36 @@ augroup END
 if has('nvim')
     " Copy and modify from mapping source in unite.vim
     function! s:get_mapping_list(map_cmd) abort
-        redir => mapping_str
+        redir => l:mapping_str
         silent! execute a:map_cmd
         redir END
 
-        let mapping_list = []
-        let mapping_lines = split(mapping_str, '\n')
-        let mapping_lines = filter(copy(mapping_lines), "v:val =~ '\\s\\+\\*\\?@'") + filter(copy(mapping_lines), "v:val !~ '\\s\\+\\*\\?@'")
-        for line in map(mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
+        let l:mapping_list = []
+        let l:mapping_lines = split(l:mapping_str, '\n')
+        let l:mapping_lines = filter(copy(l:mapping_lines), "v:val =~# '\\s\\+\\*\\?@'") + filter(copy(l:mapping_lines), "v:val !~# '\\s\\+\\*\\?@'")
+        for l:line in map(l:mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
             " attribute
-            let attr = ''
+            let l:attr = ''
 
             " right
-            let map_rhs = matchstr(line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
-            if map_rhs =~ '^\*\s.*'
-                let map_rhs = map_rhs[2:]
-                let attr = '*'
+            let l:map_rhs = matchstr(l:line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
+            if l:map_rhs =~# '^\*\s.*'
+                let l:map_rhs = l:map_rhs[2:]
+                let l:attr = '*'
             endif
 
             " left
-            let map_lhs = matchstr(line, '^\a*\s*\zs\S\+')
-            if map_lhs =~ '^<SNR>' || map_lhs =~ '^<Plug>'
+            let l:map_lhs = matchstr(l:line, '^\a*\s*\zs\S\+')
+            if l:map_lhs =~# '^<SNR>' || l:map_lhs =~# '^<Plug>'
                 continue
             endif
-            let map_lhs = substitute(map_lhs, '<NL>', '<C-j>', 'g')
-            let map_lhs = substitute(map_lhs, '\(<.*>\)', '\1', 'g')
+            let l:map_lhs = substitute(l:map_lhs, '<NL>', '<C-j>', 'g')
+            let l:map_lhs = substitute(l:map_lhs, '\(<.*>\)', '\1', 'g')
 
-            call add(mapping_list, [map_lhs, map_rhs, attr])
+            call add(l:mapping_list, [l:map_lhs, l:map_rhs, l:attr])
         endfor
 
-        return mapping_list
+        return l:mapping_list
     endfunction
 
     let s:is_term_map_enable = 1
@@ -435,16 +435,16 @@ if has('nvim')
         if s:is_term_map_enable == 1
             let g:toggle_mapinfo_list = <SID>get_mapping_list('tmap')
             " Disable
-            for mapinfo in g:toggle_mapinfo_list
-                echo mapinfo[0]
-                execute 'tunmap' mapinfo[0]
+            for l:mapinfo in g:toggle_mapinfo_list
+                echo l:mapinfo[0]
+                execute 'tunmap' l:mapinfo[0]
             endfor
             let s:is_term_map_enable = 0
         else
             " Enable
-            for mapinfo in g:toggle_mapinfo_list
-                let map_cmd = (mapinfo[2] == '*') ? ('tnoremap') : ('tmap')
-                execute map_cmd mapinfo[0] mapinfo[1]
+            for l:mapinfo in g:toggle_mapinfo_list
+                let l:map_cmd = (l:mapinfo[2] ==# '*') ? ('tnoremap') : ('tmap')
+                execute l:map_cmd l:mapinfo[0] l:mapinfo[1]
             endfor
             let s:is_term_map_enable = 1
         endif
@@ -470,8 +470,8 @@ endif
 let s:DEIN_BASE_PATH = '~/.vim/bundle/'
 let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
 if !isdirectory(s:DEIN_PATH)
-    let answer = confirm('Would you like to download all plugins ?', "&Yes\n&No", 2)
-    if (answer == 1) && (executable('git') == 1)
+    let s:answer = confirm('Would you like to download all plugins ?', "&Yes\n&No", 2)
+    if (s:answer == 1) && (executable('git') == 1)
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
     else
         set number
@@ -494,14 +494,14 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': has('nvim') })
     call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'if': (has('lua') && !has('nvim')) })
 
-    let common_opt = { 'lazy': 1, 'on_source': [ 'deoplete.nvim', 'neocomplete.vim' ] }
+    let s:common_opt = { 'lazy': 1, 'on_source': [ 'deoplete.nvim', 'neocomplete.vim' ] }
     call dein#add('Shougo/neco-syntax')
-    call dein#add('Shougo/neco-vim', common_opt)
-    call dein#add('Shougo/neoinclude.vim', common_opt)
+    call dein#add('Shougo/neco-vim', s:common_opt)
+    call dein#add('Shougo/neoinclude.vim', s:common_opt)
     call dein#add('Shougo/neosnippet-snippets')
-    call dein#add('Shougo/neosnippet.vim', common_opt)
+    call dein#add('Shougo/neosnippet.vim', s:common_opt)
     call dein#add('fishbullet/deoplete-ruby')
-    call dein#add('honza/vim-snippets', common_opt)
+    call dein#add('honza/vim-snippets', s:common_opt)
     call dein#add('zchee/deoplete-jedi')
     call dein#add('ujihisa/neco-look')
     call dein#add('racer-rust/vim-racer')
@@ -830,11 +830,11 @@ function! Lightline_is_visible() abort
 endfunction
 
 function! Lightline_mode() abort
-    if &filetype == 'denite'
+    if &filetype ==# 'denite'
         return 'Denite'
-    elseif &filetype == 'vimfiler'
+    elseif &filetype ==# 'vimfiler'
         return winwidth(0) <= 35 ?  '' : 'VimFiler'
-    elseif &filetype == 'tagbar'
+    elseif &filetype ==# 'tagbar'
         return 'Tagbar'
     endif
 
@@ -846,17 +846,17 @@ function! Lightline_modified() abort
 endfunction
 
 function! Lightline_denite() abort
-    return (&filetype != 'denite') ? '' : (substitute(denite#get_status_mode(), '[- ]', '', 'g'))
+    return (&filetype !=# 'denite') ? '' : (substitute(denite#get_status_mode(), '[- ]', '', 'g'))
 endfunction
 
 function! Lightline_filename() abort
-    if &filetype == 'denite'
+    if &filetype ==# 'denite'
         return denite#get_status_sources() . denite#get_status_path() . denite#get_status_linenr()
-    elseif &filetype == 'tagbar'
+    elseif &filetype ==# 'tagbar'
         return g:lightline.fname
     endif
 
-    return '' != expand('%:t') ? expand('%:t') : '[No Name]'
+    return '' !=# expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
 function! Lightline_git_status() abort
@@ -864,19 +864,23 @@ function! Lightline_git_status() abort
         return ''
     endif
 
-    let name   = gina#component#repo#branch()
-    let track  = gina#component#repo#track()
-    let status = gina#component#status#preset()
-    return printf('<%s> -> %s : [%s]', name, track, status == '  ' ? 'None' : status)
+    let l:name   = gina#component#repo#branch()
+    let l:track  = gina#component#repo#track()
+    let l:status = gina#component#status#preset()
+    return printf('<%s> -> %s : [%s]', l:name, l:track, l:status ==# '  ' ? 'None' : l:status)
 endfunction
 
 function! Lightline_ale_status() abort
+    if dein#is_sourced('ale') == 0
+        return ''
+    endif
+
     let l:counts = ale#statusline#Count(bufnr(''))
 
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
 
-    return l:counts.total == 0 ? '' : printf('%dW %dE', all_non_errors, all_errors)
+    return l:counts.total == 0 ? '' : printf('%dW %dE', l:all_non_errors, l:all_errors)
 endfunction
 
 let g:lightline#colorscheme#mopkai#palette =
@@ -923,7 +927,7 @@ function! Hook_on_post_source_smartinput() abort
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
-    let lst = [
+    let l:lst = [
                 \ ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
                 \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
                 \ ['+',     "smartchr#loop(' + ', '++', '+')"],
@@ -936,13 +940,13 @@ function! Hook_on_post_source_smartinput() abort
                 \ [',',     "smartchr#loop(', ', '->', ' => ')"]
                 \ ]
 
-    for i in lst
-        call smartinput#map_to_trigger('i', i[0], i[0], i[0])
-        call smartinput#define_rule({ 'char' : i[0], 'at' : '\%#', 'input' : '<C-R>=' . i[1] . '<CR>'})
-        if i[0] == '%'
-            call smartinput#define_rule({'char' : i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : i[0]})
+    for l:i in l:lst
+        call smartinput#map_to_trigger('i', l:i[0], l:i[0], l:i[0])
+        call smartinput#define_rule({ 'char' : l:i[0], 'at' : '\%#', 'input' : '<C-R>=' . l:i[1] . '<CR>'})
+        if l:i[0] ==# '%'
+            call smartinput#define_rule({'char' : l:i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : l:i[0]})
         endif
-        call smartinput#define_rule({ 'char' : i[0], 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#', 'input' : i[0] })
+        call smartinput#define_rule({ 'char' : l:i[0], 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#', 'input' : l:i[0] })
     endfor
 
     call smartinput#define_rule({'char' : '>', 'at' : ' < \%#', 'input' : '<BS><BS><BS><><Left>'})
@@ -960,8 +964,8 @@ function! Hook_on_post_source_smartinput() abort
     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '<\s*>\%#'   , 'input' : '<C-O>dF<<BS>'})
     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '\[\s*\]\%#' , 'input' : '<C-O>dF[<BS>'})
 
-    for op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
-        call smartinput#define_rule({ 'char' : '<BS>' , 'at' : ' ' . op . ' \%#' , 'input' : '<BS><BS><BS>'})
+    for l:op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
+        call smartinput#define_rule({ 'char' : '<BS>' , 'at' : ' ' . l:op . ' \%#' , 'input' : '<BS><BS><BS>'})
     endfor
 
     call smartinput#map_to_trigger('i', '*', '*', '*')
@@ -1013,7 +1017,7 @@ let g:snumber_enable_startup = 1
 nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 
 " mopkai.vim
-let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER != 'mopp'))
+let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER !=# 'mopp'))
 
 " vim-anzu
 nmap n <Plug>(anzu-n-with-echo)
