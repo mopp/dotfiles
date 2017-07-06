@@ -202,7 +202,10 @@ else
     export EDITOR=vi
 fi
 
-eval "$(fasd --init auto)"
+# For fasd
+if [[ -x "$(which fasd)" ]]; then
+    eval "$(fasd --init auto)"
+fi
 
 # For less.
 export PAGER=less
