@@ -623,12 +623,12 @@ endif
 
 " neocomplete.vim
 if dein#tap('neocomplete.vim') && !has('nvim')
-    let g:neocomplete#enable_at_startup            = 1
-    let g:neocomplete#enable_cursor_hold_i         = 1
-    let g:neocomplete#enable_insert_char_pre       = 1
-    let g:neocomplete#enable_auto_delimiter        = 1
-    let g:neocomplete#lock_buffer_name_pattern     = '^zsh.*'
-    let g:neocomplete#enable_prefetch              = 1
+    let g:neocomplete#enable_at_startup        = 1
+    let g:neocomplete#enable_cursor_hold_i     = 1
+    let g:neocomplete#enable_insert_char_pre   = 1
+    let g:neocomplete#enable_auto_delimiter    = 1
+    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
+    let g:neocomplete#enable_prefetch          = 1
 
     " Call omni function directly
     let g:neocomplete#force_overwrite_completefunc     = 1
