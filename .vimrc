@@ -503,10 +503,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     " call dein#add('roxma/vim-paste-easy')
     call dein#add('Chiel92/vim-autoformat', { 'lazy': 1, 'on_cmd': 'Autoformat' })
-    call dein#add('FooSoft/vim-argwrap', { 'lazy': 1, 'on_func': 'argwrap', 'on_cmd': 'ArgWrap'})
+    call dein#add('FooSoft/vim-argwrap', { 'lazy': 1, 'on_func': 'argwrap', 'on_cmd': 'ArgWrap' })
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
-    call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter'})
+    call dein#add('Shougo/echodoc.vim', { 'lazy': 1, 'on_event': 'InsertEnter' })
+    call dein#add('Shougo/junkfile.vim', { 'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', { 'on_cmd': 'Vinarise' })
     call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter', { 'lazy': 1, 'on_event': 'BufWritePost' })
@@ -1025,6 +1026,10 @@ nmap k <Plug>(accelerated_jk_gk)
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
+
+" junkfile.vim
+nnoremap <F4> :<C-U>call junkfile#open_immediately(strftime('%Y-%m-%d.md'))<CR>i
+command! -nargs=? JunkfileNote call junkfile#open(strftime('%Y%m%d_') . <q-args>, '.md')
 
 
 "----------------------------------------------------------------------------"
