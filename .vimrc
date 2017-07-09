@@ -476,7 +476,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('fishbullet/deoplete-ruby')
     call dein#add('honza/vim-snippets', s:lazy_plete)
     call dein#add('racer-rust/vim-racer')
-    call dein#add('sebastianmarkow/deoplete-rust', s:lazy_plete)
+    call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
 
     " call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_func': 'denite', 'on_cmd': 'Denite', 'hook_post_source': 'call Hook_post_source_denite()'})
@@ -728,7 +728,7 @@ let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
             \   'left': [ [ 'mode', 'denite', 'paste' ], [ 'filename', 'modified'], [ 'readonly', 'spell' ], [ 'git_status' ]],
-            \   'right': [ [ 'ale_status', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
+            \   'right': [ [ 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'ale_status' ]],
             \ },
             \ 'inactive': {
             \   'left': [ [ 'filename', 'modified' ] ],
@@ -768,26 +768,21 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_invisible_filetype_pattern = 'vimfiler\|tagbar\|denite\|help'
+let g:lightline_ignore_ft_pattern = 'vimfiler\|tagbar\|denite\|help'
+function Lightline_is_ignore_ft()
+    return (&filetype =~? g:lightline_ignore_ft_pattern)
+endfunction
 
 function! Lightline_is_visible() abort
-    return (&filetype !~? g:lightline_invisible_filetype_pattern) && (60 <= winwidth(0))
+    return 60 <= winwidth(0)
 endfunction
 
 function! Lightline_mode() abort
-    if &filetype ==# 'denite'
-        return 'Denite'
-    elseif &filetype ==# 'vimfiler'
-        return winwidth(0) <= 35 ?  '' : 'VimFiler'
-    elseif &filetype ==# 'tagbar'
-        return 'Tagbar'
-    endif
-
-    return lightline#mode()
+    return get({'denite': 'Denite', 'vimfiler': 'VimFiler', 'tagbar': 'TagBar'}, &filetype, lightline#mode())
 endfunction
 
 function! Lightline_modified() abort
-    return ((&filetype =~? g:lightline_invisible_filetype_pattern) || (&modifiable == 0)) ? ('') : (&modified ? '[+]' : '[-]')
+    return (Lightline_is_ignore_ft() || (&modifiable == 0)) ? ('') : (&modified ? '[+]' : '[-]')
 endfunction
 
 function! Lightline_denite() abort
@@ -801,11 +796,12 @@ function! Lightline_filename() abort
         return g:lightline.fname
     endif
 
-    return '' !=# expand('%:t') ? expand('%:t') : '[No Name]'
+    let l:t = expand('%:t')
+    return strlen(l:t) ? l:t : '[No Name]'
 endfunction
 
 function! Lightline_git_status() abort
-    if (dein#is_sourced('gina.vim') == 0) || empty(gina#core#get())
+    if (dein#is_sourced('gina.vim') == 0) || empty(gina#core#get()) || Lightline_is_ignore_ft()
         return ''
     endif
 
@@ -816,39 +812,45 @@ function! Lightline_git_status() abort
 endfunction
 
 function! Lightline_ale_status() abort
-    if dein#is_sourced('ale') == 0
+    if (dein#is_sourced('ale') == 0) || Lightline_is_ignore_ft()
         return ''
     endif
 
     let l:counts = ale#statusline#Count(bufnr(''))
+    if l:counts.total == 0
+        return ''
+    endif
 
     let l:count_errors = l:counts.error + l:counts.style_error
-    let l:count_warns  = l:counts.total - l:count_errors
-
-    return l:counts.total == 0 ? '' : printf('Errors: %2d, Warns: %d', l:count_errors, l:count_warns)
+    let l:count_warns  = l:counts.warning + l:counts.style_warning
+    return printf('E:%d W:%d I:%d', l:count_errors, l:count_warns, l:counts.info)
 endfunction
 
+let s:cp_fname_modi = [ '#ffffff', '#080808', 231, 232 ]
+let s:cp_read_spell = [ '#d70000', '#121212', 160, 233 ]
+let s:cp_git_status = [ '#87afff', '#1c1c1c', 111, 234 ]
+let s:cp_middle     = [ '#9e9e9e', '#444444', 247, 238 ]
 let g:lightline#colorscheme#mopkai#palette =
             \ {
             \ 'normal': {
-            \   'left':    [ [ '#080808', '#00afff', 232,  39 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
-            \   'middle':  [ [ '#9e9e9e', '#303030', 247, 236 ] ],
-            \   'right':   [ [ '#9e9e9e', '#080808', 247, 237 ], [ '#875fd7', '#080808',  98, 232 ] ],
+            \   'left':    [ [ '#080808', '#00afff', 232,  39 ], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status ],
+            \   'middle':  [ s:cp_middle ],
+            \   'right':   [ [ '#ffffd7', '#1c1c1c', 230, 234 ], [ '#875fd7', '#080808',  98, 232 ], [ '#ffffd7', '#1c1c1c', 200, 234 ]],
             \   'warning': [ [ '#9e9e9e', '#ffdf5f', 247, 221 ] ],
             \   'error':   [ [ '#eeeeee', '#d70000', 255, 160 ] ]
             \ },
             \ 'insert': {
-            \   'left':   [ [ '#080808', '#87ff00', 232, 118 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
+            \   'left':   [ [ '#080808', '#87ff00', 232, 118 ], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status ],
             \ },
             \ 'replace': {
-            \   'left':   [ [ '#080808', '#ff0087', 232, 198 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
+            \   'left':   [ [ '#080808', '#ff0087', 232, 198 ], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status ],
             \ },
             \ 'visual': {
-            \   'left':   [ [ '#080808', '#d7ff5f', 232, 191 ], [ '#9e9e9e', '#080808', 247, 232 ], [ '#d70000', '#080808', 160, 232 ], [ '#d70000', '#080808', 111, 237 ] ],
+            \   'left':   [ [ '#080808', '#d7ff5f', 232, 191 ], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status ],
             \ },
             \ 'inactive': {
             \   'left':   [ [ '#9e9e9e', '#080808', 247, 232 ] ],
-            \   'middle': [ [ '#9e9e9e', '#303030', 247, 236 ] ],
+            \   'middle': [ s:cp_middle ],
             \   'right':  [ [ '#875fd7', '#080808',  98, 232 ] ]
             \ },
             \ 'tabline': {
@@ -933,7 +935,7 @@ let g:rainbow_conf = {
             \   },
             \   }
 
-" tagBar
+" tagbar
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus   = 1
 let g:tagbar_sort        = 0
