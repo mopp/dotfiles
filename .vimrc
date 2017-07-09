@@ -442,9 +442,10 @@ endif
 "----------------------------------------------------------------------------"
 let s:DEIN_BASE_PATH = '~/.vim/bundle/'
 let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
+let s:is_try_install = 0
 if !isdirectory(s:DEIN_PATH)
-    let s:answer = confirm('Would you like to download all plugins ?', "&Yes\n&No", 2)
-    if (s:answer == 1) && (executable('git') == 1)
+    let s:is_try_install = confirm('Would you like to download all plugins ?', "&Yes\n&No", 2)
+    if (s:is_try_install == 1) && (executable('git') == 1)
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
     else
         set number
@@ -571,6 +572,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
 endif
 
 filetype plugin indent on
+
+if (s:is_try_install == 1) && dein#check_install()
+    call dein#install()
+endif
+
 
 " deoplete.nvim
 if dein#tap('deoplete.nvim')
