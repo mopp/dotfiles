@@ -776,7 +776,7 @@ let g:lightline = {
             \ }
 
 let g:lightline_ignore_ft_pattern = 'vimfiler\|tagbar\|denite\|help'
-function Lightline_is_ignore_ft()
+function! Lightline_is_ignore_ft() abort
     return (&filetype =~? g:lightline_ignore_ft_pattern)
 endfunction
 
