@@ -550,6 +550,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tyru/capture.vim', { 'lazy': 1, 'on_cmd': 'Capture' })
     call dein#add('tyru/open-browser.vim', { 'lazy': 1, 'on_map': [ [ 'n', '<Plug>(openbrowser-open)' ] ], 'on_func': 'openbrowser' })
     call dein#add('w0rp/ale')
+    call dein#add('mtth/scratch.vim', {'lazy': 1, 'on_cmd': ['Scratch', 'ScratchInsert', 'ScratchPreview', 'ScratchSelection']})
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
@@ -1030,6 +1031,9 @@ let g:ale_lint_on_insert_leave = 0
 " junkfile.vim
 nnoremap <F4> :<C-U>call junkfile#open_immediately(strftime('%Y-%m-%d.md'))<CR>i
 command! -nargs=? JunkfileNote call junkfile#open(strftime('%Y%m%d_') . <q-args>, '.md')
+
+" scratch.vim
+let g:scratch_no_mappings = 1
 
 
 "----------------------------------------------------------------------------"
