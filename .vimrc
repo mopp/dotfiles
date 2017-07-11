@@ -1029,8 +1029,9 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 
 " junkfile.vim
-nnoremap <F4> :<C-U>call junkfile#open_immediately(strftime('%Y-%m-%d.md'))<CR>i
-command! -nargs=? JunkfileNote call junkfile#open(strftime('%Y%m%d_') . <q-args>, '.md')
+nnoremap <Leader>xx :<C-U>call junkfile#open_immediately(strftime('%Y-%m-%d.md'))<CR>
+command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
+let g:junkfile#directory = $HOME . '/workspace/notes'
 
 " scratch.vim
 let g:scratch_no_mappings = 1
