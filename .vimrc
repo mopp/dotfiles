@@ -639,14 +639,14 @@ let g:neosnippet#scope_aliases['pug'] = 'jade'
 " denite.nvim
 nnoremap [Denite] <Nop>
 nmap <Leader>f [Denite]
-nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
 nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-nnoremap <silent> [Denite]f  :<C-U>Denite file_rec<CR>
+nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
 nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
 nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
 nnoremap <silent> [Denite]l  :<C-U>Denite line<CR>
-nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
 nnoremap <silent> [Denite]o  :<C-U>Denite outline<CR>
+nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
+nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
 
 call denite#custom#option('default', 'statusline', v:false)
 call denite#custom#option('default', 'vertical_preview', v:true)
