@@ -480,8 +480,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
 
-    " call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_func': 'denite', 'on_cmd': 'Denite', 'hook_post_source': 'call Hook_post_source_denite()'})
-    " call dein#add('Shougo/unite.vim', { 'lazy': 1, 'on_source': 'denite.nvim' })
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('Shougo/unite.vim')
@@ -586,8 +584,6 @@ if dein#tap('deoplete.nvim')
     let g:deoplete#omni_patterns     = {}
     let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
     let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
-    " let g:deoplete#sources           = {}
-    " let g:deoplete#sources._         = ['buffer', 'neosnippet']
 endif
 
 " neocomplete.vim
