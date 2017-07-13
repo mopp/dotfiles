@@ -642,6 +642,7 @@ nnoremap [Denite] <Nop>
 nmap <Leader>f [Denite]
 nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
 nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
+nnoremap <silent> [Denite]d  :<C-U>Denite -default-action='tab_open' directory_mru<CR>
 nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
 nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
 nnoremap <silent> [Denite]l  :<C-U>Denite line<CR>
@@ -649,12 +650,13 @@ nnoremap <silent> [Denite]o  :<C-U>Denite outline<CR>
 nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
 nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
 
-call denite#custom#option('default', 'statusline', v:false)
-call denite#custom#option('default', 'vertical_preview', v:true)
+call denite#custom#action('directory', 'tab_open', {context -> execute([':VimFilerTab', context.input]) })
 call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
 call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
 call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
 call denite#custom#map('normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+call denite#custom#option('default', 'statusline', v:false)
+call denite#custom#option('default', 'vertical_preview', v:true)
 
 if executable('rg')
     " For ripgrep.
