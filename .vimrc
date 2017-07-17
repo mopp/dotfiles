@@ -608,26 +608,11 @@ if dein#tap('neocomplete.vim')
     let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
     let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
 
-    let g:neocomplete#same_filetypes     = get(g:, 'neocomplete#same_filetypes', {})
-    let g:neocomplete#same_filetypes.c   = 'cpp'
-    let g:neocomplete#same_filetypes.cpp = 'c'
-
     let g:neocomplete#text_mode_filetypes           = get(g:, 'neocomplete#text_mode_filetypes', {})
     let g:neocomplete#text_mode_filetypes.markdown  = 1
     let g:neocomplete#text_mode_filetypes.gitcommit = 1
     let g:neocomplete#text_mode_filetypes.text      = 1
     let g:neocomplete#text_mode_filetypes.txt       = 1
-
-    let g:neocomplete#delimiter_patterns     = get(g:, 'neocomplete#delimiter_patterns', {})
-    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
-    let g:neocomplete#delimiter_patterns.cpp = [ '::' ]
-    let g:neocomplete#delimiter_patterns.c   = [ '.' ]
-
-    let g:neocomplete#skip_auto_completion_time = ''
-    let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
-
-    let g:neocomplete#sources#vim#complete_functions          = get(g:, 'neocomplete#sources#vim#complete_functions', {})
-    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
     inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
     inoremap <expr> <C-l> neocomplete#complete_common_string()
