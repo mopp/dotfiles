@@ -1039,3 +1039,9 @@ augroup END
 
 syntax enable
 colorscheme mopkai  " It should be after entax command.
+
+
+if has('nvim') && has('mac')
+    let g:python_host_prog  = '/usr/local/bin/python'
+    let g:python3_host_prog = '/usr/local/bin/python3'
+endif
