@@ -1019,8 +1019,9 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 
 " junkfile.vim
-nnoremap <Leader>xx :<C-U>call junkfile#open_immediately(strftime('%Y-%m-%d.md'))<CR>
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
+command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
+nnoremap <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
 let g:junkfile#directory = $HOME . '/workspace/notes'
 
 " scratch.vim
