@@ -209,6 +209,11 @@ if [[ -x "$(which fasd)" ]]; then
     eval "$(fasd --init auto)"
 fi
 
+# For direnv
+if [[ -x "$(which direnv)" ]]; then
+    eval "$(direnv hook zsh)"
+fi
+
 # For less.
 export PAGER=less
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
