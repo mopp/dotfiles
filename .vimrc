@@ -529,7 +529,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-smartchr')
     call dein#add('kana/vim-smartinput', {'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
     call dein#add('kannokanno/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
-    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost'})
+    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
@@ -1026,6 +1026,12 @@ let g:junkfile#directory = $HOME . '/workspace/notes'
 
 " scratch.vim
 let g:scratch_no_mappings = 1
+
+" gina.vim
+function! Hook_on_post_source_gina() abort
+    call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
+    call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
+endfunction
 
 
 "----------------------------------------------------------------------------"
