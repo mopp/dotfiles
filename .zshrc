@@ -163,6 +163,12 @@ if [[ -d $HOME/.rbenv ]]; then
     eval "$(rbenv init -)"
 fi
 
+# For erlenv.
+if [[ -d $HOME/.erlenv ]]; then
+    export PATH=$HOME/.erlenv/bin:$PATH
+    eval "$(erlenv init -)"
+fi
+
 # For nvm.
 if [[ -x $(which nvm) ]]; then
     export NVM_DIR="$HOME/.nvm"
