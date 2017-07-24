@@ -1031,6 +1031,7 @@ let g:scratch_no_mappings = 1
 function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
+    call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
 
 
