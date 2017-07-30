@@ -493,8 +493,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
     call dein#add('kana/vim-operator-replace', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
     call dein#add('kana/vim-operator-user')
-    call dein#add('tommcdo/vim-exchange', {'lazy': 1, 'on_map': [['nx', '<Plug>(Exchange)', '<Plug>(ExchangeClear)', '<Plug>(ExchangeLine)']]})
-    call dein#add('tyru/operator-camelize.vim', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
 
     call dein#add('kana/vim-textobj-indent', {'lazy': 1, 'on_map':  [['ox', 'ai' , 'ii' , 'aI',  'iI']]})
     call dein#add('kana/vim-textobj-line', {'lazy': 1, 'on_map': [['ox', 'al', 'il']]})
@@ -506,7 +504,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     " call dein#add('roxma/vim-paste-easy')
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
-    call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_func': 'argwrap', 'on_cmd': 'ArgWrap'})
+    call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
@@ -547,10 +545,10 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rhysd/accelerated-jk')
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('rizzatti/dash.vim', {'lazy': 1, 'on_cmd': ['Dash'], 'on_if': has('mac')})
-    call dein#add('scrooloose/nerdcommenter', {'lazy': 1, 'on_map': [['nx', '<Plug>NERDCommenter']], 'hook_post_source': 'doautocmd NERDCommenter BufEnter'})
     call dein#add('sk1418/blockit', {'lazy': 1, 'on_cmd': 'Block', 'on_map': [['x', '<Plug>BlockitVisual']]})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('thinca/vim-visualstar')
+    call dein#add('tomtom/tcomment_vim')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': 'openbrowser'})
@@ -681,18 +679,6 @@ let g:operator#flashy#group = 'Error'
 
 " operator-replace
 map _ <Plug>(operator-replace)
-
-" vim-exchange
-nmap <Leader>cx <Plug>(Exchange)
-xmap <Leader>X <Plug>(Exchange)
-nmap <Leader>cxc <Plug>(ExchangeClear)
-nmap <Leader>cxx <Plug>(ExchangeLine)
-
-" operator-camelize.vim
-map <Leader>ca <Plug>(operator-camelize-toggle)
-
-" vim-argwrap
-nnoremap <silent> <leader>aw :<C-U>call argwrap#toggle()<CR>
 
 " yankround.vim
 let g:yankround_use_region_hl = 1
@@ -973,13 +959,9 @@ nmap # <Plug>(anzu-sharp-with-echo)
 " vim-marching
 let g:marching_enable_neocomplete = 1
 
-" NERDCommenter
-let g:NERDSpaceDelims = 1
-nmap <Leader><Leader> <Plug>NERDCommenterToggle
-xmap <Leader><Leader> <Plug>NERDCommenterToggle
-vmap <Leader>cb <Plug>NERDCommenterNested
-nmap <Leader>cs <plug>NERDCommenterSexy
-vmap <Leader>cs <plug>NERDCommenterSexy
+" tcomment_vim
+nnoremap <Leader><Leader> :<C-U>TComment<CR>
+xnoremap <Leader><Leader> :TComment<CR>
 
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
