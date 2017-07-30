@@ -486,6 +486,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('ujihisa/neco-look')
 
     call dein#add('Shougo/denite.nvim')
+    call dein#add('Shougo/deol.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('Shougo/unite.vim')
     call dein#add('Shougo/vimfiler.vim')
