@@ -1017,32 +1017,8 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
 
-
-" lowerCamelCase
-" UpperCamelCase
-" lower_snake_case
-" UPPER_SNAKE_CASE
-nmap <Leader>, <Plug>(operator-convert-case)
-call operator#user#define('convert-case', 'Opatator_convert_case')
-function! Opatator_convert_case(motion_wiseness) abort
-    if a:motion_wiseness != 'char'
-        echoerr "This operator supports only characterwise."
-        return
-    endif
-
-    let l:store = @r
-
-    let v = operator#user#visual_command_from_wise_name(a:motion_wiseness)
-    execute 'normal!' '`[' . v . '`]"rc'
-    let l:target_text = @r
-
-    let @r = l:store
-
-    " TODO
-    echomsg l:target_text
-endfunction
-
-function s:to_lower_snake_case(str) abort
+" operator-convert-case.vim
+function! s:to_lower_snake_case(str) abort
     if empty(a:str) == 1
         return ''
     endif
@@ -1119,6 +1095,40 @@ function! s:test() abort
     call s:assert_eq(s:to_upper_camel_case('Up'), 'Up')
 endfunction
 call s:test()
+
+let s:function_mapper = {
+            \ 'lowerCamelCase': function('s:to_lower_camel_case'),
+            \ 'UpperCamelCase': function('s:to_upper_camel_case'),
+            \ 'lower_snake_case': function('s:to_lower_snake_case'),
+            \ 'UPPER_SNAKE_CASE': function('s:to_upper_snake_case'),
+            \ }
+
+function! Opatator_convert_case(motion_wiseness) abort
+    if a:motion_wiseness != 'char'
+        echoerr 'This operator supports only characterwise.'
+        return
+    endif
+
+    let l:store = @r
+
+    let v = operator#user#visual_command_from_wise_name(a:motion_wiseness)
+    execute 'normal!' '`[' . v . '`]"rc'
+    let l:target_text = @r
+
+    let @r = l:store
+
+    execute 'normal! a' . s:function_mapper[g:convert_case_type](l:target_text)
+endfunction
+
+call operator#user#define('convert-case-lower-camel', 'Opatator_convert_case', 'let g:convert_case_type = "lowerCamelCase"')
+call operator#user#define('convert-case-upper-camel', 'Opatator_convert_case', 'let g:convert_case_type = "UpperCamelCase"')
+call operator#user#define('convert-case-lower-snake', 'Opatator_convert_case', 'let g:convert_case_type = "lower_snake_case"')
+call operator#user#define('convert-case-upper-snake', 'Opatator_convert_case', 'let g:convert_case_type = "UPPER_SNAKE_CASE"')
+
+nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
+nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
+nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
+nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
 
 
 "----------------------------------------------------------------------------"
