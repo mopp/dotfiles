@@ -494,6 +494,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
     call dein#add('kana/vim-operator-replace', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
     call dein#add('kana/vim-operator-user')
+    call dein#add('mopp/vim-operator-convert-case', {'lazy': 1, 'on_map': [['n', '<Plug>']]})
 
     call dein#add('kana/vim-textobj-indent', {'lazy': 1, 'on_map':  [['ox', 'ai' , 'ii' , 'aI',  'iI']]})
     call dein#add('kana/vim-textobj-line', {'lazy': 1, 'on_map': [['ox', 'al', 'il']]})
@@ -1018,113 +1019,6 @@ function! Hook_on_post_source_gina() abort
 endfunction
 
 " operator-convert-case.vim
-function! s:to_lower_snake_case(str) abort
-    if empty(a:str) == 1
-        return ''
-    endif
-
-    if stridx(a:str, '_') == -1
-        " UpperCamelCase or lowerCamelCase
-        return tolower(a:str[0]) . substitute(a:str[1:-1], '\(\u\)', '\="_" . tolower(submatch(1))', 'g')
-    else
-        " lower_snake_case or UPPER_SNAKE_CASE
-        return tolower(a:str)
-    endif
-endfunction
-
-function! s:to_upper_snake_case(str) abort
-    return toupper(s:to_lower_snake_case(a:str))
-endfunction
-
-function! s:to_lower_camel_case(str) abort
-    if empty(a:str) == 1
-        return ''
-    endif
-
-    if stridx(a:str, '_') == -1
-        " UpperCamelCase or lowerCamelCase
-        return tolower(a:str[0]) . a:str[1 : -1]
-    else
-        " lower_snake_case or UPPER_SNAKE_CASE
-        return substitute(tolower(a:str), '_\(.\)', '\=toupper(submatch(1))', 'g')
-    endif
-endfunction
-
-function! s:to_upper_camel_case(str) abort
-    if empty(a:str) == 1
-        return ''
-    endif
-
-    let l:str = s:to_lower_camel_case(a:str)
-    return toupper(l:str[0]) . l:str[1 : -1]
-endfunction
-
-function! s:assert_eq(x, y) abort
-    if a:x !=# a:y
-        echoerr a:x . " !=# " .a:y
-    endif
-endfunction
-
-function! s:test() abort
-    call s:assert_eq(s:to_lower_snake_case('lower_snake_case'), 'lower_snake_case')
-    call s:assert_eq(s:to_lower_snake_case('UPPER_SNAKE_CASE'), 'upper_snake_case')
-    call s:assert_eq(s:to_lower_snake_case('UpperCamelCase'),   'upper_camel_case')
-    call s:assert_eq(s:to_lower_snake_case('lowerCamelCase'),   'lower_camel_case')
-    call s:assert_eq(s:to_lower_snake_case(''), '')
-    call s:assert_eq(s:to_lower_snake_case('Up'), 'up')
-
-    call s:assert_eq(s:to_upper_snake_case('lower_snake_case'), 'LOWER_SNAKE_CASE')
-    call s:assert_eq(s:to_upper_snake_case('UPPER_SNAKE_CASE'), 'UPPER_SNAKE_CASE')
-    call s:assert_eq(s:to_upper_snake_case('UpperCamelCase'),   'UPPER_CAMEL_CASE')
-    call s:assert_eq(s:to_upper_snake_case('lowerCamelCase'),   'LOWER_CAMEL_CASE')
-    call s:assert_eq(s:to_upper_snake_case(''), '')
-    call s:assert_eq(s:to_upper_snake_case('Up'), 'UP')
-
-    call s:assert_eq(s:to_lower_camel_case('lower_snake_case'), 'lowerSnakeCase')
-    call s:assert_eq(s:to_lower_camel_case('UPPER_SNAKE_CASE'), 'upperSnakeCase')
-    call s:assert_eq(s:to_lower_camel_case('UpperCamelCase'),   'upperCamelCase')
-    call s:assert_eq(s:to_lower_camel_case('lowerCamelCase'),   'lowerCamelCase')
-    call s:assert_eq(s:to_lower_camel_case(''), '')
-    call s:assert_eq(s:to_lower_camel_case('Up'), 'up')
-
-    call s:assert_eq(s:to_upper_camel_case('lower_snake_case'), 'LowerSnakeCase')
-    call s:assert_eq(s:to_upper_camel_case('UPPER_SNAKE_CASE'), 'UpperSnakeCase')
-    call s:assert_eq(s:to_upper_camel_case('UpperCamelCase'),   'UpperCamelCase')
-    call s:assert_eq(s:to_upper_camel_case('lowerCamelCase'),   'LowerCamelCase')
-    call s:assert_eq(s:to_upper_camel_case(''), '')
-    call s:assert_eq(s:to_upper_camel_case('Up'), 'Up')
-endfunction
-call s:test()
-
-let s:function_mapper = {
-            \ 'lowerCamelCase': function('s:to_lower_camel_case'),
-            \ 'UpperCamelCase': function('s:to_upper_camel_case'),
-            \ 'lower_snake_case': function('s:to_lower_snake_case'),
-            \ 'UPPER_SNAKE_CASE': function('s:to_upper_snake_case'),
-            \ }
-
-function! Opatator_convert_case(motion_wiseness) abort
-    if a:motion_wiseness != 'char'
-        echoerr 'This operator supports only characterwise.'
-        return
-    endif
-
-    let l:store = @r
-
-    let v = operator#user#visual_command_from_wise_name(a:motion_wiseness)
-    execute 'normal!' '`[' . v . '`]"rc'
-    let l:target_text = @r
-
-    let @r = l:store
-
-    execute 'normal! a' . s:function_mapper[g:convert_case_type](l:target_text)
-endfunction
-
-call operator#user#define('convert-case-lower-camel', 'Opatator_convert_case', 'let g:convert_case_type = "lowerCamelCase"')
-call operator#user#define('convert-case-upper-camel', 'Opatator_convert_case', 'let g:convert_case_type = "UpperCamelCase"')
-call operator#user#define('convert-case-lower-snake', 'Opatator_convert_case', 'let g:convert_case_type = "lower_snake_case"')
-call operator#user#define('convert-case-upper-snake', 'Opatator_convert_case', 'let g:convert_case_type = "UPPER_SNAKE_CASE"')
-
 nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
 nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
 nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
