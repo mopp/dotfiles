@@ -1001,6 +1001,7 @@ nmap k <Plug>(accelerated_jk_gk)
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
+let g:ale_erlang_erlc_options = '-I./include/'
 
 " junkfile.vim
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
