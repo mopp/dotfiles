@@ -628,6 +628,9 @@ let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
 let g:neosnippet#scope_aliases['pug'] = 'jade'
 
+" neomru.vim
+let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
+
 " denite.nvim
 nnoremap [Denite] <Nop>
 nmap <Leader>f [Denite]
