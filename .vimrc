@@ -546,7 +546,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('rhysd/accelerated-jk')
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
-    call dein#add('rizzatti/dash.vim', {'lazy': 1, 'on_cmd': ['Dash'], 'on_if': has('mac')})
+    " call dein#add('rizzatti/dash.vim', {'lazy': 1, 'on_cmd': ['Dash'], 'on_if': has('mac')})
+    call dein#add('rizzatti/dash.vim')
     call dein#add('sk1418/blockit', {'lazy': 1, 'on_cmd': 'Block', 'on_map': [['x', '<Plug>BlockitVisual']]})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('thinca/vim-visualstar')
@@ -989,6 +990,7 @@ let g:formatdef_rustfmt = '"rustfmt"'
 let g:formatters_rust = ['rustfmt']
 
 " vim-maximizer
+let g:maximizer_restore_on_winleave = 1
 nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
 vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
