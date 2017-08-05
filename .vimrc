@@ -369,67 +369,6 @@ augroup END
 " neovim.
 "----------------------------------------------------------------------------"
 if has('nvim')
-    if has('mac')
-        let g:python_host_prog  = '/usr/local/bin/python'
-        let g:python3_host_prog = '/usr/local/bin/python3'
-    endif
-
-    " Copy and modify from mapping source in unite.vim
-    function! s:get_mapping_list(map_cmd) abort
-        redir => l:mapping_str
-        silent! execute a:map_cmd
-        redir END
-
-        let l:mapping_list = []
-        let l:mapping_lines = split(l:mapping_str, '\n')
-        let l:mapping_lines = filter(copy(l:mapping_lines), "v:val =~# '\\s\\+\\*\\?@'") + filter(copy(l:mapping_lines), "v:val !~# '\\s\\+\\*\\?@'")
-        for l:line in map(l:mapping_lines, "substitute(v:val, '<NL>', '<C-J>', 'g')")
-            " attribute
-            let l:attr = ''
-
-            " right
-            let l:map_rhs = matchstr(l:line, '^\a*\s*\S\+\s*\zs.*\ze\s*')
-            if l:map_rhs =~# '^\*\s.*'
-                let l:map_rhs = l:map_rhs[2:]
-                let l:attr = '*'
-            endif
-
-            " left
-            let l:map_lhs = matchstr(l:line, '^\a*\s*\zs\S\+')
-            if l:map_lhs =~# '^<SNR>' || l:map_lhs =~# '^<Plug>'
-                continue
-            endif
-            let l:map_lhs = substitute(l:map_lhs, '<NL>', '<C-j>', 'g')
-            let l:map_lhs = substitute(l:map_lhs, '\(<.*>\)', '\1', 'g')
-
-            call add(l:mapping_list, [l:map_lhs, l:map_rhs, l:attr])
-        endfor
-
-        return l:mapping_list
-    endfunction
-
-    let s:is_term_map_enable = 1
-    function! s:toggle_terminal_map() abort
-        if s:is_term_map_enable == 1
-            let g:toggle_mapinfo_list = <SID>get_mapping_list('tmap')
-            " Disable
-            for l:mapinfo in g:toggle_mapinfo_list
-                echo l:mapinfo[0]
-                execute 'tunmap' l:mapinfo[0]
-            endfor
-            let s:is_term_map_enable = 0
-        else
-            " Enable
-            for l:mapinfo in g:toggle_mapinfo_list
-                let l:map_cmd = (l:mapinfo[2] ==# '*') ? ('tnoremap') : ('tmap')
-                execute l:map_cmd l:mapinfo[0] l:mapinfo[1]
-            endfor
-            let s:is_term_map_enable = 1
-        endif
-    endfunction
-
-    command! ToggleTerminaMap call <SID>toggle_terminal_map()
-
     tnoremap <ESC> <C-\><C-n>
     tnoremap <C-w>h <C-\><C-n><C-w>h
     tnoremap <C-w>j <C-\><C-n><C-w>j
@@ -437,6 +376,8 @@ if has('nvim')
     tnoremap <C-w>l <C-\><C-n><C-w>l
     nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
+    nnoremap <Leader>vst :vsplit term://zsh<CR>
+    nnoremap <Leader>vtt :tabnew term://zsh<CR>
 
     autocmd TermOpen * setlocal nonumber norelativenumber wrap
 endif
@@ -685,6 +626,12 @@ let g:operator#flashy#group = 'Error'
 
 " operator-replace
 map _ <Plug>(operator-replace)
+
+" operator-convert-case.vim
+nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
+nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
+nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
+nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
 
 " yankround.vim
 let g:yankround_use_region_hl = 1
@@ -1023,12 +970,6 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
     call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
-
-" operator-convert-case.vim
-nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
-nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
-nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
-nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
 
 
 "----------------------------------------------------------------------------"
