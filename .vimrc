@@ -683,6 +683,12 @@ let g:operator#flashy#group = 'Error'
 " operator-replace
 map _ <Plug>(operator-replace)
 
+" operator-convert-case.vim
+nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
+nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
+nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
+nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
+
 " yankround.vim
 let g:yankround_use_region_hl = 1
 let g:yankround_region_hl_groupname = 'Error'
@@ -1020,12 +1026,6 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
     call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
-
-" operator-convert-case.vim
-nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
-nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
-nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
-nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
 
 
 "----------------------------------------------------------------------------"
