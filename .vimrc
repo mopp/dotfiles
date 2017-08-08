@@ -573,36 +573,38 @@ let g:neosnippet#scope_aliases['pug'] = 'jade'
 let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
-nnoremap [Denite] <Nop>
-nmap <Leader>f [Denite]
-nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
-nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
-nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
-nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
-nnoremap <silent> [Denite]l  :<C-U>Denite -auto-preview line<CR>
-nnoremap <silent> [Denite]o  :<C-U>botright Denite -auto-preview outline<CR>
-nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
-nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
+if dein#tap('denite.nvim')
+    nnoremap [Denite] <Nop>
+    nmap <Leader>f [Denite]
+    nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
+    nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
+    nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
+    nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
+    nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
+    nnoremap <silent> [Denite]l  :<C-U>Denite -auto-preview line<CR>
+    nnoremap <silent> [Denite]o  :<C-U>botright Denite -auto-preview outline<CR>
+    nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
+    nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
 
-call denite#custom#action('directory', 'tab_open', {context -> execute(':VimFilerTab ' . context['targets'][0]['action__path']) })
-call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#option('default', 'highlight_matched_char', 'Keyword')
-call denite#custom#option('default', 'highlight_matched_range', 'None')
-call denite#custom#option('default', 'statusline', v:false)
+    call denite#custom#action('directory', 'tab_open', {context -> execute(':VimFilerTab ' . context['targets'][0]['action__path']) })
+    call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#option('default', 'highlight_matched_char', 'Keyword')
+    call denite#custom#option('default', 'highlight_matched_range', 'None')
+    call denite#custom#option('default', 'statusline', v:false)
 
-if executable('rg')
-    " For ripgrep.
-    call denite#custom#var('file_rec', 'command', [ 'rg', '--files', '--glob', '!.git', ''])
-    call denite#custom#var('grep', 'command', ['rg'])
-    call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'final_opts', [])
+    if executable('rg')
+        " For ripgrep.
+        call denite#custom#var('file_rec', 'command', [ 'rg', '--files', '--glob', '!.git', ''])
+        call denite#custom#var('grep', 'command', ['rg'])
+        call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
+        call denite#custom#var('grep', 'recursive_opts', [])
+        call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+        call denite#custom#var('grep', 'separator', ['--'])
+        call denite#custom#var('grep', 'final_opts', [])
+    endif
 endif
 
 " vimfiler
@@ -946,8 +948,10 @@ vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
 
 " accelerated-jk
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
+if dein#tap('accelerated-jk')
+    nmap j <Plug>(accelerated_jk_gj)
+    nmap k <Plug>(accelerated_jk_gk)
+endif
 
 " ale
 let g:ale_sign_column_always = 1
