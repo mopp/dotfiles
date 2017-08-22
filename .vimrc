@@ -370,16 +370,12 @@ augroup END
 "----------------------------------------------------------------------------"
 if has('nvim')
     tnoremap <ESC> <C-\><C-n>
-    tnoremap <C-w>h <C-\><C-n><C-w>h
-    tnoremap <C-w>j <C-\><C-n><C-w>j
-    tnoremap <C-w>k <C-\><C-n><C-w>k
-    tnoremap <C-w>l <C-\><C-n><C-w>l
     nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
     nnoremap <Leader>vtt :tabnew term://zsh<CR>
 
-    autocmd TermOpen * setlocal nonumber norelativenumber wrap
+    autocmd TermOpen * setlocal nonumber norelativenumber nowrap
 endif
 
 
@@ -955,7 +951,7 @@ endif
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
-let g:ale_erlang_erlc_options = '-I./include/'
+let g:ale_erlang_erlc_options = '-I./include/ -I./deps/*/src/'
 
 " junkfile.vim
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
