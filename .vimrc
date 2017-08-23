@@ -207,7 +207,7 @@ nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
 nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
 
 " Open help of a word under the cursor.
-nnoremap <silent> <Leader>h  :<C-U>help <C-R><C-W><CR>
+nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
@@ -646,6 +646,10 @@ let g:echodoc_enable_at_startup = 1
 
 " vim-gitgutter
 let g:gitgutter_map_keys = 0
+nmap <Leader>hs <Plug>GitGutterStageHunk
+nmap <Leader>hu <Plug>GitGutterUndoHunk
+nmap <Leader>hp <Plug>GitGutterPrevHunk
+nmap <Leader>hn <Plug>GitGutterNextHunk
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vimfiler' ]
