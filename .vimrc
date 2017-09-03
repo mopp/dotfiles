@@ -363,6 +363,9 @@ augroup mopp
     autocmd BufWinEnter *.toml               nested setlocal filetype=toml
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
+
+    autocmd BufWinEnter * if (line('$') < winheight(0)) | normal! zR | endif
+    " autocmd BufReadPost * if (line('$') < winheight(0)) | normal zR | endif
 augroup END
 
 
