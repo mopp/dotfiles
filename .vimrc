@@ -389,7 +389,7 @@ endif
 let s:DEIN_BASE_PATH = '~/.vim/bundle/'
 let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
 if !isdirectory(s:DEIN_PATH)
-    if (executable('git') == 1) && (confirm('Would you like to download all plugins ?', "&Yes\n&No", 1) == 1)
+    if (executable('git') == 1) && (confirm('Install dein.vim or Launch vim immediately', "&Yes\n&No", 1) == 1)
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
     else
         set number
@@ -454,7 +454,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', {'on_cmd': 'Vinarise'})
-    call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': 'BufWritePost'})
+    call dein#add('airblade/vim-gitgutter')
     call dein#add('bogado/file-line')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL'], 'on_map': ['<Leader>Nr', '<Leader>nr']})
@@ -519,7 +519,7 @@ endif
 
 filetype plugin indent on
 
-if dein#check_install()
+if dein#check_install() && (confirm('Would you like to download some plugins ?', "&Yes\n&No", 1) == 1)
     call dein#install()
 endif
 
