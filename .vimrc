@@ -512,6 +512,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('vim-jp/vimdoc-ja')
     call dein#add('vim-ruby/vim-ruby')
     call dein#add('vim-scripts/sh.vim--Cla')
+    call dein#add('joukevandermaas/vim-ember-hbs')
 
     call dein#end()
     call dein#save_state()
@@ -873,6 +874,8 @@ let g:rainbow_conf = {
             \       'vim': {},
             \       'css': 0,
             \       'perl': 0,
+            \       'html': 0,
+            \       'handlebars': 0,
             \   },
             \   }
 
@@ -986,6 +989,7 @@ augroup plugin
 
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType vimfiler call s:config_vimfiler()
+    autocmd BufWinEnter *.hbs nested setlocal filetype=handlebars
 augroup END
 
 syntax enable
