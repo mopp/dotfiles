@@ -529,6 +529,15 @@ if dein#check_install() && (confirm('Would you like to download some plugins ?',
     call dein#install()
 endif
 
+function! s:accelerate() abort
+    :IndentLinesDisable
+    :RainbowToggleOff
+    :ALEDisable
+    set nocursorline
+endfunction
+
+" Disable heavy plugins and effects.
+command! Accelerate call <SID>accelerate()
 
 " deoplete.nvim
 if dein#tap('deoplete.nvim')
@@ -1000,9 +1009,3 @@ augroup END
 
 syntax enable
 colorscheme mopkai  " It should be after entax command.
-
-
-if has('nvim') && has('mac')
-    let g:python_host_prog  = '/usr/local/bin/python2'
-    let g:python3_host_prog = '/usr/local/bin/python3'
-endif
