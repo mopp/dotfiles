@@ -572,6 +572,7 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#scope_aliases = {}
 let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
 let g:neosnippet#scope_aliases['pug'] = 'jade'
+let g:neosnippet#scope_aliases['handlebars'] = 'handlebars,html'
 
 " neomru.vim
 let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
