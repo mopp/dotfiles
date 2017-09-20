@@ -354,7 +354,7 @@ augroup mopp
     autocmd FileType tex  setlocal wrap spell nocursorline
     autocmd FileType text setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby setlocal shiftwidth=2
+    autocmd FileType ruby,javascript,html  setlocal shiftwidth=2
 
     " Detecting filetypes.
     autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
