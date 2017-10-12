@@ -352,7 +352,7 @@ augroup mopp
     autocmd FileType git  setlocal nofoldenable
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType tex  setlocal wrap spell nocursorline
-    autocmd FileType text setlocal wrap
+    autocmd FileType text,man setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
     autocmd FileType ruby,javascript,html,css  setlocal shiftwidth=2
 
@@ -592,7 +592,8 @@ if dein#tap('denite.nvim')
     nnoremap [Denite] <Nop>
     nmap <Leader>f [Denite]
     nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-    nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
+    nnoremap <silent> [Denite]ff :<C-U>Denite file_mru<CR>
+    nnoremap <silent> [Denite]fr :<C-U>Denite file_rec<CR>
     nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
     nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
     nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
@@ -886,12 +887,8 @@ let g:rainbow_conf = {
             \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87' ],
             \   'ctermfgs': [ '242', '33', '197', '98', '172', '36' ],
             \   'separately' : {
-            \       '*':   {},
-            \       'vim': {},
-            \       'css': 0,
-            \       'perl': 0,
-            \       'html': 0,
-            \       'handlebars': 0,
+            \       '*':   {}, 'vim': {},
+            \       'css': 0, 'perl': 0, 'html': 0, 'handlebars': 0, 'xml': 0
             \   },
             \   }
 
