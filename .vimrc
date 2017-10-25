@@ -499,6 +499,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': 'openbrowser'})
     call dein#add('w0rp/ale')
+    call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
@@ -992,6 +993,12 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
     call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
+
+" vim-windowswap
+let g:windowswap_map_keys = 0
+nnoremap <silent> ,wm :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent> ,ws :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
 
 
 "----------------------------------------------------------------------------"
