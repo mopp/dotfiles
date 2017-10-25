@@ -33,14 +33,15 @@ set laststatus=2
 set list
 set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
 set noarabicshape
+set nowrap
+set number
+set relativenumber
 set scrolloff=3
 set showcmd
 set showmatch
 set showtabline=2
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
-set nowrap
-set number
-set relativenumber
+set synmaxcol=512
 
 " Folding.
 set foldenable
