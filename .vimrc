@@ -611,6 +611,7 @@ if dein#tap('denite.nvim')
     call denite#custom#option('default', 'highlight_matched_char', 'Keyword')
     call denite#custom#option('default', 'highlight_matched_range', 'None')
     call denite#custom#option('default', 'statusline', v:false)
+    call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
 
     if executable('rg')
         " For ripgrep.
