@@ -187,6 +187,10 @@ if [[ -x $(which rustup) ]]; then
     export RUST_SRC_PATH=~/.multirust/toolchains/${CURRENT_TOOLCHAIN_NAME}/lib/rustlib/src/rust/src
 fi
 
+if [[ -x $(which rustc) ]]; then
+    export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
+fi
+
 # For colormake.
 if [[ -x "$(which colormake)" ]]; then
     alias maken='make'
