@@ -71,8 +71,8 @@ case $HOSTNAME in
         uim-xim --async &
         uim-toolbar-gtk3-systray &
 
-        xinput --set-prop 12 286 -0.75
-        xinput --set-prop 12 291 1
+        xinput --set-prop 12 286 0
+        xinput --set-prop 12 290 -0.5
 
         exec i3
         ;;
