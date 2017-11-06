@@ -415,10 +415,13 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('haya14busa/dein-command.vim')
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
-    call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter', 'if': has('nvim')})
-    call dein#add('Shougo/neocomplete.vim', {'lazy': 1, 'on_event': 'InsertEnter', 'if': (has('lua') && !has('nvim'))})
+    call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter'})
+    if !has('nvim')
+        call dein#add('roxma/nvim-yarp')
+        call dein#add('roxma/vim-hug-neovim-rpc')
+    endif
 
-    let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim', 'neocomplete.vim']}
+    let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim']}
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
     call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
@@ -546,32 +549,6 @@ if dein#tap('deoplete.nvim')
     let g:deoplete#omni_patterns     = {}
     let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
     let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
-endif
-
-" neocomplete.vim
-if dein#tap('neocomplete.vim')
-    let g:neocomplete#enable_at_startup        = 1
-    let g:neocomplete#enable_cursor_hold_i     = 1
-    let g:neocomplete#enable_insert_char_pre   = 1
-    let g:neocomplete#enable_auto_delimiter    = 1
-    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
-    let g:neocomplete#enable_prefetch          = 1
-
-    " Call omni function directly
-    let g:neocomplete#force_overwrite_completefunc     = 1
-    let g:neocomplete#force_omni_input_patterns        = get(g:, 'neocomplete#force_omni_input_patterns', {})
-    let g:neocomplete#force_omni_input_patterns.c      = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-    let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
-
-    let g:neocomplete#text_mode_filetypes           = get(g:, 'neocomplete#text_mode_filetypes', {})
-    let g:neocomplete#text_mode_filetypes.markdown  = 1
-    let g:neocomplete#text_mode_filetypes.gitcommit = 1
-    let g:neocomplete#text_mode_filetypes.text      = 1
-    let g:neocomplete#text_mode_filetypes.txt       = 1
-
-    inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
-    inoremap <expr> <C-l> neocomplete#complete_common_string()
 endif
 
 " neosnippet.vim
