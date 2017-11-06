@@ -1005,14 +1005,41 @@ nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
 " lexima.vim
 imap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
-    call lexima#add_rule({'char': '+', 'at': '\S\+\%#', 'input': ' + '})
-    call lexima#add_rule({'char': '-', 'at': '\S\+\%#', 'input': ' - '})
-    call lexima#add_rule({'char': '*', 'at': '\S\+\%#', 'input': ' * '})
-    call lexima#add_rule({'char': '%', 'at': '\S\+\%#', 'input': ' % '})
-    call lexima#add_rule({'char': '<', 'at': '\S\+\%#', 'input': ' < '})
-    call lexima#add_rule({'char': '>', 'at': '\S\+\%#', 'input': ' > '})
-    call lexima#add_rule({'char': '<', 'at': '\s>\s\%#', 'input': '<BS>< '})
-    call lexima#add_rule({'char': '>', 'at': '\s>\s\%#', 'input': '<BS>> '})
+    let rules = []
+    for target_char in ['+', '-', '*', '%', '<', '>', '&', '=', '<Bar>']
+        let rules += [
+                    \ {'char': target_char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . target_char . ' '},
+                    \ {'char': '<BS>', 'at': '\s' . target_char . '\s\%#', 'input': '<BS><BS><BS>'}
+                    \ ]
+    endfor
+
+    for target_char in ['<', '>', '*', '&', '=', '<Bar>']
+        let rules += [{'char': target_char, 'at': '\s' . target_char . '\s\%#', 'input': '<BS>' . target_char . ' '}]
+    endfor
+
+    let rules += [
+                \ {'char': '>', 'at': '<\%#', 'input': '><Left>', 'priority': 10, 'filetype': ['vim']},
+                \ {'char': '<BS>', 'at': '<\%#>', 'input': '<BS><DEL>'},
+                \ {'char': '=', 'at': '+ \%#', 'input': '<BS>= '},
+                \ {'char': '<BS>', 'at': '+=\s*\%#', 'input': '<C-W><BS>'},
+                \ {'char': '=', 'at': '- \%#', 'input': '<BS>= '},
+                \ {'char': '<BS>', 'at': '-=\s*\%#', 'input': '<C-W><BS>'},
+                \ {'char': '=', 'at': '< \%#', 'input': '<BS>= '},
+                \ {'char': '+', 'at': '\s+\s\%#', 'input': '<BS><BS><BS>++'},
+                \ {'char': '<BS>', 'at': '++\%#', 'input': '<BS><BS>'},
+                \ {'char': '-', 'at': '\s-\s\%#', 'input': '<BS><BS><BS>--'},
+                \ {'char': '<BS>', 'at': '--\%#', 'input': '<BS><BS>'},
+                \ {'char': ',', 'at': '\S\%#', 'input': ', '},
+                \ {'char': '<BS>', 'at': ', \%#', 'input': '<BS><BS>'},
+                \ {'char': ',', 'at': ',\s\%#', 'input': '<BS><BS>->'},
+                \ {'char': '<BS>', 'at': '->\%#', 'input': '<BS><BS>'},
+                \ {'char': ',', 'at': '->\%#', 'input': '<BS><BS> => '},
+                \ {'char': '<BS>', 'at': '=>\s*\%#', 'input': '<C-W><BS>'},
+                \ ]
+
+    for rule in rules
+      call lexima#add_rule(rule)
+    endfor
 endfunction
 
 
