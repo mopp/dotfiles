@@ -499,7 +499,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tomtom/tcomment_vim')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
-    call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': 'openbrowser'})
+    call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('w0rp/ale')
     call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
 
