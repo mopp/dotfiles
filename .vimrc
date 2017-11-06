@@ -454,7 +454,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rhysd/accelerated-jk')
 
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
-    call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter','hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim')
@@ -464,6 +463,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL'], 'on_map': ['<Leader>Nr', '<Leader>nr']})
+    call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter','hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion')
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1})
     call dein#add('godlygeek/tabular', {'lazy': 1, 'on_cmd': ['Tabularize', 'AddTabularPattern']})
@@ -473,8 +473,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('itchyny/vim-parenmatch')
     call dein#add('junegunn/vim-easy-align', {'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': [['nv', '<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']]})
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
-    " call dein#add('kana/vim-smartchr')
-    " call dein#add('kana/vim-smartinput', {'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_smartinput()'})
     call dein#add('kana/vim-tabpagecd')
     call dein#add('kannokanno/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
@@ -831,56 +829,6 @@ hi link ParenMatch MatchParen
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" " vim-smartinput
-" function! Hook_on_post_source_smartinput() abort
-"     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-"     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
-"
-"     let l:lst = [
-"                 \ ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
-"                 \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
-"                 \ ['+',     "smartchr#loop(' + ', '++', '+')"],
-"                 \ ['-',     "smartchr#loop(' - ', '--', '-')"],
-"                 \ ['/',     "smartchr#loop(' / ', '//', '/')"],
-"                 \ ['&',     "smartchr#loop(' & ', ' && ', '&')"],
-"                 \ ['%',     "smartchr#loop(' % ', '%')"],
-"                 \ ['*',     "smartchr#loop(' * ', '*')"],
-"                 \ ['<Bar>', "smartchr#loop(' | ', ' || ', '|')"],
-"                 \ [',',     "smartchr#loop(', ', '->', ' => ')"]
-"                 \ ]
-"
-"     for l:i in l:lst
-"         call smartinput#map_to_trigger('i', l:i[0], l:i[0], l:i[0])
-"         call smartinput#define_rule({ 'char' : l:i[0], 'at' : '\%#', 'input' : '<C-R>=' . l:i[1] . '<CR>'})
-"         if l:i[0] ==# '%'
-"             call smartinput#define_rule({'char' : l:i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : l:i[0]})
-"         endif
-"         call smartinput#define_rule({ 'char' : l:i[0], 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#', 'input' : l:i[0] })
-"     endfor
-"
-"     call smartinput#define_rule({'char' : '>', 'at' : ' < \%#', 'input' : '<BS><BS><BS><><Left>'})
-"
-"     call smartinput#map_to_trigger('i', '=', '=', '=')
-"     call smartinput#define_rule({ 'char' : '=', 'at' : '\%#',                                       'input' : "<C-R>=smartchr#loop(' = ', ' == ', '=')<CR>"})
-"     call smartinput#define_rule({ 'char' : '=', 'at' : '[&+-/<>|] \%#',                             'input' : '<BS>= '})
-"     call smartinput#define_rule({ 'char' : '=', 'at' : '!\%#',                                      'input' : '= '})
-"     " call smartinput#define_rule({ 'char' : '=', 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',          'input' : '='})
-"     call smartinput#define_rule({ 'char' : '=', 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',   'input' : '='})
-"
-"     call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
-"     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '(\s*)\%#'   , 'input' : '<C-O>dF(<BS>'})
-"     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '{\s*}\%#'   , 'input' : '<C-O>dF{<BS>'})
-"     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '<\s*>\%#'   , 'input' : '<C-O>dF<<BS>'})
-"     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '\[\s*\]\%#' , 'input' : '<C-O>dF[<BS>'})
-"
-"     for l:op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
-"         call smartinput#define_rule({ 'char' : '<BS>' , 'at' : ' ' . l:op . ' \%#' , 'input' : '<BS><BS><BS>'})
-"     endfor
-"
-"     call smartinput#map_to_trigger('i', '*', '*', '*')
-"     call smartinput#define_rule({ 'char' : '*', 'at' : 'defparameter \*\%#', 'input' : '*<Left>', 'filetype' : [ 'lisp' ]})
-" endfunction
-
 " previm
 let g:previm_show_header = 0
 
@@ -1006,35 +954,46 @@ nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
 imap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
     let rules = []
-    for target_char in ['+', '-', '*', '%', '<', '>', '&', '=', '<Bar>']
-        let rules += [
-                    \ {'char': target_char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . target_char . ' '},
-                    \ {'char': '<BS>', 'at': '\s' . target_char . '\s\%#', 'input': '<BS><BS><BS>'}
-                    \ ]
-    endfor
 
-    for target_char in ['<', '>', '*', '&', '=', '<Bar>']
-        let rules += [{'char': target_char, 'at': '\s' . target_char . '\s\%#', 'input': '<BS>' . target_char . ' '}]
+    for char in ['+', '-', '*', '%', '<', '>', '&', '=', '<Bar>']
+        let rules += [{'char': char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . char . ' '}]
     endfor
+    let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
+
+    for char in ['+', '*', '<', '>', '&', '=', '<Bar>']
+        let rules += [{'char': char, 'at': char . '\s\%#', 'input': '<BS>' . char . ' '}]
+    endfor
+    let rules += [{'char': '<BS>', 'at': '\s\(++\|**\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let rules += [
-                \ {'char': '>', 'at': '<\%#', 'input': '><Left>', 'priority': 10, 'filetype': ['vim']},
-                \ {'char': '<BS>', 'at': '<\%#>', 'input': '<BS><DEL>'},
-                \ {'char': '=', 'at': '+ \%#', 'input': '<BS>= '},
-                \ {'char': '<BS>', 'at': '+=\s*\%#', 'input': '<C-W><BS>'},
-                \ {'char': '=', 'at': '- \%#', 'input': '<BS>= '},
-                \ {'char': '<BS>', 'at': '-=\s*\%#', 'input': '<C-W><BS>'},
-                \ {'char': '=', 'at': '< \%#', 'input': '<BS>= '},
-                \ {'char': '+', 'at': '\s+\s\%#', 'input': '<BS><BS><BS>++'},
-                \ {'char': '<BS>', 'at': '++\%#', 'input': '<BS><BS>'},
-                \ {'char': '-', 'at': '\s-\s\%#', 'input': '<BS><BS><BS>--'},
-                \ {'char': '<BS>', 'at': '--\%#', 'input': '<BS><BS>'},
-                \ {'char': ',', 'at': '\S\%#', 'input': ', '},
-                \ {'char': '<BS>', 'at': ', \%#', 'input': '<BS><BS>'},
-                \ {'char': ',', 'at': ',\s\%#', 'input': '<BS><BS>->'},
-                \ {'char': '<BS>', 'at': '->\%#', 'input': '<BS><BS>'},
-                \ {'char': ',', 'at': '->\%#', 'input': '<BS><BS> => '},
+                \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
+                \
+                \ {'char': '>',    'at': '<\%#',  'input': '><Left>', 'priority': 10, 'filetype': ['vim']},
+                \ {'char': '<BS>', 'at': '<\%#>', 'input': '<BS><Del>'},
+                \
+                \ {'char': '=',     'at': '\(+\|-\|*\|%\|<\|>\) \%#',    'input': '<BS>= '},
+                \
+                \ {'char': '+',    'at': '\s+\s\%#',      'input': '<BS><BS><BS>++'},
+                \ {'char': '-',    'at': '\s-\s\%#',      'input': '<BS><BS><BS>--'},
+                \ {'char': '<BS>', 'at': '\(++\|--\)\%#', 'input': '<BS><BS>'},
+                \
+                \ {'char': ',',    'at': '\S\%#',    'input': ', '},
+                \ {'char': '<BS>', 'at': ', \%#',    'input': '<BS><BS>'},
+                \ {'char': ',',    'at': ',\s\%#',   'input': '<BS><BS>->'},
+                \ {'char': '<BS>', 'at': '->\%#',    'input': '<BS><BS>'},
+                \ {'char': ',',    'at': '->\%#',    'input': '<BS><BS> => '},
                 \ {'char': '<BS>', 'at': '=>\s*\%#', 'input': '<C-W><BS>'},
+                \ {'char': ',',    'at': '=>\s*\%#', 'input': '<C-W><BS>, '},
+                \
+                \ {'filetype': ['markdown'], 'char': '#',     'at': '^\%#',             'input': '# '},
+                \ {'filetype': ['markdown'], 'char': '#',     'at': '#\s\%#',           'input': '<BS># '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^#\s\%#',          'input': '<BS><BS>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '##\s\%#',          'input': '<BS><BS> '},
+                \ {'filetype': ['markdown'], 'char': '+',     'at': '^\s*\%#',          'input': '+ '},
+                \ {'filetype': ['markdown'], 'char': '-',     'at': '^\s*\%#',          'input': '- '},
+                \ {'filetype': ['markdown'], 'char': '*',     'at': '^\s*\%#',          'input': '* '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\(+\|-\|\*\) \%#', 'input': '<BS><BS>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\(+\|-\|\*\) \%#', 'input': '<Left><Left><Tab><End>'},
                 \ ]
 
     for rule in rules
