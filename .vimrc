@@ -988,6 +988,7 @@ augroup plugin
     autocmd VimEnter * call dein#call_hook('post_source')
     autocmd FileType vimfiler call s:config_vimfiler()
     autocmd BufWinEnter *.hbs nested setlocal filetype=handlebars
+    autocmd FileType gina-commit setlocal spell
 augroup END
 
 syntax enable
