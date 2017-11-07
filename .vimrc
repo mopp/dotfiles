@@ -929,6 +929,7 @@ nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
 
 " lexima.vim
 imap <C-h> <BS>
+cmap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
     let rules = []
 
@@ -971,6 +972,12 @@ function! Hook_on_post_source_lexima() abort
                 \ {'filetype': ['markdown'], 'char': '*',     'at': '^\s*\%#',          'input': '* '},
                 \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\(+\|-\|\*\) \%#', 'input': '<BS><BS>'},
                 \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\(+\|-\|\*\) \%#', 'input': '<Left><Left><Tab><End>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#-',             'input': '<Tab>+<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#+',             'input': '<Tab>*<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#\*',            'input': '<Tab>-<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#-',             'input': '<BS><Del>*<Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#+',             'input': '<BS><Del>-<Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#\*',            'input': '<BS><Del>+<Left>'},
                 \ ]
 
     for rule in rules
