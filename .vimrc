@@ -935,12 +935,12 @@ function! Hook_on_post_source_lexima() abort
     for char in ['+', '-', '*', '%', '<', '>', '&', '=', '<Bar>']
         let rules += [{'char': char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . char . ' '}]
     endfor
-    let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
+    let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
 
     for char in ['+', '*', '<', '>', '&', '=', '<Bar>']
         let rules += [{'char': char, 'at': char . '\s\%#', 'input': '<BS>' . char . ' '}]
     endfor
-    let rules += [{'char': '<BS>', 'at': '\s\(++\|**\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
+    let rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let rules += [
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
