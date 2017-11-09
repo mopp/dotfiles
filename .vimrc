@@ -933,7 +933,7 @@ cmap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
     let rules = []
 
-    for char in ['+', '-', '*', '%', '<', '>', '&', '=', '<Bar>']
+    for char in ['+', '-', '*', '/', '%', '<', '>', '&', '=', '<Bar>']
         let rules += [{'char': char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . char . ' '}]
     endfor
     let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
@@ -946,8 +946,9 @@ function! Hook_on_post_source_lexima() abort
     let rules += [
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
-                \ {'char': '>',    'at': '<\%#',  'input': '><Left>', 'priority': 10, 'filetype': ['vim']},
-                \ {'char': '<BS>', 'at': '<\%#>', 'input': '<BS><Del>'},
+                \ {'char': '>',    'at': '<\%#',     'input': '><Left>',              'filetype': ['vim', 'rust']},
+                \ {'char': '>',    'at': '\s<\s\%#', 'input': '<BS><BS><BS><><Left>', 'filetype': ['vim', 'rust']},
+                \ {'char': '<BS>', 'at': '<\%#>',    'input': '<BS><Del>'},
                 \
                 \ {'char': '=',     'at': '\(+\|-\|*\|%\|<\|>\) \%#',    'input': '<BS>= '},
                 \
@@ -955,15 +956,16 @@ function! Hook_on_post_source_lexima() abort
                 \ {'char': '-',    'at': '\s-\s\%#',      'input': '<BS><BS><BS>--'},
                 \ {'char': '<BS>', 'at': '\(++\|--\)\%#', 'input': '<BS><BS>'},
                 \
-                \ {'char': ',',    'at': '\S\%#',            'input': ', '},
+                \ {'char': ',',    'at': '\S\%#.\+$',        'input': ', '},
+                \ {'char': ',',    'at': ',\%#',             'input': '<BS>->'},
                 \ {'char': ',',    'at': ',\s\%#',           'input': '<BS><BS>->'},
+                \ {'char': ',',    'at': ',\%#',             'input': '<BS> -> ', 'filetype': ['erlang', 'rust']},
                 \ {'char': ',',    'at': ',\s\%#',           'input': '<BS><BS> -> ', 'filetype': ['erlang', 'rust']},
                 \ {'char': ',',    'at': '->\%#',            'input': '<BS><BS> => '},
                 \ {'char': ',',    'at': '\s->\s\%#',        'input': '<BS><BS><BS>=> '},
                 \ {'char': ',',    'at': '=>\s\%#',          'input': '<BS><BS><BS>, '},
                 \ {'char': ',',    'at': '\s=>\s\%#',        'input': '<BS><BS><BS><BS>, '},
-                \ {'char': '<BS>', 'at': ', \%#',            'input': '<BS><BS>'},
-                \ {'char': '<BS>', 'at': '->\%#',            'input': '<BS><BS>'},
+                \ {'char': '<BS>', 'at': '\(,\s\|->\), \%#', 'input': '<BS><BS>'},
                 \ {'char': '<BS>', 'at': '\s\(-\|=\)>\s\%#', 'input': '<BS><BS><BS><BS>'},
                 \
                 \ {'filetype': ['markdown'], 'char': '#',     'at': '^\%#',             'input': '# '},
