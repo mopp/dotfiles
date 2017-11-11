@@ -944,6 +944,8 @@ function! Hook_on_post_source_lexima() abort
     let rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let rules += [
+                \ {'char': '/', 'at': '^/\%#', 'input': '/ ', 'priority': 10},
+                \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
                 \ {'char': '>',    'at': '<\%#',     'input': '><Left>',              'filetype': ['vim', 'rust']},
