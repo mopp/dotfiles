@@ -469,7 +469,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter','hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion')
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1})
-    call dein#add('godlygeek/tabular', {'lazy': 1, 'on_cmd': ['Tabularize', 'AddTabularPattern']})
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
@@ -493,7 +492,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-marching', {'lazy': 1, 'on_ft': ['c', 'cpp']})
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
-    call dein#add('sk1418/blockit', {'lazy': 1, 'on_cmd': 'Block', 'on_map': [['x', '<Plug>BlockitVisual']]})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('thinca/vim-visualstar')
     call dein#add('tomtom/tcomment_vim')
@@ -508,13 +506,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('derekwyatt/vim-scala')
     call dein#add('digitaltoad/vim-pug')
     call dein#add('hail2u/vim-css3-syntax')
-    call dein#add('joukevandermaas/vim-ember-hbs')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
     call dein#add('plasticboy/vim-markdown')
     call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
-    call dein#add('slim-template/vim-slim')
     call dein#add('stephpy/vim-yaml')
     call dein#add('thinca/vim-ft-help_fold')
     call dein#add('vim-erlang/vim-erlang-runtime')
@@ -656,9 +652,6 @@ let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vimfiler' ]
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
-
-" vim-casetrate
-let g:casetrate_leader = '<leader>a'
 
 " lightline.vim
 let g:lightline = {
@@ -863,9 +856,6 @@ let g:marching_enable_neocomplete = 1
 " tcomment_vim
 nnoremap <Leader><Leader> :<C-U>TComment<CR>
 xnoremap <Leader><Leader> :TComment<CR>
-
-" blockit
-vmap <Leader>tt <Plug>BlockitVisual
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
