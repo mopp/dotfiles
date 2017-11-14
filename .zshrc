@@ -64,6 +64,7 @@ case $OSTYPE in
         ;;
 esac
 
+export PATH=$HOME/.local/bin:$PATH
 
 # Complement
 autoload -Uz compinit
