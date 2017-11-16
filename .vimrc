@@ -263,12 +263,13 @@ endfunction
 "----------------------------------------------------------------------------"
 " Commands
 "----------------------------------------------------------------------------"
+command! -nargs=1 -complete=buffer TabBuffer :tab sbuffer
+
 command! SpellCheckToggle :setlocal spell!
 
 " Echo highlight name of an object under the cursor.
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-" TODO
 let s:dec_hex_map = {
             \ '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
             \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
@@ -306,8 +307,6 @@ inoremap <silent><expr> <C-G>h <SID>exp_conv(input('= '), 16)
 imap <C-G><C-B> <C-G>b
 imap <C-G><C-H> <C-G>h
 
-command! -nargs=1 -complete=buffer TabBuffer :tab sbuffer
-
 let s:session_directory = '~/.vim/sessions/'
 let s:last_session_filepath = s:session_directory . 'last_session.vim'
 
@@ -322,6 +321,7 @@ endfunction
 
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
 command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
+
 
 "----------------------------------------------------------------------------"
 " GUI
