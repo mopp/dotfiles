@@ -945,12 +945,15 @@ function! Hook_on_post_source_lexima() abort
     endfor
     let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
 
-    for char in ['+', '*', '<', '>', '&', '=', '<Bar>']
+    for char in ['*', '<', '>', '&', '=', '<Bar>']
         let rules += [{'char': char, 'at': char . '\s\%#', 'input': '<BS>' . char . ' '}]
     endfor
     let rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let rules += [
+                \ {'char': '`', 'input': '`''<Left>', 'syntax': 'Comment', 'filetype': ['erlang']},
+                \ {'char': '<BS>', 'at': '`\%#''', 'input': '<BS><Del>', 'syntax': 'Comment', 'filetype': ['erlang']},
+                \
                 \ {'char': '/', 'at': '^/\%#', 'input': '/ ', 'priority': 10},
                 \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
