@@ -308,6 +308,20 @@ imap <C-G><C-H> <C-G>h
 
 command! -nargs=1 -complete=buffer TabBuffer :tab sbuffer
 
+let s:session_directory = '~/.vim/sessions/'
+let s:last_session_filepath = s:session_directory . 'last_session.vim'
+
+function! s:save_session(...) abort
+    execute 'mksession!' (a:0 == 0) ? (s:last_session_filepath) : (s:session_directory . a:1)
+endfunction
+
+function! s:get_session_list(arguments, cmd_line, cursor_pos) abort
+    let filepaths = split(glob(s:session_directory . '*.vim'), '\n')
+    return map(filepaths, {i, v -> fnamemodify(v, ':t')})
+endfunction
+
+command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
+command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
 
 "----------------------------------------------------------------------------"
 " GUI
@@ -335,6 +349,9 @@ endif
 "----------------------------------------------------------------------------"
 augroup mopp
     autocmd!
+
+    " Save session automatically.
+    autocmd VimLeave * execute 'mksession!' s:last_session_filepath
 
     " Reload .vimrc
     autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
@@ -438,6 +455,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/neomru.vim')
     call dein#add('Shougo/unite.vim')
     call dein#add('Shougo/vimfiler.vim')
+    call dein#add('rafi/vim-denite-session')
 
     call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
     call dein#add('kana/vim-operator-replace', {'lazy': 1, 'on_map': [['nx', '<Plug>']]})
@@ -981,6 +999,9 @@ function! Hook_on_post_source_lexima() abort
       call lexima#add_rule(rule)
     endfor
 endfunction
+
+" vim-denite-session
+let g:session_directory = s:session_directory
 
 
 "----------------------------------------------------------------------------"
