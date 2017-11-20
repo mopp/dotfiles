@@ -925,8 +925,11 @@ let g:scratch_no_mappings = 1
 function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
+    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1})
     call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
 endfunction
+nnoremap <Leader>gis :<C-U>Gina status<CR>
+nnoremap <Leader>gic :<C-U>Gina commit<CR>
 
 " vim-windowswap
 let g:windowswap_map_keys = 0
