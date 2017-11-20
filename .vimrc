@@ -1021,4 +1021,4 @@ augroup plugin
 augroup END
 
 syntax enable
-colorscheme mopkai  " It should be after entax command.
+colorscheme mopkai " It should be after syntax command.
