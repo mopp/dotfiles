@@ -924,10 +924,16 @@ let g:scratch_no_mappings = 1
 
 " gina.vim
 function! Hook_on_post_source_gina() abort
+    let cmd_opt = {'noremap': 1, 'silent': 1}
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
-    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1})
-    call gina#custom#execute('/\%(status\|branch\|commit\|diff\|log\|ls\)', 'nnoremap <silent><buffer> q :<C-U>quit<CR>')
+    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)')
+    call gina#custom#mapping#nmap('/.*', '<C-h>', ':call gina#action#call(''edit:left'')<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', cmd_opt)
 endfunction
 nnoremap <Leader>gis :<C-U>Gina status<CR>
 nnoremap <Leader>gic :<C-U>Gina commit<CR>
