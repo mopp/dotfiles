@@ -294,3 +294,12 @@ function switch_cc_cxx() {
 function conv_timestamp() {
     date --date="@$1" '+%Y/%m/%d %H:%M:%S'
 }
+
+function open_from_git_status() {
+    files=($(git status --porcelain | awk '{print $2}'))
+    select answer in $files; do
+        break
+    done
+
+    $EDITOR $answer
+}
