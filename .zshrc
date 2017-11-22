@@ -296,7 +296,7 @@ function conv_timestamp() {
 }
 
 function select_from_git_status() {
-    files=($(git status --porcelain | awk '{print $2}'))
+    files=($(git status --short | awk '{print $2}'))
     select answer in $files; do
         echo $answer
         break
