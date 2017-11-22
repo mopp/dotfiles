@@ -295,11 +295,14 @@ function conv_timestamp() {
     date --date="@$1" '+%Y/%m/%d %H:%M:%S'
 }
 
-function open_from_git_status() {
+function select_from_git_status() {
     files=($(git status --porcelain | awk '{print $2}'))
     select answer in $files; do
+        echo $answer
         break
     done
+}
 
-    $EDITOR $answer
+function open_from_git_status() {
+    $EDITOR $(select_from_git_status)
 }
