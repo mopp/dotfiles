@@ -965,7 +965,7 @@ function! Hook_on_post_source_lexima() abort
                 \ {'char': '<BS>', 'at': '`\%#''', 'input': '<BS><Del>', 'syntax': 'Comment', 'filetype': ['erlang']},
                 \
                 \ {'char': '/', 'at': '^\s*\%#', 'input': '// '},
-                \ {'char': '%', 'at': '^\s*%\%#', 'input': '%% ', 'filetype': ['erlang']},
+                \ {'char': '%', 'at': '^\s*%\%#', 'input': '% ', 'filetype': ['erlang']},
                 \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
