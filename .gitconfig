@@ -6,7 +6,6 @@
     ff = false
 [pull]
     ff = only
-    ff = only
 [color]
     ui = auto
 [core]
