@@ -642,6 +642,8 @@ nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
 nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
 nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
 nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
+nmap <Leader>,cc <Plug>(operator-convert-convert)
+nmap <Leader>,tt <Plug>(operator-convert-toggle-upper-lower)
 
 " yankround.vim
 let g:yankround_use_region_hl = 1
@@ -1016,19 +1018,6 @@ endfunction
 
 " vim-denite-session
 let g:session_directory = s:session_directory
-
-function! s:detect_word_case(word) abort
-    if stridx(a:word, '_') != -1
-        return (toupper(a:word) ==# a:word) ? 'UPPER_SNAKE_CASE' : 'lower_snake_case'
-    else
-        return (a:word[0] =~# '[a-z]') ? 'lowerCamelCase' : 'UpperCamelCase'
-    endif
-endfunction
-
-call assert_equal('lowerCamelCase', s:detect_word_case("someVariable"))
-call assert_equal('UpperCamelCase', s:detect_word_case("SomeVar"))
-call assert_equal('lower_snake_case', s:detect_word_case("this_is_var"))
-call assert_equal('UPPER_SNAKE_CASE', s:detect_word_case("THIS_IS_VAR"))
 
 
 "----------------------------------------------------------------------------"
