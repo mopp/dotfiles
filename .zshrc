@@ -27,11 +27,23 @@ case $OSTYPE in
         export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
         export PATH=/usr/local/opt/llvm/bin:$PATH
         export PATH=/usr/local/opt/make/libexec/gnubin:$PATH
+
+        # install via homebrew
+        export PATH=/usr/local/opt/ncurses/bin:$PATH
+        export PATH=/usr/local/opt/gettext/bin:$PATH
+        export PATH=/usr/local/opt/libiconv/bin:$PATH
+        export PATH=/usr/local/opt/llvm/bin:$PATH
+
+        brewed_tools=('ncurses' 'gettext' 'libiconv' 'llvm')
+        for e in ${brewed_tools[@]}; do
+            export PATH="/usr/local/opt/$e/bin:$PATH"
+            export LDFLAGS="-L/usr/local/opt/$e/lib $LDFLAGS"
+            export CPPFLAGS="-I/usr/local/opt/$e/include $CPPFLAGS"
+        done
+
         export MANPATH=/usr/local/share/man:$MANPATH
         export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
         export MANPATH=/usr/local/opt/make/libexec/gnuman:$MANPATH
-        export LDFLAGS="-L/usr/local/opt/llvm/lib "$LDFLAGS
-        export CPPFLAGS="-I/usr/local/opt/llvm/include "$CPPFLAGS
 
         # Setting for zsh completion and highlight.
         export FPATH=/usr/local/share/zsh-completions:$FPATH
