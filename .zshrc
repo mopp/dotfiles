@@ -164,12 +164,6 @@ case $TERM in
         ;;
 esac
 
-# For Ruby.
-if [[ -x $(which ruby) ]]; then
-    export GEM_HOME=$(ruby -e 'print Gem.user_dir')
-    export PATH=$GEM_HOME/bin:$PATH
-fi
-
 # For rbenv.
 if [[ -d $HOME/.rbenv ]]; then
     export PATH=$HOME/.rbenv/bin:$PATH
