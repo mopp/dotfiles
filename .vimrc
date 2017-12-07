@@ -642,8 +642,9 @@ nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
 nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
 nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
 nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
-nmap <Leader>,cc <Plug>(operator-convert-convert)
-nmap <Leader>,tt <Plug>(operator-convert-toggle-upper-lower)
+nmap <Leader>,tt <Plug>(operator-convert-case-toggle-upper-lower)
+nmap <Leader>,ll <Plug>(operator-convert-case-loop)
+nmap <Leader>,cc <Plug>(operator-convert-case-convert)
 
 " yankround.vim
 let g:yankround_use_region_hl = 1
