@@ -315,8 +315,8 @@ function! s:save_session(...) abort
 endfunction
 
 function! s:get_session_list(arguments, cmd_line, cursor_pos) abort
-    let filepaths = split(glob(s:session_directory . '*.vim'), '\n')
-    return map(filepaths, {i, v -> fnamemodify(v, ':t')})
+    let l:filepaths = split(glob(s:session_directory . '*.vim'), '\n')
+    return map(l:filepaths, {i, v -> fnamemodify(v, ':t')})
 endfunction
 
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
@@ -927,16 +927,16 @@ let g:scratch_no_mappings = 1
 
 " gina.vim
 function! Hook_on_post_source_gina() abort
-    let cmd_opt = {'noremap': 1, 'silent': 1}
+    let l:cmd_opt = {'noremap': 1, 'silent': 1}
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
-    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', cmd_opt)
-    call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)')
-    call gina#custom#mapping#nmap('/.*', '<C-h>', ':call gina#action#call(''edit:left'')<CR>', cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-h>', ':call gina#action#call(''edit:left'')<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', l:cmd_opt)
 endfunction
 nnoremap <Leader>gis :<C-U>Gina status<CR>
 nnoremap <Leader>gic :<C-U>Gina commit<CR>
@@ -951,19 +951,19 @@ nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
 imap <C-h> <BS>
 cmap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
-    let rules = []
+    let l:rules = []
 
-    for char in ['+', '-', '*', '/', '%', '<', '>', '&', '=', '<Bar>']
-        let rules += [{'char': char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . char . ' '}]
+    for l:char in ['+', '-', '*', '/', '%', '<', '>', '&', '=', '<Bar>']
+        let l:rules += [{'char': l:char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . l:char . ' '}]
     endfor
-    let rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
+    let l:rules += [{'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'}]
 
-    for char in ['*', '<', '>', '&', '=', '<Bar>', '/']
-        let rules += [{'char': char, 'at': char . '\s\%#', 'input': '<BS>' . char . ' '}]
+    for l:char in ['*', '<', '>', '&', '=', '<Bar>', '/']
+        let l:rules += [{'char': l:char, 'at': l:char . '\s\%#', 'input': '<BS>' . l:char . ' '}]
     endfor
-    let rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
+    let l:rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
-    let rules += [
+    let l:rules += [
                 \ {'char': '`', 'input': '`''<Left>', 'syntax': 'Comment', 'filetype': ['erlang']},
                 \ {'char': '<BS>', 'at': '`\%#''', 'input': '<BS><Del>', 'syntax': 'Comment', 'filetype': ['erlang']},
                 \
@@ -1012,8 +1012,8 @@ function! Hook_on_post_source_lexima() abort
                 \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#\*',            'input': '<BS><Del>+<Left>'},
                 \ ]
 
-    for rule in rules
-      call lexima#add_rule(rule)
+    for l:rule in l:rules
+      call lexima#add_rule(l:rule)
     endfor
 endfunction
 
