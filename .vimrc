@@ -561,6 +561,8 @@ command! Accelerate call <SID>accelerate()
 " deoplete.nvim
 if dein#tap('deoplete.nvim')
     let g:deoplete#enable_at_startup = 1
+    let g:deoplete#sources           = {}
+    let g:deoplete#sources._         = ['buffer']
     let g:deoplete#omni_patterns     = {}
     let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
     let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
