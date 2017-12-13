@@ -450,8 +450,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/deol.nvim')
     call dein#add('Shougo/neomru.vim')
-    call dein#add('Shougo/unite.vim')
-    call dein#add('Shougo/vimfiler.vim')
     call dein#add('ozelentok/denite-gtags')
     call dein#add('rafi/vim-denite-session')
 
@@ -482,6 +480,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL'], 'on_map': ['<Leader>Nr', '<Leader>nr']})
+    call dein#add('cocopon/vaffle.vim')
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter','hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion')
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1})
@@ -592,9 +591,7 @@ if dein#tap('denite.nvim')
     nnoremap <silent> [Denite]l  :<C-U>Denite line<CR>
     nnoremap <silent> [Denite]o  :<C-U>botright Denite outline<CR>
     nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
-    nnoremap <silent> [Denite]s  :<C-U>Denite unite:source<CR>
 
-    call denite#custom#action('directory', 'tab_open', {context -> execute(':VimFilerTab ' . context['targets'][0]['action__path']) })
     call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
     call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
     call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
@@ -615,20 +612,6 @@ if dein#tap('denite.nvim')
         call denite#custom#var('grep', 'final_opts', [])
     endif
 endif
-
-" vimfiler
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_force_overwrite_statusline = 0
-let g:vimfiler_safe_mode_by_default = 0
-nnoremap <silent> <Leader>fvs :<C-U>VimFiler -find -explorer<CR>
-nnoremap <silent> <Leader>fvo :<C-U>VimFiler -find -tab<CR>
-nnoremap <silent> <Leader>fvb :<C-U>VimFilerBufferDir -find -explorer<CR>
-function! s:config_vimfiler()
-    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    unmap <buffer> <Space>
-    map <silent><buffer> ' <Plug>(vimfiler_toggle_mark_current_line)
-    map <silent><buffer> " <Plug>(vimfiler_toggle_mark_current_line_up)
-endfunction
 
 " vim-operator-flashy
 map y <Plug>(operator-flashy)
@@ -670,7 +653,7 @@ nmap <Leader>hp <Plug>GitGutterPrevHunk
 nmap <Leader>hn <Plug>GitGutterNextHunk
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vimfiler' ]
+let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vaffle' ]
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -720,7 +703,7 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_ignore_ft_pattern = 'vimfiler\|tagbar\|denite\|help'
+let g:lightline_ignore_ft_pattern = 'vaffle\|tagbar\|denite\|help'
 function! Lightline_is_ignore_ft() abort
     return (&filetype =~? g:lightline_ignore_ft_pattern)
 endfunction
@@ -730,7 +713,7 @@ function! Lightline_is_visible() abort
 endfunction
 
 function! Lightline_mode() abort
-    return get({'denite': 'Denite', 'vimfiler': 'VimFiler', 'tagbar': 'TagBar'}, &filetype, lightline#mode())
+    return get({'denite': 'Denite', 'vaffle': 'Vaffle', 'tagbar': 'TagBar'}, &filetype, lightline#mode())
 endfunction
 
 function! Lightline_modified() abort
@@ -1021,6 +1004,15 @@ endfunction
 " vim-denite-session
 let g:session_directory = s:session_directory
 
+" vaffle.vim
+command! -nargs=? -complete=dir VaffleExplorer :35vsplit +Vaffle\ <args> | :nnoremap <silent><buffer> q :quit<CR> | :setlocal winfixwidth
+nnoremap <silent> <Leader>vb :VaffleExplorer<CR>
+nnoremap <silent> <Leader>vo :tabnew<CR> \| :Vaffle<CR>
+
+function! s:on_filetype_vaffle() abort
+    nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
+endfunction
+
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
@@ -1028,10 +1020,8 @@ let g:session_directory = s:session_directory
 augroup plugin
     autocmd!
 
-    autocmd VimEnter * call dein#call_hook('post_source')
-    autocmd FileType vimfiler call s:config_vimfiler()
-    autocmd BufWinEnter *.hbs nested setlocal filetype=handlebars
     autocmd FileType gina-commit setlocal spell
+    autocmd Filetype vaffle call s:on_filetype_vaffle()
 augroup END
 
 syntax enable
