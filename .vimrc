@@ -980,30 +980,31 @@ function! Hook_on_post_source_lexima() abort
                 \ {'char': '<BS>',    'at': '\s\(-\|=\)>\s\%#', 'input': '<BS><BS><BS><BS>'},
                 \
                 \ {'filetype': ['markdown'], 'char': '/',     'input': '/'},
-                \ {'filetype': ['markdown'], 'char': '#',     'at': '^\%#\%(#\)\@!', 'input': '# '},
-                \ {'filetype': ['markdown'], 'char': '#',     'at': '#\s\%#',        'input': '<BS># '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^#\s\%#',       'input': '<BS><BS>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '##\s\%#',       'input': '<BS><BS> '},
-                \ {'filetype': ['markdown'], 'char': '+',     'at': '^\s*\%#',       'input': '+ '},
-                \ {'filetype': ['markdown'], 'char': '-',     'at': '^\s*\%#',       'input': '- '},
-                \ {'filetype': ['markdown'], 'char': '*',     'at': '^\s*\%#',       'input': '* '},
-                \ {'filetype': ['markdown'], 'char': '>',     'at': '^\s*\%#',       'input': '> '},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s- \%#',      'input': '<Left><Left><Tab><Del>+<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s+ \%#',      'input': '<Left><Left><Tab><Del>*<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s* \%#',      'input': '<Left><Left><Tab><Del>-<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s- \%#',      'input': '<BS><BS><BS>* '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s+ \%#',      'input': '<BS><BS><BS>- '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s* \%#',      'input': '<BS><BS><BS>+ '},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#-',          'input': '<Tab>+<Del><Left>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#+',          'input': '<Tab>*<Del><Left>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#\*',         'input': '<Tab>-<Del><Left>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#-',          'input': '<BS><Del>*<Left>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#+',          'input': '<BS><Del>-<Left>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#\*',         'input': '<BS><Del>+<Left>'},
+                \ {'filetype': ['markdown'], 'char': '#',     'at': '^\%#\%(#\)\@!',    'input': '# '},
+                \ {'filetype': ['markdown'], 'char': '#',     'at': '#\s\%#',           'input': '<BS># '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^#\s\%#',          'input': '<BS><BS>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '##\s\%#',          'input': '<BS><BS> '},
+                \ {'filetype': ['markdown'], 'char': '+',     'at': '^\s*\%#',          'input': '+ '},
+                \ {'filetype': ['markdown'], 'char': '-',     'at': '^\s*\%#',          'input': '- '},
+                \ {'filetype': ['markdown'], 'char': '*',     'at': '^\s*\%#',          'input': '* '},
+                \ {'filetype': ['markdown'], 'char': '>',     'at': '^\s*\%#',          'input': '> '},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*- \%#',        'input': '<Left><Left><Tab><Del>+<Right>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*+ \%#',        'input': '<Left><Left><Tab><Del>*<Right>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*\* \%#',       'input': '<Left><Left><Tab><Del>-<Right>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*- \%#',        'input': '<BS><BS><BS>* '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*+ \%#',        'input': '<BS><BS><BS>- '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*\* \%#',       'input': '<BS><BS><BS>+ '},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\(-\|+\|*\) \%#', 'input': '<C-W>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#-',             'input': '<Tab>+<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#+',             'input': '<Tab>*<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '\%#\*',            'input': '<Tab>-<Del><Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#-',             'input': '<BS><Del>*<Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#+',             'input': '<BS><Del>-<Left>'},
+                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '\%#\*',            'input': '<BS><Del>+<Left>'},
                 \ ]
 
     for l:rule in l:rules
-      call lexima#add_rule(l:rule)
+        call lexima#add_rule(l:rule)
     endfor
 endfunction
 
