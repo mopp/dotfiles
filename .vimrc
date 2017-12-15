@@ -584,12 +584,13 @@ if dein#tap('denite.nvim')
     nnoremap [Denite] <Nop>
     nmap <Leader>f [Denite]
     nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-    nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
+    nnoremap <silent> [Denite]fm :<C-U>Denite file_mru<CR>
+    nnoremap <silent> [Denite]fr :<C-U>Denite file_rec<CR>
     nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
     nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
     nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
     nnoremap <silent> [Denite]l  :<C-U>Denite line<CR>
-    nnoremap <silent> [Denite]o  :<C-U>botright Denite outline<CR>
+    nnoremap <silent> [Denite]o  :<C-U>Denite outline<CR>
     nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
 
     call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
