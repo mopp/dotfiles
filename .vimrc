@@ -928,9 +928,9 @@ nnoremap <Leader>gic :<C-U>Gina commit<CR>
 
 " vim-windowswap
 let g:windowswap_map_keys = 0
-nnoremap <silent> ,wm :call WindowSwap#MarkWindowSwap()<CR>
-nnoremap <silent> ,ws :call WindowSwap#DoWindowSwap()<CR>
-nnoremap <silent> ,ww :call WindowSwap#EasyWindowSwap()<CR>
+command! WindowsSwapMark call WindowSwap#MarkWindowSwap()
+command! WindowsSwapDo call WindowSwap#DoWindowSwap()
+command! WindowsSwapEasy call WindowSwap#EasyWindowSwap()
 
 " lexima.vim
 imap <C-h> <BS>
