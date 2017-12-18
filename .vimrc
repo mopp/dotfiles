@@ -1020,9 +1020,9 @@ nnoremap <silent> <Leader>vo :tabnew<CR> \| :Vaffle<CR>
 
 function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
+    nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
 
     if &winfixwidth
-        " TODO: do not overwrite mapping.
         nnoremap <silent><buffer> q :quit<CR>
     endif
 endfunction
