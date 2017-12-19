@@ -406,8 +406,8 @@ endif
 "----------------------------------------------------------------------------"
 " Plugin
 "----------------------------------------------------------------------------"
-let s:DEIN_BASE_PATH = '~/.vim/bundle/'
-let s:DEIN_PATH      = expand(s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim')
+let s:DEIN_BASE_PATH = expand('~/.config/nvim/bundle/')
+let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
 if !isdirectory(s:DEIN_PATH)
     if (executable('git') == 1) && (confirm('Install dein.vim or Launch vim immediately', "&Yes\n&No", 1) == 1)
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
