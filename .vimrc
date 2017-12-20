@@ -441,6 +441,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
     call dein#add('Shougo/neosnippet-snippets')
     call dein#add('Shougo/neosnippet.vim', s:lazy_plete)
+    call dein#add('carlitux/deoplete-ternjs', s:lazy_plete)
     call dein#add('fishbullet/deoplete-ruby')
     call dein#add('honza/vim-snippets', s:lazy_plete)
     call dein#add('racer-rust/vim-racer')
@@ -557,14 +558,13 @@ endfunction
 command! Accelerate call <SID>accelerate()
 
 " deoplete.nvim
-if dein#tap('deoplete.nvim')
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#sources           = {}
-    let g:deoplete#sources._         = ['buffer']
-    let g:deoplete#omni_patterns     = {}
-    let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
-    let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
-endif
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#omni_patterns     = {}
+let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
+let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
+" If the default sources are defined, some completions are not work.
+" let g:deoplete#sources           = {}
+" let g:deoplete#sources._         = ['buffer']
 
 " neosnippet.vim
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
