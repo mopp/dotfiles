@@ -949,6 +949,9 @@ function! Hook_on_post_source_lexima() abort
     let l:rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let l:rules += [
+                \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
+                \ {'char': '<BS>', 'at': ' != !\%#', 'input': '<BS><BS><BS><BS>'},
+                \
                 \ {'char': '`', 'input': '`''<Left>', 'syntax': 'Comment', 'filetype': ['erlang']},
                 \ {'char': '<BS>', 'at': '`\%#''', 'input': '<BS><Del>', 'filetype': ['erlang']},
                 \
@@ -967,7 +970,7 @@ function! Hook_on_post_source_lexima() abort
                 \ {'char': '-',    'at': '\s-\s\%#',      'input': '<BS><BS><BS>--'},
                 \ {'char': '<BS>', 'at': '\(++\|--\)\%#', 'input': '<BS><BS>'},
                 \
-                \ {'char': ',',       'at': '\S\%#.\+$',        'input': ', '},
+                \ {'char': ',',       'at': '\S\%#',            'input': ', '},
                 \ {'char': ',',       'at': ',\%#',             'input': '<BS>->'},
                 \ {'char': ',',       'at': ',\s\%#',           'input': '<BS><BS>->'},
                 \ {'char': '<Space>', 'at': '->\%#',            'input': '<BS><BS> -> '},
