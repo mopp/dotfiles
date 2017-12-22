@@ -231,6 +231,13 @@ if [[ -x "$(which direnv)" ]]; then
     eval "$(direnv hook zsh)"
 fi
 
+# For ripgrep
+if [[ -x "$(which rg)" ]]; then
+    alias grep='rg'
+else
+    alias grep='grep --color=auto'
+fi
+
 # For less.
 export PAGER=less
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
