@@ -236,7 +236,6 @@ export PAGER=less
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 
 # Aliases
-alias grep='grep --color=auto'
 alias la='ls -ahF --color'
 alias ll='ls -hlF --color'
 alias ls='ls -hF --color'
