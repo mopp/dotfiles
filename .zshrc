@@ -183,18 +183,11 @@ if [[ -x $(which nvm) ]]; then
     source /usr/share/nvm/install-nvm-exec
 fi
 
-# For cargo.
-if [[ -d $HOME/.cargo/ ]]; then
-    export PATH=$HOME/.cargo/bin:$PATH
-fi
-
 # For rustup
 if [[ -x $(which rustup) ]]; then
     CURRENT_TOOLCHAIN_NAME=$(rustup show | grep default | tail -n1 | cut -d' ' -f1)
     export RUST_SRC_PATH=~/.multirust/toolchains/${CURRENT_TOOLCHAIN_NAME}/lib/rustlib/src/rust/src
-fi
-
-if [[ -x $(which rustc) ]]; then
+    export PATH=$HOME/.cargo/bin:$PATH
     export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
 fi
 
