@@ -22,40 +22,29 @@ export XDG_HOME_CONFIG=$HOME/.config
 
 case $OSTYPE in
     darwin*)
+        # For homebrew.
         export PATH=/usr/local/bin:$PATH
-        export PATH=/usr/local/sbin:$PATH
         export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-        export PATH=/usr/local/opt/llvm/bin:$PATH
-        export PATH=/usr/local/opt/make/libexec/gnubin:$PATH
-
-        # install via homebrew
-        export PATH=/usr/local/opt/ncurses/bin:$PATH
         export PATH=/usr/local/opt/gettext/bin:$PATH
         export PATH=/usr/local/opt/libiconv/bin:$PATH
         export PATH=/usr/local/opt/llvm/bin:$PATH
+        export PATH=/usr/local/opt/make/libexec/gnubin:$PATH
+        export PATH=/usr/local/opt/ncurses/bin:$PATH
 
-        brewed_tools=('ncurses' 'gettext' 'libiconv' 'llvm')
-        for e in ${brewed_tools[@]}; do
-            export PATH="/usr/local/opt/$e/bin:$PATH"
-            export LDFLAGS="-L/usr/local/opt/$e/lib $LDFLAGS"
+        for e ('ncurses' 'gettext' 'libiconv' 'llvm') \
+            export PATH="/usr/local/opt/$e/bin:$PATH" \
+            export LDFLAGS="-L/usr/local/opt/$e/lib $LDFLAGS" \
             export CPPFLAGS="-I/usr/local/opt/$e/include $CPPFLAGS"
-        done
 
-        export MANPATH=/usr/local/share/man:$MANPATH
         export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
         export MANPATH=/usr/local/opt/make/libexec/gnuman:$MANPATH
+        export MANPATH=/usr/local/share/man:$MANPATH
 
-        # Setting for zsh completion and highlight.
+        # Zsh completion and highlight.
         export FPATH=/usr/local/share/zsh-completions:$FPATH
         source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-        [[ -e $(alias run-help) ]] && unalias run-help
-        autoload run-help
-        export HELPDIR=/usr/local/share/zsh/helpfiles
         ;;
     linux*)
-        export JAVA_FONTS=/usr/share/fonts/TTF
-
         case $(hostname) in
             flan)
                 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -152,8 +141,8 @@ bindkey -e
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
 
 # Only past commands beginning with the current input would have been shown.
-[[ -n "${key[PageUp]}"   ]]  && bindkey  "${key[PageUp]}"    history-beginning-search-backward
-[[ -n "${key[PageDown]}" ]]  && bindkey  "${key[PageDown]}"  history-beginning-search-forward
+[[ -n "${key[PageUp]}"   ]] && bindkey "${key[PageUp]}"   history-beginning-search-backward
+[[ -n "${key[PageDown]}" ]] && bindkey "${key[PageDown]}" history-beginning-search-forward
 
 
 # For terminals.
@@ -165,19 +154,19 @@ case $TERM in
 esac
 
 # For rbenv.
-if [[ -d $HOME/.rbenv ]]; then
+if [ -d $HOME/.rbenv ]; then
     export PATH=$HOME/.rbenv/bin:$PATH
     eval "$(rbenv init -)"
 fi
 
 # For erlenv.
-if [[ -d $HOME/.erlenv ]]; then
+if [ -d $HOME/.erlenv ]; then
     export PATH=$HOME/.erlenv/bin:$PATH
     eval "$(erlenv init -)"
 fi
 
 # For nvm.
-if [[ -x $(which nvm) ]]; then
+if (( $+commands[nvm] )); then
     export NVM_DIR="$HOME/.nvm"
     source /usr/share/nvm/nvm.sh
     source /usr/share/nvm/install-nvm-exec
@@ -185,47 +174,46 @@ fi
 
 # For rustup
 export PATH=$HOME/.cargo/bin:$PATH
-if [[ -x $(which rustup) ]]; then
+if (( $+commands[rustup] )); then
     CURRENT_TOOLCHAIN_NAME=$(rustup show | grep default | tail -n1 | cut -d' ' -f1)
     export RUST_SRC_PATH=~/.multirust/toolchains/${CURRENT_TOOLCHAIN_NAME}/lib/rustlib/src/rust/src
     export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
 fi
 
 # For colormake.
-if [[ -x "$(which colormake)" ]]; then
-    alias maken='make'
-    alias makec='colormake'
+if (( $+commands[colormake] )); then
+    alias make='colormake'
     compdef _make colormake
 fi
 
 # For colordiff.
-if [[ -x "$(which colordiff)" ]]; then
+if (( $+commands[colordiff] )); then
     alias diff='colordiff -u'
 else
     alias diff='diff -u'
 fi
 
 # For EDITOR variable.
-if [[ -x $(which nvim) ]]; then
+if (( $+commands[nvim] )); then
     export EDITOR=nvim
-elif [[ -x $(which vim) ]]; then
+elif (( $+commands[vim] )); then
     export EDITOR=vim
 else
     export EDITOR=vi
 fi
 
 # For fasd
-if [[ -x "$(which fasd)" ]]; then
+if (( $+commands[fasd] )); then
     eval "$(fasd --init auto)"
 fi
 
 # For direnv
-if [[ -x "$(which direnv)" ]]; then
+if (( $+commands[direnv] )); then
     eval "$(direnv hook zsh)"
 fi
 
 # For ripgrep
-if [[ -x "$(which rg)" ]]; then
+if (( $+commands[rg] )); then
     alias grep='rg'
 else
     alias grep='grep --color=auto'
