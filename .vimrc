@@ -1017,18 +1017,13 @@ endfunction
 let g:session_directory = s:session_directory
 
 " vaffle.vim
-command! -nargs=? -complete=dir VaffleVsplit :35vsplit +Vaffle\ <args> | :setlocal winfixwidth nosplitright
 nnoremap <silent> <Leader>vv :Vaffle<CR>
-nnoremap <silent> <Leader>vb :VaffleVsplit<CR>
-nnoremap <silent> <Leader>vo :tabnew<CR> \| :Vaffle<CR>
+nnoremap <silent> <Leader>vo :VaffleTab<CR>
+nnoremap <silent> <Leader>vb :VaffleVsplitFixed<CR>
 
 function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
-
-    if &winfixwidth
-        nnoremap <silent><buffer> q :quit<CR>
-    endif
 endfunction
 
 
