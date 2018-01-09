@@ -322,6 +322,20 @@ endfunction
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
 command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
 
+function! s:mkdir_if_not_exist(path) abort
+    if !isdirectory(a:path)
+        call mkdir(a:path)
+    endif
+endfunction
+
+function! s:create_vim_directories() abort
+    let base_dir = fnamemodify($MYVIMRC, ':h') . '/'
+    call s:mkdir_if_not_exist(base_dir . 'sessions')
+    call s:mkdir_if_not_exist(base_dir . 'undo')
+    call s:mkdir_if_not_exist(base_dir . 'backup')
+    call s:mkdir_if_not_exist(base_dir . 'swap')
+endfunction
+command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 
 "----------------------------------------------------------------------------"
 " GUI
@@ -406,7 +420,7 @@ endif
 "----------------------------------------------------------------------------"
 " Plugin
 "----------------------------------------------------------------------------"
-let s:DEIN_BASE_PATH = expand('~/.config/nvim/bundle/')
+let s:DEIN_BASE_PATH = fnamemodify($MYVIMRC, ':h') . '/bundle/'
 let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
 if !isdirectory(s:DEIN_PATH)
     if (executable('git') == 1) && (confirm('Install dein.vim or Launch vim immediately', "&Yes\n&No", 1) == 1)
