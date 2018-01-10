@@ -299,3 +299,9 @@ function select_from_git_status() {
 function open_from_git_status() {
     $EDITOR $(select_from_git_status)
 }
+
+
+
+if [ -e $HOME/.zshrc_local ]; then
+    source ~/.zshrc_local
+fi
