@@ -380,14 +380,6 @@ augroup mopp
     " Remove spaces at tail.
     autocmd BufWritePre * silent call s:remove_tail_spaces()
 
-    " Filetype local settings.
-    autocmd FileType git  setlocal nofoldenable
-    autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
-    autocmd FileType tex  setlocal wrap spell nocursorline
-    autocmd FileType text,man setlocal wrap
-    autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby,javascript,html,css  setlocal shiftwidth=2
-
     " Detecting filetypes.
     autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
     autocmd BufWinEnter *.plt                nested setlocal filetype=gnuplot
@@ -396,6 +388,20 @@ augroup mopp
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
 augroup END
+
+" The autocmds to override filetype local setting have to be run after 'filetype on'.
+" Because ftplugins are load when 'filetype on'.
+function! s:define_filetype_local_settings() abort
+    augroup mopp_filetype_overwrite
+        autocmd!
+        autocmd FileType git  setlocal nofoldenable
+        autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
+        autocmd FileType tex  setlocal wrap spell nocursorline
+        autocmd FileType text,man setlocal wrap
+        autocmd FileType help setlocal foldcolumn=0
+        autocmd FileType ruby,javascript,html,css setlocal shiftwidth=2
+    augroup END
+endfunction
 
 
 "----------------------------------------------------------------------------"
@@ -427,6 +433,8 @@ if !isdirectory(s:DEIN_PATH)
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
     else
         set number
+        filetype plugin indent on
+        call s:define_filetype_local_settings()
         syntax enable
         colorscheme desert
         finish
@@ -557,6 +565,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
 endif
 
 filetype plugin indent on
+call s:define_filetype_local_settings()
 
 if dein#check_install() && (confirm('Would you like to download some plugins ?', "&Yes\n&No", 1) == 1)
     call dein#install()
