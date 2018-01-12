@@ -4,6 +4,8 @@
 "   \_/ |_|_|_|_|_| \__| |_| \___/_|   |_|  |_\___/ .__/ .__/
 "                                                 |_|  |_|
 
+set nocompatible
+
 " Encoding.
 if has('vim_starting')
     " Changing encoding in Vim at runtime is undefined behavior.
@@ -428,17 +430,26 @@ endif
 "----------------------------------------------------------------------------"
 let s:DEIN_BASE_PATH = fnamemodify($MYVIMRC, ':h') . '/bundle/'
 let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
+
 if !isdirectory(s:DEIN_PATH)
-    if (executable('git') == 1) && (confirm('Install dein.vim or Launch vim immediately', "&Yes\n&No", 1) == 1)
+    " Define commands to install dein.vim
+    function! s:setup_plugins() abort
+        if !executable('git')
+            echoerr 'git is not found.'
+            return
+        endif
+
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
-    else
-        set number
-        filetype plugin indent on
-        call s:define_filetype_local_settings()
-        syntax enable
-        colorscheme desert
-        finish
-    endif
+    endfunction
+    command! SetupPlugins call <SID>setup_plugins()
+
+    " Least settings.
+    set number
+    filetype plugin indent on
+    call s:define_filetype_local_settings()
+    syntax enable
+    colorscheme desert
+    finish
 endif
 
 " dein.vim
@@ -567,9 +578,7 @@ endif
 filetype plugin indent on
 call s:define_filetype_local_settings()
 
-if dein#check_install() && (confirm('Would you like to download some plugins ?', "&Yes\n&No", 1) == 1)
-    call dein#install()
-endif
+call dein#check_install()
 
 function! s:accelerate() abort
     :IndentLinesDisable
