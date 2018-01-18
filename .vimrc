@@ -428,7 +428,7 @@ endif
 "----------------------------------------------------------------------------"
 " Plugin
 "----------------------------------------------------------------------------"
-let s:DEIN_BASE_PATH = fnamemodify($MYVIMRC, ':h') . '/bundle/'
+let s:DEIN_BASE_PATH = expand('$HOME/.vim/bundle/')
 let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
 
 if !isdirectory(s:DEIN_PATH)
@@ -617,8 +617,8 @@ if dein#tap('denite.nvim')
     nnoremap [Denite] <Nop>
     nmap <Leader>f [Denite]
     nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-    nnoremap <silent> [Denite]fm :<C-U>Denite file_mru<CR>
-    nnoremap <silent> [Denite]fr :<C-U>Denite file_rec<CR>
+    nnoremap <silent> [Denite]e  :<C-U>Denite file_rec<CR>
+    nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
     nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
     nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
     nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
@@ -982,6 +982,8 @@ function! Hook_on_post_source_lexima() abort
     let l:rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
     let l:rules += [
+                \ {'char': '<TAB>','at': '([()]*\%#[)]*)', 'input': '<Right>'},
+                \
                 \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
                 \ {'char': '<BS>', 'at': ' != !\%#', 'input': '<BS><BS><BS><BS>'},
                 \
