@@ -555,6 +555,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
+    call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('derekwyatt/vim-scala')
     call dein#add('digitaltoad/vim-pug')
     call dein#add('ekalinin/Dockerfile.vim')
