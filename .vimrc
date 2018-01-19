@@ -546,9 +546,9 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('thinca/vim-visualstar')
-    call dein#add('tomtom/tcomment_vim')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
+    call dein#add('tyru/caw.vim')
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('w0rp/ale')
     call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
@@ -893,10 +893,6 @@ nmap # <Plug>(anzu-sharp-with-echo)
 " vim-marching
 let g:marching_enable_neocomplete = 1
 
-" tcomment_vim
-nnoremap <Leader><Leader> :<C-U>TComment<CR>
-xnoremap <Leader><Leader> :TComment<CR>
-
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
 
@@ -1060,6 +1056,9 @@ function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
 endfunction
+
+" caw.vim
+nmap gcg <Plug>(caw:hatpos:toggle:operator)
 
 
 "----------------------------------------------------------------------------"
