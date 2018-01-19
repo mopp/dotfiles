@@ -541,7 +541,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('mopp/smartnumber.vim')
     call dein#add('mopp/sky-color-clock.vim')
     call dein#add('mtth/scratch.vim', {'lazy': 1, 'on_cmd': ['Scratch', 'ScratchInsert', 'ScratchPreview', 'ScratchSelection']})
-    call dein#add('osyo-manga/vim-anzu', {'lazy': 1, 'on_map': [['n', '<Plug>']]})
+    call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-marching', {'lazy': 1, 'on_ft': ['c', 'cpp']})
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
@@ -698,7 +698,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
-            \   'left': [['mode', 'denite', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status']],
+            \   'left': [['mode', 'denite', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
             \   'right': [['sky_color_clock'], ['fileencoding', 'fileformat', 'lineinfo', 'percent'], ['filetype'], ['ale_status']],
             \ },
             \ 'inactive': {
@@ -736,6 +736,7 @@ let g:lightline = {
             \   'modified':   'Lightline_modified',
             \   'filename':   'Lightline_filename',
             \   'git_status': 'Lightline_git_status',
+            \   'anzu':       'anzu#search_status',
             \   'ale_status': 'Lightline_ale_status',
             \ },
             \ }
@@ -801,23 +802,24 @@ endfunction
 let s:cp_fname_modi = ['#ffffff', '#080808', 231, 232]
 let s:cp_read_spell = ['#d70000', '#121212', 160, 233]
 let s:cp_git_status = ['#87afff', '#1c1c1c', 111, 234]
+let s:cp_anzu       = ['#ff87af', '#303030', 211, 236]
 let s:cp_middle     = ['#9e9e9e', '#444444', 247, 238]
 let g:lightline#colorscheme#mopkai#palette = {
             \ 'normal': {
-            \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status],
+            \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \   'middle':  [s:cp_middle],
             \   'right':   [['#000000', '#000000',   0,    0], ['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], ['#ffffd7', '#1c1c1c', 200, 234]],
             \   'warning': [['#9e9e9e', '#ffdf5f', 247, 221]],
             \   'error':   [['#eeeeee', '#d70000', 255, 160]]
             \ },
             \ 'insert': {
-            \   'left':   [['#080808', '#87ff00', 232, 118], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status],
+            \   'left':   [['#080808', '#87ff00', 232, 118], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \ },
             \ 'replace': {
-            \   'left':   [['#080808', '#ff0087', 232, 198], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status],
+            \   'left':   [['#080808', '#ff0087', 232, 198], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \ },
             \ 'visual': {
-            \   'left':   [['#080808', '#d7ff5f', 232, 191], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status],
+            \   'left':   [['#080808', '#d7ff5f', 232, 191], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \ },
             \ 'inactive': {
             \   'left':   [['#9e9e9e', '#080808', 247, 232]],
@@ -885,11 +887,15 @@ nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 " mopkai.vim
 let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER !=# 'mopp'))
 
+" vim-search-pulse
+let g:vim_search_pulse_disable_auto_mappings = 1
+
 " vim-anzu
-nmap n <Plug>(anzu-n-with-echo)
-nmap N <Plug>(anzu-N-with-echo)
-nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
+nmap n <Plug>(anzu-n)<Plug>Pulse
+nmap N <Plug>(anzu-N)<Plug>Pulse
+nmap * <Plug>(anzu-star)<Plug>Pulse
+nmap # <Plug>(anzu-sharp)<Plug>Pulse
+nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 
 " vim-marching
 let g:marching_enable_neocomplete = 1
