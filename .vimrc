@@ -1066,6 +1066,7 @@ endfunction
 
 " caw.vim
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
+nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 
 
 "----------------------------------------------------------------------------"
