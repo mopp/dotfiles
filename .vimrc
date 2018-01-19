@@ -722,7 +722,10 @@ let g:lightline = {
             \   'fileformat':      "%{ !Lightline_is_visible() ? '' : &fileformat }",
             \   'lineinfo':        "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
             \   'percent':         "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
-            \   'sky_color_clock': "%#SkyColorClock#%{' ' . sky_color_clock#statusline()}",
+            \   'sky_color_clock': "%#SkyColorClock#%{ !Lightline_is_visible() ? '' : ' ' . sky_color_clock#statusline() . ' '}",
+            \ },
+            \ 'component_raw': {
+            \   'sky_color_clock': 1,
             \ },
             \ 'component_visible_condition': {
             \   'filetype':     'Lightline_is_visible()',
