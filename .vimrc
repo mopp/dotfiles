@@ -898,7 +898,7 @@ nmap n <Plug>(anzu-n)<Plug>Pulse
 nmap N <Plug>(anzu-N)<Plug>Pulse
 nmap * <Plug>(anzu-star)<Plug>Pulse
 nmap # <Plug>(anzu-sharp)<Plug>Pulse
-nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :<AnzuClearSearchStatus<CR>
+nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 
 " vim-marching
 let g:marching_enable_neocomplete = 1
