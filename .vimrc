@@ -232,13 +232,22 @@ vnoremap <M-/> <Esc>/\%V
 " Replace the all selected areas.
 vnoremap <C-r> "hy:%s/\V<C-r>h//g<left><left>
 
+" Turn off highlight of the current search words.
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
+
+" Save the current buffer.
 nnoremap <silent> <Leader>w :<C-U>write<CR>
+
+" Open vimrc at newtab.
 if has('nvim')
     nnoremap <silent> <Leader>ev :<C-U>tab drop $MYVIMRC<CR>
 else
+    " The `drop` is available on gvim.
     nnoremap <silent> <Leader>ev :<C-U>tabnew $MYVIMRC<CR>
 endif
+
+" Tab version `gf`.
+nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', expand('%:h'), expand('<cfile>'))<CR>
 
 
 "----------------------------------------------------------------------------"
