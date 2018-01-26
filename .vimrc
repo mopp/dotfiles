@@ -525,6 +525,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/vinarise.vim', {'on_cmd': 'Vinarise'})
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL'], 'on_map': ['<Leader>Nr', '<Leader>nr']})
     call dein#add('cocopon/vaffle.vim')
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter','hook_post_source': 'call Hook_on_post_source_lexima()'})
@@ -547,8 +548,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('mopp/mopkai.vim')
     call dein#add('mopp/next-alter.vim', {'lazy': 1, 'on_cmd': 'OpenNAlter', 'on_map' : [['n', '<Plug>(next-alter-open)']]})
-    call dein#add('mopp/smartnumber.vim')
     call dein#add('mopp/sky-color-clock.vim')
+    call dein#add('mopp/smartnumber.vim')
     call dein#add('mtth/scratch.vim', {'lazy': 1, 'on_cmd': ['Scratch', 'ScratchInsert', 'ScratchPreview', 'ScratchSelection']})
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-marching', {'lazy': 1, 'on_ft': ['c', 'cpp']})
@@ -565,8 +566,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
-    call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
-    call dein#add('derekwyatt/vim-scala')
+    call dein#add('derekwyatt/vim-scala', {'lazy': 1, 'on_ft': 'scala'})
     call dein#add('digitaltoad/vim-pug')
     call dein#add('ekalinin/Dockerfile.vim')
     call dein#add('hail2u/vim-css3-syntax')
@@ -576,6 +576,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rust-lang/rust.vim')
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
     call dein#add('stephpy/vim-yaml')
+    call dein#add('vim-erlang/vim-erlang-omnicomplete', {'lazy': 1, 'on_ft': 'erlang'})
     call dein#add('vim-erlang/vim-erlang-runtime')
     call dein#add('vim-jp/cpp-vim')
     call dein#add('vim-jp/vimdoc-ja')
@@ -603,9 +604,6 @@ command! Accelerate call <SID>accelerate()
 
 " deoplete.nvim
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#omni_patterns     = {}
-let g:deoplete#omni_patterns.c   = '[^. *\t](\.|->)\w*'
-let g:deoplete#omni_patterns.cpp = '[^. *\t](\.|->|::)\w*'
 " If the default sources are defined, some completions are not work.
 " let g:deoplete#sources           = {}
 " let g:deoplete#sources._         = ['buffer']
