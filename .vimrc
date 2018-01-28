@@ -274,6 +274,9 @@ endfunction
 "----------------------------------------------------------------------------"
 " Commands
 "----------------------------------------------------------------------------"
+" Reload .vimrc
+command! ReloadVimrc :source $MYVIMRC
+
 command! -nargs=1 -complete=buffer TabBuffer :tab sbuffer
 
 command! SpellCheckToggle :setlocal spell!
@@ -281,42 +284,50 @@ command! SpellCheckToggle :setlocal spell!
 " Echo highlight name of an object under the cursor.
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-let s:dec_hex_map = {
-            \ '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
-            \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
-            \ '8' : '1000', '9' : '1001', 'a' : '1010', 'b' : '1011',
-            \ 'c' : '1100', 'd' : '1101', 'e' : '1110', 'f' : '1111' }
-
-function! s:to_bin(number) abort
-    return join(map(split(printf('%x', a:number), '\zs'), 's:dec_hex_map[v:val]'), ' ')
-endfunction
-
-" 式を実行させてその返り値を指定した基数の数値で出力する.
-function! s:exp_conv(s, base) abort
-    if a:s ==# ''
-        return
+" (number, number) -> string.
+function! s:convert_base_number(base, n) abort
+    if a:base == 2
+        let map = {
+                    \ '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
+                    \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
+                    \ '8' : '1000', '9' : '1001', 'a' : '1010', 'b' : '1011',
+                    \ 'c' : '1100', 'd' : '1101', 'e' : '1110', 'f' : '1111'
+                    \ }
+        return '0b' . join(map(split(printf('%x', a:n), '\zs'), 'map[v:val]'))
+    elseif a:base == 8
+        return printf('0o%o', a:n)
+    elseif a:base == 10
+        return printf('%d', a:n)
+    elseif a:base == 16
+        return printf('0x%x', a:n)
     endif
 
-    if !(a:base == 2 || a:base == 8 || a:base == 10 || a:base == 16)
-        echoerr 'Base is 2, 8, 10, 16 only.'
-        return
+    throw 'Supported bases are 16, 10, 8 and 2 only.'
+endfunction
+
+" (number, string) -> string.
+function! s:eval_as_base_number(base, exp) abort
+    let result = eval(a:exp)
+
+    if type(0) != type(result)
+        throw 'The result of the given expression have to be Number'
     endif
 
-    " execute expression.
-    let l:num = str2nr(eval(a:s), 10)
-    let l:str = (a:base == 2) ? (s:to_bin(l:num)) : (printf(((a:base == 10) ? '%d' : ((a:base == 16) ? '0x%x' : '%o')), l:num))
-
-    echomsg l:str
-    return l:str
+    return s:convert_base_number(a:base, result)
 endfunction
-command! -nargs=1 Bin call <SID>exp_conv(<f-args>, 2)
-command! -nargs=1 Dec call <SID>exp_conv(<f-args>, 10)
-command! -nargs=1 Hex call <SID>exp_conv(<f-args>, 16)
-inoremap <silent><expr> <C-G>b <SID>exp_conv(input('= '),  2)
-inoremap <silent><expr> <C-G>d <SID>exp_conv(input('= '), 10)
-inoremap <silent><expr> <C-G>h <SID>exp_conv(input('= '), 16)
-imap <C-G><C-B> <C-G>b
-imap <C-G><C-H> <C-G>h
+
+command! -nargs=1 EvalAsBin echomsg <SID>eval_as_base_number(2, <f-args>)
+command! -nargs=1 EvalAsOct echomsg <SID>eval_as_base_number(8, <f-args>)
+command! -nargs=1 EvalAsDec echomsg <SID>eval_as_base_number(10, <f-args>)
+command! -nargs=1 EvalAsHex echomsg <SID>eval_as_base_number(16, <f-args>)
+inoremap <silent><expr> <C-G>b <SID>eval_as_base_number(2, input('= '))
+inoremap <silent><expr> <C-G>o <SID>eval_as_base_number(8, input('= '))
+inoremap <silent><expr> <C-G>d <SID>eval_as_base_number(10, input('= '))
+inoremap <silent><expr> <C-G>h <SID>eval_as_base_number(16, input('= '))
+imap <silent> <C-G><C-B> <C-G>b
+imap <silent> <C-G><C-O> <C-G>o
+imap <silent> <C-G><C-D> <C-G>d
+imap <silent> <C-G><C-H> <C-G>h
 
 let s:session_directory = '~/.vim/sessions/'
 let s:last_session_filepath = s:session_directory . 'last_session.vim'
@@ -377,9 +388,6 @@ augroup mopp
 
     " Save session automatically.
     autocmd VimLeave * execute 'mksession!' s:last_session_filepath
-
-    " Reload .vimrc
-    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
     " Turning off paste when escape insert mode.
     autocmd InsertLeave * setlocal nopaste
