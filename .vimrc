@@ -643,13 +643,15 @@ if dein#tap('denite.nvim')
     nnoremap <silent> [Denite]o  :<C-U>Denite outline<CR>
     nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
 
-    call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-    call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('normal', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-    call denite#custom#option('default', 'highlight_matched_char', 'Keyword')
-    call denite#custom#option('default', 'highlight_matched_range', 'None')
-    call denite#custom#option('default', 'statusline', v:false)
+    call denite#custom#map('_', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('_', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#map('_', '<C-t>', '<denite:do_action:tabopen>', 'noremap')
+    call denite#custom#map('_', '<C-v>', '<denite:do_action:preview>', 'noremap')
+    call denite#custom#option('default', {
+                \ 'highlight_matched_char': 'Keyword',
+                \ 'highlight_matched_range': 'None',
+                \ 'statusline': v:false,
+                \ })
     call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
 
     if executable('rg')
