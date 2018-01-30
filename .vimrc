@@ -531,7 +531,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
-    call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_map': '<Plug>GitGutter', 'on_event': 'BufWritePost', 'hook_post_source': 'doautocmd gitgutter BufEnter'})
+    call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL']})
@@ -567,7 +567,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
-    call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:'})
+    call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
     call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
@@ -1098,6 +1098,7 @@ augroup plugin
 
     autocmd FileType gina-commit setlocal spell
     autocmd Filetype vaffle call s:on_filetype_vaffle()
+    autocmd FileType erlang let b:caw_oneline_comment = '%%'
 augroup END
 
 syntax enable
