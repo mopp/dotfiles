@@ -1084,6 +1084,13 @@ function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
 endfunction
 
+function! s:on_load_vaffle(is_directory) abort
+    if a:is_directory && !dein#is_sourced('vaffle.vim')
+        call dein#source('vaffle.vim')
+        call vaffle#event#on_bufenter()
+    endif
+endfunction
+
 " caw.vim
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
 nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
@@ -1099,6 +1106,7 @@ augroup plugin
     autocmd FileType gina-commit setlocal spell
     autocmd Filetype vaffle call s:on_filetype_vaffle()
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
+    autocmd BufEnter * call s:on_load_vaffle(isdirectory(expand('<afile>')))
 augroup END
 
 syntax enable
