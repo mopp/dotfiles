@@ -476,7 +476,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#begin(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
-    call dein#add('haya14busa/dein-command.vim', {'lazy': 1, 'on_cmd': 'Dein'})
+    call dein#add('haya14busa/dein-command.vim')
     call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
     call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter'})
