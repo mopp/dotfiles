@@ -186,7 +186,7 @@ function! s:paste_with_register(register, paste_type, paste_cmd) abort
     let l:reg_type = getregtype(a:register)
     let l:store = getreg(a:register)
     call setreg(a:register, l:store, a:paste_type)
-    exe 'normal "' . a:register . a:paste_cmd
+    exe 'normal! "' . a:register . a:paste_cmd
     call setreg(a:register, l:store, l:reg_type)
 endfunction
 
