@@ -457,6 +457,11 @@ if !isdirectory(s:DEIN_PATH)
         endif
 
         execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
+        let &runtimepath .= ',' . s:DEIN_PATH
+        let g:is_load_only_dein_settings = 1
+        source $MYVIMRC
+        unlet g:is_load_only_dein_settings
+        call dein#install()
     endfunction
     command! SetupPlugins call <SID>setup_plugins()
 
@@ -598,7 +603,9 @@ endif
 filetype plugin indent on
 call s:define_filetype_local_settings()
 
-call dein#check_install()
+if exists('g:is_load_only_dein_settings')
+    finish
+endif
 
 function! s:accelerate() abort
     :IndentLinesDisable
