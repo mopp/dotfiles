@@ -1103,6 +1103,12 @@ nmap gcg <Plug>(caw:hatpos:toggle:operator)
 nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 vmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 
+" Capture.vim
+let g:capture_open_command = 'topleft new'
+command! -nargs=1 GrepBuffer           :execute ':Capture! global/' . <q-args> . '/print'
+command! -nargs=0 GrepBufferCursorWord :execute 'GrepBuffer' expand('<cword>')
+command! -nargs=0 GrepBufferYank       :execute 'GrepBuffer' @0
+
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
