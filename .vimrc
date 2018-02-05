@@ -1107,9 +1107,9 @@ vmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 
 " Capture.vim
 let g:capture_open_command = 'topleft new'
-command! -nargs=1 GrepBuffer           :execute ':Capture! global/' . <q-args> . '/print'
-command! -nargs=0 GrepBufferCursorWord :execute 'GrepBuffer' expand('<cword>')
-command! -nargs=0 GrepBufferYank       :execute 'GrepBuffer' @0
+command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s/%s/print', expand('<bang>'), <q-args>)
+command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s', expand('<bang>'), expand('<cword>'))
+command! -nargs=0 -bang GrepBufferYank       :execute printf(':GrepBuffer%s %s', expand('<bang>'), @0)
 
 
 "----------------------------------------------------------------------------"
