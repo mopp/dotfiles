@@ -27,3 +27,5 @@
     open   = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!http://!' -e 's!:([^/])!/\\1!')
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
+[pager]
+    branch = false
