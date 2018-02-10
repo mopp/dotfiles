@@ -504,7 +504,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('ujihisa/neco-look')
 
     call dein#add('ozelentok/deoplete-gtags')
-    call dein#add('ozelentok/denite-gtags')
+    " call dein#add('ozelentok/denite-gtags')
     call dein#add('vim-scripts/gtags.vim', {'lazy': 1, 'on_cmd': ['Gtags', 'GtagsCursor']})
 
     call dein#add('Shougo/denite.nvim')
