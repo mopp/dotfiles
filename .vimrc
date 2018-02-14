@@ -221,7 +221,10 @@ nnoremap <silent> <Leader>O :<C-U>for i in range(1, v:count1) \| call append(lin
 nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
-nnoremap <C-]> g<C-]>zz
+nnoremap <C-]><C-]> g<C-]>zz
+
+" Tab version `<C-]>`.
+nnoremap <C-]><C-T> <C-W><C-]><C-W>T
 
 " Repeat the previous macro.
 nnoremap Q @@
