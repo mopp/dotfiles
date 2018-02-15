@@ -108,7 +108,6 @@ setopt prompt_subst
 setopt re_match_pcre
 setopt transient_rprompt
 autoload -U colors
-colors
 case $OSTYPE in
     darwin*)
         PROMPT="%F{161}%n@%m:%% %f"
@@ -137,7 +136,26 @@ esac
 # Others
 setopt no_beep
 setopt nolistbeep
-bindkey -e
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey -v
+bindkey -M viins '^a' beginning-of-line
+bindkey -M viins '^b' backward-char
+bindkey -M viins '^d' delete-char-or-list
+bindkey -M viins '^e' end-of-line
+bindkey -M viins '^f' forward-char
+bindkey -M viins '^g' send-break
+bindkey -M viins '^h' backward-delete-char
+bindkey -M viins '^k' kill-line
+bindkey -M viins '^n' history-beginning-search-forward-end
+bindkey -M viins '^p' history-beginning-search-backward-end
+bindkey -M viins '^u' backward-kill-line
+bindkey -M viins '^w' backward-kill-word
+bindkey -M viins '^y' yank
+bindkey -M viins '^q' push-line-or-edit
+bindkey "^r" history-incremental-search-backward
+bindkey "^s" history-incremental-search-forward
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>' # Remove strings to '/' by Ctrl+w
 
 # Only past commands beginning with the current input would have been shown.
