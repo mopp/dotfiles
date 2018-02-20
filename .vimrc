@@ -1088,6 +1088,7 @@ let g:session_directory = s:session_directory
 
 " vaffle.vim
 nnoremap <silent> <Leader>vv :Vaffle<CR>
+nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
 nnoremap <silent> <Leader>vo :VaffleTab<CR>
 nnoremap <silent> <Leader>vb :VaffleVsplitFixed<CR>
 
