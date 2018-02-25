@@ -362,6 +362,56 @@ function! s:create_vim_directories() abort
 endfunction
 command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 
+function! s:add_match(str, group_name) abort
+    if !has_key(w:, 'match_map')
+        let w:match_map = {}
+    endif
+
+    let escaped = '\V' . escape(a:str, '\')
+    let match_id = matchadd(a:group_name, a:str)
+    let w:match_map[a:str] = [match_id, a:group_name]
+endfunction
+
+function! s:remove_match(str) abort
+    if !has_key(w:, 'match_map')
+        let w:match_map = {}
+    endif
+
+    if has_key(w:match_map, a:str)
+        let [match_id, group_name] = w:match_map[a:str]
+        call matchdelete(match_id)
+        call remove(w:match_map, a:str)
+    endif
+endfunction
+
+function! s:toggle_match(str, group_name) abort
+    if !has_key(w:, 'match_map')
+        let w:match_map = {}
+    endif
+
+    echomsg string(a:str)
+    if has_key(w:match_map, a:str)
+        call s:remove_match(a:str)
+    else
+        call s:add_match(a:str, a:group_name)
+    endif
+endfunction
+
+function! s:get_selected_str() abort
+    let tmp = @@
+    silent normal! gvy
+    let selected = @@
+    let @@ = tmp
+    return selected
+endfunction
+
+nnoremap <unique><script> <plug>(plasma-cutter-highlight) :call <SID>toggle_match(expand('<cword>'), 'ErrorMsg')<CR>
+vnoremap <unique><script> <plug>(plasma-cutter-highlight) :call <SID>toggle_match(<SID>get_selected_str(), 'Search')<CR>
+
+nmap <leader>aa <plug>(plasma-cutter-highlight)
+vmap <leader>bb <plug>(plasma-cutter-highlight)
+
+
 "----------------------------------------------------------------------------"
 " GUI
 "----------------------------------------------------------------------------"
