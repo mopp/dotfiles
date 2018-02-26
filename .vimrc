@@ -631,8 +631,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
     call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
 
-    call dein#add('antoinemadec/vim-highlight-groups')
-
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
     call dein#add('derekwyatt/vim-scala', {'lazy': 1, 'on_ft': 'scala'})
