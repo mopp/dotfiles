@@ -362,6 +362,19 @@ function! s:create_vim_directories() abort
 endfunction
 command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 
+function! s:find_match()
+    let cur = getpos('.')
+    for m in getmatches()
+        let [lnum, col] = searchpos(m.pattern, 'n')
+        let s = matchstr(getline('.'), m.pattern)
+        if lnum == cur[1] && cur[1] <= col && cur[1] + len(s) < col
+            return m
+        endif
+    endfor
+
+    return ''
+endfunction
+
 function! s:add_match(str, group_name) abort
     if !has_key(w:, 'match_map')
         let w:match_map = {}
@@ -381,6 +394,10 @@ function! s:remove_match(str) abort
         let [match_id, group_name] = w:match_map[a:str]
         call matchdelete(match_id)
         call remove(w:match_map, a:str)
+    else
+        " try to find match.
+        let match = s:find_match()
+        echo string(match)
     endif
 endfunction
 
