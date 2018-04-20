@@ -362,73 +362,6 @@ function! s:create_vim_directories() abort
 endfunction
 command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 
-function! s:find_match()
-    let cur = getpos('.')
-    for m in getmatches()
-        let [lnum, col] = searchpos(m.pattern, 'n')
-        let s = matchstr(getline('.'), m.pattern)
-        if lnum == cur[1] && cur[1] <= col && cur[1] + len(s) < col
-            return m
-        endif
-    endfor
-
-    return ''
-endfunction
-
-function! s:add_match(str, group_name) abort
-    if !has_key(w:, 'match_map')
-        let w:match_map = {}
-    endif
-
-    let escaped = '\V' . escape(a:str, '\')
-    let match_id = matchadd(a:group_name, a:str)
-    let w:match_map[a:str] = [match_id, a:group_name]
-endfunction
-
-function! s:remove_match(str) abort
-    if !has_key(w:, 'match_map')
-        let w:match_map = {}
-    endif
-
-    if has_key(w:match_map, a:str)
-        let [match_id, group_name] = w:match_map[a:str]
-        call matchdelete(match_id)
-        call remove(w:match_map, a:str)
-    else
-        " try to find match.
-        let match = s:find_match()
-        echo string(match)
-    endif
-endfunction
-
-function! s:toggle_match(str, group_name) abort
-    if !has_key(w:, 'match_map')
-        let w:match_map = {}
-    endif
-
-    echomsg string(a:str)
-    if has_key(w:match_map, a:str)
-        call s:remove_match(a:str)
-    else
-        call s:add_match(a:str, a:group_name)
-    endif
-endfunction
-
-function! s:get_selected_str() abort
-    let tmp = @@
-    silent normal! gvy
-    let selected = @@
-    let @@ = tmp
-    return selected
-endfunction
-
-nnoremap <unique><script> <plug>(plasma-cutter-highlight) :call <SID>toggle_match(expand('<cword>'), 'ErrorMsg')<CR>
-vnoremap <unique><script> <plug>(plasma-cutter-highlight) :call <SID>toggle_match(<SID>get_selected_str(), 'Search')<CR>
-
-nmap <leader>aa <plug>(plasma-cutter-highlight)
-vmap <leader>bb <plug>(plasma-cutter-highlight)
-
-
 "----------------------------------------------------------------------------"
 " GUI
 "----------------------------------------------------------------------------"
@@ -640,6 +573,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('skywind3000/asyncrun.vim', {'lazy': 1, 'on_cmd': ['AsyncRun', 'AsyncStop']})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
+    call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
@@ -1181,6 +1115,11 @@ command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s
 command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s', expand('<bang>'), expand('<cword>'))
 command! -nargs=0 -bang GrepBufferYank       :execute printf(':GrepBuffer%s %s', expand('<bang>'), @0)
 
+" vim-quickhl
+nmap <Space>m <Plug>(quickhl-manual-this)
+xmap <Space>m <Plug>(quickhl-manual-this)
+nmap <Space>M <Plug>(quickhl-manual-reset)
+xmap <Space>M <Plug>(quickhl-manual-reset)
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
