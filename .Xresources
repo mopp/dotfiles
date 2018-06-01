@@ -1,5 +1,4 @@
 ! Xft settings.
-Xft.dpi:       130
 Xft.antialias: true
 Xft.rgba:      rgb
 Xft.hinting:   true
@@ -26,7 +25,6 @@ URxvt.shading:       30
 URxvt.transparent:   true
 URxvt.inheritPixmap: true
 
-URxvt.font:        xft:Ricty:size=12:antialias=true:style=Regular
 URxvt.cjkwidth:    0
 URxvt.preeditType: OverTheSpot
 URxvt.inputMethod: uim

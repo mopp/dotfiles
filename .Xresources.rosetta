@@ -1,0 +1,3 @@
+! vi:ft=xdefaults
+Xft.dpi:    145
+URxvt.font: xft:Cica:size=13:antialias=true:style=Regular

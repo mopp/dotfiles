@@ -1,27 +1,30 @@
-#!/bin/sh
+#!/usr/bin/env sh
+HOSTNAME=$(hostname)
 
-userresources=$HOME/.Xresources
-usermodmap=$HOME/.Xmodmap
-sysresources=/etc/X11/xinit/.Xresources
-sysmodmap=/etc/X11/xinit/.Xmodmap
-
-# merge in defaults and keymaps
-if [ -f $sysresources ]; then
-    xrdb -merge $sysresources
+SYSTEM_RESOURCES=/etc/X11/xinit/.Xresources
+if [ -f $SYSTEM_RESOURCES ]; then
+    xrdb -merge $SYSTEM_RESOURCES
 fi
 
-if [ -f $sysmodmap ]; then
-    xmodmap $sysmodmap
+SYSTEM_MODMAP=/etc/X11/xinit/.Xmodmap
+if [ -f $SYSTEM_MODMAP ]; then
+    xmodmap $SYSTEM_MODMAP
 fi
 
-if [ -f "$userresources" ]; then
-    xrdb -merge "$userresources"
+USER_RESOURCES=$HOME/.Xresources
+if [ -f "$USER_RESOURCES" ]; then
+    xrdb -merge "$USER_RESOURCES"
 fi
 
-if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
+ENV_RESOURCES=$HOME/.Xresources.$HOSTNAME
+if [ -f "$ENV_RESOURCES" ]; then
+    xrdb -merge "$ENV_RESOURCES"
 fi
 
+USER_MODMAP=$HOME/.Xmodmap
+if [ -f "$USER_MODMAP" ]; then
+    xmodmap "$USER_MODMAP"
+fi
 
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
@@ -31,20 +34,24 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 
-HOSTNAME=$(hostname)
+function is_existed() {
+    [ -x "$(command -v $1)" ]
+}
+
+is_existed dropbox && dropbox &
+is_existed urxvtd && urxvtd -q -f -o &
+
+# For uim.
+export GTK_IM_MODULE="uim"
+export QT_IM_MODULE="uim"
+export XMODIFIERS="@im=uim"
+export XIM_PROGRAM="uim-xim"
+uim-xim --async &
+uim-toolbar-gtk3-systray &
+
+# Environment specific settings.
 case $HOSTNAME in
     flan)
-        dropbox &
-        urxvtd -q -f -o &
-
-        # for uim
-        export GTK_IM_MODULE="uim"
-        export QT_IM_MODULE="uim"
-        export XMODIFIERS="@im=uim"
-        export XIM_PROGRAM="uim-xim"
-        uim-xim --async &
-        uim-toolbar-gtk3-systray &
-
         if xrandr | grep -q 'HDMI1 connected'; then
             # In the setting below, it considers
             #   The external monitor size is 1920x1080
@@ -55,25 +62,9 @@ case $HOSTNAME in
             # (1920x1080) * 1.3 = (2496x1404)
             # (1920x1080) * 1.2 = (2304x1296)
         fi
-
-        exec i3
         ;;
-    rosetta)
-        dropbox &
-        slack &
-        urxvtd -q -f -o &
-
-        # for uim
-        export GTK_IM_MODULE="uim"
-        export QT_IM_MODULE="uim"
-        export XMODIFIERS="@im=uim"
-        export XIM_PROGRAM="uim-xim"
-        uim-xim --async &
-        uim-toolbar-gtk3-systray &
-
-        xinput --set-prop 12 286 0
-        xinput --set-prop 12 290 -0.5
-
-        exec i3
+    *)
         ;;
 esac
+
+exec i3
