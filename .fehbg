@@ -1,2 +1,2 @@
 #!/bin/sh
-'feh' '--image-bg' 'black' '--bg-center' '/home/mopp/Dropbox/Photos/Backgrounds/JoeJesus/Vivid/2560x1440.jpg' 
+feh --bg-center --image-bg '#fcf5e3' '/home/mopp/Dropbox/background.jpg' 
