@@ -506,9 +506,8 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
 
-    call dein#add('ozelentok/deoplete-gtags')
-    " call dein#add('ozelentok/denite-gtags')
-    call dein#add('vim-scripts/gtags.vim', {'lazy': 1, 'on_cmd': ['Gtags', 'GtagsCursor']})
+    call dein#add('ozelentok/deoplete-gtags', {'if': executable('global')})
+    call dein#add('vim-scripts/gtags.vim', {'lazy': 1, 'if': executable('global'), 'on_cmd': ['Gtags', 'GtagsCursor']})
 
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
