@@ -433,7 +433,6 @@ if has('nvim')
     tnoremap <ESC> <C-\><C-n>
     nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
-    nnoremap <Leader>vst :vsplit term://zsh<CR>
     nnoremap <Leader>vtt :tabnew term://zsh<CR>
 
     autocmd TermOpen * setlocal nonumber norelativenumber nowrap
