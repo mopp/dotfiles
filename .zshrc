@@ -318,6 +318,9 @@ function open_from_git_status() {
     $EDITOR $(select_from_git_status)
 }
 
+function copy_prev_cmd() {
+    tail -n 1 ~/.zsh_history | pbcopy
+}
 
 
 if [ -e $HOME/.zshrc_local ]; then
