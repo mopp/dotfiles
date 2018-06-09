@@ -10,6 +10,9 @@
     ~/.Xresources.rosetta:
       path: .Xresources.rosetta
       if: '[[ "$(hostname)" == "rosetta" ]]'
+    ~/.Xresources.flan:
+      path: .Xresources.flan
+      if: '[[ "$(hostname)" == "flan" ]]'
     ~/.xinitrc: .xinitrc
     ~/.Xmodmap: .Xmodmap
     ~/.config/i3status/config: i3status.conf
