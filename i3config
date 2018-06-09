@@ -1,6 +1,8 @@
 # i3 config file (v4)
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+workspace_layout tabbed
+
 # startup
 exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id urxvtc
@@ -25,6 +27,8 @@ for_window [title="Figure*"] floating enable
 
 # Assign chrome to workspace 2
 assign [class="chrome"] 2
+assign [class="Slack"] 3
+assign [title="DeaDBeeF*"] 3
 
 # mouse setting
 focus_follows_mouse no
