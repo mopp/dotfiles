@@ -56,12 +56,28 @@ unsetopt beep
 unsetopt listbeep
 
 # Prompts.
-function zle-keymap-select zle-line-init {
-    [ $KEYMAP = 'vicmd' ] && mode='%B%F{118}[NORMAL]%f%b' || mode='%B%F{039}[INSERT]%f%b'
+autoload -Uz add-zsh-hook vcs_info
 
-    prev_cmd=$history[$(($HISTCMD-1))]
-    newline=$'\n'
-    PROMPT="$mode%F{009}[%n@%m]%f%F{%(?.046.196)}[exit: %?%(?.., reason: $prev_cmd)]%f[%~]$newline%B%F{203}>%f%b "
+add-zsh-hook precmd () {
+    prev_status_code=$(printf '%3d' $?)
+    vcs_info
+}
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' unstagedstr '%F{196}-%f'
+zstyle ':vcs_info:git:*' stagedstr '%F{047}+%f'
+zstyle ':vcs_info:git:*' formats '%F{146}[<%b>%u%c%F{146}]%f'
+zstyle ':vcs_info:git:*' actionformats '[%b|%a]%f'
+
+# PROMPT2="%_"
+newline=$'\n'
+mode_normal='%B%F{118}[NORMAL]%f%b'
+mode_insert='%B%F{039}[INSERT]%f%b'
+function zle-keymap-select zle-line-init {
+    [ $KEYMAP = 'vicmd' ] && mode=$mode_normal || mode=$mode_insert
+
+    PROMPT="%F{251}[%D{%F %T}]$mode%F{009}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}>%f%b "
 
     zle reset-prompt
 }
@@ -83,9 +99,9 @@ setopt hist_reduce_blanks
 
 # Replace some commands.
 if [ $+commands[exa] ]; then
-    alias ls='exa --color-scale --time-style=long-iso'
-    alias ll='exa --color-scale --time-style=long-iso -l'
-    alias la='exa --color-scale --time-style=long-iso -a'
+    alias ls='exa --color-scale --time-style=long-iso --header --git'
+    alias ll='exa --color-scale --time-style=long-iso --header --git -l'
+    alias la='exa --color-scale --time-style=long-iso --header --git -a'
 else
     alias ls='ls --color --time-style=+%F\ %R -hF'
     alias ll='ls --color --time-style=+%F\ %R -hFl'
@@ -140,4 +156,6 @@ function print_term_colors() {
     }
 }
 
+# Load a machine local scripts.
+# NOTE: the last `true` command makes the exit code successes (0).
 [ -s $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true
