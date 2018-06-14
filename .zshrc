@@ -57,6 +57,8 @@ export path=(
 # Options. {{{
 unsetopt beep
 unsetopt listbeep
+
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 # }}}
 
 # Prompts. {{{
@@ -95,9 +97,10 @@ zle -N zle-keymap-select
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
-setopt appendhistory notify
-setopt hist_ignore_dups
+setopt inc_append_history
 setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_ignore_space
 setopt hist_reduce_blanks
 # }}}
 
@@ -107,13 +110,16 @@ setopt hist_reduce_blanks
 
 # Replace some commands. {{{
 if [ $+commands[exa] ]; then
-    alias ls='exa --color-scale --time-style=long-iso --header --git'
-    alias ll='exa --color-scale --time-style=long-iso --header --git -l'
-    alias la='exa --color-scale --time-style=long-iso --header --git -a'
+    export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
+    # export TIME_STYLE='long-iso'
+    alias ls='exa --color-scale --time-style=long-iso -gh --git'
+    alias ll='exa --color-scale --time-style=long-iso -gh --git -l'
+    alias la='exa --color-scale --time-style=long-iso -gh --git -a'
 else
-    alias ls='ls --color --time-style=+%F\ %R -hF'
-    alias ll='ls --color --time-style=+%F\ %R -hFl'
-    alias la='ls --color --time-style=+%F\ %R -hFa'
+    export TIME_STYLE='long-iso'
+    alias ls='ls --color -hF'
+    alias ll='ls --color -hFl'
+    alias la='ls --color -hFa'
 fi
 # }}}
 
@@ -146,7 +152,10 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 # }}}
 
 # Complement {{{
+# ':completion:function:completer:command:argument:tag'
 zstyle :compinstall filename "$HOME/.zshrc"
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 autoload -Uz compinit
 compinit
 # }}}
