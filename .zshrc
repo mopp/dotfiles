@@ -59,6 +59,7 @@ unsetopt beep
 unsetopt listbeep
 
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;'
 # }}}
 
 # Prompts. {{{
@@ -104,11 +105,49 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 # }}}
 
-# Initializations. {{{
-[ $+commands[fasd] ] && eval "$(fasd --init auto)"
+# Complement {{{
+autoload -Uz compinit
+compinit
+
+zstyle :compinstall filename "$HOME/.zshrc"
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:messages' format '%F{003}%d'$DEFAULT
+zstyle ':completion:*:warnings' format '%F{196}No matches for:''%F{228} %d'$DEFAULT
 # }}}
 
-# Replace some commands. {{{
+# Define EDITOR variable. {{{
+# `bindkey` uses this setting.
+if [ $+commands[nvim] ]; then
+    export EDITOR=nvim
+elif [ $+commands[vim] ]; then
+    export EDITOR=vim
+else
+    export EDITOR=vi
+fi
+# }}}
+
+# Initializations. {{{
+export path=(
+    $HOME/.cargo/bin
+    $HOME/.rbenv/bin
+    $HOME/.erlenv/bin
+    $path
+)
+
+# bindkey -M viins '^I'  up-line-or-history
+if (( $+commands[rustup] )); then
+    RUST_SYSROOT=$(rustc --print sysroot)
+    export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
+    export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
+fi
+[ ! $+commands[direnv] ] && eval "$(direnv hook zsh)"
+[ ! $+commands[fasd] ]   && eval "$(fasd --init auto)"
+[ -d $HOME/.erlenv ]     && eval "$(erlenv init -)"
+[ -d $HOME/.rbenv ]      && eval "$(rbenv init -)"
+# }}}
+
+# Commands. {{{
 if [ $+commands[exa] ]; then
     export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
     # export TIME_STYLE='long-iso'
@@ -121,6 +160,29 @@ else
     alias ll='ls --color -hFl'
     alias la='ls --color -hFa'
 fi
+
+if [ ! $+commands[rg] ]; then
+    alias grep='rg'
+else
+    alias grep='grep --color=auto'
+fi
+
+if [ ! $+commands[colordiff] ]; then
+    alias diff='colordiff -u'
+else
+    alias diff='diff -u'
+fi
+
+export PAGER=less
+export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
+
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;5;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 # }}}
 
 # Aliases. {{{
@@ -151,26 +213,6 @@ function extract() {
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 # }}}
 
-# Complement {{{
-# ':completion:function:completer:command:argument:tag'
-zstyle :compinstall filename "$HOME/.zshrc"
-zstyle ':completion:*:default' menu select=1
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-autoload -Uz compinit
-compinit
-# }}}
-
-# Define EDITOR variable. {{{
-# `bindkey` uses this setting.
-if [ $+commands[nvim] ]; then
-    export EDITOR=nvim
-elif [ $+commands[vim] ]; then
-    export EDITOR=vim
-else
-    export EDITOR=vi
-fi
-# }}}
-
 # Keybinds. {{{
 autoload -Uz history-search-end edit-command-line
 zle -N edit-command-line
@@ -187,6 +229,7 @@ bindkey -M viins '^P' history-beginning-search-backward-end
 bindkey -M viins '^N' history-beginning-search-forward-end
 bindkey -M viins "^R" history-incremental-pattern-search-backward
 bindkey -M viins '^X^E' edit-command-line
+bindkey -M viins '^[[Z' reverse-menu-complete
 # }}}
 
 # Functions. {{{
@@ -195,6 +238,53 @@ function print_term_colors() {
         echo -n "\e[38;5;${c}m $c";
         [ $(($c%16)) -eq 15 ] && echo
     }
+}
+
+function date_timestamp() {
+    date --date="@$1" '+%Y/%m/%d %H:%M:%S'
+}
+
+function urand() {
+    od -vAn -N4 -tu4 < /dev/urandom | tail -n 1 | tr -d ' '
+}
+
+function du_rank() {
+    du -s * | sort -nr
+}
+
+function switch_cc_cxx() {
+    if [[ $CC == "clang" ]]; then
+        export CC='gcc'
+        export CXX='g++'
+    else
+        export CC='clang'
+        export CXX='clang++'
+    fi
+}
+
+function select_from_git_status() {
+    files=($(git status --short | awk '{print $2}'))
+    select answer in $files; do
+        echo $answer
+        break
+    done
+}
+
+function open_from_git_status() {
+    $EDITOR $(select_from_git_status)
+}
+
+function copy() {
+    [ -p /dev/stdin ] && input='-' || input=$@
+
+    case $OSTYPE in
+        darwin*) cat $input | pbcopy ;;
+        linux*)  cat $input | xclip -selection clipboard -i ;;
+    esac
+}
+
+function copy_prev_cmd() {
+    fc -ln -1 | copy
 }
 # }}}
 
