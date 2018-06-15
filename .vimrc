@@ -257,7 +257,12 @@ nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', expand('%:h'), expand('<cfil
 " Functions
 "----------------------------------------------------------------------------"
 function! Mopp_gen_fold_text() abort
-    let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    if &foldmethod == 'marker'
+        let l:head = getline(v:foldstart)
+    else
+        let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    endif
+
     let l:tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
     let l:num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(l:head) - strdisplaywidth(l:tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
     return join([l:head, repeat(' ', l:num_spaces), l:tail], '')
