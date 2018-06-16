@@ -141,10 +141,11 @@ if (( $+commands[rustup] )); then
     export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
     export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
 fi
-[ ! $+commands[direnv] ] && eval "$(direnv hook zsh)"
-[ ! $+commands[fasd] ]   && eval "$(fasd --init auto)"
-[ -d $HOME/.erlenv ]     && eval "$(erlenv init -)"
-[ -d $HOME/.rbenv ]      && eval "$(rbenv init -)"
+
+(($+commands[direnv])) && eval "$(direnv hook zsh)"
+(($+commands[fasd]))   && eval "$(fasd --init auto)"
+[ -d $HOME/.erlenv ]   && eval "$(erlenv init -)"
+[ -d $HOME/.rbenv ]    && eval "$(rbenv init -)"
 # }}}
 
 # Commands. {{{
