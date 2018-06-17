@@ -118,9 +118,9 @@ zstyle ':completion:*:warnings' format '%F{196}No matches for:''%F{228} %d'$DEFA
 
 # Define EDITOR variable. {{{
 # `bindkey` uses this setting.
-if [ $+commands[nvim] ]; then
+if (($+commands[nvim])); then
     export EDITOR=nvim
-elif [ $+commands[vim] ]; then
+elif (($+commands[vim])); then
     export EDITOR=vim
 else
     export EDITOR=vi
@@ -136,7 +136,7 @@ export path=(
 )
 
 # bindkey -M viins '^I'  up-line-or-history
-if (( $+commands[rustup] )); then
+if (($+commands[rustup])); then
     RUST_SYSROOT=$(rustc --print sysroot)
     export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
     export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
@@ -149,7 +149,7 @@ fi
 # }}}
 
 # Commands. {{{
-if [ $+commands[exa] ]; then
+if (($+commands[exa])); then
     export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
     # export TIME_STYLE='long-iso'
     alias ls='exa --color-scale --time-style=long-iso -gh --git'
@@ -162,13 +162,13 @@ else
     alias la='ls --color -hFa'
 fi
 
-if [ ! $+commands[rg] ]; then
+if (($+commands[rg])); then
     alias grep='rg'
 else
     alias grep='grep --color=auto'
 fi
 
-if [ ! $+commands[colordiff] ]; then
+if (($+commands[colordiff])); then
     alias diff='colordiff -u'
 else
     alias diff='diff -u'
