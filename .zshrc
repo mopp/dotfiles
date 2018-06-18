@@ -85,7 +85,7 @@ PROMPT2='--%(!.#.>) '
 function zle-keymap-select zle-line-init {
     [ $KEYMAP = 'vicmd' ] && mode=$mode_normal || mode=$mode_insert
 
-    PROMPT="%F{251}[%D{%F %T}]$mode%F{009}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}%(!.#.>)%f%b "
+    PROMPT="%F{251}[%D{%F %T}]$mode%F{197}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}%(!.#.>)%f%b "
 
     zle reset-prompt
 }
