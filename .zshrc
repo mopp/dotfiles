@@ -155,11 +155,15 @@ if (($+commands[exa])); then
     alias ls='exa --color-scale --time-style=long-iso -gh --git'
     alias ll='exa --color-scale --time-style=long-iso -gh --git -l'
     alias la='exa --color-scale --time-style=long-iso -gh --git -a'
+    alias lla='exa --color-scale --time-style=long-iso -gh --git -la'
+    alias lt='exa --color-scale --time-style=long-iso -gh --git -lT'
+    alias lta='exa --color-scale --time-style=long-iso -gh --git -lTa'
 else
     export TIME_STYLE='long-iso'
     alias ls='ls --color -hF'
     alias ll='ls --color -hFl'
     alias la='ls --color -hFa'
+    alias lla='ls --color -hFal'
 fi
 
 if (($+commands[rg])); then
