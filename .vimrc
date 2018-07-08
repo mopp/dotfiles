@@ -414,6 +414,9 @@ augroup mopp
     autocmd BufWinEnter *.toml               nested setlocal filetype=toml
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
+
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
 augroup END
 
 " The autocmds to override filetype local setting have to be run after 'filetype on'.
@@ -568,7 +571,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('mopp/mopkai.vim')
     call dein#add('mopp/next-alter.vim', {'lazy': 1, 'on_cmd': 'OpenNAlter', 'on_map' : ['n', '<Plug>(next-alter-open)']})
     call dein#add('mopp/sky-color-clock.vim')
-    call dein#add('mopp/smartnumber.vim')
     call dein#add('mtth/scratch.vim', {'lazy': 1, 'on_cmd': ['Scratch', 'ScratchInsert', 'ScratchPreview', 'ScratchSelection']})
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-marching', {'lazy': 1, 'on_ft': ['c', 'cpp']})
