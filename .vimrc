@@ -1094,12 +1094,15 @@ let g:session_directory = s:session_directory
 " vaffle.vim
 nnoremap <silent> <Leader>vv :Vaffle<CR>
 nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
-nnoremap <silent> <Leader>vo :VaffleTab<CR>
-nnoremap <silent> <Leader>vb :VaffleVsplitFixed<CR>
+
+let g:vaffle_open_selected_split_position = ''
+let g:vaffle_open_selected_vsplit_position = 'rightbelow'
 
 function! s:on_filetype_vaffle() abort
-    nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
+    nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
+    nmap <silent><buffer><nowait> s <Plug>(vaffle-open-selected-split)
+    nmap <silent><buffer><nowait> v <Plug>(vaffle-open-selected-vsplit)
 endfunction
 
 function! s:on_load_vaffle(is_directory) abort
