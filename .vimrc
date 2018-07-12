@@ -72,6 +72,7 @@ set path=.,/usr/local/include,/usr/include,./include
 set smartcase
 
 " Others.
+set splitright
 set belloff=all
 set completeopt=menu
 set dictionary=/usr/share/dict/words
@@ -1096,7 +1097,7 @@ nnoremap <silent> <Leader>vv :Vaffle<CR>
 nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
 
 let g:vaffle_open_selected_split_position = ''
-let g:vaffle_open_selected_vsplit_position = 'rightbelow'
+let g:vaffle_open_selected_vsplit_position = ''
 
 function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
@@ -1118,7 +1119,6 @@ nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 vmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 
 " Capture.vim
-let g:capture_open_command = 'topleft new'
 command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s/%s/print', expand('<bang>'), <q-args>)
 command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s', expand('<bang>'), expand('<cword>'))
 command! -nargs=0 -bang GrepBufferYank       :execute printf(':GrepBuffer%s %s', expand('<bang>'), @0)
