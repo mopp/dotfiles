@@ -1087,11 +1087,21 @@ endfunction
 let g:session_directory = s:session_directory
 
 " vaffle.vim
-nnoremap <silent> <Leader>vv :Vaffle<CR>
-nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
-
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 let g:vaffle_open_selected_split_position = ''
 let g:vaffle_open_selected_vsplit_position = ''
+
+command! VaffleTab tabnew +Vaffle
+command! VaffleSplit split +Vaffle
+command! VaffleVsplit vsplit +Vaffle
+command! VaffleBottomExpplorer botright split +Vaffle | resize 12 | setlocal winfixheight
+command! VaffleExplorer vertical topleft vsplit +Vaffle | vertical resize 35 | setlocal winfixwidth
+
+nnoremap <silent> <Leader>vv :Vaffle<CR>
+nnoremap <silent> <Leader>vl :Vaffle<CR>
+nnoremap <silent> <Leader>ve :VaffleExplorer<CR>
+nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
 
 function! s:on_filetype_vaffle() abort
     nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
