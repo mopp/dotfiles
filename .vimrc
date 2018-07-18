@@ -674,7 +674,7 @@ if dein#tap('denite.nvim')
 
     if executable('rg')
         " For ripgrep.
-        call denite#custom#var('file_rec', 'command', [ 'rg', '--files', '--glob', '!.git', ''])
+        call denite#custom#var('file/rec', 'command', [ 'rg', '--files', '--glob', '!.git', ''])
         call denite#custom#var('grep', 'command', ['rg'])
         call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
         call denite#custom#var('grep', 'recursive_opts', [])
