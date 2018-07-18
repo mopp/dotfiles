@@ -579,6 +579,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('skywind3000/asyncrun.vim', {'lazy': 1, 'on_cmd': ['AsyncRun', 'AsyncStop']})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
+    call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
@@ -586,7 +587,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
-    call dein#add('wesQ3/vim-windowswap', {'lazy': 1, 'on_func': ['WindowSwap#MarkWindowSwap', 'WindowSwap#MarkWindowSwap', 'WindowSwap#DoWindowSwap']})
 
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
@@ -1128,6 +1128,11 @@ nmap <Space>m <Plug>(quickhl-manual-this)
 xmap <Space>m <Plug>(quickhl-manual-this)
 nmap <Space>M <Plug>(quickhl-manual-reset)
 xmap <Space>M <Plug>(quickhl-manual-reset)
+
+" vim-choosewin
+nmap  <Leader>-  <Plug>(choosewin)
+let g:choosewin_overlay_enable = 1
+let g:choosewin_overlay_clear_multibyte = 1
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
