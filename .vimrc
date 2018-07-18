@@ -1124,10 +1124,10 @@ command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s',
 command! -nargs=0 -bang GrepBufferYank       :execute printf(':GrepBuffer%s %s', expand('<bang>'), @0)
 
 " vim-quickhl
-nmap <Space>m <Plug>(quickhl-manual-this)
-xmap <Space>m <Plug>(quickhl-manual-this)
-nmap <Space>M <Plug>(quickhl-manual-reset)
-xmap <Space>M <Plug>(quickhl-manual-reset)
+nmap <Leader>hl <Plug>(quickhl-manual-this)
+xmap <Leader>hl <Plug>(quickhl-manual-this)
+nmap <Leader>hc <Plug>(quickhl-manual-reset)
+xmap <Leader>hc <Plug>(quickhl-manual-reset)
 
 " vim-choosewin
 nmap  <Leader>-  <Plug>(choosewin)
