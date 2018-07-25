@@ -651,22 +651,27 @@ let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
 if dein#tap('denite.nvim')
-    nnoremap [Denite] <Nop>
-    nmap <Leader>f [Denite]
-    nnoremap <silent> [Denite]b  :<C-U>Denite buffer<CR>
-    nnoremap <silent> [Denite]e  :<C-U>Denite file_rec<CR>
-    nnoremap <silent> [Denite]f  :<C-U>Denite file_mru<CR>
-    nnoremap <silent> [Denite]d  :<C-U>Denite -default-action=tab_open directory_mru<CR>
-    nnoremap <silent> [Denite]gg :<C-U>Denite grep<CR>
-    nnoremap <silent> [Denite]gw :<C-U>DeniteCursorWord grep<CR>
-    nnoremap <silent> [Denite]l  :<C-U>Denite line<CR>
-    nnoremap <silent> [Denite]o  :<C-U>Denite outline<CR>
-    nnoremap <silent> [Denite]re :<C-U>Denite -resume<CR>
+    nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
+    nnoremap <silent> <Leader>fe  :<C-U>Denite file/rec<CR>
+    nnoremap <silent> <Leader>ff  :<C-U>Denite file_mru<CR>
+    nnoremap <silent> <Leader>fd  :<C-U>Denite -default-action=tab_open directory_mru<CR>
+    nnoremap <silent> <Leader>fgg :<C-U>Denite grep<CR>
+    nnoremap <silent> <Leader>fgw :<C-U>DeniteCursorWord grep<CR>
+    nnoremap <silent> <Leader>fl  :<C-U>Denite line<CR>
+    nnoremap <silent> <Leader>fo  :<C-U>Denite outline<CR>
+    nnoremap <silent> <Leader>fre :<C-U>Denite -resume<CR>
 
-    call denite#custom#map('_', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('_', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-    call denite#custom#map('_', '<C-t>', '<denite:do_action:tabopen>', 'noremap')
-    call denite#custom#map('_', '<C-v>', '<denite:do_action:preview>', 'noremap')
+    call denite#custom#map('insert', '<C-A>', '<Home>')
+    call denite#custom#map('insert', '<C-E>', '<End>')
+    call denite#custom#map('insert', '<C-F>', '<Right>')
+    call denite#custom#map('insert', '<C-B>', '<Left>')
+    call denite#custom#map('insert', '<C-D>', '<Del>')
+    call denite#custom#map('insert', '<C-J>', '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert', '<C-K>', '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#map('insert', '<C-P>', '<denite:do_action:preview>', 'noremap')
+    call denite#custom#map('insert', '<C-T>', '<denite:do_action:tabopen>', 'noremap')
+    call denite#custom#map('insert', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
+    call denite#custom#map('insert', '<C-S>', '<denite:do_action:split>', 'noremap')
     call denite#custom#option('default', {
                 \ 'highlight_matched_char': 'Keyword',
                 \ 'highlight_matched_range': 'None',
