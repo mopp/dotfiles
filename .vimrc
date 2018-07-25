@@ -1030,11 +1030,16 @@ function! Hook_on_post_source_lexima() abort
                 \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
                 \ {'char': '<BS>', 'at': ' != !\%#', 'input': '<BS><BS><BS><BS>'},
                 \
-                \ {'char': '`', 'input': '`''<Left>', 'syntax': 'Comment', 'filetype': ['erlang']},
-                \ {'char': '<BS>', 'at': '`\%#''', 'input': '<BS><Del>', 'filetype': ['erlang']},
-                \
                 \ {'char': '/', 'at': '^\s*\%#', 'input': '// '},
-                \ {'char': '%', 'at': '^\s*%\%#', 'input': '% ', 'filetype': ['erlang']},
+                \
+                \ {'filetype': ['erlang'], 'char': ':',     'at': ':\%#',     'input': '<BS> :: '},
+                \ {'filetype': ['erlang'], 'char': '=',     'at': ':\%#',     'input': '<BS> := '},
+                \ {'filetype': ['erlang'], 'char': '=',     'at': '= \%#',    'input': '<BS>:= '},
+                \ {'filetype': ['erlang'], 'char': '=',     'at': '!\%#',     'input': '<BS> =/= ', 'priority': 20},
+                \ {'filetype': ['erlang'], 'char': '<BS>',  'at': '`\%#''',   'input': '<BS><Del>'},
+                \ {'filetype': ['erlang'], 'char': '%',     'at': '^\s*%\%#', 'input': '% '},
+                \ {'filetype': ['erlang'], 'char': '<Del>', 'at': ':= \%#',   'input': '<BS><BS><BS>'},
+                \ {'filetype': ['erlang'], 'char': '`',     'input': '`''<Left>', 'syntax': 'Comment', },
                 \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
