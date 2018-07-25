@@ -1116,7 +1116,6 @@ nnoremap <silent> <Leader>ve :VaffleExplorer<CR>
 nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
 
 function! s:on_filetype_vaffle() abort
-    nmap <silent><buffer><nowait> <CR> <Plug>(vaffle-open-current)
     nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
     nmap <silent><buffer><nowait> s <Plug>(vaffle-open-selected-split)
     nmap <silent><buffer><nowait> v <Plug>(vaffle-open-selected-vsplit)
