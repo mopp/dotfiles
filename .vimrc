@@ -439,6 +439,8 @@ endfunction
 " neovim.
 "----------------------------------------------------------------------------"
 if has('nvim')
+    set inccommand=split
+
     tnoremap <ESC> <C-\><C-n>
     nnoremap <Leader>tm :terminal<CR>
     nnoremap <Leader>vst :vsplit term://zsh<CR>
