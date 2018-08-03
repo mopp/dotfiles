@@ -24,7 +24,7 @@
     diffri  = diff --histogram --word-diff --word-diff-regex='\\w+|[^[:space:]]' --no-index
     graph   = log --graph --decorate --oneline
     logs    = log --stat --decorate --color --graph --pretty=fuller
-    open    = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!http://!' -e 's!:([^/])!/\\1!')
+    open    = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!')
     squeeze = commit --amend --no-edit
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
