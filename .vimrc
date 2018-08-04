@@ -260,7 +260,7 @@ nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
 " Functions
 "----------------------------------------------------------------------------"
 function! Mopp_gen_fold_text() abort
-    if &foldmethod == 'marker'
+    if &foldmethod ==# 'marker'
         let l:head = getline(v:foldstart)
     else
         let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
