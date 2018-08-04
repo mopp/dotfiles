@@ -1104,8 +1104,6 @@ let g:session_directory = s:session_directory
 " vaffle.vim
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
-let g:vaffle_open_selected_split_position = ''
-let g:vaffle_open_selected_vsplit_position = ''
 
 command! VaffleTab tabnew +Vaffle
 command! VaffleSplit split +Vaffle
