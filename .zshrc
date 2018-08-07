@@ -46,14 +46,6 @@ case $OSTYPE in
 esac
 # }}}
 
-# Common paths. {{{
-export path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $path
-)
-# }}}
-
 # Options. {{{
 setopt null_glob
 unsetopt beep
@@ -130,6 +122,7 @@ fi
 
 # Initializations. {{{
 export path=(
+    $HOME/.local/bin
     $HOME/.cargo/bin
     $HOME/.rbenv/bin
     $HOME/.erlenv/bin
