@@ -55,6 +55,7 @@ export path=(
 # }}}
 
 # Options. {{{
+setopt null_glob
 unsetopt beep
 unsetopt listbeep
 
