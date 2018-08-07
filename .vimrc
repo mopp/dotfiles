@@ -1102,9 +1102,6 @@ endfunction
 let g:session_directory = s:session_directory
 
 " vaffle.vim
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-
 command! VaffleTab tabnew +Vaffle
 command! VaffleSplit split +Vaffle
 command! VaffleVsplit vsplit +Vaffle
