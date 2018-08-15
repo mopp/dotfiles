@@ -675,6 +675,8 @@ if dein#tap('denite.nvim')
     call denite#custom#map('insert', '<C-T>', '<denite:do_action:tabopen>', 'noremap')
     call denite#custom#map('insert', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
     call denite#custom#map('insert', '<C-S>', '<denite:do_action:split>', 'noremap')
+    call denite#custom#map('normal', 'v', '<denite:do_action:vsplit>', 'noremap')
+    call denite#custom#map('normal', 's', '<denite:do_action:split>', 'noremap')
     call denite#custom#option('default', {
                 \ 'highlight_matched_char': 'Keyword',
                 \ 'highlight_matched_range': 'None',
