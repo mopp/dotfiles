@@ -55,38 +55,6 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;'
 # }}}
 
-# Prompts. {{{
-autoload -Uz add-zsh-hook vcs_info
-
-add-zsh-hook precmd () {
-    prev_status_code=$(printf '%3d' $?)
-    vcs_info
-}
-
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' unstagedstr '%F{196}-%f'
-zstyle ':vcs_info:git:*' stagedstr '%F{047}+%f'
-zstyle ':vcs_info:git:*' formats '%F{146}[<%b>%u%c%F{146}]%f'
-zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
-
-local newline=$'\n'
-local mode_normal='%B%F{118}[NORMAL]%f%b'
-local mode_insert='%B%F{039}[INSERT]%f%b'
-PROMPT2='--%(!.#.>) '
-
-function zle-keymap-select zle-line-init {
-    [ $KEYMAP = 'vicmd' ] && mode=$mode_normal || mode=$mode_insert
-
-    PROMPT="%F{251}[%D{%F %T}]$mode%F{197}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}%(!.#.>)%f%b "
-
-    zle reset-prompt
-}
-
-zle -N zle-line-init
-zle -N zle-keymap-select
-# }}}
-
 # History. {{{
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000
@@ -210,6 +178,38 @@ function extract() {
     esac
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+# }}}
+
+# Prompts. {{{
+autoload -Uz add-zsh-hook vcs_info
+
+add-zsh-hook precmd () {
+    prev_status_code=$(printf '%3d' $?)
+    vcs_info
+}
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' unstagedstr '%F{196}-%f'
+zstyle ':vcs_info:git:*' stagedstr '%F{047}+%f'
+zstyle ':vcs_info:git:*' formats '%F{146}[<%b>%u%c%F{146}]%f'
+zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
+
+local newline=$'\n'
+local mode_normal='%B%F{118}[NORMAL]%f%b'
+local mode_insert='%B%F{039}[INSERT]%f%b'
+PROMPT2='--%(!.#.>) '
+
+function zle-keymap-select zle-line-init {
+    [ $KEYMAP = 'vicmd' ] && mode=$mode_normal || mode=$mode_insert
+
+    PROMPT="%F{251}[%D{%F %T}]$mode%F{197}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}%(!.#.>)%f%b "
+
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
 # }}}
 
 # Keybinds. {{{
