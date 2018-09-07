@@ -429,7 +429,7 @@ function! s:define_filetype_local_settings() abort
         autocmd!
         autocmd FileType git  setlocal nofoldenable
         autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
-        autocmd FileType tex  setlocal wrap spell nocursorline
+        autocmd FileType tex  setlocal wrap nocursorline
         autocmd FileType text,man setlocal wrap
         autocmd FileType help setlocal foldcolumn=0
         autocmd FileType ruby,javascript,html,css setlocal shiftwidth=2
