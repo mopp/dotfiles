@@ -1145,6 +1145,18 @@ let g:choosewin_overlay_clear_multibyte = 1
 " deol.nvim
 command! DeolTabEdit tabnew +DeolEdit
 
+" vim-sandwich
+let g:sandwich#recipes =
+            \ g:sandwich#default_recipes +
+            \ [
+            \ {
+            \   '__filetype__': 'erlang',
+            \   'buns':     ['#{', '}'],
+            \   'input':    ['#'],
+            \   'filetype': ['erlang'],
+            \ }
+            \ ]
+
 "----------------------------------------------------------------------------"
 " autocmd for plugin
 "----------------------------------------------------------------------------"
