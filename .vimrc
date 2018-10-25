@@ -364,6 +364,10 @@ function! s:create_vim_directories() abort
 endfunction
 command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 
+command! -nargs=0 StoreTargetWin let t:target_window = win_getid()
+command! -nargs=0 JumpTargetWin call win_gotoid(t:target_window)
+nnoremap <expr> <Leader>' win_gotoid(t:target_window)
+
 "----------------------------------------------------------------------------"
 " GUI
 "----------------------------------------------------------------------------"
