@@ -3,7 +3,6 @@
 "  \ V /| | '  \| '_/ _| |  _/ _ \ '_| | |\/| / _ \ '_ \ '_ \
 "   \_/ |_|_|_|_|_| \__| |_| \___/_|   |_|  |_\___/ .__/ .__/
 "                                                 |_|  |_|
-
 set nocompatible
 
 " Encoding.
@@ -494,7 +493,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim')
-    call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 
     call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter'})
     if !has('nvim')
@@ -514,9 +512,10 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('racer-rust/vim-racer')
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
+    call dein#add('zchee/deoplete-clang')
 
-    call dein#add('ozelentok/deoplete-gtags', {'if': executable('global')})
-    call dein#add('vim-scripts/gtags.vim', {'lazy': 1, 'if': executable('global'), 'on_cmd': ['Gtags', 'GtagsCursor']})
+    call dein#add('jsfaint/gen_tags.vim')
+    call dein#add('ozelentok/deoplete-gtags')
 
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
@@ -550,7 +549,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
-    call dein#add('chrisbra/NrrwRgn', {'lazy': 1, 'on_cmd': ['NR', 'NW', 'WidenRegion', 'NRV', 'NUD', 'NRP', 'NRM', 'NRS', 'NRN', 'NRL']})
     call dein#add('cocopon/vaffle.vim', {'lazy': 1, 'on_cmd': 'Vaffle'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
@@ -567,19 +565,13 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('mattn/learn-vimscript')
-    call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('mopp/mopkai.vim')
-    call dein#add('mopp/next-alter.vim', {'lazy': 1, 'on_cmd': 'OpenNAlter', 'on_map' : ['n', '<Plug>(next-alter-open)']})
-    call dein#add('mopp/sky-color-clock.vim')
-    call dein#add('mtth/scratch.vim', {'lazy': 1, 'on_cmd': ['Scratch', 'ScratchInsert', 'ScratchPreview', 'ScratchSelection']})
     call dein#add('osyo-manga/vim-anzu')
-    call dein#add('osyo-manga/vim-marching', {'lazy': 1, 'on_ft': ['c', 'cpp']})
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('prakashdanish/vim-githubinator')
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
-    call dein#add('skywind3000/asyncrun.vim', {'lazy': 1, 'on_cmd': ['AsyncRun', 'AsyncStop']})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
@@ -743,7 +735,7 @@ let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
             \   'left': [['mode', 'denite', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
-            \   'right': [['sky_color_clock'], ['fileencoding', 'fileformat', 'lineinfo', 'percent'], ['filetype'], ['ale_status']],
+            \   'right': [['fileencoding', 'fileformat', 'lineinfo', 'percent'], ['filetype'], ['ale_status']],
             \ },
             \ 'inactive': {
             \   'left': [['filename', 'modified']],
@@ -765,11 +757,7 @@ let g:lightline = {
             \   'fileencoding':    "%{ !Lightline_is_visible() ? '' : (strlen(&fenc) ? &fenc : &enc) }",
             \   'fileformat':      "%{ !Lightline_is_visible() ? '' : &fileformat }",
             \   'lineinfo':        "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
-            \   'percent':         "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
-            \   'sky_color_clock': "%#SkyColorClock#%{ !Lightline_is_visible() ? '' : ' ' . sky_color_clock#statusline() . ' '}",
-            \ },
-            \ 'component_raw': {
-            \   'sky_color_clock': 1,
+            \   'percent':         "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }"
             \ },
             \ 'component_visible_condition': {
             \   'filetype':     'Lightline_is_visible()',
@@ -923,14 +911,6 @@ let g:gist_open_browser_after_post = 1
 " layoutplugin.vim
 let g:layoutplugin#is_append_vimrc = 1
 
-" next-alter.vim
-nmap <Leader>an <Plug>(next-alter-open)
-let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
-
-" smartnumber.vim
-let g:snumber_enable_startup = 1
-nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
-
 " mopkai.vim
 let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER !=# 'mopp'))
 
@@ -943,9 +923,6 @@ nmap N <Plug>(anzu-N)<Plug>Pulse
 nmap * <Plug>(anzu-star)<Plug>Pulse
 nmap # <Plug>(anzu-sharp)<Plug>Pulse
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
-
-" vim-marching
-let g:marching_enable_neocomplete = 1
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
@@ -994,9 +971,6 @@ command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-arg
 command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
 nnoremap <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
 let g:junkfile#directory = $HOME . '/workspace/notes'
-
-" scratch.vim
-let g:scratch_no_mappings = 1
 
 " gina.vim
 function! Hook_on_post_source_gina() abort
