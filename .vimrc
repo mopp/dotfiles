@@ -476,8 +476,7 @@ if !isdirectory(s:DEIN_PATH)
     endfunction
     command! SetupPlugins call <SID>setup_plugins()
 
-    " Least settings.
-    set number
+    " Minimum settings.
     filetype plugin indent on
     call s:define_filetype_local_settings()
     syntax enable
@@ -513,9 +512,6 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
     call dein#add('zchee/deoplete-clang')
-
-    call dein#add('jsfaint/gen_tags.vim')
-    call dein#add('ozelentok/deoplete-gtags')
 
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
@@ -557,6 +553,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
     call dein#add('itchyny/vim-parenmatch')
+    call dein#add('jsfaint/gen_tags.vim', {'lazy': 1, 'on_cmd': ['GenGTAGS', 'GenCtags']})
     call dein#add('junegunn/vim-easy-align', {'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': ['<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']})
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
@@ -678,7 +675,7 @@ if dein#tap('denite.nvim')
 
     if executable('rg')
         " For ripgrep.
-        call denite#custom#var('file/rec', 'command', [ 'rg', '--files', '--glob', '!.git', ''])
+        call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git', ''])
         call denite#custom#var('grep', 'command', ['rg'])
         call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
         call denite#custom#var('grep', 'recursive_opts', [])
@@ -846,7 +843,7 @@ let g:lightline#colorscheme#mopkai#palette = {
             \ 'normal': {
             \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \   'middle':  [s:cp_middle],
-            \   'right':   [['#000000', '#000000',   0,    0], ['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], ['#ffffd7', '#1c1c1c', 200, 234]],
+            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], ['#ffffd7', '#1c1c1c', 200, 234]],
             \   'warning': [['#9e9e9e', '#ffdf5f', 247, 221]],
             \   'error':   [['#eeeeee', '#d70000', 255, 160]]
             \ },
@@ -963,11 +960,13 @@ endif
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
-let paths = []
-for p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
-    let paths += glob(p, 0, 1)
-endfor
-let g:ale_erlang_erlc_options = '-o /tmp/ -I include -I _build/default/lib/ ' . join(map(paths, '"-I" . v:val'), ' ')
+function! s:define_erlang_option() abort
+    let paths = []
+    for p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
+        let paths += glob(p, 0, 1)
+    endfor
+    let g:ale_erlang_erlc_options = '-o /tmp/ -I src -I include -I _build/default/lib/ ' . join(map(paths, '"-I" . v:val'), ' ')
+endfunction
 
 " junkfile.vim
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
@@ -1154,6 +1153,7 @@ augroup plugin
     autocmd FileType gina-commit setlocal spell
     autocmd Filetype vaffle call s:on_filetype_vaffle()
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
+    autocmd FileType erlang call s:define_erlang_option()
     autocmd BufEnter * call s:on_load_vaffle(isdirectory(expand('<afile>')))
 augroup END
 
