@@ -428,7 +428,7 @@ function! s:define_filetype_local_settings() abort
         autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
         autocmd FileType text,man setlocal wrap
         autocmd FileType help setlocal foldcolumn=0
-        autocmd FileType ruby,javascript,html,css setlocal shiftwidth=2
+        autocmd FileType ruby,javascript,typescript,html,css setlocal shiftwidth=2
     augroup END
 endfunction
 
@@ -587,7 +587,9 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('derekwyatt/vim-scala', {'lazy': 1, 'on_ft': 'scala'})
     call dein#add('digitaltoad/vim-pug')
     call dein#add('ekalinin/Dockerfile.vim')
+    call dein#add('elzr/vim-json')
     call dein#add('hail2u/vim-css3-syntax')
+    call dein#add('leafgarland/typescript-vim')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
     call dein#add('plasticboy/vim-markdown')
@@ -1139,6 +1141,9 @@ let g:sandwich#recipes =
             \   'filetype': ['erlang'],
             \ }
             \ ]
+
+" vim-json
+let g:vim_json_syntax_conceal = 0
 
 "----------------------------------------------------------------------------"
 " autocmd for plugin
