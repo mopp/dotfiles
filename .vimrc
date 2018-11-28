@@ -415,8 +415,8 @@ augroup mopp
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
 
-    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set relativenumber   | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set norelativenumber | endif
 augroup END
 
 " The autocmds to override filetype local setting have to be run after 'filetype on'.
@@ -424,7 +424,7 @@ augroup END
 function! s:define_filetype_local_settings() abort
     augroup mopp_filetype_overwrite
         autocmd!
-        autocmd FileType git  setlocal nofoldenable
+        autocmd FileType git setlocal nofoldenable
         autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
         autocmd FileType text,man setlocal wrap
         autocmd FileType help setlocal foldcolumn=0
@@ -633,10 +633,11 @@ imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#scope_aliases = {}
-let g:neosnippet#scope_aliases['stylus'] = 'stylus,css,scss'
-let g:neosnippet#scope_aliases['pug'] = 'jade'
-let g:neosnippet#scope_aliases['handlebars'] = 'handlebars,html'
+let g:neosnippet#scope_aliases = {
+            \ 'stylus': 'stylus,css,scss',
+            \ 'pug': 'jade',
+            \ 'handlebars': 'handlebars,html'
+            \ }
 
 " neomru.vim
 let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
