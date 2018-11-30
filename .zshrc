@@ -261,18 +261,6 @@ function switch_cc_cxx() {
     fi
 }
 
-function select_from_git_status() {
-    files=($(git status --short | awk '{print $2}'))
-    select answer in $files; do
-        echo $answer
-        break
-    done
-}
-
-function open_from_git_status() {
-    $EDITOR $(select_from_git_status)
-}
-
 function copy() {
     [ -p /dev/stdin ] && input='-' || input=$@
 

@@ -14,18 +14,15 @@
 [github]
     user = mopp
 [alias]
-    diffh   = diff --histogram
-    diffhi  = diff --histogram --no-index
-    diffs   = diff --histogram --staged
-    diffsi  = diff --histogram --staged --no-index
-    diffw   = diff --histogram --word-diff
-    diffwi  = diff --histogram --word-diff --no-index
-    diffr   = diff --histogram --word-diff --word-diff-regex='\\w+|[^[:space:]]'
-    diffri  = diff --histogram --word-diff --word-diff-regex='\\w+|[^[:space:]]' --no-index
-    graph   = log --graph --decorate --oneline
-    logs    = log --stat --decorate --color --graph --pretty=fuller
-    open    = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!')
+    diffh = diff --histogram
+    diffw = diff --histogram --word-diff --word-diff-regex='\\w+|[^[:space:]]'
+    graph = log --graph --decorate --oneline
+    logs = log --stat --decorate --color --graph --pretty=fuller
+    open = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!')
+    rename = "!f() { git branch -m $(git name-rev --name-only HEAD) $1; }; f"
+    select = "!f() { select ans in $(git status --short | awk '{print $2}'); do $EDITOR $ans; break; done }; f"
     squeeze = commit --amend --no-edit
+    unstage = reset HEAD
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
 [pager]
