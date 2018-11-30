@@ -19,7 +19,7 @@
     graph = log --graph --decorate --oneline
     logs = log --stat --decorate --color --graph --pretty=fuller
     open = !$(command -v open || command -v xdg-open) $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!')
-    rename = "!f() { git branch -m $(git name-rev --name-only HEAD) $1; }; f"
+    rename = branch -m
     select = "!f() { select ans in $(git status --short | awk '{print $2}'); do $EDITOR $ans; break; done }; f"
     squeeze = commit --amend --no-edit
     unstage = reset HEAD
