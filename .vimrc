@@ -1,3 +1,4 @@
+" vim: foldmethod=marker
 " __   ___                 __           __  __
 " \ \ / (_)_ __  _ _ __   / _|___ _ _  |  \/  |___ _ __ _ __
 "  \ V /| | '  \| '_/ _| |  _/ _ \ '_| | |\/| / _ \ '_ \ '_ \
@@ -5,7 +6,7 @@
 "                                                 |_|  |_|
 set nocompatible
 
-" Encoding.
+" Encoding. {{{
 if has('vim_starting')
     " Changing encoding in Vim at runtime is undefined behavior.
     set encoding=utf-8
@@ -14,8 +15,9 @@ if has('vim_starting')
 endif
 " This command has to be after `set encoding`.
 scriptencoding utf-8
+" }}}
 
-" Indent.
+" Indent. {{{
 set autoindent
 set backspace=2
 set breakindent
@@ -23,8 +25,9 @@ set expandtab
 set shiftwidth=4
 set smartindent
 set tabstop=4
+" }}}
 
-" Appearance.
+" Appearance. {{{
 set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
@@ -43,34 +46,40 @@ set showmatch
 set showtabline=2
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 set synmaxcol=512
+" }}}
 
-" Folding.
+" Folding. {{{
 set foldenable
 set foldcolumn=1
 set foldmethod=indent
 set foldtext=Mopp_gen_fold_text()
+set foldmarker=\ {{{,\ }}}
+" }}}
 
-" Safety.
+" Safety. {{{
 set backup
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 set swapfile
 set writebackup
+" }}}
 
-" History
+" History {{{
 set history=2048
 set undodir=~/.vim/undo
 set undofile
 set viewoptions=cursor,folds
+" }}}
 
-" Search.
+" Search. {{{
 set hlsearch
 set ignorecase
 set incsearch
 set path=.,/usr/local/include,/usr/include,./include
 set smartcase
+" }}}
 
-" Others.
+" Others. {{{
 set splitright
 set belloff=all
 set completeopt=menu
@@ -89,7 +98,7 @@ set wildignorecase
 set wildmenu
 set virtualedit=all
 
-" Turn off default plugins.
+" Turn off default plugins. {{{
 let g:loaded_2html_plugin  = 1
 let g:loaded_gzip          = 1
 let g:loaded_rrhelper      = 1
@@ -99,20 +108,23 @@ let g:loaded_vimballPlugin = 1
 let g:loaded_zip           = 1
 let g:loaded_zipPlugin     = 1
 let g:loaded_matchparen    = 1
+" }}}
 
-" Configs for default scripts.
+" Configs for default scripts. {{{
 let g:lisp_rainbow     = 1
 let g:lisp_instring    = 1
 let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h   = 1
 let g:tex_conceal      = ''
 let g:tex_flavor       = 'latex'
+" }}}
+" }}}
 
+" Mappings. {{{
 
 "---------------------------------------------------------------------------"
-" Mappings                                                                  |
-"---------------------------------------------------------------------------|
 " Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
+"------------------|--------|--------|---------|--------|--------|----------|
 " map  / noremap   |    @   |   -    |    -    |   @    |   @    |    @     |
 " nmap / nnoremap  |    @   |   -    |    -    |   -    |   -    |    -     |
 " vmap / vnoremap  |    -   |   -    |    -    |   @    |   @    |    -     |
@@ -181,16 +193,16 @@ noremap <silent> <S-Right> :<C-U>wincmd ><CR>
 noremap <silent> <S-Up>    :<C-U>wincmd -<CR>
 noremap <silent> <S-Down>  :<C-U>wincmd +<CR>
 
-" Yank & Paste
-function! s:paste_with_register(register, paste_type, paste_cmd) abort
+" Yank & Paste {{{
+function! s:paste_with_register(register, paste_type, paste_cmd) abort " {{{
     let l:reg_type = getregtype(a:register)
     let l:store = getreg(a:register)
     call setreg(a:register, l:store, a:paste_type)
     exe 'normal! "' . a:register . a:paste_cmd
     call setreg(a:register, l:store, l:reg_type)
-endfunction
+endfunction " }}}
 
-function! s:copy_to_clipboard() abort
+function! s:copy_to_clipboard() abort " {{{
     let l:store = @@
     silent normal! gvy
     let l:selected = @@
@@ -198,7 +210,7 @@ function! s:copy_to_clipboard() abort
 
     let @+ = l:selected
     let @* = l:selected
-endfunction
+endfunction " }}}
 
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :<C-U>set paste!<CR>
@@ -208,6 +220,7 @@ nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
 nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
 nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
 nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
+" }}}
 
 " Open help of a word under the cursor.
 nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
@@ -245,7 +258,7 @@ nnoremap <silent> <Leader>w :<C-U>write<CR>
 if has('nvim')
     nnoremap <silent> <Leader>ev :<C-U>tab drop $MYVIMRC<CR>
 else
-    " The `drop` is available on gvim.
+    " The `drop` is available on gvim or neovim.
     nnoremap <silent> <Leader>ev :<C-U>tabnew $MYVIMRC<CR>
 endif
 
@@ -254,11 +267,10 @@ nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', expand('%:h'), expand('<cfil
 
 " Keep indent
 nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
+" }}}
 
-"----------------------------------------------------------------------------"
-" Functions
-"----------------------------------------------------------------------------"
-function! Mopp_gen_fold_text() abort
+" Functions {{{
+function! Mopp_gen_fold_text() abort " {{{
     if &foldmethod ==# 'marker'
         let l:head = getline(v:foldstart)
     else
@@ -268,9 +280,9 @@ function! Mopp_gen_fold_text() abort
     let l:tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
     let l:num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(l:head) - strdisplaywidth(l:tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
     return join([l:head, repeat(' ', l:num_spaces), l:tail], '')
-endfunction
+endfunction " }}}
 
-function! s:remove_tail_spaces() abort
+function! s:remove_tail_spaces() abort " {{{
     if &filetype ==# 'markdown'
         return
     endif
@@ -278,12 +290,10 @@ function! s:remove_tail_spaces() abort
     let l:c = getpos('.')
     g/.*\s$/normal $gelD
     call setpos('.', l:c)
-endfunction
+endfunction " }}}
+" }}}
 
-
-"----------------------------------------------------------------------------"
-" Commands
-"----------------------------------------------------------------------------"
+" Commands. {{{
 " Reload .vimrc
 command! ReloadVimrc :source $MYVIMRC
 
@@ -366,10 +376,9 @@ command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
 command! -nargs=0 StoreTargetWin let t:target_window = win_getid()
 command! -nargs=0 JumpTargetWin call win_gotoid(t:target_window)
 nnoremap <expr> <Leader>' win_gotoid(t:target_window)
+" }}}
 
-"----------------------------------------------------------------------------"
-" GUI
-"----------------------------------------------------------------------------"
+" GUI. {{{
 if has('gui_running')
     let g:no_buffers_menu = 1
     set guioptions-=emTrlL
@@ -386,11 +395,9 @@ if has('gui_running')
         set columns=120
     endif
 endif
+" }}}
 
-
-"----------------------------------------------------------------------------"
-" autocmd
-"----------------------------------------------------------------------------"
+" Autocommands. {{{
 augroup mopp
     autocmd!
 
@@ -421,7 +428,7 @@ augroup END
 
 " The autocmds to override filetype local setting have to be run after 'filetype on'.
 " Because ftplugins are load when 'filetype on'.
-function! s:define_filetype_local_settings() abort
+function! s:define_filetype_local_settings() abort " {{{
     augroup mopp_filetype_overwrite
         autocmd!
         autocmd FileType git setlocal nofoldenable
@@ -430,12 +437,10 @@ function! s:define_filetype_local_settings() abort
         autocmd FileType help setlocal foldcolumn=0
         autocmd FileType ruby,javascript,typescript,html,css setlocal shiftwidth=2
     augroup END
-endfunction
+endfunction " }}}
+" }}}
 
-
-"----------------------------------------------------------------------------"
-" neovim.
-"----------------------------------------------------------------------------"
+" Neovim. {{{
 if has('nvim')
     set inccommand=split
 
@@ -451,17 +456,16 @@ if has('nvim')
         let g:python3_host_prog = '/usr/local/bin/python3'
     endif
 endif
+" }}}
 
-
-"----------------------------------------------------------------------------"
-" Plugin
-"----------------------------------------------------------------------------"
+" Plugins. {{{
 let s:DEIN_BASE_PATH = expand('$HOME/.vim/bundle/')
 let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
 
-if !isdirectory(s:DEIN_PATH)
-    " Define commands to install dein.vim
-    function! s:setup_plugins() abort
+if !isdirectory(s:DEIN_PATH) " {{{
+    " Command to install dein.vim
+    command! SetupPlugins call s:setup_plugins()
+    function! s:setup_plugins() abort " {{{
         if !executable('git')
             echoerr 'git is not found.'
             return
@@ -473,8 +477,7 @@ if !isdirectory(s:DEIN_PATH)
         source $MYVIMRC
         unlet g:is_load_only_dein_settings
         call dein#install()
-    endfunction
-    command! SetupPlugins call <SID>setup_plugins()
+    endfunction " }}}
 
     " Minimum settings.
     filetype plugin indent on
@@ -482,12 +485,12 @@ if !isdirectory(s:DEIN_PATH)
     syntax enable
     colorscheme desert
     finish
-endif
+endif " }}}
 
-" dein.vim
+" dein.vim {{{
 let &runtimepath .= ',' . s:DEIN_PATH
 
-if dein#load_state(s:DEIN_BASE_PATH)
+if dein#load_state(s:DEIN_BASE_PATH) " {{{
     call dein#begin(s:DEIN_BASE_PATH)
 
     call dein#add('Shougo/dein.vim')
@@ -499,6 +502,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
         call dein#add('roxma/vim-hug-neovim-rpc')
     endif
 
+    " Completion {{{
     let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim']}
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
@@ -512,11 +516,13 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
     call dein#add('zchee/deoplete-clang')
+    " }}}
 
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('rafi/vim-denite-session')
 
+    " Operators and textobjs {{{
     call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('kana/vim-operator-replace', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('kana/vim-operator-user')
@@ -529,11 +535,9 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('sgur/vim-textobj-parameter', {'lazy': 1, 'on_map': [['ox', 'a,', 'i,', 'i2,']]})
 
     call dein#add('machakann/vim-sandwich')
+    " }}}
 
-    call dein#add('Yggdroot/indentLine')
-    call dein#add('luochen1990/rainbow')
-    call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
-
+    " Utils {{{
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
@@ -542,6 +546,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
+    call dein#add('Yggdroot/indentLine')
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
@@ -559,6 +564,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('kana/vim-tabpagecd')
     call dein#add('kannokanno/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
+    call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('mattn/learn-vimscript')
@@ -568,6 +574,7 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('prakashdanish/vim-githubinator')
+    call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
@@ -578,7 +585,9 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
+    " }}}
 
+    " Languages {{{
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
     call dein#add('derekwyatt/vim-scala', {'lazy': 1, 'on_ft': 'scala'})
@@ -599,10 +608,11 @@ if dein#load_state(s:DEIN_BASE_PATH)
     call dein#add('vim-jp/vimdoc-ja')
     call dein#add('vim-ruby/vim-ruby')
     call dein#add('vim-scripts/sh.vim--Cla')
+    " }}}
 
     call dein#end()
     call dein#save_state()
-endif
+endif " }}}
 
 filetype plugin indent on
 call s:define_filetype_local_settings()
@@ -610,24 +620,26 @@ call s:define_filetype_local_settings()
 if exists('g:is_load_only_dein_settings')
     finish
 endif
+" }}}
 
-function! s:accelerate() abort
-    :IndentLinesDisable
-    :RainbowToggleOff
-    :ALEDisable
+" Command to stop some features which affect performance.
+command! Accelerate call s:accelerate()
+function! s:accelerate() abort " {{{
+    IndentLinesDisable
+    RainbowToggleOff
+    ALEDisable
     set nocursorline
 endfunction
+" }}}
 
-" Disable heavy plugins and effects.
-command! Accelerate call <SID>accelerate()
-
-" deoplete.nvim
+" deoplete.nvim {{{
 let g:deoplete#enable_at_startup = 1
 " If the default sources are defined, some completions are not work.
 " let g:deoplete#sources           = {}
 " let g:deoplete#sources._         = ['buffer']
+" }}}
 
-" neosnippet.vim
+" neosnippet.vim {{{
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
@@ -637,12 +649,13 @@ let g:neosnippet#scope_aliases = {
             \ 'pug': 'jade',
             \ 'handlebars': 'handlebars,html'
             \ }
+" }}}
 
 " neomru.vim
 let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
-if dein#tap('denite.nvim')
+if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
     nnoremap <silent> <Leader>fe  :<C-U>Denite file/rec<CR>
     nnoremap <silent> <Leader>ff  :<C-U>Denite file_mru<CR>
@@ -673,7 +686,7 @@ if dein#tap('denite.nvim')
                 \ })
     call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
 
-    if executable('rg')
+    if executable('rg') " {{{
         " For ripgrep.
         call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git', ''])
         call denite#custom#var('grep', 'command', ['rg'])
@@ -682,8 +695,8 @@ if dein#tap('denite.nvim')
         call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
         call denite#custom#var('grep', 'separator', ['--'])
         call denite#custom#var('grep', 'final_opts', [])
-    endif
-endif
+    endif " }}}
+endif " }}}
 
 " vim-operator-flashy
 map y <Plug>(operator-flashy)
@@ -693,7 +706,7 @@ let g:operator#flashy#group = 'Error'
 " operator-replace
 map _ <Plug>(operator-replace)
 
-" operator-convert-case.vim
+" operator-convert-case.vim {{{
 nmap <Leader>,cl <Plug>(operator-convert-case-lower-camel)
 nmap <Leader>,cu <Plug>(operator-convert-case-upper-camel)
 nmap <Leader>,sl <Plug>(operator-convert-case-lower-snake)
@@ -701,8 +714,9 @@ nmap <Leader>,su <Plug>(operator-convert-case-upper-snake)
 nmap <Leader>,tt <Plug>(operator-convert-case-toggle-upper-lower)
 nmap <Leader>,ll <Plug>(operator-convert-case-loop)
 nmap <Leader>,cc <Plug>(operator-convert-case-convert)
+" }}}
 
-" yankround.vim
+" yankround.vim {{{
 let g:yankround_use_region_hl = 1
 let g:yankround_region_hl_groupname = 'Error'
 nmap p <Plug>(yankround-p)
@@ -713,16 +727,18 @@ xmap gp <Plug>(yankround-gp)
 nmap gP <Plug>(yankround-gP)
 nmap <C-p> <Plug>(yankround-prev)
 nmap <C-n> <Plug>(yankround-next)
+" }}}
 
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
-" vim-gitgutter
+" vim-gitgutter {{{
 let g:gitgutter_map_keys = 0
 nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterUndoHunk
 nmap <Leader>hp <Plug>GitGutterPrevHunk
 nmap <Leader>hn <Plug>GitGutterNextHunk
+" }}}
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vaffle' ]
@@ -730,7 +746,7 @@ let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vaffle' ]
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
 
-" lightline.vim
+" lightline.vim {{{
 let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
@@ -776,9 +792,8 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_ignore_ft_pattern = 'vaffle\|tagbar\|denite\|help'
 function! Lightline_is_ignore_ft() abort
-    return (&filetype =~? g:lightline_ignore_ft_pattern)
+    return (&filetype =~? 'vaffle\|tagbar\|denite\|help')
 endfunction
 
 function! Lightline_is_visible() abort
@@ -797,7 +812,7 @@ function! Lightline_denite() abort
     return (&filetype !=# 'denite') ? '' : (substitute(denite#get_status_mode(), '[- ]', '', 'g'))
 endfunction
 
-function! Lightline_filename() abort
+function! Lightline_filename() abort " {{{
     if &filetype ==# 'denite'
         return denite#get_status_sources() . denite#get_status_path() . denite#get_status_linenr()
     elseif &filetype ==# 'tagbar'
@@ -806,9 +821,9 @@ function! Lightline_filename() abort
 
     let l:t = expand('%:t')
     return strlen(l:t) ? l:t : '[No Name]'
-endfunction
+endfunction " }}}
 
-function! Lightline_git_status() abort
+function! Lightline_git_status() abort " {{{
     if (dein#is_sourced('gina.vim') == 0) || empty(gina#core#get()) || Lightline_is_ignore_ft()
         return ''
     endif
@@ -817,9 +832,9 @@ function! Lightline_git_status() abort
     let l:track  = gina#component#repo#track()
     let l:status = gina#component#status#preset()
     return printf('<%s> -> %s : [%s]', l:name, l:track, l:status ==# '  ' ? 'None' : l:status)
-endfunction
+endfunction " }}}
 
-function! Lightline_ale_status() abort
+function! Lightline_ale_status() abort " {{{
     if (dein#is_sourced('ale') == 0) || Lightline_is_ignore_ft()
         return ''
     endif
@@ -832,8 +847,9 @@ function! Lightline_ale_status() abort
     let l:count_errors = l:counts.error + l:counts.style_error
     let l:count_warns  = l:counts.warning + l:counts.style_warning
     return printf('E:%d W:%d I:%d', l:count_errors, l:count_warns, l:counts.info)
-endfunction
+endfunction " }}}
 
+" Colors {{{
 let s:cp_fname_modi = ['#ffffff', '#080808', 231, 232]
 let s:cp_read_spell = ['#d70000', '#121212', 160, 233]
 let s:cp_git_status = ['#87afff', '#1c1c1c', 111, 234]
@@ -868,6 +884,8 @@ let g:lightline#colorscheme#mopkai#palette = {
             \   'right':  [['#080808', '#c6c6c6', 232, 251]],
             \ }
             \ }
+" }}}
+" }}}
 
 " vim-parenmatch
 let g:parenmatch_highlight = 0
@@ -880,7 +898,7 @@ nmap ga <Plug>(EasyAlign)
 " previm
 let g:previm_show_header = 0
 
-" rainbow
+" rainbow {{{
 let g:rainbow_active = 1
 let g:rainbow_conf = {
             \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87' ],
@@ -890,8 +908,9 @@ let g:rainbow_conf = {
             \       'css': 0, 'perl': 0, 'html': 0, 'handlebars': 0, 'xml': 0
             \   },
             \   }
+" }}}
 
-" tagbar
+" tagbar {{{
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus   = 1
 let g:tagbar_sort        = 0
@@ -903,6 +922,7 @@ function! Tagbar_status_func(current, sort, fname, ...) abort
     return lightline#statusline(0)
 endfunction
 let g:tagbar_status_func = 'Tagbar_status_func'
+" }}}
 
 " gist-vim
 let g:gist_detect_filetype = 1
@@ -917,12 +937,13 @@ let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER !=# 'mopp'))
 " vim-search-pulse
 let g:vim_search_pulse_disable_auto_mappings = 1
 
-" vim-anzu
+" vim-anzu {{{
 nmap n <Plug>(anzu-n)<Plug>Pulse
 nmap N <Plug>(anzu-N)<Plug>Pulse
 nmap * <Plug>(anzu-star)<Plug>Pulse
 nmap # <Plug>(anzu-sharp)<Plug>Pulse
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
+" }}}
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
@@ -944,19 +965,21 @@ let g:ruby_space_errors = 1
 let g:formatdef_rustfmt = '"rustfmt"'
 let g:formatters_rust = ['rustfmt']
 
-" vim-maximizer
+" vim-maximizer {{{
 let g:maximizer_restore_on_winleave = 1
 nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
 vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
+" }}}
 
-" accelerated-jk
+" accelerated-jk {{{
 if dein#tap('accelerated-jk')
     nmap j <Plug>(accelerated_jk_gj)
     nmap k <Plug>(accelerated_jk_gk)
 endif
+" }}}
 
-" ale
+" ale {{{
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
@@ -967,14 +990,16 @@ function! s:define_erlang_option() abort
     endfor
     let g:ale_erlang_erlc_options = '-o /tmp/ -I src -I include -I _build/default/lib/ ' . join(map(paths, '"-I" . v:val'), ' ')
 endfunction
+" }}}
 
-" junkfile.vim
+" junkfile.vim {{{
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
 command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
 nnoremap <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
 let g:junkfile#directory = $HOME . '/workspace/notes'
+" }}}
 
-" gina.vim
+" gina.vim {{{
 function! Hook_on_post_source_gina() abort
     let l:cmd_opt = {'noremap': 1, 'silent': 1}
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
@@ -989,8 +1014,9 @@ function! Hook_on_post_source_gina() abort
 endfunction
 nnoremap <Leader>gis :<C-U>Gina status<CR>
 nnoremap <Leader>gic :<C-U>Gina commit<CR>
+" }}}
 
-" lexima.vim
+" lexima.vim {{{
 imap <C-h> <BS>
 cmap <C-h> <BS>
 function! Hook_on_post_source_lexima() abort
@@ -1006,7 +1032,8 @@ function! Hook_on_post_source_lexima() abort
     endfor
     let l:rules += [{'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'}]
 
-    let l:rules += [
+    let l:rules +=
+                \ [
                 \ {'char': '<TAB>','at': '([()]*\%#[)]*)', 'input': '<Right>'},
                 \
                 \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
@@ -1076,11 +1103,12 @@ function! Hook_on_post_source_lexima() abort
         call lexima#add_rule(l:rule)
     endfor
 endfunction
+" }}}
 
 " vim-denite-session
 let g:session_directory = s:session_directory
 
-" vaffle.vim
+" vaffle.vim {{{
 command! VaffleTab tabnew +Vaffle
 command! VaffleSplit split +Vaffle
 command! VaffleVsplit vsplit +Vaffle
@@ -1104,6 +1132,7 @@ function! s:on_load_vaffle(is_directory) abort
         call vaffle#event#on_bufenter()
     endif
 endfunction
+" }}}
 
 " caw.vim
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
@@ -1115,11 +1144,12 @@ command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s
 command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s', expand('<bang>'), expand('<cword>'))
 command! -nargs=0 -bang GrepBufferYank       :execute printf(':GrepBuffer%s %s', expand('<bang>'), @0)
 
-" vim-quickhl
+" vim-quickhl {{{
 nmap <Leader>hl <Plug>(quickhl-manual-this)
 xmap <Leader>hl <Plug>(quickhl-manual-this)
 nmap <Leader>hc <Plug>(quickhl-manual-reset)
 xmap <Leader>hc <Plug>(quickhl-manual-reset)
+" }}}
 
 " vim-choosewin
 nmap  <Leader>-  <Plug>(choosewin)
@@ -1129,7 +1159,7 @@ let g:choosewin_overlay_clear_multibyte = 1
 " deol.nvim
 command! DeolTabEdit tabnew +DeolEdit
 
-" vim-sandwich
+" vim-sandwich {{{
 let g:sandwich#recipes =
             \ g:sandwich#default_recipes +
             \ [
@@ -1140,13 +1170,12 @@ let g:sandwich#recipes =
             \   'filetype': ['erlang'],
             \ }
             \ ]
+" }}}
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
 
-"----------------------------------------------------------------------------"
-" autocmd for plugin
-"----------------------------------------------------------------------------"
+" Autocommands for plugins.  {{{
 augroup plugin
     autocmd!
 
@@ -1156,6 +1185,8 @@ augroup plugin
     autocmd FileType erlang call s:define_erlang_option()
     autocmd BufEnter * call s:on_load_vaffle(isdirectory(expand('<afile>')))
 augroup END
+" }}}
+" }}}
 
 syntax enable
 colorscheme mopkai " It should be after syntax command.
