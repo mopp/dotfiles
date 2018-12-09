@@ -21,6 +21,7 @@ case $OSTYPE in
             export path=(/usr/local/opt/$e/bin $path);
             export LDFLAGS="-L/usr/local/opt/$e/lib $LDFLAGS";
             export CPPFLAGS="-I/usr/local/opt/$e/include $CPPFLAGS"
+            export LD_LIBRARY_PATH="/usr/local/opt/$e/lib:$LD_LIBRARY_PATH"
         }
 
         export manpath=(
