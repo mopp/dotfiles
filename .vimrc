@@ -44,6 +44,7 @@ set scrolloff=3
 set showcmd
 set showmatch
 set showtabline=2
+set signcolumn=yes
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 set synmaxcol=512
 " }}}
@@ -271,15 +272,15 @@ nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
 
 " Functions {{{
 function! Mopp_gen_fold_text() abort " {{{
-    if &foldmethod ==# 'marker'
-        let l:head = getline(v:foldstart)
-    else
-        let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    let l:head = getline(v:foldstart)
+    if &foldmethod !=# 'marker'
+        let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(l:head, '^\s*', '', '')
     endif
 
     let l:tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
-    let l:num_spaces = (winwidth(0) - &foldcolumn - strdisplaywidth(l:head) - strdisplaywidth(l:tail) - 1) - (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
-    return join([l:head, repeat(' ', l:num_spaces), l:tail], '')
+    let l:count_columns = &foldcolumn + (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0) + (&signcolumn ==# 'no' ? 0 : 2)
+    let l:spaces = repeat(' ', winwidth(0) - l:count_columns - strdisplaywidth(l:head) - strdisplaywidth(l:tail)- 1)
+    return l:head . l:spaces . l:tail
 endfunction " }}}
 
 function! s:remove_tail_spaces() abort " {{{
