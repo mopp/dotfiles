@@ -13,6 +13,7 @@ if has('vim_starting')
     set fileencodings=utf-8,sjis,cp932,euc-jp
     set fileformats=unix,mac,dos
 endif
+
 " This command has to be after `set encoding`.
 scriptencoding utf-8
 " }}}
@@ -53,7 +54,7 @@ set synmaxcol=512
 set foldenable
 set foldcolumn=1
 set foldmethod=indent
-set foldtext=Mopp_gen_fold_text()
+set foldtext=Mopp_fold_text()
 set foldmarker=\ {{{,\ }}}
 " }}}
 
@@ -100,24 +101,24 @@ set wildmenu
 set virtualedit=all
 
 " Turn off default plugins. {{{
-let g:loaded_2html_plugin  = 1
-let g:loaded_gzip          = 1
-let g:loaded_rrhelper      = 1
-let g:loaded_tar           = 1
-let g:loaded_tarPlugin     = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_gzip = 1
+let g:loaded_rrhelper = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
 let g:loaded_vimballPlugin = 1
-let g:loaded_zip           = 1
-let g:loaded_zipPlugin     = 1
-let g:loaded_matchparen    = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_matchparen = 1
 " }}}
 
 " Configs for default scripts. {{{
-let g:lisp_rainbow     = 1
-let g:lisp_instring    = 1
+let g:lisp_rainbow = 1
+let g:lisp_instring = 1
 let g:lispsyntax_clisp = 1
-let g:c_syntax_for_h   = 1
-let g:tex_conceal      = ''
-let g:tex_flavor       = 'latex'
+let g:c_syntax_for_h = 1
+let g:tex_conceal = ''
+let g:tex_flavor = 'latex'
 " }}}
 " }}}
 
@@ -171,12 +172,6 @@ nnoremap <silent> [B :<C-U>bfirst<CR>
 nnoremap <silent> ]B :<C-U>blast<CR>
 nnoremap <silent> [b :<C-U>bprevious<CR>
 nnoremap <silent> ]b :<C-U>bnext<CR>
-
-" Managing location list.
-nnoremap <silent> [o :<C-U>lprevious<CR>
-nnoremap <silent> ]o :<C-U>lnext<CR>
-nnoremap <silent> [O :<C-U>lfirst<CR>
-nnoremap <silent> ]O :<C-U>llast<CR>
 
 " Managing tab.
 nnoremap <Leader>to :<C-U>tabnew<Space>
@@ -271,7 +266,7 @@ nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
 " }}}
 
 " Functions {{{
-function! Mopp_gen_fold_text() abort " {{{
+function! Mopp_fold_text() abort " {{{
     let l:head = getline(v:foldstart)
     if &foldmethod !=# 'marker'
         let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(l:head, '^\s*', '', '')
@@ -305,31 +300,17 @@ command! SpellCheckToggle :setlocal spell!
 " Echo highlight name of an object under the cursor.
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-" (number, number) -> string.
-function! s:convert_base_number(base, n) abort
-    if a:base == 2
-        return printf('0b%b', a:n)
-    elseif a:base == 8
-        return printf('0o%o', a:n)
-    elseif a:base == 10
-        return printf('%d', a:n)
-    elseif a:base == 16
-        return printf('0x%x', a:n)
-    endif
-
-    throw 'Supported bases are 16, 10, 8 and 2 only.'
-endfunction
-
-" (number, string) -> string.
-function! s:eval_as_base_number(base, exp) abort
+" Convert number expression. {{{
+let s:format = { 2: '0b%b', 8: '0o%o', 10: '%d', 16: '0x%x' }
+function! s:eval_as_base_number(base, exp) abort " {{{
     let result = eval(a:exp)
 
     if type(0) != type(result)
         throw 'The result of the given expression have to be Number'
     endif
 
-    return s:convert_base_number(a:base, result)
-endfunction
+    return printf(s:format[a:base], result)
+endfunction " }}}
 
 command! -nargs=1 EvalAsBin echomsg <SID>eval_as_base_number(2, <f-args>)
 command! -nargs=1 EvalAsOct echomsg <SID>eval_as_base_number(8, <f-args>)
@@ -343,7 +324,9 @@ imap <silent> <C-G><C-B> <C-G>b
 imap <silent> <C-G><C-O> <C-G>o
 imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
+" }}}
 
+" Keep last session. {{{
 let s:session_directory = '~/.vim/sessions/'
 let s:last_session_filepath = s:session_directory . 'last_session.vim'
 
@@ -358,13 +341,10 @@ endfunction
 
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
 command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
+" }}}
 
-function! s:mkdir_if_not_exist(path) abort
-    if !isdirectory(a:path)
-        call mkdir(a:path)
-    endif
-endfunction
-
+" Create Vim directories if not found. {{{
+command! -nargs=0 CreateVimDirectories call s:create_vim_directories()
 function! s:create_vim_directories() abort
     let base_dir = fnamemodify($MYVIMRC, ':h') . '/'
     call s:mkdir_if_not_exist(base_dir . 'sessions')
@@ -372,11 +352,17 @@ function! s:create_vim_directories() abort
     call s:mkdir_if_not_exist(base_dir . 'backup')
     call s:mkdir_if_not_exist(base_dir . 'swap')
 endfunction
-command! -nargs=0 CreateVimDirectories call <SID>create_vim_directories()
+
+function! s:mkdir_if_not_exist(path) abort
+    if !isdirectory(a:path)
+        call mkdir(a:path)
+    endif
+endfunction
+" }}}
 
 command! -nargs=0 StoreTargetWin let t:target_window = win_getid()
 command! -nargs=0 JumpTargetWin call win_gotoid(t:target_window)
-nnoremap <expr> <Leader>' win_gotoid(t:target_window)
+nnoremap <expr> <Leader>' :<C-U>JumpTargetWin
 " }}}
 
 " GUI. {{{
