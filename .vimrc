@@ -487,13 +487,13 @@ if dein#load_state(s:DEIN_BASE_PATH) " {{{
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim')
 
+    " Completions {{{
     call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter'})
     if !has('nvim')
         call dein#add('roxma/nvim-yarp')
         call dein#add('roxma/vim-hug-neovim-rpc')
     endif
 
-    " Completion {{{
     let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim']}
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
@@ -509,9 +509,11 @@ if dein#load_state(s:DEIN_BASE_PATH) " {{{
     call dein#add('zchee/deoplete-clang')
     " }}}
 
+    " Denite {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('rafi/vim-denite-session')
+    " }}}
 
     " Operators and textobjs {{{
     call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': '<Plug>'})
