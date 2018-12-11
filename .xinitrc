@@ -34,20 +34,13 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 
-function is_existed() {
-    [ -x "$(command -v $1)" ]
-}
-
-is_existed dropbox && dropbox &
-is_existed urxvtd && urxvtd -q -f -o &
-
-# For uim.
-export GTK_IM_MODULE="uim"
-export QT_IM_MODULE="uim"
-export XMODIFIERS="@im=uim"
-export XIM_PROGRAM="uim-xim"
-uim-xim --async &
-uim-toolbar-gtk3-systray &
+# fcitx.
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export QT5_IM_MODULE=fcitx
+export QT_QPA_PLATFORMTHEME=qt5ct
+fcitx -rd &
 
 # Environment specific settings.
 case $HOSTNAME in
