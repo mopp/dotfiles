@@ -411,6 +411,10 @@ augroup mopp
 
     autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set relativenumber   | endif
     autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set norelativenumber | endif
+
+    if executable('fcitx-remote')
+        autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
+    endif
 augroup END
 
 " The autocmds to override filetype local setting have to be run after 'filetype on'.
