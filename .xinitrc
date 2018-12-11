@@ -2,29 +2,19 @@
 HOSTNAME=$(hostname)
 
 SYSTEM_RESOURCES=/etc/X11/xinit/.Xresources
-if [ -f $SYSTEM_RESOURCES ]; then
-    xrdb -merge $SYSTEM_RESOURCES
-fi
-
-SYSTEM_MODMAP=/etc/X11/xinit/.Xmodmap
-if [ -f $SYSTEM_MODMAP ]; then
-    xmodmap $SYSTEM_MODMAP
-fi
+[ -f $SYSTEM_RESOURCES ] && xrdb -merge $SYSTEM_RESOURCES
 
 USER_RESOURCES=$HOME/.Xresources
-if [ -f "$USER_RESOURCES" ]; then
-    xrdb -merge "$USER_RESOURCES"
-fi
+[ -f "$USER_RESOURCES" ] && xrdb -merge "$USER_RESOURCES"
 
 ENV_RESOURCES=$HOME/.Xresources.$HOSTNAME
-if [ -f "$ENV_RESOURCES" ]; then
-    xrdb -merge "$ENV_RESOURCES"
-fi
+[ -f "$ENV_RESOURCES" ] && xrdb -merge "$ENV_RESOURCES"
+
+SYSTEM_MODMAP=/etc/X11/xinit/.Xmodmap
+[ -f "$SYSTEM_MODMAP" ] && xmodmap "$SYSTEM_MODMAP"
 
 USER_MODMAP=$HOME/.Xmodmap
-if [ -f "$USER_MODMAP" ]; then
-    xmodmap "$USER_MODMAP"
-fi
+[ -f "$USER_MODMAP" ] && xmodmap "$USER_MODMAP"
 
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
@@ -33,6 +23,8 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
+command -v dropbox && dropbox &
+command -v urxvtd  && urxvtd -q -f -o &
 
 # fcitx.
 export XMODIFIERS=@im=fcitx
