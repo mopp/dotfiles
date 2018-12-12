@@ -416,19 +416,6 @@ augroup mopp
         autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
     endif
 augroup END
-
-" The autocmds to override filetype local setting have to be run after 'filetype on'.
-" Because ftplugins are load when 'filetype on'.
-function! s:define_filetype_local_settings() abort " {{{
-    augroup mopp_filetype_overwrite
-        autocmd!
-        autocmd FileType git setlocal nofoldenable
-        autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
-        autocmd FileType text,man setlocal wrap
-        autocmd FileType help setlocal foldcolumn=0
-        autocmd FileType ruby,javascript,typescript,html,css setlocal shiftwidth=2
-    augroup END
-endfunction " }}}
 " }}}
 
 " Neovim. {{{
@@ -450,39 +437,15 @@ endif
 " }}}
 
 " Plugins. {{{
-let s:DEIN_BASE_PATH = expand('$HOME/.vim/bundle/')
-let s:DEIN_PATH      = s:DEIN_BASE_PATH . 'repos/github.com/Shougo/dein.vim'
-
-if !isdirectory(s:DEIN_PATH) " {{{
-    " Command to install dein.vim
-    command! SetupPlugins call s:setup_plugins()
-    function! s:setup_plugins() abort " {{{
-        if !executable('git')
-            echoerr 'git is not found.'
-            return
-        endif
-
-        execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:DEIN_PATH
-        let &runtimepath .= ',' . s:DEIN_PATH
-        let g:is_load_only_dein_settings = 1
-        source $MYVIMRC
-        unlet g:is_load_only_dein_settings
-        call dein#install()
-    endfunction " }}}
-
-    " Minimum settings.
-    filetype plugin indent on
-    call s:define_filetype_local_settings()
-    syntax enable
-    colorscheme desert
-    finish
-endif " }}}
 
 " dein.vim {{{
-let &runtimepath .= ',' . s:DEIN_PATH
+let s:dein_base_path = expand('~/.vim/bundle/')
+let s:dein_path = s:dein_base_path . 'repos/github.com/Shougo/dein.vim'
+let s:has_dein = isdirectory(s:dein_path)
+let &runtimepath .= ',' . s:dein_path
 
-if dein#load_state(s:DEIN_BASE_PATH) " {{{
-    call dein#begin(s:DEIN_BASE_PATH)
+if s:has_dein && dein#load_state(s:dein_base_path) " {{{
+    call dein#begin(s:dein_base_path)
 
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim')
@@ -609,11 +572,43 @@ if dein#load_state(s:DEIN_BASE_PATH) " {{{
 endif " }}}
 
 filetype plugin indent on
-call s:define_filetype_local_settings()
 
-if exists('g:is_load_only_dein_settings')
+" ftplugins are loaded when 'filetype on'.
+" The autocmds to override filetype local settings have to be executed after 'filetype on'.
+augroup mopp_filetype_overwrite " {{{
+    autocmd!
+    autocmd FileType git setlocal nofoldenable
+    autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
+    autocmd FileType text,man setlocal wrap
+    autocmd FileType help setlocal foldcolumn=0
+    autocmd FileType ruby,javascript,typescript,html,css setlocal shiftwidth=2
+augroup END " }}}
+
+if !s:has_dein " {{{
+    " Install all plugins.
+    command! SetupPlugins call s:setup_plugins()
+    function! s:setup_plugins() abort " {{{
+        if !executable('git')
+            echoerr 'git is not found.'
+            return
+        endif
+
+        call s:create_vim_directories()
+        execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:dein_path
+        let &runtimepath .= ',' . s:dein_path
+        let g:is_setup = 1
+        source $MYVIMRC
+        call dein#install()
+        unlet g:is_setup
+    endfunction " }}}
+
+    " Minimum settings.
+    syntax enable
+    colorscheme desert
     finish
-endif
+elseif exists('g:is_setup')
+    finish
+endif " }}}
 " }}}
 
 " Command to stop some features which affect performance.
