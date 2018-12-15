@@ -251,10 +251,10 @@ nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
 nnoremap <silent> <Leader>w :<C-U>write<CR>
 
 " Open vimrc at newtab.
-if has('nvim')
+if has('nvim') || has('patch-8.0.1508')
+    " `drop` command is available on gvim, neovim or vim 8.0.1508.
     nnoremap <silent> <Leader>ev :<C-U>tab drop $MYVIMRC<CR>
 else
-    " The `drop` is available on gvim or neovim.
     nnoremap <silent> <Leader>ev :<C-U>tabnew $MYVIMRC<CR>
 endif
 
