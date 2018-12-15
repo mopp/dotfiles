@@ -1000,7 +1000,7 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', l:cmd_opt)
-    call gina#custom#command#option('/.*', '--opener', 'split')
+    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--opener', 'split')
 endfunction
 nnoremap <Leader>gis :<C-U>Gina status<CR>
 nnoremap <Leader>gic :<C-U>Gina commit<CR>
