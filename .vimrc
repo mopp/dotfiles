@@ -769,7 +769,7 @@ let g:lightline = {
             \ },
             \ 'component_visible_condition': {
             \   'denite':       "&filetype==# 'denite'",
-            \   'modified':     'LightlineIsVisible()',
+            \   'modified':     'LightlineIsVisible() && &modifiable',
             \   'fileencoding': 'LightlineIsVisible()',
             \   'fileformat':   'LightlineIsVisible()',
             \ },
