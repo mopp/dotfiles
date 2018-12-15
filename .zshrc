@@ -45,6 +45,8 @@ case $OSTYPE in
         esac
         ;;
 esac
+
+export fpath=(~/.zfunc/ $fpath)
 # }}}
 
 # Options. {{{
