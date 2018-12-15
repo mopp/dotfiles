@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --bg-center --image-bg '#fcf5e3' '/home/mopp/Dropbox/Photos/background0.jpg'
+feh --bg-center --image-bg '#fcf5e3' '/home/mopp/Dropbox/Photos/background0.jpg' 
