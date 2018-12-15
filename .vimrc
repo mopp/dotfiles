@@ -740,7 +740,7 @@ let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
             \   'left': [['mode', 'denite', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
-            \   'right': [['fileencoding', 'fileformat', 'lineinfo', 'percent'], ['filetype'], ['ale_status']],
+            \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype'], ['ale_status']],
             \ },
             \ 'inactive': {
             \   'left': [['filename', 'modified']],
@@ -757,85 +757,53 @@ let g:lightline = {
             \ 'tabline_separator': { 'left': '', 'right': '' },
             \ 'tabline_subseparator': { 'left': '', 'right': '' },
             \ 'component': {
-            \   'readonly':        "%{ (Lightline_is_visible() && &readonly) ? 'RO' : '' }",
-            \   'filetype':        "%{ !Lightline_is_visible() ? '' : &filetype }",
-            \   'fileencoding':    "%{ !Lightline_is_visible() ? '' : (strlen(&fenc) ? &fenc : &enc) }",
-            \   'fileformat':      "%{ !Lightline_is_visible() ? '' : &fileformat }",
-            \   'lineinfo':        "%{ !Lightline_is_visible() ? '' : printf('%03d:%03d', line('.'), col('.')) }",
-            \   'percent':         "%{ !Lightline_is_visible() ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }"
+            \   'mode':         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
+            \   'denite':       "%{ (&filetype !=# 'denite') ? '' : denite#get_status('raw_mode') }",
+            \   'modified':     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
+            \   'readonly':     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
+            \   'git_status':   "%{ (LightlineIsVisible() && dein#is_sourced('gina.vim')) ? printf('%s: [%s]', gina#component#repo#branch(), gina#component#status#preset()) : '' }",
+            \   'filetype':     "%{ LightlineIsVisible() ? &filetype : '' }",
+            \   'fileencoding': "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
+            \   'fileformat':   "%{ LightlineIsVisible() ? &fileformat : '' }",
+            \   'lineinfo':     '%03l:%03v:%03p%%',
             \ },
             \ 'component_visible_condition': {
-            \   'filetype':     'Lightline_is_visible()',
-            \   'fileencoding': 'Lightline_is_visible()',
-            \   'fileformat':   'Lightline_is_visible()',
-            \   'percent':      'Lightline_is_visible()',
+            \   'denite':       "&filetype==# 'denite'",
+            \   'modified':     'LightlineIsVisible()',
+            \   'fileencoding': 'LightlineIsVisible()',
+            \   'fileformat':   'LightlineIsVisible()',
             \ },
             \ 'component_function': {
-            \   'mode':       'Lightline_mode',
-            \   'denite':     'Lightline_denite',
-            \   'modified':   'Lightline_modified',
-            \   'filename':   'Lightline_filename',
-            \   'git_status': 'Lightline_git_status',
+            \   'filename':   'LightlineFilename',
             \   'anzu':       'anzu#search_status',
-            \   'ale_status': 'Lightline_ale_status',
+            \   'ale_status': 'LightlineAleStatus',
             \ },
             \ }
 
-function! Lightline_is_ignore_ft() abort
-    return (&filetype =~? 'vaffle\|tagbar\|denite\|help')
+let g:lightline_plugin_modes = {'denite': 'Denite', 'vaffle': 'Vaffle', 'tagbar': 'TagBar'}
+
+function! LightlineIsVisible() abort
+    return (60 <= winwidth(0)) && (&filetype !~? 'vaffle\|tagbar\|denite\|help')
 endfunction
 
-function! Lightline_is_visible() abort
-    return 60 <= winwidth(0)
-endfunction
-
-function! Lightline_mode() abort
-    return get({'denite': 'Denite', 'vaffle': 'Vaffle', 'tagbar': 'TagBar'}, &filetype, lightline#mode())
-endfunction
-
-function! Lightline_modified() abort
-    return (Lightline_is_ignore_ft() || (&modifiable == 0)) ? ('') : (&modified ? '[+]' : '[-]')
-endfunction
-
-function! Lightline_denite() abort
-    return (&filetype !=# 'denite') ? '' : (substitute(denite#get_status_mode(), '[- ]', '', 'g'))
-endfunction
-
-function! Lightline_filename() abort " {{{
+function! LightlineFilename() abort " {{{
     if &filetype ==# 'denite'
-        return denite#get_status_sources() . denite#get_status_path() . denite#get_status_linenr()
+        return denite#get_status('sources') . ' [' . denite#get_status('linenr') . ']'
     elseif &filetype ==# 'tagbar'
         return g:lightline.fname
+    else
+        let l:t = expand('%:t')
+        return l:t ==# '' ? '[No Name]' : l:t
     endif
-
-    let l:t = expand('%:t')
-    return strlen(l:t) ? l:t : '[No Name]'
 endfunction " }}}
 
-function! Lightline_git_status() abort " {{{
-    if (dein#is_sourced('gina.vim') == 0) || empty(gina#core#get()) || Lightline_is_ignore_ft()
+function! LightlineAleStatus() abort " {{{
+    if !dein#is_sourced('ale') || !LightlineIsVisible()
         return ''
     endif
 
-    let l:name   = gina#component#repo#branch()
-    let l:track  = gina#component#repo#track()
-    let l:status = gina#component#status#preset()
-    return printf('<%s> -> %s : [%s]', l:name, l:track, l:status ==# '  ' ? 'None' : l:status)
-endfunction " }}}
-
-function! Lightline_ale_status() abort " {{{
-    if (dein#is_sourced('ale') == 0) || Lightline_is_ignore_ft()
-        return ''
-    endif
-
-    let l:counts = ale#statusline#Count(bufnr(''))
-    if l:counts.total == 0
-        return ''
-    endif
-
-    let l:count_errors = l:counts.error + l:counts.style_error
-    let l:count_warns  = l:counts.warning + l:counts.style_warning
-    return printf('E:%d W:%d I:%d', l:count_errors, l:count_warns, l:counts.info)
+    let l:cnt = ale#statusline#Count(bufnr(''))
+    return printf('E:%d W:%d I:%d', l:cnt.error + l:cnt.style_error, l:cnt.warning + l:cnt.style_warning, l:cnt.info)
 endfunction " }}}
 
 " Colors {{{
@@ -844,11 +812,12 @@ let s:cp_read_spell = ['#d70000', '#121212', 160, 233]
 let s:cp_git_status = ['#87afff', '#1c1c1c', 111, 234]
 let s:cp_anzu       = ['#ff87af', '#303030', 211, 236]
 let s:cp_middle     = ['#9e9e9e', '#444444', 247, 238]
+let s:cp_ale        = ['#ff5f87', '#1c1c1c', 204, 234]
 let g:lightline#colorscheme#mopkai#palette = {
             \ 'normal': {
             \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \   'middle':  [s:cp_middle],
-            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], ['#ffffd7', '#1c1c1c', 200, 234]],
+            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], s:cp_ale],
             \   'warning': [['#9e9e9e', '#ffdf5f', 247, 221]],
             \   'error':   [['#eeeeee', '#d70000', 255, 160]]
             \ },
