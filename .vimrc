@@ -508,6 +508,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('cocopon/vaffle.vim', {'lazy': 1, 'on_cmd': 'Vaffle'})
+    call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
