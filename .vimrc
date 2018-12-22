@@ -283,12 +283,10 @@ endfunction " }}}
 
 function! s:remove_tail_spaces() abort " {{{
     if &filetype ==# 'markdown'
-        return
+        let l:c = getpos('.')
+        keeppatterns %s/\s\+$//ge
+        call setpos('.', l:c)
     endif
-
-    let l:c = getpos('.')
-    g/.*\s$/normal $gelD
-    call setpos('.', l:c)
 endfunction " }}}
 " }}}
 
