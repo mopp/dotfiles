@@ -223,8 +223,8 @@ nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
-nnoremap <silent> <CR>      :<C-U>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor<CR>
-nnoremap <silent> <Leader>O :<C-U>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor<CR>
+nnoremap <silent> <CR>      :<C-U>call append('.', repeat([''], v:count1))<CR>
+nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
 " Change current directory of current window.
 nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
