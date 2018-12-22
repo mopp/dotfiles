@@ -210,6 +210,8 @@ endfunction " }}}
 
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :<C-U>set paste!<CR>
+xmap <silent> m <Nop>
+nmap <silent> m <Nop>
 xnoremap <silent> mY  :<C-U>call <SID>copy_to_clipboard()<CR>
 nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
 nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
@@ -230,6 +232,7 @@ nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:coun
 nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
+nmap <silent> <C-]> <Nop>
 nnoremap <C-]><C-]> g<C-]>zz
 
 " Tab version `<C-]>`.
