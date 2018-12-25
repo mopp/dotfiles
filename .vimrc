@@ -282,7 +282,7 @@ function! Mopp_fold_text() abort " {{{
 endfunction " }}}
 
 function! s:remove_tail_spaces() abort " {{{
-    if &filetype ==# 'markdown'
+    if &filetype !=# 'markdown'
         let l:c = getpos('.')
         keeppatterns %s/\s\+$//ge
         call setpos('.', l:c)
