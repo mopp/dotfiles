@@ -225,7 +225,7 @@ nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
-nnoremap <silent> <CR>      :<C-U>call append('.', repeat([''], v:count1))<CR>
+nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : ':<C-U>call append(".", repeat([""], v:count1))<CR>'
 nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
 " Change current directory of current window.
@@ -414,6 +414,7 @@ augroup mopp
     autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set norelativenumber | endif
 
     if executable('fcitx-remote')
+        " Disable IME when back to normal mode.
         autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
     endif
 augroup END
