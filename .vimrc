@@ -550,8 +550,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " Languages {{{
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
-    call dein#add('derekwyatt/vim-scala', {'lazy': 1, 'on_ft': 'scala'})
-    call dein#add('digitaltoad/vim-pug')
     call dein#add('ekalinin/Dockerfile.vim')
     call dein#add('elzr/vim-json')
     call dein#add('hail2u/vim-css3-syntax')
