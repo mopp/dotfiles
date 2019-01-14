@@ -25,6 +25,7 @@
     select = "!f() { select ans in $(git status --short | awk '{print $2}'); do $EDITOR $ans; break; done }; f"
     squeeze = commit --amend --no-edit
     unstage = reset HEAD
+    uncommit = reset --soft HEAD~
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
 [pager]
