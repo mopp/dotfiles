@@ -152,13 +152,9 @@ map <NUL> <C-Space>
 map! <NUL> <C-Space>
 
 " Movings.
-noremap! <C-A> <Home>
-noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
 noremap! <C-D> <Del>
-noremap! <M-f> <S-Right>
-noremap! <M-b> <S-Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 noremap <C-J> G
