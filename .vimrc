@@ -953,17 +953,20 @@ function! Hook_on_post_source_gina() abort
     let l:cmd_opt = {'noremap': 1, 'silent': 1}
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
-    call gina#custom#mapping#nmap('status', '<C-]>', ':<C-U>Gina commit<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)')
+    call gina#custom#mapping#nmap('status', '<C-\>', ':<C-U>Gina commit<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)')
     call gina#custom#mapping#nmap('/.*', '<C-h>', ':call gina#action#call(''edit:left'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', l:cmd_opt)
-    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--opener', 'split')
+    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--opener', 'split')
 endfunction
-nnoremap <Leader>gis :<C-U>Gina status<CR>
-nnoremap <Leader>gic :<C-U>Gina commit<CR>
+nnoremap <Leader>gb :<C-U>Gina branch<CR>
+nnoremap <Leader>gc :<C-U>Gina commit<CR>
+nnoremap <Leader>gd :<C-U>Gina diff<CR>
+nnoremap <Leader>gs :<C-U>Gina status<CR>
 " }}}
 
 " lexima.vim {{{
