@@ -163,12 +163,6 @@ noremap <C-H> ^
 noremap <BS> ^
 noremap <C-L> $
 
-" Switching buffer.
-nnoremap <silent> [B :<C-U>bfirst<CR>
-nnoremap <silent> ]B :<C-U>blast<CR>
-nnoremap <silent> [b :<C-U>bprevious<CR>
-nnoremap <silent> ]b :<C-U>bnext<CR>
-
 " Managing tab.
 nnoremap <Leader>to :<C-U>tabnew<Space>
 nnoremap <Leader>tc :<C-U>tabclose<CR>
