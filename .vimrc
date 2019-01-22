@@ -232,10 +232,13 @@ nnoremap <C-]><C-T> <C-W><C-]><C-W>T
 nnoremap Q @@
 
 " Search something in the current visual range only.
-vnoremap <M-/> <Esc>/\%V
+vnoremap / <Esc>/\%V
 
 " Replace the all selected areas.
-vnoremap <C-r> "hy:%s/\V<C-r>h//g<left><left>
+vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
+
+" Assist input normal command on visual mode.
+vnoremap n :normal<Space>
 
 " Turn off highlight of the current search words.
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
