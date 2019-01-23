@@ -208,7 +208,9 @@ nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
 nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
 nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
 nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
-" }}}
+
+" Overwrite the current line with yanked text.
+nnoremap <silent> go  pk"_dd
 
 " Open help of a word under the cursor.
 nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
