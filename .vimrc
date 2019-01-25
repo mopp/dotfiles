@@ -904,6 +904,7 @@ map <Leader>op <Plug>(openbrowser-open)
 
 " vim-markdown
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_folding_style_pythonic = 1
 
 " c-prototype
 let g:c_prototype_no_default_keymappings = 1
