@@ -969,6 +969,7 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', l:cmd_opt)
     call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--opener', 'split')
+    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--group', 'main')
 endfunction
 nnoremap <Leader>gb :<C-U>Gina branch<CR>
 nnoremap <Leader>gc :<C-U>Gina commit<CR>
