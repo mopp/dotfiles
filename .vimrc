@@ -519,7 +519,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
     call dein#add('kannokanno/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
-    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': 'Gina', 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
+    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
     call dein#add('luochen1990/rainbow')
     call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
@@ -975,6 +975,10 @@ nnoremap <Leader>gb :<C-U>Gina branch<CR>
 nnoremap <Leader>gc :<C-U>Gina commit<CR>
 nnoremap <Leader>gd :<C-U>Gina diff<CR>
 nnoremap <Leader>gs :<C-U>Gina status<CR>
+function! s:get_git_aliases(...) abort
+    return split(system('git config --get-regexp alias | sed "s/alias\.\(\w*\)\s.*/\1/g"'), '\n')
+endfunction
+command! -nargs=1 -complete=customlist,<SID>get_git_aliases GinaAlias :Gina! <f-args>
 " }}}
 
 " lexima.vim {{{
