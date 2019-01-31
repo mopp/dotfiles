@@ -976,9 +976,9 @@ nnoremap <Leader>gc :<C-U>Gina commit<CR>
 nnoremap <Leader>gd :<C-U>Gina diff<CR>
 nnoremap <Leader>gs :<C-U>Gina status<CR>
 function! s:get_git_aliases(...) abort
-    return split(system('git config --get-regexp alias | sed "s/alias\.\(\w*\)\s.*/\1/g"'), '\n')
+    return system('git config --get-regexp alias | sed "s/alias\.\(\w*\)\s.*/\1/g"')
 endfunction
-command! -nargs=1 -complete=customlist,<SID>get_git_aliases GinaAlias :Gina! <f-args>
+command! -nargs=1 -complete=custom,<SID>get_git_aliases GinaAlias :Gina! <f-args>
 " }}}
 
 " lexima.vim {{{
