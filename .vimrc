@@ -155,6 +155,8 @@ map! <NUL> <C-Space>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
 noremap! <C-D> <Del>
+cnoremap <C-A> <HOME>
+cnoremap <C-E> <END>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 noremap <C-J> G
