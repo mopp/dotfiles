@@ -530,6 +530,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('mopp/mopkai.vim')
     call dein#add('osyo-manga/vim-anzu')
+    call dein#add('hrsh7th/vim-unmatchparen', {'lazy': 1})
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('prakashdanish/vim-githubinator')
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
