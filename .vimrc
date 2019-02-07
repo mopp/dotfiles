@@ -1137,6 +1137,9 @@ let g:sandwich#recipes =
 " vim-json
 let g:vim_json_syntax_conceal = 0
 
+" vim-unmatchparen
+let g:unmatchparen#disable_filetypes = ["vim"]
+
 " Autocommands for plugins.  {{{
 augroup plugin
     autocmd!
