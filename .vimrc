@@ -499,6 +499,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('Shougo/defx.nvim', {'lazy': 1, 'on_cmd': ['Defx']})
     call dein#add('Shougo/deol.nvim', {'lazy': 1, 'on_cmd': ['Deol', 'DeolCd', 'DeolEdit']})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
@@ -507,7 +508,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
-    call dein#add('cocopon/vaffle.vim', {'lazy': 1, 'on_cmd': 'Vaffle'})
     call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
@@ -530,7 +530,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('mopp/mopkai.vim')
     call dein#add('osyo-manga/vim-anzu')
-    call dein#add('hrsh7th/vim-unmatchparen')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('prakashdanish/vim-githubinator')
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
@@ -730,7 +729,7 @@ nmap <Leader>hn <Plug>GitGutterNextHunk
 " }}}
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'vaffle' ]
+let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'defx' ]
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -780,10 +779,10 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'denite': 'Denite', 'vaffle': 'Vaffle', 'tagbar': 'TagBar'}
+let g:lightline_plugin_modes = {'denite': 'Denite', 'defx': 'Defx', 'tagbar': 'TagBar'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'vaffle\|tagbar\|denite\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'defx\|tagbar\|denite\|help')
 endfunction
 
 function! LightlineFilename() abort " {{{
@@ -1070,32 +1069,6 @@ endfunction
 " vim-denite-session
 let g:session_directory = s:session_directory
 
-" vaffle.vim {{{
-command! VaffleTab tabnew +Vaffle
-command! VaffleSplit split +Vaffle
-command! VaffleVsplit vsplit +Vaffle
-command! VaffleBottomExpplorer botright split +Vaffle | resize 12 | setlocal winfixheight
-command! VaffleExplorer vertical topleft vsplit +Vaffle | vertical resize 35 | setlocal winfixwidth
-
-nnoremap <silent> <Leader>vv :Vaffle<CR>
-nnoremap <silent> <Leader>vl :Vaffle<CR>
-nnoremap <silent> <Leader>ve :VaffleExplorer<CR>
-nnoremap <silent> <Leader>vh :Vaffle %:h<CR>
-
-function! s:on_filetype_vaffle() abort
-    nmap <silent><buffer><nowait> , <Plug>(vaffle-toggle-current)
-    nmap <silent><buffer><nowait> s <Plug>(vaffle-open-selected-split)
-    nmap <silent><buffer><nowait> v <Plug>(vaffle-open-selected-vsplit)
-endfunction
-
-function! s:on_load_vaffle(is_directory) abort
-    if a:is_directory && !dein#is_sourced('vaffle.vim')
-        call dein#source('vaffle.vim')
-        call vaffle#event#on_bufenter()
-    endif
-endfunction
-" }}}
-
 " caw.vim
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
 nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
@@ -1145,10 +1118,8 @@ augroup plugin
     autocmd!
 
     autocmd FileType gina-commit setlocal spell
-    autocmd Filetype vaffle call s:on_filetype_vaffle()
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType erlang call s:define_erlang_option()
-    autocmd BufEnter * call s:on_load_vaffle(isdirectory(expand('<afile>')))
 augroup END
 " }}}
 " }}}
