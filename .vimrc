@@ -338,6 +338,7 @@ function! s:get_session_list(arguments, cmd_line, cursor_pos) abort
     return map(l:filepaths, {i, v -> fnamemodify(v, ':t')})
 endfunction
 
+nnoremap <silent> <Leader>ls :<C-U>LoadLastSession<CR>
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
 command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
 " }}}
