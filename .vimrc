@@ -500,7 +500,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('Shougo/defx.nvim', {'lazy': 1, 'on_cmd': ['Defx']})
+    call dein#add('Shougo/defx.nvim')
     call dein#add('Shougo/deol.nvim', {'lazy': 1, 'on_cmd': ['Deol', 'DeolCd', 'DeolEdit']})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
@@ -731,7 +731,8 @@ nmap <Leader>hn <Plug>GitGutterNextHunk
 " }}}
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = [ 'denite', 'help', 'defx' ]
+" '' is for defx.
+let g:extra_whitespace_ignored_filetypes = ['denite', 'help', 'defx', '']
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -1115,6 +1116,50 @@ let g:vim_json_syntax_conceal = 0
 " vim-unmatchparen
 let g:unmatchparen#disable_filetypes = ['vim']
 
+" defx.nvim
+command! DefxExplorer Defx -split=vertical -winwidth=50 -direction=topleft
+function! s:defx_settings() abort " {{{
+    nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
+    nnoremap <silent><buffer><expr> c defx#do_action('copy')
+    nnoremap <silent><buffer><expr> m defx#do_action('move')
+    nnoremap <silent><buffer><expr> p defx#do_action('paste')
+    nnoremap <silent><buffer><expr> l defx#do_action('open')
+    nnoremap <silent><buffer><expr> s defx#do_action('open', 'split')
+    nnoremap <silent><buffer><expr> v defx#do_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr> t defx#do_action('open', 'tabedit')
+    nnoremap <silent><buffer><expr> p defx#do_action('open', 'pedit')
+    nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> N defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'mark:filename:type:size:time')
+    nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr> d defx#do_action('remove')
+    nnoremap <silent><buffer><expr> r defx#do_action('rename')
+    nnoremap <silent><buffer><expr> ! defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> . defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
+    nnoremap <silent><buffer><expr> q defx#do_action('quit')
+    nnoremap <silent><buffer><expr> w defx#do_action('call', 'DefxChoosewin')
+    nnoremap <silent><buffer><expr> : defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
+    nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
+endfunction " }}}
+
+let g:defx_ignore_filtype = ['denite', 'defx', 'tagbar']
+function! DefxChoosewin(context) abort " {{{
+    let l:winnrs = filter(range(1, winnr('$')), 'index(g:defx_ignore_filtype, getwinvar(v:val, "&filetype")) == -1' )
+    for filename in a:context.targets
+        call choosewin#start(l:winnrs, {'auto_choose': 1, 'hook_enable': 0})
+        execute 'edit' filename
+    endfor
+endfunction " }}}
+
 " Autocommands for plugins.  {{{
 augroup plugin
     autocmd!
@@ -1122,6 +1167,7 @@ augroup plugin
     autocmd FileType gina-commit setlocal spell
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType erlang call s:define_erlang_option()
+    autocmd FileType defx call s:defx_settings()
 augroup END
 " }}}
 " }}}
