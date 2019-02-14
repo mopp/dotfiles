@@ -513,6 +513,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
+    call dein#add('hrsh7th/vim-unmatchparen')
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
@@ -1112,7 +1113,7 @@ let g:sandwich#recipes =
 let g:vim_json_syntax_conceal = 0
 
 " vim-unmatchparen
-let g:unmatchparen#disable_filetypes = ["vim"]
+let g:unmatchparen#disable_filetypes = ['vim']
 
 " Autocommands for plugins.  {{{
 augroup plugin
