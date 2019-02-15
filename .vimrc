@@ -513,7 +513,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
-    call dein#add('hrsh7th/vim-unmatchparen')
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
@@ -1117,7 +1116,11 @@ let g:vim_json_syntax_conceal = 0
 let g:unmatchparen#disable_filetypes = ['vim']
 
 " defx.nvim
-command! DefxExplorer Defx -split=vertical -winwidth=50 -direction=topleft
+command! DefxExplorer Defx -auto-cd -toggle -split=vertical -winwidth=50 -direction=topleft
+
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
 function! s:defx_settings() abort " {{{
     nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
     nnoremap <silent><buffer><expr> c defx#do_action('copy')
@@ -1168,6 +1171,7 @@ augroup plugin
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType erlang call s:define_erlang_option()
     autocmd FileType defx call s:defx_settings()
+    autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx' expand('<afile>') | endif
 augroup END
 " }}}
 " }}}
