@@ -962,11 +962,12 @@ let g:junkfile#directory = $HOME . '/workspace/notes'
 
 " gina.vim {{{
 function! Hook_on_post_source_gina() abort
-    let l:silent_opt = l:silent_opt
-    let l:cmd_opt = {'noremap': 1, 'silent': 1}
+    let l:silent_opt = {'mode': 'n', 'silent': 1}
+    let l:cmd_opt = {'mode': 'n', 'noremap': 1, 'silent': 1}
     call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)', l:silent_opt)
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)', l:silent_opt)
     call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)', l:silent_opt)
+    call gina#custom#mapping#nmap('status', 'dd', '<Plug>(gina-diff-vsplit)')
     call gina#custom#mapping#nmap('status', '<C-\>', ':<C-U>Gina commit<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('commit', '<C-\>', ':<C-U>Gina status<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', l:cmd_opt)
@@ -977,8 +978,8 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('/.*', '<C-j>', '<Plug>(gina-edit-below)', l:silent_opt)
     call gina#custom#mapping#nmap('/.*', '<C-k>', '<Plug>(gina-edit-above)', l:silent_opt)
     call gina#custom#mapping#nmap('/.*', '<C-l>', '<Plug>(gina-edit-right)', l:silent_opt)
-    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--opener', 'split')
-    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--group', 'main')
+    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--opener', 'split')
+    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--group', 'main')
 endfunction
 nnoremap <Leader>gb :<C-U>Gina branch<CR>
 nnoremap <Leader>gc :<C-U>Gina commit<CR>
