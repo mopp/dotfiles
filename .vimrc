@@ -963,16 +963,19 @@ let g:junkfile#directory = $HOME . '/workspace/notes'
 " gina.vim {{{
 function! Hook_on_post_source_gina() abort
     let l:cmd_opt = {'noremap': 1, 'silent': 1}
-    call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)')
-    call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)')
-    call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)')
+    call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)', l:cmd_opt)
+    call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)', l:cmd_opt)
+    call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)', l:cmd_opt)
     call gina#custom#mapping#nmap('status', '<C-\>', ':<C-U>Gina commit<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('commit', '<C-\>', ':<C-U>Gina status<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)')
-    call gina#custom#mapping#nmap('/.*', '<C-h>', ':call gina#action#call(''edit:left'')<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-j>', ':call gina#action#call(''edit:bottom'')<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-k>', ':call gina#action#call(''edit:above'')<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-l>', ':call gina#action#call(''edit:right'')<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', 't', '<Plug>(gina-edit-tab)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<Tab>', '<Plug>(gina-builtin-choice)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-h>', '<Plug>(gina-edit-left)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-j>', '<Plug>(gina-edit-below)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-k>', '<Plug>(gina-edit-above)', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', '<C-l>', '<Plug>(gina-edit-right)', l:cmd_opt)
     call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--opener', 'split')
     call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\|diff\)', '--group', 'main')
 endfunction
