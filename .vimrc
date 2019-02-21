@@ -264,6 +264,7 @@ nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', expand('%:h'), expand('<cfil
 
 " Keep indent
 nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
+nnoremap <expr> a empty(getline('.')) ? 'S' : 'a'
 " }}}
 
 " Functions {{{
