@@ -423,6 +423,7 @@ augroup END
 " Neovim. {{{
 if has('nvim')
     set inccommand=split
+    set scrollback=5000
 
     tnoremap <ESC> <C-\><C-n>
     nnoremap <Leader>tm :terminal<CR>
