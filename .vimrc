@@ -948,8 +948,8 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 function! s:define_erlang_option() abort
     let paths = []
-    for p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
-        let paths += glob(p, 0, 1)
+    for l:p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
+        let paths += glob(l:p, 0, 1)
     endfor
     let g:ale_erlang_erlc_options = '-o /tmp/ -I src -I include -I _build/default/lib/ ' . join(map(paths, '"-I" . v:val'), ' ')
 endfunction
