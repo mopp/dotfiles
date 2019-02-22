@@ -542,6 +542,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-visualstar')
+    call dein#add('thinca/vim-ambicmd', {'lazy': 1, 'on_event': 'CmdwinEnter'})
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
@@ -1170,6 +1171,10 @@ function! DefxChoosewin(context) abort " {{{
         execute 'edit' filename
     endfor
 endfunction " }}}
+
+" vim-ambicmd
+cnoremap <expr> <CR> ambicmd#expand("\<CR>")
+cnoremap <expr> <Space> ambicmd#expand("\<Space>")
 
 " Autocommands for plugins.  {{{
 augroup plugin
