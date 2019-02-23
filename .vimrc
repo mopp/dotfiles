@@ -1173,8 +1173,10 @@ function! DefxChoosewin(context) abort " {{{
 endfunction " }}}
 
 " vim-ambicmd
-cnoremap <expr> <CR> ambicmd#expand("\<CR>")
-cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+if dein#tap('vim-ambicmd') " {{{
+    cnoremap <expr> <CR> ambicmd#expand("\<CR>")
+    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+endif " }}}
 
 " Autocommands for plugins.  {{{
 augroup plugin
