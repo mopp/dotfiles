@@ -487,6 +487,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('neoclide/denite-git')
+    call dein#add('notomo/denite-keymap')
     call dein#add('rafi/vim-denite-session')
     " }}}
 
@@ -679,7 +680,9 @@ if dein#tap('denite.nvim') " {{{
     call denite#custom#map('insert', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
     call denite#custom#map('insert', '<C-S>', '<denite:do_action:split>', 'noremap')
     call denite#custom#map('normal', 'v', '<denite:do_action:vsplit>', 'noremap')
+    call denite#custom#map('normal', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
     call denite#custom#map('normal', 's', '<denite:do_action:split>', 'noremap')
+    call denite#custom#map('normal', '<C-S>', '<denite:do_action:split>', 'noremap')
     call denite#custom#option('default', {
                 \ 'highlight_matched_char': 'Keyword',
                 \ 'highlight_matched_range': 'None',
@@ -689,7 +692,7 @@ if dein#tap('denite.nvim') " {{{
 
     if executable('rg') " {{{
         " For ripgrep.
-        call denite#custom#var('file_rec', 'command', ['rg', '--files', '--glob', '!.git', ''])
+        call denite#custom#var('file/rec', 'command', ['rg', '--files', '--color', 'never'])
         call denite#custom#var('grep', 'command', ['rg'])
         call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
         call denite#custom#var('grep', 'recursive_opts', [])
@@ -1132,7 +1135,7 @@ let g:vim_json_syntax_conceal = 0
 " vim-unmatchparen
 let g:unmatchparen#disable_filetypes = ['vim']
 
-" defx.nvim
+" defx.nvim {{{
 command! DefxExplorer Defx -auto-cd -toggle -split=vertical -winwidth=50 -direction=topleft
 
 let g:loaded_netrw = 1
@@ -1179,6 +1182,7 @@ function! DefxChoosewin(context) abort " {{{
         execute 'edit' filename
     endfor
 endfunction " }}}
+" }}}
 
 " vim-ambicmd
 if dein#tap('vim-ambicmd') " {{{
