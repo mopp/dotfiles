@@ -539,6 +539,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('mattn/learn-vimscript')
+    call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('mopp/mopkai.vim')
