@@ -546,12 +546,13 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('prakashdanish/vim-githubinator')
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('rhysd/committia.vim')
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
-    call dein#add('thinca/vim-visualstar')
     call dein#add('thinca/vim-ambicmd', {'lazy': 1, 'on_event': 'CmdwinEnter'})
+    call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
@@ -1189,6 +1190,16 @@ if dein#tap('vim-ambicmd') " {{{
     cnoremap <expr> <CR> ambicmd#expand("\<CR>")
     cnoremap <expr> <Space> ambicmd#expand("\<Space>")
 endif " }}}
+
+" rhysd/committia.vim
+let g:committia_hooks = {}
+function! g:committia_hooks.edit_open(info)
+    setlocal spell
+    imap <buffer> <C-K> <Plug>(committia-scroll-diff-up-half)
+    imap <buffer> <C-J> <Plug>(committia-scroll-diff-down-half)
+    nmap <buffer> <C-K> <Plug>(committia-scroll-diff-up-half)
+    nmap <buffer> <C-J> <Plug>(committia-scroll-diff-down-half)
+endfunction
 
 " Autocommands for plugins.  {{{
 augroup plugin
