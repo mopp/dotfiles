@@ -364,6 +364,14 @@ endfunction
 command! -nargs=0 StoreTargetWin let t:target_window = win_getid()
 command! -nargs=0 JumpTargetWin call win_gotoid(t:target_window)
 nnoremap <expr> <Leader>' :<C-U>JumpTargetWin
+
+function! s:hide_left_columns() abort " {{{
+    setlocal nonumber
+    setlocal norelativenumber
+    setlocal signcolumn=no
+    setlocal foldcolumn=0
+endfunction " }}}
+command! HideLeftColumns call s:hide_left_columns()
 " }}}
 
 " GUI. {{{
