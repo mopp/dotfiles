@@ -477,6 +477,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('carlitux/deoplete-ternjs', s:lazy_plete)
     call dein#add('fishbullet/deoplete-ruby')
     call dein#add('honza/vim-snippets', s:lazy_plete)
+    call dein#add('hrsh7th/vim-neco-calc')
     call dein#add('racer-rust/vim-racer')
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
