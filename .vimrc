@@ -82,10 +82,10 @@ set smartcase
 " }}}
 
 " Others. {{{
-set splitright
 set belloff=all
 set completeopt=menu
 set dictionary=/usr/share/dict/words
+set diffopt+=iwhite
 set formatoptions+=tjrol
 set helplang=ja
 set langnoremap
@@ -93,12 +93,12 @@ set lazyredraw
 set matchpairs+=<:>
 set mouse=
 set regexpengine=2
+set splitright
 set updatetime=500
-set virtualedit=block
+set virtualedit=all
 set whichwrap=b,s,h,l,<,>,[,]
 set wildignorecase
 set wildmenu
-set virtualedit=all
 
 " Turn off default plugins. {{{
 let g:loaded_2html_plugin = 1
@@ -162,7 +162,6 @@ cnoremap <C-N> <Down>
 noremap <C-J> G
 noremap <C-K> gg
 noremap <C-H> ^
-noremap <BS> ^
 noremap <C-L> $
 
 " Managing tab.
@@ -660,6 +659,7 @@ let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
 if dein#tap('denite.nvim') " {{{
+    nnoremap <silent> <BS> :<C-U>Denite -source-names=hide buffer file_mru<CR>
     nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
     nnoremap <silent> <Leader>fe  :<C-U>Denite file/rec<CR>
     nnoremap <silent> <Leader>ff  :<C-U>Denite file_mru<CR>
