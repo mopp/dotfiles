@@ -453,6 +453,7 @@ let s:dein_base_path = expand('~/.vim/bundle/')
 let s:dein_path = s:dein_base_path . 'repos/github.com/Shougo/dein.vim'
 let s:has_dein = isdirectory(s:dein_path)
 let &runtimepath .= ',' . s:dein_path
+let g:dein#install_log_filename = '~/.vim/dein.log'
 
 if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#begin(s:dein_base_path)
