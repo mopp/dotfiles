@@ -200,7 +200,7 @@ function! s:copy_to_clipboard() abort " {{{
 endfunction " }}}
 
 nnoremap Y y$
-nnoremap <silent> <Leader>pp :<C-U>set paste!<CR>
+nnoremap <silent> <Leader>gp :<C-U>set paste!<CR>
 xmap <silent> m <Nop>
 nmap <silent> m <Nop>
 xnoremap <silent> mY  :<C-U>call <SID>copy_to_clipboard()<CR>
@@ -662,6 +662,8 @@ let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 " denite.nvim
 if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <BS> :<C-U>Denite -source-names=hide buffer file_mru<CR>
+    nnoremap <silent> <Leader>n :<C-U>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
+    nnoremap <silent> <Leader>p :<C-U>Denite -resume -immediately -cursor-pos=-1 -no-empty<CR>
     nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
     nnoremap <silent> <Leader>fe  :<C-U>Denite file/rec<CR>
     nnoremap <silent> <Leader>ff  :<C-U>Denite file_mru<CR>
