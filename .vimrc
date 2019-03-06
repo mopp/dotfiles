@@ -77,7 +77,6 @@ set viewoptions=cursor,folds
 set hlsearch
 set ignorecase
 set incsearch
-set path=.,/usr/local/include,/usr/include,./include
 set smartcase
 " }}}
 
