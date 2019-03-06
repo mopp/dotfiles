@@ -214,7 +214,7 @@ nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
 nnoremap <silent> go  pk"_dd
 
 " Open help of a word under the cursor.
-nnoremap <silent> <Leader>hh  :<C-U>help <C-R><C-W><CR>
+nnoremap <silent> <Leader>hh :<C-U>help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
