@@ -346,16 +346,11 @@ command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <S
 command! -nargs=0 CreateVimDirectories call s:create_vim_directories()
 function! s:create_vim_directories() abort
     let base_dir = fnamemodify($MYVIMRC, ':h') . '/'
-    call s:mkdir_if_not_exist(base_dir . 'sessions')
-    call s:mkdir_if_not_exist(base_dir . 'undo')
-    call s:mkdir_if_not_exist(base_dir . 'backup')
-    call s:mkdir_if_not_exist(base_dir . 'swap')
-endfunction
-
-function! s:mkdir_if_not_exist(path) abort
-    if !isdirectory(a:path)
-        call mkdir(a:path)
-    endif
+    call mkdir(base_dir . 'sessions', 'p')
+    call mkdir(base_dir . 'undo', 'p')
+    call mkdir(base_dir . 'backup', 'p')
+    call mkdir(base_dir . 'swap', 'p')
+    call mkdir(base_dir . 'swap', 'p')
 endfunction
 " }}}
 
