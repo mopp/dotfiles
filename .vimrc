@@ -655,7 +655,6 @@ let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
 if dein#tap('denite.nvim') " {{{
-    nnoremap <silent> <BS> :<C-U>Denite -source-names=hide buffer file_mru<CR>
     nnoremap <silent> <Leader>n :<C-U>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
     nnoremap <silent> <Leader>p :<C-U>Denite -resume -immediately -cursor-pos=-1 -no-empty<CR>
     nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
