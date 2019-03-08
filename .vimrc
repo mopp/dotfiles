@@ -969,7 +969,7 @@ endfunction
 " junkfile.vim {{{
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
 command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
-nnoremap <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
+nnoremap <silent> <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
 let g:junkfile#directory = $HOME . '/workspace/notes'
 " }}}
 
