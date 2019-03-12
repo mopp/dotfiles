@@ -1135,12 +1135,14 @@ let g:vim_json_syntax_conceal = 0
 let g:unmatchparen#disable_filetypes = ['vim']
 
 " defx.nvim {{{
-command! DefxExplorer Defx -auto-cd -toggle -split=vertical -winwidth=50 -direction=topleft
+command! DefxExplorer Defx -auto-cd -toggle -split=vertical -winwidth=40 -direction=topleft
 
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
 function! s:defx_settings() abort " {{{
+    setlocal nofoldenable
+    call s:hide_left_columns()
     nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
     nnoremap <silent><buffer><expr> c defx#do_action('copy')
     nnoremap <silent><buffer><expr> m defx#do_action('move')
