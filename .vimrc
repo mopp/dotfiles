@@ -222,7 +222,7 @@ nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : ':<C-U>call appe
 nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
 " Change current directory of current window.
-nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
+nnoremap <silent> <Leader>cd :<C-U>cd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nmap <silent> <C-]> <Nop>
