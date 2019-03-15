@@ -481,6 +481,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " Denite {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
+    call dein#add('hrsh7th/vim-denite-gitto')
     call dein#add('neoclide/denite-git')
     call dein#add('notomo/denite-keymap')
     call dein#add('rafi/vim-denite-session')
