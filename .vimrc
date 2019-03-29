@@ -540,7 +540,8 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mopp/mopkai.vim')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
-    call dein#add('mopp/vim-githubinator', {'rev': 'restore_normal_mode_mapping'})
+    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
+
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rhysd/committia.vim')
