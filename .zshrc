@@ -282,3 +282,7 @@ function copy_prev_cmd() {
 # NOTE: the last `true` command makes the exit code successes (0).
 [ -s $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true
 # }}}
+
+
+
+

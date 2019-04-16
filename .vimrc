@@ -258,7 +258,7 @@ else
 endif
 
 " Tab version `gf`.
-nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', expand('%:h'), expand('<cfile>'))<CR>
+nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', getcwd(), expand('<cfile>'))<CR>
 
 " Keep indent
 nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
