@@ -562,6 +562,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shirk/vim-gas')
     call dein#add('cespare/vim-toml')
     call dein#add('ekalinin/Dockerfile.vim')
+    call dein#add('elixir-editors/vim-elixir')
     call dein#add('elzr/vim-json')
     call dein#add('hail2u/vim-css3-syntax')
     call dein#add('leafgarland/typescript-vim')
