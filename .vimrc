@@ -670,24 +670,31 @@ if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>fo  :<C-U>Denite outline<CR>
     nnoremap <silent> <Leader>fre :<C-U>Denite -resume<CR>
 
-    call denite#custom#map('insert', '<C-A>', '<Home>')
-    call denite#custom#map('insert', '<C-E>', '<End>')
-    call denite#custom#map('insert', '<C-F>', '<Right>')
-    call denite#custom#map('insert', '<C-B>', '<Left>')
-    call denite#custom#map('insert', '<C-D>', '<Del>')
-    call denite#custom#map('insert', '<C-J>', '<denite:move_to_next_line>', 'noremap')
-    call denite#custom#map('insert', '<C-K>', '<denite:move_to_previous_line>', 'noremap')
-    call denite#custom#map('insert', '<C-P>', '<denite:do_action:preview>', 'noremap')
-    call denite#custom#map('insert', '<C-T>', '<denite:do_action:tabopen>', 'noremap')
-    call denite#custom#map('insert', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
-    call denite#custom#map('insert', '<C-S>', '<denite:do_action:split>', 'noremap')
-    call denite#custom#map('normal', 'v', '<denite:do_action:vsplit>', 'noremap')
-    call denite#custom#map('normal', '<C-V>', '<denite:do_action:vsplit>', 'noremap')
-    call denite#custom#map('normal', 's', '<denite:do_action:split>', 'noremap')
-    call denite#custom#map('normal', '<C-S>', '<denite:do_action:split>', 'noremap')
-    call denite#custom#option('default', {
+    function! s:denite_settings() abort " {{{
+        nnoremap <silent><buffer><expr><nowait> <CR> denite#do_map('do_action')
+        nnoremap <silent><buffer><expr><nowait> <TAB> denite#do_map('choose_action')
+        nnoremap <silent><buffer><expr><nowait> <ESC> denite#do_map('quit')
+        nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
+        nnoremap <silent><buffer><expr><nowait> n denite#do_map('quick_move')
+        nnoremap <silent><buffer><expr><nowait> i denite#do_map('open_filter_buffer')
+        nnoremap <silent><buffer><expr><nowait> p denite#do_map('do_action', 'preview')
+        nnoremap <silent><buffer><expr><nowait> t denite#do_map('do_action', 'tabopen')
+        nnoremap <silent><buffer><expr><nowait> v denite#do_map('do_action', 'vsplit')
+        nnoremap <silent><buffer><expr><nowait> s denite#do_map('do_action', 'split')
+    endfunction " }}}
+
+    function! s:denite_filter_settings() abort " {{{
+        let b:lexima_disabled = 1
+        call deoplete#custom#buffer_option('auto_complete', v:false)
+        " It cannot work well because lexime.vim maps <ESC> when InsertEnter.
+        imap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
+        nmap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
+    endfunction " }}}
+
+    call denite#custom#option('_', {
                 \ 'highlight_matched_char': 'Keyword',
                 \ 'highlight_matched_range': 'None',
+                \ 'auto_resize': v:true,
                 \ 'statusline': v:false,
                 \ })
     call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
@@ -696,7 +703,7 @@ if dein#tap('denite.nvim') " {{{
         " For ripgrep.
         call denite#custom#var('file/rec', 'command', ['rg', '--files', '--color', 'never'])
         call denite#custom#var('grep', 'command', ['rg'])
-        call denite#custom#var('grep', 'default_opts', ['--vimgrep', '--no-heading'])
+        call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep', '--no-heading'])
         call denite#custom#var('grep', 'recursive_opts', [])
         call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
         call denite#custom#var('grep', 'separator', ['--'])
@@ -757,7 +764,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
-            \   'left': [['mode', 'denite', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
+            \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
             \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype'], ['ale_status']],
             \ },
             \ 'inactive': {
@@ -776,7 +783,6 @@ let g:lightline = {
             \ 'tabline_subseparator': { 'left': '', 'right': '' },
             \ 'component': {
             \   'mode':         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
-            \   'denite':       "%{ (&filetype !=# 'denite') ? '' : denite#get_status('raw_mode') }",
             \   'modified':     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
             \   'readonly':     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
             \   'git_status':   "%{ (LightlineIsVisible() && dein#is_sourced('gina.vim')) ? printf('%s: [%s]', gina#component#repo#branch(), gina#component#status#preset()) : '' }",
@@ -786,7 +792,6 @@ let g:lightline = {
             \   'lineinfo':     '%03l:%03v:%03p%%',
             \ },
             \ 'component_visible_condition': {
-            \   'denite':       "&filetype==# 'denite'",
             \   'modified':     'LightlineIsVisible() && &modifiable',
             \   'fileencoding': 'LightlineIsVisible()',
             \   'fileformat':   'LightlineIsVisible()',
@@ -798,7 +803,7 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'denite': 'Denite', 'defx': 'Defx', 'tagbar': 'TagBar'}
+let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'defx': 'Defx', 'tagbar': 'TagBar'}
 
 function! LightlineIsVisible() abort
     return (60 <= winwidth(0)) && (&filetype !~? 'defx\|tagbar\|denite\|help')
@@ -806,7 +811,9 @@ endfunction
 
 function! LightlineFilename() abort " {{{
     if &filetype ==# 'denite'
-        return denite#get_status('sources') . ' [' . denite#get_status('linenr') . ']'
+        return denite#get_status('sources')
+    elseif &filetype ==# 'denite-filter'
+        return ''
     elseif &filetype ==# 'tagbar'
         return g:lightline.fname
     else
@@ -1212,6 +1219,8 @@ augroup plugin
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType erlang call s:define_erlang_option()
     autocmd FileType defx call s:defx_settings()
+    autocmd FileType denite call s:denite_settings()
+    autocmd FileType denite-filter call s:denite_filter_settings()
     autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx' expand('<afile>') | endif
 augroup END
 " }}}
