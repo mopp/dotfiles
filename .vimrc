@@ -285,6 +285,26 @@ function! s:remove_tail_spaces() abort " {{{
         call setpos('.', l:c)
     endif
 endfunction " }}}
+
+function! s:shrink_window_by_paragraph(direction) abort
+    let s = &scrolloff
+    setlocal scrolloff=0
+
+    if a:direction ==? 'upward'
+        " Cut off the bottom region.
+        normal! LV{H
+    else
+        " Cut off the top region.
+        normal! HV}L
+    endif
+
+    execute 'resize -' . (line("'>") - line("'<"))
+    normal! M
+
+    execute 'setlocal scrolloff=' . s
+endfunction
+noremap <silent> <S-C-Up> :<C-U>keepjumps call <SID>shrink_window_by_paragraph('upward')<CR>
+noremap <silent> <S-C-Down> :<C-U>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
 " }}}
 
 " Commands. {{{
@@ -518,6 +538,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
+    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
@@ -540,8 +561,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mopp/mopkai.vim')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
-    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
-
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rhysd/committia.vim')
@@ -555,6 +574,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
+    call dein#add('vim-scripts/copypath.vim', {'lazy': 1, 'on_cmd': ['CopyPath', 'CopyFileName']})
     call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
     " }}}
 
