@@ -1166,6 +1166,7 @@ let g:unmatchparen#disable_filetypes = ['vim']
 
 " defx.nvim {{{
 command! DefxExplorer Defx -new -toggle -split=vertical -winwidth=40 -direction=topleft
+nnoremap <silent> <leader>de :<C-U>DefxExplorer<CR>
 
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
@@ -1173,37 +1174,41 @@ let g:loaded_netrwPlugin = 1
 function! s:defx_settings() abort " {{{
     setlocal nofoldenable
     call s:hide_left_columns()
-    nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
-    nnoremap <silent><buffer><expr> c defx#do_action('copy')
-    nnoremap <silent><buffer><expr> m defx#do_action('move')
-    nnoremap <silent><buffer><expr> p defx#do_action('paste')
-    nnoremap <silent><buffer><expr> l defx#do_action('open')
-    nnoremap <silent><buffer><expr> s defx#do_action('open', 'split')
-    nnoremap <silent><buffer><expr> v defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> t defx#do_action('open', 'tabedit')
-    nnoremap <silent><buffer><expr> p defx#do_action('open', 'pedit')
-    nnoremap <silent><buffer><expr> n defx#do_action('open_or_close_tree')
-    nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> N defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'git:mark:filename:type:size:time')
-    nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r defx#do_action('rename')
-    nnoremap <silent><buffer><expr> ! defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> . defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
-    nnoremap <silent><buffer><expr> q defx#do_action('quit')
-    nnoremap <silent><buffer><expr> w defx#do_action('call', 'DefxChoosewin')
-    nnoremap <silent><buffer><expr> : defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
+
+    " Cursor movings.
+    nnoremap <silent><buffer><expr><nowait> h defx#is_directory() && defx#is_opened_tree() ? defx#do_action('close_tree') : defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr><nowait> j line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr><nowait> k line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr><nowait> l defx#is_directory() ? defx#do_action('open_tree') : 0
+    nnoremap <silent><buffer><expr><nowait> L defx#do_action('open_tree_recursive')
+    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('open')
+    nnoremap <silent><buffer><expr><nowait> ~ defx#do_action('cd')
+
+    " File operations.
+    nnoremap <silent><buffer><expr><nowait> c defx#do_action('copy')
+    nnoremap <silent><buffer><expr><nowait> m defx#do_action('move')
+    nnoremap <silent><buffer><expr><nowait> p defx#do_action('paste')
+    nnoremap <silent><buffer><expr><nowait> s defx#do_action('open', 'split')
+    nnoremap <silent><buffer><expr><nowait> v defx#do_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr><nowait> t defx#do_action('open', 'tabedit')
+    nnoremap <silent><buffer><expr><nowait> K defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr><nowait> N defx#do_action('new_file')
+    nnoremap <silent><buffer><expr><nowait> M defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr><nowait> d defx#do_action('remove')
+    nnoremap <silent><buffer><expr><nowait> r defx#do_action('rename')
+    nnoremap <silent><buffer><expr><nowait> w defx#do_action('call', 'DefxChoosewin')
+
+    nnoremap <silent><buffer><expr><nowait> C defx#do_action('toggle_columns', 'git:mark:filename:type:size:time')
+    nnoremap <silent><buffer><expr><nowait> S defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr><nowait> . defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr><nowait> : defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr><nowait> * defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr><nowait> ! defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr><nowait> x defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr><nowait> yy defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr><nowait> q defx#do_action('quit')
+    nnoremap <silent><buffer><expr><nowait> <C-l> defx#do_action('redraw')
+    nnoremap <silent><buffer><expr><nowait> <C-g> defx#do_action('print')
 endfunction " }}}
 
 let g:defx_ignore_filtype = ['denite', 'defx', 'tagbar']
@@ -1242,7 +1247,7 @@ augroup plugin
     autocmd FileType defx call s:defx_settings()
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
-    autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx' expand('<afile>') | endif
+    autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx -new' expand('<afile>') | endif
 augroup END
 " }}}
 " }}}
