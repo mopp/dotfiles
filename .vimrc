@@ -1052,7 +1052,9 @@ function! Hook_on_post_source_lexima() abort
 
     let l:rules +=
                 \ [
-                \ {'char': '<TAB>','at': '([()]*\%#[)]*)', 'input': '<Right>'},
+                \ {'char': '-', 'at': '< \%#', 'input': '<BS>- ', 'priority': 10},
+                \
+                \ {'char': '<TAB>', 'at': '([()]*\%#[)]*)', 'input': '<Right>'},
                 \
                 \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
                 \ {'char': '<BS>', 'at': ' != !\%#', 'input': '<BS><BS><BS><BS>'},
