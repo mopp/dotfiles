@@ -1175,21 +1175,27 @@ let g:loaded_netrwPlugin = 1
 
 function! s:defx_settings() abort " {{{
     setlocal nofoldenable
+    setlocal listchars-=extends:<
     call s:hide_left_columns()
+    doautocmd BufRead
 
     " Cursor movings.
-    nnoremap <silent><buffer><expr><nowait> h defx#is_directory() && defx#is_opened_tree() ? defx#do_action('close_tree') : defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr><nowait> h defx#do_action('close_tree')
     nnoremap <silent><buffer><expr><nowait> j line('.') == line('$') ? 'gg' : 'j'
     nnoremap <silent><buffer><expr><nowait> k line('.') == 1 ? 'G' : 'k'
     nnoremap <silent><buffer><expr><nowait> l defx#is_directory() ? defx#do_action('open_tree') : 0
     nnoremap <silent><buffer><expr><nowait> L defx#do_action('open_tree_recursive')
-    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('open')
+    nnoremap <silent><buffer><expr><nowait> <C-l> defx#do_action('open')
+    nnoremap <silent><buffer><expr><nowait> <C-h> defx#do_action('cd', ['..'])
     nnoremap <silent><buffer><expr><nowait> ~ defx#do_action('cd')
+    nmap <silent><buffer><nowait> <C-j> <Plug>(easymotion-j)
+    nmap <silent><buffer><nowait> <C-k> <Plug>(easymotion-k)
 
     " File operations.
     nnoremap <silent><buffer><expr><nowait> c defx#do_action('copy')
     nnoremap <silent><buffer><expr><nowait> m defx#do_action('move')
     nnoremap <silent><buffer><expr><nowait> p defx#do_action('paste')
+    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('open')
     nnoremap <silent><buffer><expr><nowait> s defx#do_action('open', 'split')
     nnoremap <silent><buffer><expr><nowait> v defx#do_action('open', 'vsplit')
     nnoremap <silent><buffer><expr><nowait> t defx#do_action('open', 'tabedit')
@@ -1209,7 +1215,7 @@ function! s:defx_settings() abort " {{{
     nnoremap <silent><buffer><expr><nowait> x defx#do_action('execute_system')
     nnoremap <silent><buffer><expr><nowait> yy defx#do_action('yank_path')
     nnoremap <silent><buffer><expr><nowait> q defx#do_action('quit')
-    nnoremap <silent><buffer><expr><nowait> <C-l> defx#do_action('redraw')
+    nnoremap <silent><buffer><expr><nowait> <C-r> defx#do_action('redraw')
     nnoremap <silent><buffer><expr><nowait> <C-g> defx#do_action('print')
 endfunction " }}}
 
