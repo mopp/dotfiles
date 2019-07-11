@@ -503,6 +503,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
     call dein#add('hrsh7th/vim-denite-gitto')
+    call dein#add('hrsh7th/vim-gitto')
     call dein#add('neoclide/denite-git')
     call dein#add('notomo/denite-keymap')
     call dein#add('rafi/vim-denite-session')
@@ -690,11 +691,15 @@ if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>fl  :<C-U>Denite line<CR>
     nnoremap <silent> <Leader>fo  :<C-U>Denite outline<CR>
     nnoremap <silent> <Leader>fre :<C-U>Denite -resume<CR>
+    nnoremap <silent> <Leader>git :<C-U>DeniteGitto gitto<CR>
+    nnoremap <silent> <Leader>gic :<C-U>Denite gitchanged<CR>
+    nnoremap <silent> <Leader>gis :<C-U>Denite gitstatus<CR>
 
     function! s:denite_settings() abort " {{{
         nnoremap <silent><buffer><expr><nowait> <CR> denite#do_map('do_action')
         nnoremap <silent><buffer><expr><nowait> <TAB> denite#do_map('choose_action')
         nnoremap <silent><buffer><expr><nowait> <ESC> denite#do_map('quit')
+        nnoremap <silent><buffer><expr><nowait> q denite#do_map('quit')
         nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
         nnoremap <silent><buffer><expr><nowait> n denite#do_map('quick_move')
         nnoremap <silent><buffer><expr><nowait> i denite#do_map('open_filter_buffer')
@@ -702,12 +707,12 @@ if dein#tap('denite.nvim') " {{{
         nnoremap <silent><buffer><expr><nowait> t denite#do_map('do_action', 'tabopen')
         nnoremap <silent><buffer><expr><nowait> v denite#do_map('do_action', 'vsplit')
         nnoremap <silent><buffer><expr><nowait> s denite#do_map('do_action', 'split')
+        nnoremap <silent><buffer><expr><nowait> <C-h> denite#do_map('restore_sources')
     endfunction " }}}
 
     function! s:denite_filter_settings() abort " {{{
         let b:lexima_disabled = 1
         call deoplete#custom#buffer_option('auto_complete', v:false)
-        " It cannot work well because lexime.vim maps <ESC> when InsertEnter.
         imap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
         nmap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
     endfunction " }}}
