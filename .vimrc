@@ -445,6 +445,7 @@ augroup END
 if has('nvim')
     set inccommand=split
     set scrollback=5000
+    set wildoptions=
 
     tnoremap <ESC> <C-\><C-n>
     nnoremap <Leader>tm :terminal<CR>
