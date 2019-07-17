@@ -113,6 +113,8 @@ export GOENV_GOPATH_PREFIX=$HOME/.local/go
 (($+commands[anyenv])) && eval "$(anyenv init -)"
 [ -d $HOME/.erlenv ]   && eval "$(erlenv init -)"
 [ -d $HOME/.rbenv ]    && eval "$(rbenv init -)"
+
+export path=($GOPATH/bin $path)
 # }}}
 
 # Commands. {{{
