@@ -100,12 +100,13 @@ export path=(
     $path
 )
 
-# bindkey -M viins '^I'  up-line-or-history
 if (($+commands[rustup])); then
     RUST_SYSROOT=$(rustc --print sysroot)
     export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
     export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
 fi
+
+export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
 (($+commands[direnv])) && eval "$(direnv hook zsh)"
 (($+commands[fasd]))   && eval "$(fasd --init auto)"
