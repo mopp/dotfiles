@@ -26,7 +26,7 @@
     squeeze = commit --amend --no-edit
     unstage = reset HEAD
     uncommit = reset --soft HEAD~
-    fpush = push --force-with-lease
+    pushf = push --force-with-lease
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
 [pager]
