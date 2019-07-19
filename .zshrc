@@ -95,8 +95,6 @@ fi
 export path=(
     $HOME/.local/bin
     $HOME/.cargo/bin
-    $HOME/.rbenv/bin
-    $HOME/.erlenv/bin
     $path
 )
 
@@ -108,13 +106,14 @@ fi
 
 export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
-(($+commands[direnv])) && eval "$(direnv hook zsh)"
 (($+commands[fasd]))   && eval "$(fasd --init auto)"
 (($+commands[anyenv])) && eval "$(anyenv init -)"
-[ -d $HOME/.erlenv ]   && eval "$(erlenv init -)"
-[ -d $HOME/.rbenv ]    && eval "$(rbenv init -)"
 
-export path=($GOPATH/bin $path)
+export path=(
+    $GOPATH/bin
+    $HOME/.anyenv/envs/exenv/bin:$PATH
+    $HOME/.anyenv/envs/erlenv/bin:$PATH
+    $path)
 # }}}
 
 # Commands. {{{
