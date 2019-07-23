@@ -111,8 +111,9 @@ export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
 export path=(
     $GOPATH/bin
-    $HOME/.anyenv/envs/exenv/bin:$PATH
-    $HOME/.anyenv/envs/erlenv/bin:$PATH
+    $HOME/.anyenv/envs/exenv/bin
+    $HOME/.anyenv/envs/erlenv/bin
+    $HOME/.tfenv/bin
     $path)
 # }}}
 
