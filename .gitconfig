@@ -32,3 +32,5 @@
     pushinsteadof = https://github.com/
 [pager]
     branch = false
+[fetch]
+	prune = true
