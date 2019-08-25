@@ -92,12 +92,6 @@ fi
 # }}}
 
 # Initializations. {{{
-export path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $path
-)
-
 if (($+commands[rustup])); then
     RUST_SYSROOT=$(rustc --print sysroot)
     export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
@@ -110,10 +104,9 @@ export GOENV_GOPATH_PREFIX=$HOME/.local/go
 (($+commands[anyenv])) && eval "$(anyenv init -)"
 
 export path=(
+    $HOME/.local/bin
+    $HOME/.cargo/bin
     $GOPATH/bin
-    $HOME/.anyenv/envs/exenv/bin
-    $HOME/.anyenv/envs/erlenv/bin
-    $HOME/.tfenv/bin
     $path)
 # }}}
 
