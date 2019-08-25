@@ -11,7 +11,7 @@ exec --no-startup-id urxvtc
 set $mod Mod1
 
 # Font for window titles.
-font pango:Migu 1P 18px
+font pango:Cica 20px
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -50,7 +50,7 @@ bindsym $mod+Shift+o exec --no-startup-id xbacklight -inc 3
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'Cica'"
 bindsym $mod+Shift+d exec dmenu_run
 
 # change focus
@@ -159,7 +159,7 @@ bindsym $mod+Shift+e mode $out
 bar {
     status_command    i3status
     position          top
-    font pango:Migu 1P 16px
+    font pango:Cica 20px
     binding_mode_indicator yes
 
     colors {
