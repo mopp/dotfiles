@@ -27,10 +27,6 @@ URxvt.saveLines: 20000
 URxvt.scrollBar: false
 URxvt.scrollstyle: plain
 
-URxvt.perl-ext-common: default,matcher
-URxvt.url-launcher: /usr/bin/xdg-open
-URxvt.matcher.button: 2
-
 URxvt.keysym.Prior: \033[5~
 URxvt.keysym.Next: \033[6~
 URxvt.keysym.Home: \033[7~
@@ -50,3 +46,11 @@ URxvt.keysym.Control-Page_Down: \033[6;5~
 ! https://github.com/majutsushi/etc/blob/master/xorg/Xresources
 URxvt.keysym.Control-Space: \033Q32;5~
 URxvt.keysym.Mod4-s: searchable-scrollback:start
+
+URxvt.perl-ext-common: default,matcher,xim-onthespot
+
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 2
+
+urxvt.inputMethod: fcitx
+urxvt.preeditType: OnTheSpot
