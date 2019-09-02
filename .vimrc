@@ -477,13 +477,13 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('haya14busa/dein-command.vim')
 
     " Completions {{{
-    call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter'})
-    if !has('nvim')
-        call dein#add('roxma/nvim-yarp')
-        call dein#add('roxma/vim-hug-neovim-rpc')
-    endif
+    call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_denite()'})
 
     let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim']}
+    if !has('nvim')
+        call dein#add('roxma/nvim-yarp', s:lazy_plete)
+        call dein#add('roxma/vim-hug-neovim-rpc', s:lazy_plete)
+    endif
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
     call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
@@ -660,10 +660,24 @@ endfunction
 
 " deoplete.nvim {{{
 let g:deoplete#enable_at_startup = 1
-" If the default sources are defined, some completions are not work.
-" let g:deoplete#sources           = {}
-" let g:deoplete#sources._         = ['buffer']
-" }}}
+function! Hook_on_post_source_denite() abort
+    call deoplete#custom#option({
+                \ 'max_list': 250,
+                \ 'skip_multibyte': v:true,
+                \ 'ignore_sources': {'_': ['look']},
+                \ })
+    call deoplete#custom#source('look', {
+                \ 'min_pattern_length': 4,
+                \ 'disabled_syntaxes': ['Normal']
+                \ })
+    call deoplete#custom#option('candidate_marks', ['H', 'J', 'K', 'L'])
+    inoremap <silent><expr> H pumvisible() ? deoplete#insert_candidate(0) : 'H'
+    inoremap <silent><expr> J pumvisible() ? deoplete#insert_candidate(1) : 'J'
+    inoremap <silent><expr> K pumvisible() ? deoplete#insert_candidate(2) : 'K'
+    inoremap <silent><expr> L pumvisible() ? deoplete#insert_candidate(3) : 'L'
+endfunction
+command! DisableNecoLook call deoplete#custom#option('ignore_sources', {'_': ['look']})
+command! EnableNecoLook call deoplete#custom#option('ignore_sources', {})
 
 " neosnippet.vim {{{
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
