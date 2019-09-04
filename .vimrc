@@ -789,10 +789,10 @@ let g:echodoc_enable_at_startup = 1
 
 " vim-gitgutter {{{
 let g:gitgutter_map_keys = 0
-nmap <Leader>hs <Plug>GitGutterStageHunk
-nmap <Leader>hu <Plug>GitGutterUndoHunk
-nmap <Leader>hp <Plug>GitGutterPrevHunk
-nmap <Leader>hn <Plug>GitGutterNextHunk
+nmap <Leader>hs <Plug>(GitGutterStageHunk)
+nmap <Leader>hu <Plug>(GitGutterUndoHunk)
+nmap <Leader>hp <Plug>(GitGutterPrevHunk)
+nmap <Leader>hn <Plug>(GitGutterNextHunk)
 " }}}
 
 " vim-trailing-whitespace
