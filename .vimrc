@@ -1277,6 +1277,7 @@ augroup plugin
     autocmd FileType gina-commit setlocal spell
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType erlang call s:define_erlang_option()
+    autocmd FileType tex if dein#is_sourced('deoplete.nvim') | call deoplete#custom#buffer_option('auto_complete', v:false) | endif
     autocmd FileType defx call s:defx_settings()
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
