@@ -670,7 +670,7 @@ function! Hook_on_post_source_denite() abort
                 \ 'min_pattern_length': 4,
                 \ 'disabled_syntaxes': ['Normal']
                 \ })
-    call deoplete#custom#option('candidate_marks', ['H', 'J', 'K', 'L'])
+    call deoplete#custom#option('candidate_marks', ['<C-W>', '<C-A>', '<C-S>', '<C-D>'])
     inoremap <silent><expr> H pumvisible() ? deoplete#insert_candidate(0) : 'H'
     inoremap <silent><expr> J pumvisible() ? deoplete#insert_candidate(1) : 'J'
     inoremap <silent><expr> K pumvisible() ? deoplete#insert_candidate(2) : 'K'
@@ -678,6 +678,7 @@ function! Hook_on_post_source_denite() abort
 endfunction
 command! DisableNecoLook call deoplete#custom#option('ignore_sources', {'_': ['look']})
 command! EnableNecoLook call deoplete#custom#option('ignore_sources', {})
+" }}}
 
 " neosnippet.vim {{{
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
