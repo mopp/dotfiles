@@ -385,6 +385,10 @@ function! s:hide_left_columns() abort " {{{
     setlocal foldcolumn=0
 endfunction " }}}
 command! HideLeftColumns call s:hide_left_columns()
+
+" Make the current window size adequate.
+command! -nargs=0 ReduceVWinSizeAdequately :execute printf('resize %.0f', winheight(0) * 0.65)
+command! -nargs=0 ReduceHWinSizeAdequately :execute printf('vertical resize %.0f', winwidth(0) * 0.65)
 " }}}
 
 " GUI. {{{
