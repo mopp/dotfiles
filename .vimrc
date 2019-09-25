@@ -675,10 +675,10 @@ function! Hook_on_post_source_denite() abort
                 \ 'disabled_syntaxes': ['Normal']
                 \ })
     call deoplete#custom#option('candidate_marks', ['<C-W>', '<C-A>', '<C-S>', '<C-D>'])
-    inoremap <silent><expr> H pumvisible() ? deoplete#insert_candidate(0) : 'H'
-    inoremap <silent><expr> J pumvisible() ? deoplete#insert_candidate(1) : 'J'
-    inoremap <silent><expr> K pumvisible() ? deoplete#insert_candidate(2) : 'K'
-    inoremap <silent><expr> L pumvisible() ? deoplete#insert_candidate(3) : 'L'
+    inoremap <silent><expr> <C-W> pumvisible() ? deoplete#insert_candidate(0) : 'H'
+    inoremap <silent><expr> <C-A> pumvisible() ? deoplete#insert_candidate(1) : 'J'
+    inoremap <silent><expr> <C-S> pumvisible() ? deoplete#insert_candidate(2) : 'K'
+    inoremap <silent><expr> <C-D> pumvisible() ? deoplete#insert_candidate(3) : 'L'
 endfunction
 command! DisableNecoLook call deoplete#custom#option('ignore_sources', {'_': ['look']})
 command! EnableNecoLook call deoplete#custom#option('ignore_sources', {})
