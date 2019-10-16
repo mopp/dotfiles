@@ -386,6 +386,19 @@ function! s:hide_left_columns() abort " {{{
 endfunction " }}}
 command! HideLeftColumns call s:hide_left_columns()
 
+function! s:toggle_relative_number() abort " {{{
+    let b:relnum = !get(b:, 'relnum', 1)
+
+    if b:relnum
+        setlocal relativenumber
+    else
+        setlocal norelativenumber
+    endif
+
+    setlocal number
+endfunction " }}}
+command! ToggleRelativeNumber call s:toggle_relative_number()
+
 " Make the current window size adequate.
 command! -nargs=0 ReduceVWinSizeAdequately :execute printf('resize %.0f', winheight(0) * 0.65)
 command! -nargs=0 ReduceHWinSizeAdequately :execute printf('vertical resize %.0f', winwidth(0) * 0.65)
@@ -435,8 +448,8 @@ augroup mopp
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
 
-    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set relativenumber   | endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set norelativenumber | endif
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && get(b:, 'relnum', 1) | setlocal relativenumber   | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu && get(b:, 'relnum', 1) | setlocal norelativenumber | endif
 
     if executable('fcitx-remote')
         " Disable IME when back to normal mode.
