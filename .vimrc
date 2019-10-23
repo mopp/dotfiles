@@ -588,6 +588,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-ambicmd', {'lazy': 1, 'on_event': 'CmdwinEnter'})
+    call dein#add('thinca/vim-quickrun', {'lazy': 1, 'on_cmd': 'QuickRun'})
     call dein#add('thinca/vim-visualstar')
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
@@ -1107,6 +1108,9 @@ function! Hook_on_post_source_lexima() abort
                 \
                 \ {'filetype': ['elixir'], 'char': '<Bar>', 'at': '^\s\+\%#', 'input': '|> ', 'priority': 10},
                 \ {'filetype': ['elixir'], 'char': '>', 'at': '|\%#', 'input': '> ', 'priority': 10},
+                \
+                \ {'filetype': ['ruby'], 'char': '<Bar>', 'at': '{\%#}', 'input': '||<Left>', 'priority': 10},
+                \ {'filetype': ['ruby'], 'char': '{', 'at': '\w\+\%#', 'input': ' {}<Left>', 'priority': 10},
                 \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
