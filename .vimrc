@@ -342,6 +342,11 @@ imap <silent> <C-G><C-B> <C-G>b
 imap <silent> <C-G><C-O> <C-G>o
 imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
+
+function! s:jq(...) abort " {{{
+  execute '%! jq ' . (a:0 ? a:1 : '.')
+endfunction " }}}
+command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
 
 " Keep last session. {{{
