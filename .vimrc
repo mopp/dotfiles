@@ -345,6 +345,7 @@ imap <silent> <C-G><C-H> <C-G>h
 
 function! s:jq(...) abort " {{{
   execute '%! jq ' . (a:0 ? a:1 : '.')
+  setlocal filetype=json
 endfunction " }}}
 command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
