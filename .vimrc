@@ -342,12 +342,6 @@ imap <silent> <C-G><C-B> <C-G>b
 imap <silent> <C-G><C-O> <C-G>o
 imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
-
-function! s:jq(...) abort " {{{
-  execute '%! jq ' . (a:0 ? a:1 : '.')
-  setlocal filetype=json
-endfunction " }}}
-command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
 
 " Keep last session. {{{
@@ -408,6 +402,13 @@ command! ToggleRelativeNumber call s:toggle_relative_number()
 " Make the current window size adequate.
 command! -nargs=0 ReduceVWinSizeAdequately :execute printf('resize %.0f', winheight(0) * 0.65)
 command! -nargs=0 ReduceHWinSizeAdequately :execute printf('vertical resize %.0f', winwidth(0) * 0.65)
+
+" jq command wrapper.
+function! s:jq(...) abort " {{{
+  execute '%! jq ' . (a:0 ? a:1 : '.')
+  setlocal filetype=json
+endfunction " }}}
+command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
 
 " GUI. {{{
