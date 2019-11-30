@@ -550,6 +550,11 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('machakann/vim-sandwich')
     " }}}
 
+    " LSP {{{
+    call dein#add('prabirshrestha/async.vim')
+    call dein#add('prabirshrestha/vim-lsp')
+    " }}}
+
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
@@ -1295,6 +1300,25 @@ function! g:committia_hooks.edit_open(info)
     nmap <buffer> <C-K> <Plug>(committia-scroll-diff-up-half)
     nmap <buffer> <C-J> <Plug>(committia-scroll-diff-down-half)
 endfunction
+
+" vim-lsp
+let g:lsp_auto_enable = 0
+if executable('solargraph')
+    autocmd User lsp_setup call lsp#register_server({
+                \ 'name': 'solargraph',
+                \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
+                \ 'initialization_options': {'diagnostics': 'true'},
+                \ 'whitelist': ['ruby'],
+                \ })
+endif
+augroup mopp_lsp
+    autocmd!
+    autocmd FileType ruby call lsp#enable()
+    autocmd FileType ruby setlocal foldmethod=expr foldexpr=lsp#ui#vim#folding#foldexpr()
+augroup END
+nmap <Leader>lc <plug>(lsp-declaration)
+nmap <Leader>ld <plug>(lsp-definition)
+nmap <Leader>lp <plug>(lsp-peek-definition)
 
 " Autocommands for plugins.  {{{
 augroup plugin
