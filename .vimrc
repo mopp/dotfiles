@@ -601,7 +601,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
-    call dein#add('thinca/vim-ambicmd', {'lazy': 1, 'on_event': 'CmdwinEnter'})
+    call dein#add('thinca/vim-ambicmd')
     call dein#add('thinca/vim-quickrun', {'lazy': 1, 'on_cmd': 'QuickRun'})
     call dein#add('thinca/vim-visualstar', {'lazy': 1, 'on_map': {'v': ['*', '#']}})
     call dein#add('tpope/vim-repeat')
