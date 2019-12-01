@@ -1273,8 +1273,8 @@ endfunction " }}}
 
 " vim-ambicmd
 if dein#tap('vim-ambicmd') " {{{
-    cnoremap <expr> <CR> ambicmd#expand("\<CR>")
-    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+    cnoremap <expr> <CR> ambicmd#expand('<CR>')
+    cnoremap <expr> <Space> ambicmd#expand('<Space>')
 endif " }}}
 
 " rhysd/committia.vim
