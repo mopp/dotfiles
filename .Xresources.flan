@@ -1,3 +1,3 @@
 ! vi:ft=xdefaults
 Xft.dpi: 127
-URxvt.font: xft:Cica:size=11:antialias=true:style=Regular
+URxvt.font: xft:Cica:style=Regular:size=11, xft:Inconsolata Nerd Font Mono
