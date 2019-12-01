@@ -551,6 +551,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " LSP {{{
+    call dein#add('liuchengxu/vista.vim', {'lazy': 1, 'on_cmd': 'Vista'})
     call dein#add('prabirshrestha/async.vim')
     call dein#add('prabirshrestha/vim-lsp')
     " }}}
@@ -585,7 +586,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('kristijanhusak/defx-git')
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
     call dein#add('luochen1990/rainbow')
-    call dein#add('majutsushi/tagbar', {'lazy': 1, 'on_cmd': 'TagbarToggle'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('mattn/learn-vimscript')
     call dein#add('mattn/webapi-vim')
@@ -873,10 +873,10 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'defx': 'Defx', 'tagbar': 'TagBar'}
+let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'defx': 'Defx', 'vista': 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'defx\|tagbar\|denite\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'defx\|vista\|denite\|help')
 endfunction
 
 function! LightlineFilename() abort " {{{
@@ -884,8 +884,8 @@ function! LightlineFilename() abort " {{{
         return denite#get_status('sources')
     elseif &filetype ==# 'denite-filter'
         return ''
-    elseif &filetype ==# 'tagbar'
-        return g:lightline.fname
+    elseif &filetype ==# 'vista'
+        return ''
     else
         let l:t = expand('%:t')
         return l:t ==# '' ? '[No Name]' : l:t
@@ -961,20 +961,6 @@ let g:rainbow_conf = {
             \       'css': 0, 'perl': 0, 'html': 0, 'handlebars': 0, 'xml': 0
             \   },
             \   }
-" }}}
-
-" tagbar {{{
-let g:tagbar_autoshowtag = 1
-let g:tagbar_autofocus   = 1
-let g:tagbar_sort        = 0
-let g:tagbar_compact     = 1
-nnoremap <silent> <Leader>tb :<C-U>TagbarToggle<CR>
-
-function! Tagbar_status_func(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-    return lightline#statusline(0)
-endfunction
-let g:tagbar_status_func = 'Tagbar_status_func'
 " }}}
 
 " gist-vim
@@ -1319,6 +1305,10 @@ augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
 nmap <Leader>lp <plug>(lsp-peek-definition)
+
+" vista.vim
+let g:vista_echo_cursor = 0
+let g:vista_echo_cursor_strategy = 'floating_win'
 
 " Autocommands for plugins.  {{{
 augroup plugin
