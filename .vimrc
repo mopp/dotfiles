@@ -1300,7 +1300,7 @@ endif
 augroup mopp_lsp
     autocmd!
     autocmd FileType ruby call lsp#enable()
-    autocmd FileType ruby setlocal foldmethod=expr foldexpr=lsp#ui#vim#folding#foldexpr()
+    " autocmd FileType ruby setlocal foldmethod=expr foldexpr=lsp#ui#vim#folding#foldexpr()
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
