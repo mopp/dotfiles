@@ -464,6 +464,12 @@ augroup mopp
         " Disable IME when back to normal mode.
         autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
     endif
+
+    let s:cur_f = 0
+    autocmd WinEnter * setlocal cursorline | let s:cur_f = 0
+    autocmd WinLeave * setlocal nocursorline
+    autocmd CursorHold,CursorHoldI * setlocal cursorline | let s:cur_f = 1
+    autocmd CursorMoved,CursorMovedI * if s:cur_f | setlocal nocursorline | endif
 augroup END
 " }}}
 
