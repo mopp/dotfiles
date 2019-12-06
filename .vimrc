@@ -560,6 +560,16 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('prabirshrestha/vim-lsp')
     " }}}
 
+    " git {{{
+    call dein#add('airblade/vim-gitgutter')
+    call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
+    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
+    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
+    call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
+    call dein#add('rhysd/committia.vim')
+    call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
+    " }}}
+
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
@@ -571,12 +581,9 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
     call dein#add('Yggdroot/indentLine')
-    call dein#add('airblade/vim-gitgutter')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
-    call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
-    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
@@ -588,9 +595,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
     call dein#add('kristijanhusak/defx-git')
-    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
     call dein#add('luochen1990/rainbow')
-    call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('mattn/learn-vimscript')
     call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
@@ -600,8 +605,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('rhysd/committia.vim')
-    call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
