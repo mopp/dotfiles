@@ -32,7 +32,7 @@ set tabstop=4
 set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
-set cursorline
+" set cursorline
 set display=lastline
 set laststatus=2
 set list
