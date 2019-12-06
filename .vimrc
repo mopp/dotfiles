@@ -595,6 +595,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rhysd/committia.vim')
+    call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
