@@ -409,6 +409,7 @@ function! s:jq(...) abort " {{{
   setlocal filetype=json
 endfunction " }}}
 command! -nargs=? Jq call s:jq(<f-args>)
+" }}}
 
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
 " }}}
