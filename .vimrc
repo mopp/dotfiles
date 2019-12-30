@@ -412,7 +412,8 @@ command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
 
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
-" }}}
+
+command! -nargs=0 ExecuteCurrentLine :execute getline('.')
 
 " GUI. {{{
 if has('gui_running')
