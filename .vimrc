@@ -405,8 +405,8 @@ command! -nargs=0 ReduceHWinSizeAdequately :execute printf('vertical resize %.0f
 
 " jq command wrapper.
 function! s:jq(...) abort " {{{
-  execute '%! jq ' . (a:0 ? a:1 : '.')
-  setlocal filetype=json
+    execute '%! jq ' . (a:0 ? a:1 : '.')
+    setlocal filetype=json
 endfunction " }}}
 command! -nargs=? Jq call s:jq(<f-args>)
 " }}}
@@ -467,6 +467,7 @@ augroup mopp
         autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
     endif
 
+    " Turn on/off cursorline automatically.
     let s:cur_f = 0
     autocmd WinEnter * setlocal cursorline | let s:cur_f = 0
     autocmd WinLeave * setlocal cursorline
@@ -486,7 +487,7 @@ if has('nvim')
     nnoremap <Leader>vst :vsplit term://zsh<CR>
     nnoremap <Leader>vtt :tabnew term://zsh<CR>
 
-    autocmd TermOpen * call s:hide_left_columns()
+    autocmd mopp TermOpen * call s:hide_left_columns()
 
     if has('mac')
         let g:python_host_prog  = '/usr/local/bin/python2'
@@ -1301,7 +1302,7 @@ endfunction
 let g:lsp_auto_enable = 0
 let g:lsp_highlights_enabled = 0
 if executable('solargraph')
-    autocmd User lsp_setup call lsp#register_server({
+    autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'solargraph',
                 \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
                 \ 'initialization_options': {'diagnostics': 'true'},
@@ -1309,7 +1310,7 @@ if executable('solargraph')
                 \ })
 endif
 if executable('rls')
-    autocmd User lsp_setup call lsp#register_server({
+    autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'rls',
                 \ 'cmd': {server_info -> ['rls']},
                 \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
