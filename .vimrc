@@ -1299,6 +1299,7 @@ endfunction
 
 " vim-lsp
 let g:lsp_auto_enable = 0
+let g:lsp_highlights_enabled = 0
 if executable('solargraph')
     autocmd User lsp_setup call lsp#register_server({
                 \ 'name': 'solargraph',
@@ -1307,10 +1308,19 @@ if executable('solargraph')
                 \ 'whitelist': ['ruby'],
                 \ })
 endif
+if executable('rls')
+    autocmd User lsp_setup call lsp#register_server({
+                \ 'name': 'rls',
+                \ 'cmd': {server_info -> ['rls']},
+                \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+                \ 'whitelist': ['rust'],
+                \ })
+endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby call lsp#enable()
-    " autocmd FileType ruby setlocal foldmethod=expr foldexpr=lsp#ui#vim#folding#foldexpr()
+    autocmd FileType ruby,rust call lsp#enable()
+    autocmd FileType ruby,rust call lsp#enable()
+    autocmd User lsp_buffer_enabled highlight LspWarningText cterm=bold,underline
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
