@@ -519,6 +519,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
         call dein#add('roxma/nvim-yarp', s:lazy_plete)
         call dein#add('roxma/vim-hug-neovim-rpc', s:lazy_plete)
     endif
+    call dein#add('Shougo/deoplete-lsp')
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
     call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
