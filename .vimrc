@@ -409,11 +409,35 @@ function! s:jq(...) abort " {{{
     setlocal filetype=json
 endfunction " }}}
 command! -nargs=? Jq call s:jq(<f-args>)
-" }}}
+
+" Fit the current window size to the longest line in the window.
+" https://stackoverflow.com/questions/9148919
+" https://github.com/inkarkat/vim-ingo-library/blob/a4ca05610e14c2bcf715319811d2b7aa20847940/autoload/ingo/window/dimensions.vim#L23-L39
+function! s:fit_window_size_to_displayed_content(is_vertical) abort " {{{
+    if a:is_vertical
+        execute 'vertical resize'
+                    \ max(map(range(0, line('$')), 'virtcol([v:val, "$"])')) - 1
+                    \ + &foldcolumn
+                    \ + (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
+                    \ + (&signcolumn ==# 'no' ? 0 : 2)
+    else
+        let l:cnt = 0
+        let l:line = 1
+        let l:tail = line('$')
+        while l:line <= l:tail
+            let l:end = foldclosedend(l:line)
+            let l:line = (l:end == -1 ? l:line : l:end) + 1
+            let l:cnt += 1
+        endwhile
+        execute 'resize' l:cnt
+    endif
+endfunction " }}}
+command! -nargs=0 -bang FitWindowSize call s:fit_window_size_to_displayed_content(expand('<bang>') != '!')
 
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
 
 command! -nargs=0 ExecuteCurrentLine :execute getline('.')
+" }}}
 
 " GUI. {{{
 if has('gui_running')
