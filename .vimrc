@@ -414,19 +414,24 @@ command! -nargs=? Jq call s:jq(<f-args>)
 " https://stackoverflow.com/questions/9148919
 " https://github.com/inkarkat/vim-ingo-library/blob/a4ca05610e14c2bcf715319811d2b7aa20847940/autoload/ingo/window/dimensions.vim#L23-L39
 function! s:fit_window_size_to_displayed_content(is_vertical) abort " {{{
+    let l:left_column_width = &foldcolumn + (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0) + (&signcolumn ==# 'no' ? 0 : 2)
     if a:is_vertical
-        execute 'vertical resize'
-                    \ max(map(range(0, line('$')), 'virtcol([v:val, "$"])')) - 1
-                    \ + &foldcolumn
-                    \ + (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0)
-                    \ + (&signcolumn ==# 'no' ? 0 : 2)
+        execute 'vertical resize' l:left_column_width + max(map(range(0, line('$')), 'virtcol([v:val, "$"])')) - 1
     else
         let l:cnt = 0
         let l:line = 1
         let l:tail = line('$')
+        let l:width = winwidth(0) - l:left_column_width
         while l:line <= l:tail
             let l:end = foldclosedend(l:line)
-            let l:line = (l:end == -1 ? l:line : l:end) + 1
+            if l:end == -1
+                if &wrap
+                    let l:cnt += virtcol([l:line, '$']) / l:width
+                endif
+                let l:line += 1
+            else
+                let l:line = l:end + 1
+            endif
             let l:cnt += 1
         endwhile
         execute 'resize' l:cnt
