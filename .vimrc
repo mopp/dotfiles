@@ -610,6 +610,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
+    call dein#add('simeji/winresizer', {'lazy': 1, 'on_cmd': ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
@@ -1331,6 +1332,9 @@ nmap <Leader>lp <plug>(lsp-peek-definition)
 " vista.vim
 let g:vista_echo_cursor = 0
 let g:vista_echo_cursor_strategy = 'floating_win'
+
+" winresizer
+let g:winresizer_start_key = '<Nop>'
 
 " Autocommands for plugins.  {{{
 augroup plugin
