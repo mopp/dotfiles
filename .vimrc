@@ -1154,6 +1154,8 @@ function! Hook_on_post_source_lexima() abort
                 \ {'filetype': ['ruby'], 'char': '<Bar>', 'at': '{\%#}', 'input': '||<Left>', 'priority': 10},
                 \ {'filetype': ['ruby'], 'char': '{', 'at': '\w\+\%#', 'input': ' {}<Left>', 'priority': 10},
                 \
+                \ {'filetype': ['go'], 'char': '=', 'at': ':\%#', 'input': '<BS> := '},
+                \
                 \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
                 \
                 \ {'char': '>',    'at': '<\%#',     'input': '><Left>',              'filetype': ['vim', 'rust']},
