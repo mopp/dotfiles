@@ -1348,10 +1348,17 @@ if executable('rls')
                 \ 'whitelist': ['rust'],
                 \ })
 endif
+if executable('gopls')
+    autocmd mopp User lsp_setup call lsp#register_server({
+                \ 'name': 'gopls',
+                \ 'cmd': {server_info -> ['gopls']},
+                \ 'whitelist': ['go'],
+                \ })
+    autocmd BufWritePre *.go LspDocumentFormatSync
+endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust call lsp#enable()
-    autocmd FileType ruby,rust call lsp#enable()
+    autocmd FileType ruby,rust,go call lsp#enable()
     autocmd User lsp_buffer_enabled highlight LspWarningText cterm=bold,underline
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
