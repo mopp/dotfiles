@@ -497,10 +497,11 @@ augroup mopp
     endif
 
     " Turn on/off cursorline automatically.
+    " Cheking the number of bytes is to avoid cleaning intro message when vim starts.
     let s:cur_f = 0
     autocmd WinEnter * setlocal cursorline | let s:cur_f = 0
     autocmd WinLeave * setlocal cursorline
-    autocmd CursorHold,CursorHoldI * setlocal cursorline | let s:cur_f = 1
+    autocmd CursorHold,CursorHoldI * if wordcount()['bytes'] | setlocal cursorline | let s:cur_f = 1 | endif
     autocmd CursorMoved,CursorMovedI * if s:cur_f | setlocal nocursorline | endif
 augroup END
 " }}}
@@ -594,7 +595,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " git {{{
-    call dein#add('airblade/vim-gitgutter')
+    call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': ['BufWritePost', 'CursorMoved']})
     call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
