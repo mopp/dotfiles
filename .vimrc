@@ -1374,6 +1374,13 @@ let g:vista_echo_cursor_strategy = 'floating_win'
 " winresizer
 let g:winresizer_start_key = '<Nop>'
 
+" indentLine
+let g:indentLine_fileTypeExclude = ['defx', 'vista', 'denite', 'help']
+let g:indentLine_faster = 1
+let g:indentLine_color_term = 248
+let g:indentLine_setConceal = 0
+let g:indentLine_concealcursor = ''
+
 " Autocommands for plugins.  {{{
 augroup plugin
     autocmd!
