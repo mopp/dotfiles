@@ -667,7 +667,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('leafgarland/typescript-vim')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
-    call dein#add('plasticboy/vim-markdown')
     call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
     call dein#add('stephpy/vim-yaml')
@@ -1029,10 +1028,6 @@ nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
-
-" vim-markdown
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_folding_style_pythonic = 1
 
 " c-prototype
 let g:c_prototype_no_default_keymappings = 1
