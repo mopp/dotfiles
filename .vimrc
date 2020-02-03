@@ -1354,9 +1354,16 @@ if executable('gopls')
                 \ })
     autocmd BufWritePre *.go LspDocumentFormatSync
 endif
+if executable('clangd')
+    autocmd mopp User lsp_setup call lsp#register_server({
+                \ 'name': 'clangd',
+                \ 'cmd': {server_info -> ['clangd', '-background-index']},
+                \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+                \ })
+endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust,go call lsp#enable()
+    autocmd FileType ruby,rust,go,c,cpp call lsp#enable()
     autocmd User lsp_buffer_enabled highlight LspWarningText cterm=bold,underline
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
