@@ -665,6 +665,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('fatih/vim-go', {'lazy': 1, 'on_ft': 'go'})
     call dein#add('hail2u/vim-css3-syntax')
     call dein#add('hashivim/vim-terraform')
+    call dein#add('jakwings/vim-pony')
     call dein#add('leafgarland/typescript-vim')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
@@ -693,7 +694,7 @@ augroup mopp_filetype_overwrite " {{{
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType text,man setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby,javascript,typescript,html,css setlocal shiftwidth=2
+    autocmd FileType ruby,javascript,typescript,html,css,pony setlocal shiftwidth=2
 augroup END " }}}
 
 if !s:has_dein " {{{
