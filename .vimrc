@@ -118,6 +118,7 @@ let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h = 1
 let g:tex_conceal = ''
 let g:tex_flavor = 'latex'
+let g:markdown_folding = 1
 " }}}
 " }}}
 
