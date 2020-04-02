@@ -1063,6 +1063,7 @@ endif
 let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
+let g:ale_linters = { 'go': ['gofmt', 'golangci-lint'] }
 function! s:define_erlang_option() abort
     let paths = []
     for l:p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
