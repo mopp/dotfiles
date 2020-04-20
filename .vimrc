@@ -343,6 +343,39 @@ imap <silent> <C-G><C-B> <C-G>b
 imap <silent> <C-G><C-O> <C-G>o
 imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
+
+if has('nvim')
+    function! s:show_base_numbers(number_text) abort
+        let l:number = str2nr(a:number_text)
+        if type(0) != type(l:number)
+            echoerr 'The given value ' . a:number . ' is NOT number.'
+            return
+        endif
+
+        let l:content = [
+                    \ printf(' Bin: 0b%b ', l:number),
+                    \ printf(' Oct: 0o%o', l:number),
+                    \ printf(' Dec: %d', l:number),
+                    \ printf(' Hex: 0x%x', l:number),
+                    \ ]
+
+        let l:buf = nvim_create_buf(v:false, v:true)
+        call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
+        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', {})
+
+        let l:opts = {
+                    \ 'relative': 'cursor',
+                    \ 'height': len(l:content),
+                    \ 'width': max(map(l:content, {_, c -> len(c)})),
+                    \ 'row': 1,
+                    \ 'col': 0,
+                    \ 'style': 'minimal'
+                    \}
+        let l:win = nvim_open_win(l:buf, v:true, l:opts)
+        " call nvim_win_set_option(l:win, 'winhl', 'Normal:Question')
+    endfunction
+    command! -nargs=0 BaseNumbers call <SID>show_base_numbers(expand('<cword>'))
+endif
 " }}}
 
 " Keep last session. {{{
