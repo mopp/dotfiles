@@ -9,7 +9,7 @@
 [color]
     ui = auto
 [core]
-    pager     = less
+    pager = delta --dark
     quotepath = false
 [github]
     user = mopp
@@ -35,3 +35,5 @@
     branch = false
 [fetch]
 	prune = true
+[interactive]
+    diffFilter = delta  --dark --color-only
