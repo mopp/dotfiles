@@ -134,8 +134,8 @@ else
     alias grep='grep --color=auto'
 fi
 
-if (($+commands[colordiff])); then
-    alias diff='colordiff -u'
+if (($+commands[delta])); then
+    alias diff='delta'
 else
     alias diff='diff -u'
 fi
