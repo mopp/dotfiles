@@ -108,6 +108,8 @@ export path=(
     $HOME/.cargo/bin
     $GOPATH/bin
     $path)
+
+export ERL_AFLAGS="-kernel shell_history enabled"
 # }}}
 
 # Commands. {{{
