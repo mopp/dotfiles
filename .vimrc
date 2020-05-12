@@ -1397,9 +1397,16 @@ if executable('clangd')
                 \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
                 \ })
 endif
+if executable('elixir-ls')
+    autocmd mopp User lsp_setup call lsp#register_server({
+                \ 'name': 'elixir-ls',
+                \ 'cmd': {server_info -> ['elixir-ls']},
+                \ 'whitelist': ['elixir', 'eelixir'],
+                \ })
+endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust,go,c,cpp call lsp#enable()
+    autocmd FileType ruby,rust,go,c,cpp,elixir call lsp#enable()
     autocmd User lsp_buffer_enabled highlight LspWarningText cterm=bold,underline
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
