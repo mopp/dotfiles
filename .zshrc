@@ -137,9 +137,7 @@ else
 fi
 
 if (($+commands[delta])); then
-    alias diff='delta'
-else
-    alias diff='diff -u'
+    export BAT_THEME='Dracula'
 fi
 
 if (($+commands[kubectl])); then
@@ -166,6 +164,7 @@ alias -g T='| tail'
 alias objdump='objdump -M intel'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
+alias diff='diff -u'
 
 # http://d.hatena.ne.jp/se-kichi/20101017/1287341473
 function extract() {
