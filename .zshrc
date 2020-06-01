@@ -136,8 +136,9 @@ else
     alias grep='grep --color=auto'
 fi
 
-if (($+commands[delta])); then
-    export BAT_THEME='Dracula'
+if (($+commands[bat])); then
+    export BAT_THEME='Nord'
+    alias cat='bat'
 fi
 
 if (($+commands[kubectl])); then
