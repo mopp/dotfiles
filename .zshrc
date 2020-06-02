@@ -91,7 +91,7 @@ else
 fi
 # }}}
 
-# Initializations. {{{
+# External tool configurations. {{{
 if (($+commands[rustup])); then
     RUST_SYSROOT=$(rustc --print sysroot)
     export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
@@ -110,9 +110,7 @@ export path=(
     $path)
 
 export ERL_AFLAGS="-kernel shell_history enabled"
-# }}}
 
-# Commands. {{{
 if (($+commands[exa])); then
     export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
     # export TIME_STYLE='long-iso'
