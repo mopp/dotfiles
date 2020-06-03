@@ -92,24 +92,36 @@ fi
 # }}}
 
 # External tool configurations. {{{
-if (($+commands[rustup])); then
-    RUST_SYSROOT=$(rustc --print sysroot)
-    export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
-    export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
-fi
-
 export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
-(($+commands[fasd]))   && eval "$(fasd --init auto)"
-(($+commands[anyenv])) && eval "$(anyenv init -)"
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+export PAGER=less
+export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;5;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
 export path=(
     $HOME/.local/bin
     $HOME/.cargo/bin
     $GOPATH/bin
-    $path)
+    $path
+)
 
-export ERL_AFLAGS="-kernel shell_history enabled"
+(($+commands[anyenv])) && eval "$(anyenv init -)"
+(($+commands[fasd])) && eval "$(fasd --init auto)"
+(($+commands[kubectl])) && source <(kubectl completion zsh)
+
+if (($+commands[rustup])); then
+    RUST_SYSROOT=$(rustc --print sysroot)
+    export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
+    export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
+fi
 
 if (($+commands[exa])); then
     export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
@@ -138,21 +150,6 @@ if (($+commands[bat])); then
     export BAT_THEME='Nord'
     alias cat='bat'
 fi
-
-if (($+commands[kubectl])); then
-    source <(kubectl completion zsh)
-fi
-
-export PAGER=less
-export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
-
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[38;5;246m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 # }}}
 
 # Aliases. {{{
