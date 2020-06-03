@@ -106,13 +106,6 @@ export LESS_TERMCAP_so=$'\E[38;5;246m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
-export path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $GOPATH/bin
-    $path
-)
-
 (($+commands[anyenv])) && eval "$(anyenv init -)"
 (($+commands[fasd])) && eval "$(fasd --init auto)"
 (($+commands[kubectl])) && source <(kubectl completion zsh)
@@ -150,6 +143,15 @@ if (($+commands[bat])); then
     export BAT_THEME='Nord'
     alias cat='bat'
 fi
+
+export path=(
+    $HOME/.local/bin
+    $HOME/.cargo/bin
+    $GOPATH/bin
+    $path
+)
+
+typeset -U PATH path
 # }}}
 
 # Aliases. {{{
