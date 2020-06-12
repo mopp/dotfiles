@@ -387,7 +387,7 @@ function! s:save_session(...) abort
 endfunction
 
 function! s:get_session_list(arguments, cmd_line, cursor_pos) abort
-    let l:filepaths = split(glob(s:session_directory . '*.vim'), '\n')
+    let l:filepaths = split(glob(s:session_directory . '*'), '\n')
     return map(l:filepaths, {i, v -> fnamemodify(v, ':t')})
 endfunction
 
