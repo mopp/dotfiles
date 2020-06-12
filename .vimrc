@@ -584,7 +584,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
         call dein#add('roxma/nvim-yarp', s:lazy_plete)
         call dein#add('roxma/vim-hug-neovim-rpc', s:lazy_plete)
     endif
-    call dein#add('Shougo/deoplete-lsp')
     call dein#add('Shougo/neco-syntax', s:lazy_plete)
     call dein#add('Shougo/neco-vim', s:lazy_plete)
     call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
@@ -592,6 +591,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/neosnippet.vim', s:lazy_plete)
     call dein#add('honza/vim-snippets', s:lazy_plete)
     call dein#add('hrsh7th/vim-neco-calc')
+    call dein#add('lighttiger2505/deoplete-vim-lsp', s:lazy_plete)
     call dein#add('racer-rust/vim-racer')
     call dein#add('sebastianmarkow/deoplete-rust')
     call dein#add('ujihisa/neco-look')
