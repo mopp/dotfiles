@@ -109,6 +109,7 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 (($+commands[anyenv])) && eval "$(anyenv init -)"
 (($+commands[fasd])) && eval "$(fasd --init auto)"
 (($+commands[kubectl])) && source <(kubectl completion zsh)
+(($+commands[starship])) && eval "$(starship init zsh)"
 
 if (($+commands[rustup])); then
     RUST_SYSROOT=$(rustc --print sysroot)
@@ -154,38 +155,6 @@ alias objdump='objdump -M intel'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
 alias diff='diff -u'
-# }}}
-
-# Prompts. {{{
-autoload -Uz add-zsh-hook vcs_info
-
-add-zsh-hook precmd () {
-    prev_status_code=$(printf '%3d' $?)
-    vcs_info
-}
-
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' unstagedstr '%F{196}-%f'
-zstyle ':vcs_info:git:*' stagedstr '%F{047}+%f'
-zstyle ':vcs_info:git:*' formats '%F{146}[<%b>%u%c%F{146}]%f'
-zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
-
-local newline=$'\n'
-local mode_normal='%B%F{118}[NORMAL]%f%b'
-local mode_insert='%B%F{039}[INSERT]%f%b'
-PROMPT2='--%(!.#.>) '
-
-function zle-keymap-select zle-line-init {
-    [ $KEYMAP = 'vicmd' ] && mode=$mode_normal || mode=$mode_insert
-
-    PROMPT="%F{251}[%D{%F %T}]$mode%F{197}[%n@%m]%F{%(?.046.196)}[exit: $prev_status_code]%F{110}[%~]$vcs_info_msg_0_$newline%B%F{203}%(!.#.>)%f%b "
-
-    zle reset-prompt
-}
-
-zle -N zle-line-init
-zle -N zle-keymap-select
 # }}}
 
 # Keybinds. {{{

@@ -1,0 +1,55 @@
+prompt_order = [
+    "username",
+    "kubernetes",
+    "hostname",
+    "time",
+    "directory",
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+    "hg_branch",
+    "docker_context",
+    "package",
+    "dotnet",
+    "elixir",
+    "elm",
+    "erlang",
+    "golang",
+    "haskell",
+    "java",
+    "julia",
+    "nim",
+    "nodejs",
+    "ocaml",
+    "php",
+    "purescript",
+    "python",
+    "ruby",
+    "rust",
+    "terraform",
+    "zig",
+    "nix_shell",
+    "conda",
+    "memory_usage",
+    "aws",
+    "env_var",
+    "crystal",
+    "cmd_duration",
+    "custom",
+    "jobs",
+    "battery",
+    "line_break",
+    "character",
+]
+
+[hostname]
+ssh_only = false
+prefix = ""
+suffix = ""
+disabled = false
+style = "bold fg:125"
+
+[time]
+disabled = false
+format = "[%F %T]"

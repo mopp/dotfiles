@@ -7,6 +7,7 @@
 
 - link:
     ~/.config/nvim/init.vim: .vimrc
+    ~/.config/starship.toml: starship.toml
     ~/.vimrc: .vimrc
     ~/.vim: ~/.config/nvim
     ~/.zshrc: .zshrc
