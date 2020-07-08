@@ -18,65 +18,6 @@ font:
   # Point size
   size: 13.0
 
-# Colors (Ayu Dark)
-#   mix test の行が真っ暗で見えない
-# colors:
-#   # Default colors
-#   primary:
-#     background: '0x0A0E14'
-#     foreground: '0xB3B1AD'
-#
-#   # Normal colors
-#   normal:
-#     black:   '0x01060E'
-#     red:     '0xEA6C73'
-#     green:   '0x91B362'
-#     yellow:  '0xF9AF4F'
-#     blue:    '0x53BDFA'
-#     magenta: '0xFAE994'
-#     cyan:    '0x90E1C6'
-#     white:   '0xC7C7C7'
-#
-#   # Bright colors
-#   bright:
-#     black:   '0x686868'
-#     red:     '0xF07178'
-#     green:   '0xC2D94C'
-#     yellow:  '0xFFB454'
-#     blue:    '0x59C2FF'
-#     magenta: '0xFFEE99'
-#     cyan:    '0x95E6CB'
-#     white:   '0xFFFFFF'
-
-# Colors (Material Theme)
-# colors:
-#   # Default colors
-#   primary:
-#     background: '0x1e282d'
-#     foreground: '0xc4c7d1'
-#
-#   # Normal colors
-#   normal:
-#     black:   '0x666666'
-#     red:     '0xeb606b'
-#     green:   '0xc3e88d'
-#     yellow:  '0xf7eb95'
-#     blue:    '0x80cbc4'
-#     magenta: '0xff2f90'
-#     cyan:    '0xaeddff'
-#     white:   '0xffffff'
-#
-#   # Bright colors
-#   bright:
-#     black:   '0xa1a1a1'
-#     red:     '0xeb606b'
-#     green:   '0xc3e88d'
-#     yellow:  '0xf7eb95'
-#     blue:    '0x7dc6bf'
-#     magenta: '0x6c71c4'
-#     cyan:    '0x35434d'
-#     white:   '0xffffff'
-
 # Colors (One Dark)
 colors:
   # Default colors
