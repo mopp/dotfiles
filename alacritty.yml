@@ -1,5 +1,91 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
+# Any items in the `env` entry below will be added as
+# environment variables. Some entries may override variables
+# set by alacritty itself.
+#env:
+  # TERM variable
+  #
+  # This value is used to set the `$TERM` environment variable for
+  # each instance of Alacritty. If it is not present, alacritty will
+  # check the local terminfo database and use `alacritty` if it is
+  # available, otherwise `xterm-256color` is used.
+  #TERM: alacritty
+
+#window:
+  # Window dimensions (changes require restart)
+  #
+  # Specified in number of columns/lines, not pixels.
+  # If both are `0`, this setting is ignored.
+  #dimensions:
+  #  columns: 0
+  #  lines: 0
+
+  # Window position (changes require restart)
+  #
+  # Specified in number of pixels.
+  # If the position is not set, the window manager will handle the placement.
+  #position:
+  #  x: 0
+  #  y: 0
+
+  # Window padding (changes require restart)
+  #
+  # Blank space added around the window in pixels. This padding is scaled
+  # by DPI and the specified value is always added at both opposing sides.
+  #padding:
+  #  x: 0
+  #  y: 0
+
+  # Spread additional padding evenly around the terminal content.
+  #dynamic_padding: false
+
+  # Window decorations
+  #
+  # Values for `decorations`:
+  #     - full: Borders and title bar
+  #     - none: Neither borders nor title bar
+  #
+  # Values for `decorations` (macOS only):
+  #     - transparent: Title bar, transparent background and title bar buttons
+  #     - buttonless: Title bar, transparent background, but no title bar buttons
+  #decorations: full
+
+  # Startup Mode (changes require restart)
+  #
+  # Values for `startup_mode`:
+  #   - Windowed
+  #   - Maximized
+  #   - Fullscreen
+  #
+  # Values for `startup_mode` (macOS only):
+  #   - SimpleFullscreen
+  #startup_mode: Windowed
+
+  # Window title
+  #title: Alacritty
+
+  # Window class (Linux/BSD only):
+  #class:
+    # Application instance name
+    #instance: Alacritty
+    # General application class
+    #general: Alacritty
+
+  # GTK theme variant (Linux/BSD only)
+  #
+  # Override the variant of the GTK theme. Commonly supported values are `dark` and `light`.
+  # Set this to `None` to use the default theme variant.
+  #gtk_theme_variant: None
+
+#scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  #history: 10000
+
+  # Scrolling distance multiplier.
+  #multiplier: 3
+
 # Font configuration
 font:
   # Normal (roman) font face
@@ -15,8 +101,63 @@ font:
     # The `style` can be specified to pick a specific face.
     style: Regular
 
+  # Bold font face
+  #bold:
+    # Font family
+    #
+    # If the bold family is not specified, it will fall back to the
+    # value specified for the normal font.
+    #family: monospace
+
+    # The `style` can be specified to pick a specific face.
+    #style: Bold
+
+  # Italic font face
+  #italic:
+    # Font family
+    #
+    # If the italic family is not specified, it will fall back to the
+    # value specified for the normal font.
+    #family: monospace
+
+    # The `style` can be specified to pick a specific face.
+    #style: Italic
+
+  # Bold italic font face
+  #bold_italic:
+    # Font family
+    #
+    # If the bold italic family is not specified, it will fall back to the
+    # value specified for the normal font.
+    #family: monospace
+
+    # The `style` can be specified to pick a specific face.
+    #style: Bold Italic
+
   # Point size
   size: 13.0
+
+  # Offset is the extra space around each character. `offset.y` can be thought of
+  # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
+  #offset:
+  #  x: 0
+  #  y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increasing `x` moves the glyph to the right,
+  # increasing `y` moves the glyph upwards.
+  #glyph_offset:
+  #  x: 0
+  #  y: 0
+
+  # Thin stroke font rendering (macOS only)
+  #
+  # Thin strokes are suitable for retina displays, but for non-retina screens
+  # it is recommended to set `use_thin_strokes` to `false`.
+  #use_thin_strokes: true
+
+# If `true`, bold text is drawn using the bright color variants.
+#draw_bold_text_with_bright_colors: false
 
 # Colors (One Dark)
 colors:
@@ -24,6 +165,59 @@ colors:
   primary:
     background: '0x1e2127'
     foreground: '0xabb2bf'
+
+    # Bright and dim foreground colors
+    #
+    # The dimmed foreground color is calculated automatically if it is not present.
+    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+    # is `false`, the normal foreground color will be used.
+    #dim_foreground: '#828482'
+    #bright_foreground: '#eaeaea'
+
+  # Cursor colors
+  #
+  # Colors which should be used to draw the terminal cursor.
+  #
+  # Allowed values are CellForeground and CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #cursor:
+  #  text: CellBackground
+  #  cursor: CellForeground
+
+  # Vi mode cursor colors
+  #
+  # Colors for the cursor when the vi mode is active.
+  #
+  # Allowed values are CellForeground and CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #vi_mode_cursor:
+  #  text: CellBackground
+  #  cursor: CellForeground
+
+  # Selection colors
+  #
+  # Colors which should be used to draw the selection area.
+  #
+  # Allowed values are CellForeground and CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #selection:
+  #  text: CellBackground
+  #  background: CellForeground
+
+  # Search colors
+  #
+  # Colors used for the search bar and match highlighting.
+  #
+  # Allowed values are CellForeground and CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #search:
+  #  matches:
+  #    foreground: '#000000'
+  #    background: '#ffffff'
+  #
+  #  bar:
+  #    background: CellForeground
+  #    foreground: CellBackground
 
   # Normal colors
   normal:
@@ -47,37 +241,76 @@ colors:
     cyan:    '0x56b6c2'
     white:   '0xffffff'
 
-# Visual Bell
+  # Dim colors
+  #
+  # If the dim colors are not set, they will be calculated automatically based
+  # on the `normal` colors.
+  #dim:
+  #  black:   '#131415'
+  #  red:     '#864343'
+  #  green:   '#777c44'
+  #  yellow:  '#9e824c'
+  #  blue:    '#556a7d'
+  #  magenta: '#75617b'
+  #  cyan:    '#5b7d78'
+  #  white:   '#828482'
+
+  # Indexed Colors
+  #
+  # The indexed colors include all colors from 16 to 256.
+  # When these are not set, they're filled with sensible defaults.
+  #
+  # Example:
+  #   `- { index: 16, color: '#ff00ff' }`
+  #
+  #indexed_colors: []
+
+# Bell
 #
-# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
-# rung, the terminal background will be set to white and transition back to the
-# default background color. You can control the rate of this transition by
-# setting the `duration` property (represented in milliseconds). You can also
-# configure the transition function by setting the `animation` property.
-#
-# Values for `animation`:
-#   - Ease
-#   - EaseOut
-#   - EaseOutSine
-#   - EaseOutQuad
-#   - EaseOutCubic
-#   - EaseOutQuart
-#   - EaseOutQuint
-#   - EaseOutExpo
-#   - EaseOutCirc
-#   - Linear
-#
-# Specifying a `duration` of `0` will disable the visual bell.
-#visual_bell:
-#  animation: EaseOutExpo
-#  duration: 0
-#  color: '#ffffff'
+# The bell is rung every time the BEL control character is received.
+#bell:
+  # Visual Bell Animation
+  #
+  # Animation effect for flashing the screen when the visual bell is rung.
+  #
+  # Values for `animation`:
+  #   - Ease
+  #   - EaseOut
+  #   - EaseOutSine
+  #   - EaseOutQuad
+  #   - EaseOutCubic
+  #   - EaseOutQuart
+  #   - EaseOutQuint
+  #   - EaseOutExpo
+  #   - EaseOutCirc
+  #   - Linear
+  #animation: EaseOutExpo
+
+  # Duration of the visual bell flash. A `duration` of `0` will disable the
+  # visual bell animation.
+  #duration: 0
+
+  # Visual bell animation color.
+  #color: '#ffffff'
+
+  # Bell Command
+  #
+  # This program is executed whenever the bell is rung.
+  #
+  # When set to `command: None`, no command will be executed.
+  #
+  # Example:
+  #   command:
+  #     program: notify-send
+  #     args: ["Hello, World!"]
+  #
+  #command: None
 
 # Background opacity
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-# background_opacity: 0.85
+#background_opacity: 1.0
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
@@ -140,7 +373,7 @@ colors:
 #
 # Alacritty defaults to using the newer ConPTY backend if it is available,
 # since it resolves a lot of bugs and is quite a bit faster. If it is not
-# available, the the WinPTY backend will be used instead.
+# available, the WinPTY backend will be used instead.
 #
 # Setting this option to `true` makes Alacritty use the legacy WinPTY backend,
 # even if the ConPTY backend is available.
@@ -247,6 +480,8 @@ colors:
 # - `action`: Execute a predefined action
 #
 #   - ToggleViMode
+#   - Search
+#   - SearchReverse
 #   - Copy
 #   - Paste
 #   - PasteSelection
@@ -255,6 +490,8 @@ colors:
 #   - ResetFontSize
 #   - ScrollPageUp
 #   - ScrollPageDown
+#   - ScrollHalfPageUp
+#   - ScrollHalfPageDown
 #   - ScrollLineUp
 #   - ScrollLineDown
 #   - ScrollToTop
@@ -295,6 +532,10 @@ colors:
 #   - ToggleLineSelection
 #   - ToggleBlockSelection
 #   - ToggleSemanticSelection
+#   - SearchNext
+#   - SearchPrevious
+#   - SearchEndNext
+#   - SearchEndPrevious
 #
 #   (macOS only):
 #   - ToggleSimpleFullscreen: Enters fullscreen without occupying another space
@@ -395,6 +636,10 @@ key_bindings:
   #- { key: W,      mods: Shift,         mode: Vi, action: WordRight               }
   #- { key: E,      mods: Shift,         mode: Vi, action: WordRightEnd            }
   #- { key: Key5,   mods: Shift,         mode: Vi, action: Bracket                 }
+  #- { key: Slash,                       mode: Vi, action: Search                  }
+  #- { key: Slash,  mods: Shift,         mode: Vi, action: SearchReverse           }
+  #- { key: N,                           mode: Vi, action: SearchNext              }
+  #- { key: N,      mods: Shift,         mode: Vi, action: SearchPrevious          }
 
   # (Windows, Linux, and BSD only)
   - { key: V,        mods: Control|Shift,           action: Paste            }
@@ -426,3 +671,24 @@ key_bindings:
   #- { key: W,      mods: Command,            action: Quit             }
   #- { key: N,      mods: Command,            action: SpawnNewInstance }
   #- { key: F,      mods: Command|Control,    action: ToggleFullscreen }
+
+#debug:
+  # Display the time it takes to redraw each frame.
+  #render_timer: false
+
+  # Keep the log file after quitting Alacritty.
+  #persistent_logging: false
+
+  # Log level
+  #
+  # Values for `log_level`:
+  #   - None
+  #   - Error
+  #   - Warn
+  #   - Info
+  #   - Debug
+  #   - Trace
+  #log_level: Warn
+
+  # Print all received window events.
+  #print_events: false
