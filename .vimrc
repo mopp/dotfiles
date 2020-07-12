@@ -1362,7 +1362,7 @@ function! g:committia_hooks.edit_open(info)
     nmap <buffer> <C-J> <Plug>(committia-scroll-diff-down-half)
 endfunction
 
-" vim-lsp
+" vim-lsp {{{
 let g:lsp_auto_enable = 0
 let g:lsp_highlights_enabled = 0
 if executable('solargraph')
@@ -1406,11 +1406,11 @@ endif
 augroup mopp_lsp
     autocmd!
     autocmd FileType ruby,rust,go,c,cpp,elixir call lsp#enable()
-    autocmd User lsp_buffer_enabled highlight LspWarningText cterm=bold,underline
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
 nmap <Leader>lp <plug>(lsp-peek-definition)
+" }}}
 
 " vista.vim
 let g:vista_echo_cursor = 0
