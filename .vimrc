@@ -250,6 +250,9 @@ nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
 " Save the current buffer.
 nnoremap <silent> <Leader>w :<C-U>write<CR>
 
+" Close the current window.
+nnoremap <silent> <Leader>q :<C-U>quit<CR>
+
 " Open vimrc at newtab.
 if has('nvim') || has('patch-8.0.1508')
     " `drop` command is available on gvim, neovim or vim 8.0.1508.
