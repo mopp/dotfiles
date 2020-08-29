@@ -28,7 +28,7 @@
     uncommit = reset --soft HEAD~
     pushf = push --force-with-lease origin HEAD
     push = push origin HEAD
-    wip = git commit -m 'wip'
+    wip = commit -m 'wip'
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
 [pager]
