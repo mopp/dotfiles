@@ -641,6 +641,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " Utils {{{
+    call dein#add('AlessandroYorba/Arcadia', {'rev': '5190bee93b8187f5fb1564122053d1bad6384473'})
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
@@ -670,7 +671,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
-    call dein#add('mopp/mopkai.vim')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
@@ -1447,4 +1447,8 @@ augroup END
 " }}}
 
 syntax enable
-colorscheme mopkai " It should be after syntax command.
+
+set termguicolors
+let g:arcadia_Sunset = 1
+colorscheme arcadia
+highlight Normal ctermfg=145 ctermbg=235 guifg=#ABB2BF guibg=#282C34
