@@ -830,6 +830,7 @@ if dein#tap('denite.nvim') " {{{
         nnoremap <silent><buffer><expr><nowait> t denite#do_map('do_action', 'tabopen')
         nnoremap <silent><buffer><expr><nowait> v denite#do_map('do_action', 'vsplit')
         nnoremap <silent><buffer><expr><nowait> s denite#do_map('do_action', 'split')
+        nnoremap <silent><buffer><expr><nowait> dd denite#do_map('do_action', 'delete')
         nnoremap <silent><buffer><expr><nowait> <C-h> denite#do_map('restore_sources')
     endfunction " }}}
 
