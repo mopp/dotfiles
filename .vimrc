@@ -729,7 +729,7 @@ augroup mopp_filetype_overwrite " {{{
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType text,man setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby,javascript,typescript,html,css,pony setlocal shiftwidth=2
+    autocmd FileType ruby,javascript,typescript,html,css,pony,markdown setlocal shiftwidth=2
 augroup END " }}}
 
 if !s:has_dein " {{{
