@@ -688,7 +688,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
     call dein#add('vim-scripts/copypath.vim', {'lazy': 1, 'on_cmd': ['CopyPath', 'CopyFileName']})
-    call dein#add('w0rp/ale', {'lazy': 1, 'on_event': 'BufWritePost'})
     " }}}
 
     " Languages {{{
@@ -764,7 +763,6 @@ command! Accelerate call s:accelerate()
 function! s:accelerate() abort " {{{
     IndentLinesDisable
     RainbowToggleOff
-    ALEDisable
     set nocursorline
 endfunction
 " }}}
@@ -915,7 +913,7 @@ let g:lightline = {
             \ 'colorscheme': 'mopkai',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
-            \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype'], ['ale_status']],
+            \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype']],
             \ },
             \ 'inactive': {
             \   'left': [['filename', 'modified']],
@@ -949,7 +947,6 @@ let g:lightline = {
             \ 'component_function': {
             \   'filename':   'LightlineFilename',
             \   'anzu':       'anzu#search_status',
-            \   'ale_status': 'LightlineAleStatus',
             \ },
             \ }
 
@@ -972,27 +969,17 @@ function! LightlineFilename() abort " {{{
     endif
 endfunction " }}}
 
-function! LightlineAleStatus() abort " {{{
-    if !dein#is_sourced('ale') || !LightlineIsVisible()
-        return ''
-    endif
-
-    let l:cnt = ale#statusline#Count(bufnr(''))
-    return printf('E:%d W:%d I:%d', l:cnt.error + l:cnt.style_error, l:cnt.warning + l:cnt.style_warning, l:cnt.info)
-endfunction " }}}
-
 " Colors {{{
 let s:cp_fname_modi = ['#ffffff', '#080808', 231, 232]
 let s:cp_read_spell = ['#d70000', '#121212', 160, 233]
 let s:cp_git_status = ['#87afff', '#1c1c1c', 111, 234]
 let s:cp_anzu       = ['#ff87af', '#303030', 211, 236]
 let s:cp_middle     = ['#9e9e9e', '#444444', 247, 238]
-let s:cp_ale        = ['#ff5f87', '#1c1c1c', 204, 234]
 let g:lightline#colorscheme#mopkai#palette = {
             \ 'normal': {
             \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
             \   'middle':  [s:cp_middle],
-            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232], s:cp_ale],
+            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232]],
             \   'warning': [['#9e9e9e', '#ffdf5f', 247, 221]],
             \   'error':   [['#eeeeee', '#d70000', 255, 160]]
             \ },
@@ -1093,20 +1080,6 @@ if dein#tap('accelerated-jk')
     nmap j <Plug>(accelerated_jk_gj)
     nmap k <Plug>(accelerated_jk_gk)
 endif
-" }}}
-
-" ale {{{
-let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_linters = { 'go': ['gofmt', 'golangci-lint'] }
-function! s:define_erlang_option() abort
-    let paths = []
-    for l:p in ['_build/default/lib/*/include', 'apps*/', 'apps*/*/include']
-        let paths += glob(l:p, 0, 1)
-    endfor
-    let g:ale_erlang_erlc_options = '-o /tmp/ -I src -I include -I _build/default/lib/ ' . join(map(paths, '"-I" . v:val'), ' ')
-endfunction
 " }}}
 
 " junkfile.vim {{{
