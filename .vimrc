@@ -910,7 +910,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 
 " lightline.vim {{{
 let g:lightline = {
-            \ 'colorscheme': 'mopkai',
+            \ 'colorscheme': 'arcadia',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
             \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype']],
@@ -968,44 +968,6 @@ function! LightlineFilename() abort " {{{
         return l:t ==# '' ? '[No Name]' : l:t
     endif
 endfunction " }}}
-
-" Colors {{{
-let s:cp_fname_modi = ['#ffffff', '#080808', 231, 232]
-let s:cp_read_spell = ['#d70000', '#121212', 160, 233]
-let s:cp_git_status = ['#87afff', '#1c1c1c', 111, 234]
-let s:cp_anzu       = ['#ff87af', '#303030', 211, 236]
-let s:cp_middle     = ['#9e9e9e', '#444444', 247, 238]
-let g:lightline#colorscheme#mopkai#palette = {
-            \ 'normal': {
-            \   'left':    [['#080808', '#00afff', 232,  39], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
-            \   'middle':  [s:cp_middle],
-            \   'right':   [['#ffffd7', '#1c1c1c', 230, 234], ['#875fd7', '#080808', 98, 232]],
-            \   'warning': [['#9e9e9e', '#ffdf5f', 247, 221]],
-            \   'error':   [['#eeeeee', '#d70000', 255, 160]]
-            \ },
-            \ 'insert': {
-            \   'left':   [['#080808', '#87ff00', 232, 118], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
-            \ },
-            \ 'replace': {
-            \   'left':   [['#080808', '#ff0087', 232, 198], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
-            \ },
-            \ 'visual': {
-            \   'left':   [['#080808', '#d7ff5f', 232, 191], s:cp_fname_modi, s:cp_read_spell, s:cp_git_status, s:cp_anzu],
-            \ },
-            \ 'inactive': {
-            \   'left':   [['#9e9e9e', '#080808', 247, 232]],
-            \   'middle': [s:cp_middle],
-            \   'right':  [['#875fd7', '#080808',  98, 232]]
-            \ },
-            \ 'tabline': {
-            \   'tabsel': [['#080808', '#ff0087', 232, 198]],
-            \   'left':   [['#080808', '#c6c6c6', 232, 251]],
-            \   'middle': [['#080808', '#c6c6c6', 232, 251]],
-            \   'right':  [['#080808', '#c6c6c6', 232, 251]],
-            \ }
-            \ }
-" }}}
-" }}}
 
 " vim-parenmatch
 let g:parenmatch_highlight = 0
