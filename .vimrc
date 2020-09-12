@@ -968,10 +968,6 @@ function! LightlineFilename() abort " {{{
     endif
 endfunction " }}}
 
-" vim-parenmatch
-let g:parenmatch_highlight = 0
-hi link ParenMatch MatchParen
-
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
