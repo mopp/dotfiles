@@ -322,30 +322,6 @@ command! SpellCheckToggle :setlocal spell!
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
 " Convert number expression. {{{
-let s:format = { 2: '0b%b', 8: '0o%o', 10: '%d', 16: '0x%x' }
-function! s:eval_as_base_number(base, exp) abort " {{{
-    let result = eval(a:exp)
-
-    if type(0) != type(result)
-        throw 'The result of the given expression have to be Number'
-    endif
-
-    return printf(s:format[a:base], result)
-endfunction " }}}
-
-command! -nargs=1 EvalAsBin echomsg <SID>eval_as_base_number(2, <f-args>)
-command! -nargs=1 EvalAsOct echomsg <SID>eval_as_base_number(8, <f-args>)
-command! -nargs=1 EvalAsDec echomsg <SID>eval_as_base_number(10, <f-args>)
-command! -nargs=1 EvalAsHex echomsg <SID>eval_as_base_number(16, <f-args>)
-inoremap <silent><expr> <C-G>b <SID>eval_as_base_number(2, input('= '))
-inoremap <silent><expr> <C-G>o <SID>eval_as_base_number(8, input('= '))
-inoremap <silent><expr> <C-G>d <SID>eval_as_base_number(10, input('= '))
-inoremap <silent><expr> <C-G>h <SID>eval_as_base_number(16, input('= '))
-imap <silent> <C-G><C-B> <C-G>b
-imap <silent> <C-G><C-O> <C-G>o
-imap <silent> <C-G><C-D> <C-G>d
-imap <silent> <C-G><C-H> <C-G>h
-
 if has('nvim')
     function! s:preview_radixes(input) abort " {{{
         let l:integer = str2nr(a:input)
