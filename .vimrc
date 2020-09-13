@@ -363,7 +363,18 @@ if has('nvim')
 
         let l:buf = nvim_create_buf(v:false, v:true)
         call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
+
+        " Exit.
         call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', {})
+        " Copy the number.
+        call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wye', {})
+        " Insert the number.
+        call nvim_buf_set_keymap(l:buf, 'n', 'i', '02WyeZQ"_i<C-R>"', {'noremap': v:true})
+        " Append the number.
+        call nvim_buf_set_keymap(l:buf, 'n', 'a', '02WyeZQ"_a<C-R>"', {'noremap': v:true})
+        " Replace the current cursor word by the number.
+        call nvim_buf_set_keymap(l:buf, 'n', 'r', '02WyeZQ"_ciw<C-R>"', {})
+        "FIXME: Keep the previous register value.
 
         let l:opts = {
                     \ 'relative': 'cursor',
