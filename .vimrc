@@ -347,18 +347,18 @@ imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
 
 if has('nvim')
-    function! s:preview_radixes(number_text) abort
-        let l:number = str2nr(a:number_text)
-        if string(l:number) != a:number_text
-            echohl ErrorMsg | echo 'The given value `' . a:number_text . '` is NOT number.' | echohl None
+    function! s:preview_radixes(input) abort " {{{
+        let l:integer = str2nr(a:input)
+        if string(l:integer) != a:input
+            echohl ErrorMsg | echo 'The given value `' . a:input . '` is NOT number.' | echohl None
             return
         endif
 
         let l:content = [
-                    \ printf(' Bin: 0b%b ', l:number),
-                    \ printf(' Oct: 0o%o', l:number),
-                    \ printf(' Dec: %d', l:number),
-                    \ printf(' Hex: 0x%x', l:number),
+                    \ printf(' Bin: 0b%b ', l:integer),
+                    \ printf(' Oct: 0o%o', l:integer),
+                    \ printf(' Dec: %d', l:integer),
+                    \ printf(' Hex: 0x%x', l:integer),
                     \ ]
 
         let l:buf = nvim_create_buf(v:false, v:true)
@@ -385,7 +385,7 @@ if has('nvim')
                     \ 'style': 'minimal'
                     \}
         call nvim_open_win(l:buf, v:true, l:opts)
-    endfunction
+    endfunction " }}}
     command! -nargs=0 PreviewRadixes call <SID>preview_radixes(expand('<cword>'))
     command! -nargs=0 PreviewRadixesEval call <SID>preview_radixes(eval(input('= ')))
     inoremap <silent> <C-G>n <ESC>:PreviewRadixesEval<CR>
