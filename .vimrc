@@ -349,8 +349,8 @@ imap <silent> <C-G><C-H> <C-G>h
 if has('nvim')
     function! s:show_base_numbers(number_text) abort
         let l:number = str2nr(a:number_text)
-        if type(0) != type(l:number)
-            echoerr 'The given value ' . a:number . ' is NOT number.'
+        if string(l:number) != a:number_text
+            echohl ErrorMsg | echo 'The given value `' . a:number_text . '` is NOT number.' | echohl None
             return
         endif
 
@@ -373,8 +373,7 @@ if has('nvim')
                     \ 'col': 0,
                     \ 'style': 'minimal'
                     \}
-        let l:win = nvim_open_win(l:buf, v:true, l:opts)
-        " call nvim_win_set_option(l:win, 'winhl', 'Normal:Question')
+        call nvim_open_win(l:buf, v:true, l:opts)
     endfunction
     command! -nargs=0 BaseNumbers call <SID>show_base_numbers(expand('<cword>'))
 endif
