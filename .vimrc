@@ -376,6 +376,8 @@ if has('nvim')
         call nvim_open_win(l:buf, v:true, l:opts)
     endfunction
     command! -nargs=0 BaseNumbers call <SID>show_base_numbers(expand('<cword>'))
+    command! -nargs=0 BaseNumbersEval call <SID>show_base_numbers(eval(input('= ')))
+    inoremap <silent> <C-G>n <ESC>:BaseNumbersEval<CR>
 endif
 " }}}
 
