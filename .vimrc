@@ -347,7 +347,7 @@ imap <silent> <C-G><C-D> <C-G>d
 imap <silent> <C-G><C-H> <C-G>h
 
 if has('nvim')
-    function! s:show_base_numbers(number_text) abort
+    function! s:preview_radixes(number_text) abort
         let l:number = str2nr(a:number_text)
         if string(l:number) != a:number_text
             echohl ErrorMsg | echo 'The given value `' . a:number_text . '` is NOT number.' | echohl None
@@ -386,9 +386,9 @@ if has('nvim')
                     \}
         call nvim_open_win(l:buf, v:true, l:opts)
     endfunction
-    command! -nargs=0 BaseNumbers call <SID>show_base_numbers(expand('<cword>'))
-    command! -nargs=0 BaseNumbersEval call <SID>show_base_numbers(eval(input('= ')))
-    inoremap <silent> <C-G>n <ESC>:BaseNumbersEval<CR>
+    command! -nargs=0 PreviewRadixes call <SID>preview_radixes(expand('<cword>'))
+    command! -nargs=0 PreviewRadixesEval call <SID>preview_radixes(eval(input('= ')))
+    inoremap <silent> <C-G>n <ESC>:PreviewRadixesEval<CR>
 endif
 " }}}
 
