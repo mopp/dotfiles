@@ -323,12 +323,37 @@ command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
 " Convert number expression. {{{
 if has('nvim')
+    function! PreviewRadixesInsert() abort
+        let l:n = line('.') - 1
+        quit
+        execute printf('normal! i%s', g:preview_radixes_values[l:n])
+    endfunction
+
+    function! PreviewRadixesAppend() abort
+        let l:n = line('.') - 1
+        quit
+        execute printf('normal! a%s', g:preview_radixes_values[l:n])
+    endfunction
+
+    function! PreviewRadixesReplace() abort
+        let l:n = line('.') - 1
+        quit
+        execute printf('normal! "_ciw%s', g:preview_radixes_values[l:n])
+    endfunction
+
     function! s:preview_radixes(input) abort " {{{
         let l:integer = str2nr(a:input)
         if string(l:integer) != a:input
             echohl ErrorMsg | echo 'The given value `' . a:input . '` is NOT number.' | echohl None
             return
         endif
+
+        let g:preview_radixes_values = [
+                    \ printf('0b%b', l:integer),
+                    \ printf('0o%o', l:integer),
+                    \ printf('%d', l:integer),
+                    \ printf('0x%x', l:integer),
+                    \ ]
 
         let l:content = [
                     \ printf(' Bin: 0b%b ', l:integer),
@@ -340,17 +365,17 @@ if has('nvim')
         let l:buf = nvim_create_buf(v:false, v:true)
         call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
 
+        let l:opts = {'noremap': v:true, 'nowait': v:true}
         " Exit.
-        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', {})
+        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
         " Copy the number.
-        call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wye', {})
+        call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wyiw', {})
         " Insert the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'i', '02WyeZQ"_i<C-R>"', {'noremap': v:true})
+        call nvim_buf_set_keymap(l:buf, 'n', 'i', ':<C-U>call PreviewRadixesInsert()<CR>', l:opts)
         " Append the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'a', '02WyeZQ"_a<C-R>"', {'noremap': v:true})
+        call nvim_buf_set_keymap(l:buf, 'n', 'a', ':<C-U>call PreviewRadixesAppend()<CR>', l:opts)
         " Replace the current cursor word by the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'r', '02WyeZQ"_ciw<C-R>"', {})
-        "FIXME: Keep the previous register value.
+        call nvim_buf_set_keymap(l:buf, 'n', 'r', ':<C-U>call PreviewRadixesReplace()<CR>', l:opts)
 
         let l:opts = {
                     \ 'relative': 'cursor',
@@ -359,12 +384,12 @@ if has('nvim')
                     \ 'row': 1,
                     \ 'col': 0,
                     \ 'style': 'minimal'
-                    \}
+                    \ }
         call nvim_open_win(l:buf, v:true, l:opts)
     endfunction " }}}
+
     command! -nargs=0 PreviewRadixes call <SID>preview_radixes(expand('<cword>'))
-    command! -nargs=0 PreviewRadixesEval call <SID>preview_radixes(eval(input('= ')))
-    inoremap <silent> <C-G>n <ESC>:PreviewRadixesEval<CR>
+    command! -nargs=? PreviewRadixesEval call <SID>preview_radixes(eval(len(<q-args>) ? <q-args> : input('= ')))
 endif
 " }}}
 
