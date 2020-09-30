@@ -409,6 +409,110 @@ if has('nvim')
 endif
 " }}}
 
+" Convert the given word case.
+if has('nvim') " {{{
+    function! PreviewWordCasesReplace(n) abort
+        if a:n == 0
+            let l:n = line('.') - 1
+        elseif 4 < a:n
+            echoerr 'invalid'
+            return
+        else
+            let l:n = a:n
+        endif
+        quit
+        execute printf('normal! "_ciw%s', g:preview_word_cases_values[l:n])
+    endfunction
+
+    function! s:to_lower_snake_case(str) abort
+        if empty(a:str) == 1
+            return ''
+        endif
+
+        if stridx(a:str, '_') == -1
+            " UpperCamelCase or lowerCamelCase
+            return tolower(a:str[0]) . substitute(a:str[1:-1], '\(\u\)', '\="_" . tolower(submatch(1))', 'g')
+        else
+            " lower_snake_case or UPPER_SNAKE_CASE
+            return tolower(a:str)
+        endif
+    endfunction
+
+
+    function! s:to_upper_snake_case(str) abort
+        return toupper(s:to_lower_snake_case(a:str))
+    endfunction
+
+
+    function! s:to_lower_camel_case(str) abort
+        if empty(a:str) == 1
+            return ''
+        endif
+
+        if stridx(a:str, '_') == -1
+            " UpperCamelCase or lowerCamelCase
+            return tolower(a:str[0]) . a:str[1 : -1]
+        else
+            " lower_snake_case or UPPER_SNAKE_CASE
+            return substitute(tolower(a:str), '_\(.\)', '\=toupper(submatch(1))', 'g')
+        endif
+    endfunction
+
+    function! s:to_upper_camel_case(str) abort
+        if empty(a:str) == 1
+            return ''
+        endif
+
+        let l:str = s:to_lower_camel_case(a:str)
+        return toupper(l:str[0]) . l:str[1 : -1]
+    endfunction
+
+    function! s:preview_word_cases(word) abort " {{{
+        let g:preview_word_cases_values = [
+                    \ s:to_lower_snake_case(a:word),
+                    \ s:to_upper_snake_case(a:word),
+                    \ s:to_lower_camel_case(a:word),
+                    \ s:to_upper_camel_case(a:word)
+                    \ ]
+
+        let l:content = [
+                    \ ' 1: ' . g:preview_word_cases_values[0] . ' ',
+                    \ ' 2: ' . g:preview_word_cases_values[1] . ' ',
+                    \ ' 3: ' . g:preview_word_cases_values[2] . ' ',
+                    \ ' 4: ' . g:preview_word_cases_values[3] . ' '
+                    \ ]
+
+        let l:buf = nvim_create_buf(v:false, v:true)
+        call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
+
+        let l:opts = {'noremap': v:true, 'nowait': v:true, 'silent': v:true}
+        " Exit.
+        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '<ESC>', 'ZQ', l:opts)
+        " Copy the word.
+        call nvim_buf_set_keymap(l:buf, 'n', 'y', '02Wyiw', {})
+        " Replace the current cursor word by the selected case.
+        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', ':<C-U>call PreviewWordCaseReplace(0)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '1', ':<C-U>call PreviewWordCasesReplace(1)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '2', ':<C-U>call PreviewWordCasesReplace(2)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '3', ':<C-U>call PreviewWordCasesReplace(3)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '4', ':<C-U>call PreviewWordCasesReplace(4)<CR>', l:opts)
+
+        let l:opts = {
+                    \ 'relative': 'cursor',
+                    \ 'height': len(l:content),
+                    \ 'width': max(map(l:content, {_, c -> len(c)})),
+                    \ 'row': 1,
+                    \ 'col': 0,
+                    \ 'style': 'minimal'
+                    \ }
+        call nvim_open_win(l:buf, v:true, l:opts)
+    endfunction " }}}
+
+    command! -nargs=0 PreviewWordCases call <SID>preview_word_cases(expand('<cword>'))
+endif
+" }}}
+
 " Keep last session. {{{
 let s:session_directory = '~/.vim/sessions/'
 let s:last_session_filepath = s:session_directory . 'last_session.vim'
