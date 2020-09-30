@@ -322,6 +322,22 @@ command! SpellCheckToggle :setlocal spell!
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
 " Convert number expression. {{{
+let s:format = { 2: '0b%b', 8: '0o%o', 10: '%d', 16: '0x%x' }
+function! s:eval_with_radix(base, exp) abort " {{{
+    let result = eval(a:exp)
+
+    if type(0) != type(result)
+        throw 'The result of the given expression have to be Number'
+    endif
+
+    return printf(s:format[a:base], result)
+endfunction " }}}
+
+inoremap <silent><expr> <C-G><C-B> <SID>eval_with_radix(2, input('= '))
+inoremap <silent><expr> <C-G><C-O> <SID>eval_with_radix(8, input('= '))
+inoremap <silent><expr> <C-G><C-D> <SID>eval_with_radix(10, input('= '))
+inoremap <silent><expr> <C-G><C-H> <SID>eval_with_radix(16, input('= '))
+
 if has('nvim')
     function! PreviewRadixesInsert() abort
         let l:n = line('.') - 1
