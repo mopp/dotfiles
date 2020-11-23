@@ -221,8 +221,8 @@ nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : ':<C-U>call append(".", repeat([""], v:count1))<CR>'
 nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
-" Change current directory of current window.
-nnoremap <silent> <Leader>cd :<C-U>cd %:p:h<CR>
+" Change window local current directory to the directory of the file at the current window.
+nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nmap <silent> <C-]> <Nop>
@@ -802,7 +802,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
-    call dein#add('mopp/Arcadia')
+    " call dein#add('mopp/Arcadia')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
@@ -1511,4 +1511,5 @@ augroup END
 syntax enable
 
 set termguicolors
+set runtimepath+=~/repos/Arcadia
 colorscheme arcadia
