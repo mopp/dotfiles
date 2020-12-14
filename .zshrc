@@ -218,6 +218,12 @@ function copy() {
 function copy_prev_cmd() {
     fc -ln -1 | copy
 }
+
+function kubexec {
+    pod_name=$(kubectl get pods --no-headers --selector app="$1" | awk '{ print $1 }' | head --lines=1)
+    echo "$pod_name at $(kubens --current)"
+    kubectl exec -it $pod_name ${@:2:($#-2)}
+}
 # }}}
 
 # Load a machine local scripts. {{{
