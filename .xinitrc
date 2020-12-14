@@ -23,7 +23,9 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-command -v dropbox && dropbox &
+if [ -e /opt/dropbox/dropboxd ]; then
+    /opt/dropbox/dropboxd
+fi
 
 # fcitx.
 export XMODIFIERS=@im=fcitx
