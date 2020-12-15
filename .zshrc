@@ -45,8 +45,21 @@ case $OSTYPE in
         esac
         ;;
 esac
+# }}}
+
+# Path. {{{
+export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
 export fpath=(~/.zfunc/ $fpath)
+
+export path=(
+    $HOME/.local/bin
+    $HOME/.cargo/bin
+    $GOPATH/bin
+    $path
+)
+
+typeset -U PATH path
 # }}}
 
 # Options. {{{
@@ -92,8 +105,6 @@ fi
 # }}}
 
 # External tool configurations. {{{
-export GOENV_GOPATH_PREFIX=$HOME/.local/go
-
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 export PAGER=less
@@ -139,15 +150,6 @@ if (($+commands[bat])); then
     export BAT_THEME='Nord'
     alias cat='bat'
 fi
-
-export path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $GOPATH/bin
-    $path
-)
-
-typeset -U PATH path
 # }}}
 
 # Aliases. {{{
