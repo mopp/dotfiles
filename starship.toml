@@ -2,13 +2,13 @@ format = """
 $username\
 $hostname\
 $shlvl\
-$kubernetes\
 $directory\
 $git_branch\
 $git_commit\
 $git_state\
 $git_status\
 $hg_branch\
+$kubernetes\
 $docker_context\
 $package\
 $cmake\
@@ -62,3 +62,7 @@ disabled = true
 
 [nodejs]
 disabled = true
+
+[kubernetes]
+disabled = false
+format = '[$symbol$namespace]($style) in '
