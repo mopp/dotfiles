@@ -802,7 +802,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('mattn/webapi-vim')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
-    " call dein#add('mopp/Arcadia')
+    call dein#add('mopp/Arcadia')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
@@ -1511,5 +1511,4 @@ augroup END
 syntax enable
 
 set termguicolors
-set runtimepath+=~/repos/Arcadia
 colorscheme arcadia
