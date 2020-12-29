@@ -52,7 +52,7 @@ set synmaxcol=512
 " Folding. {{{
 set foldenable
 set foldmethod=indent
-set foldtext=Mopp_fold_text()
+set foldtext=MoppFoldText()
 set foldmarker=\ {{{,\ }}}
 " }}}
 
@@ -268,15 +268,15 @@ nnoremap <expr> a empty(getline('.')) ? 'S' : 'a'
 " }}}
 
 " Functions {{{
-function! Mopp_fold_text() abort " {{{
+function! MoppFoldText() abort " {{{
     let l:head = getline(v:foldstart)
     if &foldmethod !=# 'marker'
         let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(l:head, '^\s*', '', '')
     endif
 
-    let l:tail = printf('[ %2d Lines Lv%02d ]', (v:foldend - v:foldstart + 1), v:foldlevel)
-    let l:count_columns = &foldcolumn + (&number ? max([&numberwidth, strdisplaywidth(line('$'))]) : 0) + (&signcolumn ==# 'no' ? 0 : 2)
-    let l:spaces = repeat(' ', winwidth(0) - l:count_columns - strdisplaywidth(l:head) - strdisplaywidth(l:tail)- 1)
+    let l:count_columns = &foldcolumn + (&signcolumn ==# 'no' ? 0 : 2) + ((&number || &relativenumber) ? max([&numberwidth, strdisplaywidth(line('$')) + 1]) : 0)
+    let l:tail = printf('[%d Lines Lv%d]', (v:foldend - v:foldstart + 1), v:foldlevel)
+    let l:spaces = repeat(' ', winwidth(0) - strdisplaywidth(l:head) - l:count_columns - strdisplaywidth(l:tail) - 1)
     return l:head . l:spaces . l:tail
 endfunction " }}}
 
