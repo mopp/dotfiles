@@ -805,7 +805,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
-    call dein#add('rhysd/accelerated-jk', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('simeji/winresizer', {'lazy': 1, 'on_cmd': ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
     call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
@@ -1162,13 +1161,6 @@ let g:maximizer_restore_on_winleave = 1
 nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
 vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
-" }}}
-
-" accelerated-jk {{{
-if dein#tap('accelerated-jk')
-    nmap j <Plug>(accelerated_jk_gj)
-    nmap k <Plug>(accelerated_jk_gk)
-endif
 " }}}
 
 " junkfile.vim {{{
