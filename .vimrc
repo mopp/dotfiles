@@ -140,37 +140,37 @@ let g:markdown_folding = 1
 let g:mapleader      = ' '
 let g:maplocalleader = '\'
 
-noremap j gj
-noremap k gk
-noremap ; :
-noremap : ;
+noremap <silent> j gj
+noremap <silent> k gk
+noremap <silent> ; :
+noremap <silent> : ;
 
 " Avoiding getting <NUL> from <C-Space>.
 map <NUL> <C-Space>
 map! <NUL> <C-Space>
 
 " Movings.
-noremap! <C-F> <Right>
-noremap! <C-B> <Left>
-noremap! <C-D> <Del>
-cnoremap <C-A> <HOME>
-cnoremap <C-E> <END>
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-noremap <C-J> G
-noremap <C-K> gg
-noremap <C-H> ^
-noremap <C-L> $
+noremap! <silent> <C-F> <Right>
+noremap! <silent> <C-B> <Left>
+noremap! <silent> <C-D> <Del>
+cnoremap <silent> <C-A> <HOME>
+cnoremap <silent> <C-E> <END>
+cnoremap <silent> <C-P> <Up>
+cnoremap <silent> <C-N> <Down>
+noremap <silent> <C-J> G
+noremap <silent> <C-K> gg
+noremap <silent> <C-H> ^
+noremap <silent> <C-L> $
 
 " Managing tab.
-nnoremap <Leader>to :<C-U>tabnew<Space>
-nnoremap <Leader>tc :<C-U>tabclose<CR>
-nnoremap <Leader>j gT
-nnoremap <Leader>k gt
+nnoremap <silent> <Leader>to :<C-U>tabnew<Space>
+nnoremap <silent> <Leader>tc :<C-U>tabclose<CR>
+nnoremap <silent> <Leader>j gT
+nnoremap <silent> <Leader>k gt
 
 " Spliting window.
-nnoremap <Leader>sp  :<C-U>split<Space>
-nnoremap <Leader>vsp :<C-U>vsplit<Space>
+nnoremap <silent> <Leader>sp  :<C-U>split<Space>
+nnoremap <silent> <Leader>vsp :<C-U>vsplit<Space>
 
 " Changing window size.
 noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
@@ -197,7 +197,7 @@ function! s:copy_to_clipboard() abort " {{{
     let @* = l:selected
 endfunction " }}}
 
-nnoremap Y y$
+nnoremap <silent> Y y$
 nnoremap <silent> <Leader>gp :<C-U>set paste!<CR>
 xmap <silent> m <Nop>
 nmap <silent> m <Nop>
@@ -225,22 +225,22 @@ nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nmap <silent> <C-]> <Nop>
-nnoremap <C-]><C-]> g<C-]>zz
+nnoremap <silent> <C-]><C-]> g<C-]>zz
 
 " Tab version `<C-]>`.
-nnoremap <C-]><C-T> <C-W><C-]><C-W>T
+nnoremap <silent> <C-]><C-T> <C-W><C-]><C-W>T
 
 " Repeat the previous macro.
-nnoremap Q @@
+nnoremap <silent> Q @@
 
 " Search something in the current visual range only.
-vnoremap / <Esc>/\%V
+vnoremap <silent> / <Esc>/\%V
 
 " Replace the all selected areas.
-vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
+vnoremap <silent> <C-R> "hy:%s/\V<C-R>h//g<left><left>
 
 " Assist input normal command on visual mode.
-vnoremap n :normal<Space>
+vnoremap <silent> n :normal<Space>
 
 " Turn off highlight of the current search words.
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
@@ -260,11 +260,11 @@ else
 endif
 
 " Tab version `gf`.
-nnoremap gtf :<C-U>execute 'tabnew' printf('%s/%s', getcwd(), expand('<cfile>'))<CR>
+nnoremap <silent> gtf :<C-U>execute 'tabnew' printf('%s/%s', getcwd(), expand('<cfile>'))<CR>
 
 " Keep indent
-nnoremap <expr> i empty(getline('.')) ? 'S' : 'i'
-nnoremap <expr> a empty(getline('.')) ? 'S' : 'a'
+nnoremap <silent><expr> i empty(getline('.')) ? 'S' : 'i'
+nnoremap <silent><expr> a empty(getline('.')) ? 'S' : 'a'
 " }}}
 
 " Functions {{{
