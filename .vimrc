@@ -51,7 +51,6 @@ set synmaxcol=512
 
 " Folding. {{{
 set foldenable
-set foldcolumn=1
 set foldmethod=indent
 set foldtext=Mopp_fold_text()
 set foldmarker=\ {{{,\ }}}
