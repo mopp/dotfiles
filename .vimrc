@@ -1043,7 +1043,7 @@ let g:lightline = {
             \ 'colorscheme': 'arcadia',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
-            \   'right': [['fileencoding', 'fileformat', 'lineinfo'], ['filetype']],
+            \   'right': [['fileencoding', 'fileformat'], ['filetype']],
             \ },
             \ 'inactive': {
             \   'left': [['filename', 'modified']],
@@ -1067,7 +1067,6 @@ let g:lightline = {
             \   'filetype':     "%{ LightlineIsVisible() ? &filetype : '' }",
             \   'fileencoding': "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
             \   'fileformat':   "%{ LightlineIsVisible() ? &fileformat : '' }",
-            \   'lineinfo':     '%03l:%03v:%03p%%',
             \ },
             \ 'component_visible_condition': {
             \   'modified':     'LightlineIsVisible() && &modifiable',
