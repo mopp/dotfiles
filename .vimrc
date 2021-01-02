@@ -142,7 +142,7 @@ let g:maplocalleader = '\'
 
 noremap <silent> j gj
 noremap <silent> k gk
-noremap <silent> ; :
+noremap ; :
 noremap <silent> : ;
 
 " Avoiding getting <NUL> from <C-Space>.
