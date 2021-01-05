@@ -163,14 +163,14 @@ noremap <silent> <C-H> ^
 noremap <silent> <C-L> $
 
 " Managing tab.
-nnoremap <silent> <Leader>to :<C-U>tabnew<Space>
+nnoremap <Leader>to :<C-U>tabnew<Space>
 nnoremap <silent> <Leader>tc :<C-U>tabclose<CR>
 nnoremap <silent> <Leader>j gT
 nnoremap <silent> <Leader>k gt
 
 " Spliting window.
-nnoremap <silent> <Leader>sp  :<C-U>split<Space>
-nnoremap <silent> <Leader>vsp :<C-U>vsplit<Space>
+nnoremap <Leader>sp  :<C-U>split<Space>
+nnoremap <Leader>vsp :<C-U>vsplit<Space>
 
 " Changing window size.
 noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
