@@ -153,10 +153,10 @@ map! <NUL> <C-Space>
 noremap! <silent> <C-F> <Right>
 noremap! <silent> <C-B> <Left>
 noremap! <silent> <C-D> <Del>
-cnoremap <silent> <C-A> <HOME>
-cnoremap <silent> <C-E> <END>
-cnoremap <silent> <C-P> <Up>
-cnoremap <silent> <C-N> <Down>
+cnoremap <C-A> <HOME>
+cnoremap <C-E> <END>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
 noremap <silent> <C-J> G
 noremap <silent> <C-K> gg
 noremap <silent> <C-H> ^
