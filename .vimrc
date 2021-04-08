@@ -834,6 +834,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('leafgarland/typescript-vim')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
+    call dein#add('peitalin/vim-jsx-typescript')
     call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
     call dein#add('stephpy/vim-yaml')
@@ -859,7 +860,7 @@ augroup mopp_filetype_overwrite " {{{
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType text,man setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby,javascript,typescript,html,css,pony,markdown setlocal shiftwidth=2
+    autocmd FileType ruby,javascript,typescript,typescriptreact,html,css,pony,markdown setlocal shiftwidth=2
 augroup END " }}}
 
 if !s:has_dein " {{{
@@ -1495,6 +1496,7 @@ augroup plugin
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
     autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx -new' expand('<afile>') | endif
+    autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 augroup END
 " }}}
 " }}}
