@@ -143,16 +143,16 @@ let g:maplocalleader = '\'
 noremap <silent> j gj
 noremap <silent> k gk
 noremap ; :
-noremap <silent> : ;
+noremap : ;
 
 " Avoiding getting <NUL> from <C-Space>.
 map <NUL> <C-Space>
 map! <NUL> <C-Space>
 
 " Movings.
-noremap! <silent> <C-F> <Right>
-noremap! <silent> <C-B> <Left>
-noremap! <silent> <C-D> <Del>
+noremap! <C-F> <Right>
+noremap! <C-B> <Left>
+noremap! <C-D> <Del>
 cnoremap <C-A> <HOME>
 cnoremap <C-E> <END>
 cnoremap <C-P> <Up>
@@ -237,10 +237,10 @@ nnoremap <silent> Q @@
 vnoremap <silent> / <Esc>/\%V
 
 " Replace the all selected areas.
-vnoremap <silent> <C-R> "hy:%s/\V<C-R>h//g<left><left>
+vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
 
 " Assist input normal command on visual mode.
-vnoremap <silent> n :normal<Space>
+vnoremap n :normal<Space>
 
 " Turn off highlight of the current search words.
 nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
