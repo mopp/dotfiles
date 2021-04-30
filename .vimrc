@@ -681,10 +681,10 @@ if has('nvim')
     set scrollback=5000
     set wildoptions=
 
-    tnoremap <ESC> <C-\><C-n>
-    nnoremap <Leader>tm :terminal<CR>
-    nnoremap <Leader>vst :vsplit term://zsh<CR>
-    nnoremap <Leader>vtt :tabnew term://zsh<CR>
+    tnoremap <silent> <ESC> <C-\><C-n>
+    nnoremap <silent> <Leader>tm :terminal<CR>
+    nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
+    nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
 
     autocmd mopp TermOpen * call s:hide_left_columns()
     autocmd mopp TermOpen * nnoremap <silent><buffer> <Enter> A
