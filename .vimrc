@@ -687,6 +687,7 @@ if has('nvim')
     nnoremap <Leader>vtt :tabnew term://zsh<CR>
 
     autocmd mopp TermOpen * call s:hide_left_columns()
+    autocmd mopp TermOpen * nnoremap <silent><buffer> <Enter> A
 
     if has('mac')
         let g:python_host_prog  = '/usr/local/bin/python2'
