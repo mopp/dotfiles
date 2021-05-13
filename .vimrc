@@ -1424,7 +1424,9 @@ endfunction
 
 " vim-lsp {{{
 let g:lsp_auto_enable = 0
-let g:lsp_highlights_enabled = 0
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_float_delay = 300
 if executable('solargraph')
     autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'solargraph',
@@ -1447,7 +1449,6 @@ if executable('gopls')
                 \ 'cmd': {server_info -> ['gopls']},
                 \ 'whitelist': ['go'],
                 \ })
-    autocmd BufWritePre *.go LspDocumentFormatSync
 endif
 if executable('clangd')
     autocmd mopp User lsp_setup call lsp#register_server({
@@ -1470,6 +1471,7 @@ augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
 nmap <Leader>lp <plug>(lsp-peek-definition)
+nmap <Leader>lh <plug>(lsp-hover)
 " }}}
 
 " vista.vim
