@@ -122,6 +122,7 @@ let g:markdown_folding = 1
 
 " Mappings. {{{
 
+" :help map-table
 "---------------------------------------------------------------------------"
 " Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
 "------------------|--------|--------|---------|--------|--------|----------|
