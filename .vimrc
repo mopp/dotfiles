@@ -438,11 +438,9 @@ if has('nvim') " {{{
         endif
     endfunction
 
-
     function! s:to_upper_snake_case(str) abort
         return toupper(s:to_lower_snake_case(a:str))
     endfunction
-
 
     function! s:to_lower_camel_case(str) abort
         if empty(a:str) == 1
