@@ -492,7 +492,7 @@ if has('nvim') " {{{
         " Copy the word.
         call nvim_buf_set_keymap(l:buf, 'n', 'y', '02Wyiw', {})
         " Replace the current cursor word by the selected case.
-        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', '<Cmd>call PreviewWordCaseReplace(0)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', '<Cmd>call PreviewWordCasesReplace(0)<CR>', l:opts)
         call nvim_buf_set_keymap(l:buf, 'n', '1', '<Cmd>call PreviewWordCasesReplace(1)<CR>', l:opts)
         call nvim_buf_set_keymap(l:buf, 'n', '2', '<Cmd>call PreviewWordCasesReplace(2)<CR>', l:opts)
         call nvim_buf_set_keymap(l:buf, 'n', '3', '<Cmd>call PreviewWordCasesReplace(3)<CR>', l:opts)
