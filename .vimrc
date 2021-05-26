@@ -290,7 +290,7 @@ function! s:remove_tail_spaces() abort " {{{
 endfunction " }}}
 
 function! s:shrink_window_by_paragraph(direction) abort
-    let s = &scrolloff
+    let l:s = &l:scrolloff
     setlocal scrolloff=0
 
     if a:direction ==? 'upward'
@@ -304,7 +304,7 @@ function! s:shrink_window_by_paragraph(direction) abort
     execute 'resize -' . (line("'>") - line("'<"))
     normal! M
 
-    execute 'setlocal scrolloff=' . s
+    let &l:scrolloff = l:s
 endfunction
 noremap <silent> <S-C-Up> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('upward')<CR>
 noremap <silent> <S-C-Down> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
