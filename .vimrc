@@ -164,20 +164,20 @@ noremap <silent> <C-H> ^
 noremap <silent> <C-L> $
 
 " Managing tab.
-nnoremap <Leader>to :<C-U>tabnew<Space>
-nnoremap <silent> <Leader>tc :<C-U>tabclose<CR>
+nnoremap <Leader>to <Cmd>tabnew<Space>
+nnoremap <silent> <Leader>tc <Cmd>tabclose<CR>
 nnoremap <silent> <Leader>j gT
 nnoremap <silent> <Leader>k gt
 
 " Spliting window.
-nnoremap <Leader>sp  :<C-U>split<Space>
-nnoremap <Leader>vsp :<C-U>vsplit<Space>
+nnoremap <Leader>sp  <Cmd>split<Space>
+nnoremap <Leader>vsp <Cmd>vsplit<Space>
 
 " Changing window size.
-noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
-noremap <silent> <S-Right> :<C-U>wincmd ><CR>
-noremap <silent> <S-Up>    :<C-U>wincmd -<CR>
-noremap <silent> <S-Down>  :<C-U>wincmd +<CR>
+noremap <silent> <S-Left>  <Cmd>wincmd <<CR>
+noremap <silent> <S-Right> <Cmd>wincmd ><CR>
+noremap <silent> <S-Up>    <Cmd>wincmd -<CR>
+noremap <silent> <S-Down>  <Cmd>wincmd +<CR>
 
 " Yank & Paste {{{
 function! s:paste_with_register(register, paste_type, paste_cmd) abort " {{{
@@ -199,30 +199,30 @@ function! s:copy_to_clipboard() abort " {{{
 endfunction " }}}
 
 nnoremap <silent> Y y$
-nnoremap <silent> <Leader>gp :<C-U>set paste!<CR>
+nnoremap <silent> <Leader>gp <Cmd>set paste!<CR>
 xmap <silent> m <Nop>
 nmap <silent> m <Nop>
-xnoremap <silent> mY  :<C-U>call <SID>copy_to_clipboard()<CR>
-nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
-nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
-nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
-nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
-nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
+xnoremap <silent> mY  <Cmd>call <SID>copy_to_clipboard()<CR>
+nnoremap <silent> mlp <Cmd>call <SID>paste_with_register('+', 'l', 'p')<CR>
+nnoremap <silent> mlP <Cmd>call <SID>paste_with_register('+', 'l', 'P')<CR>
+nnoremap <silent> mcp <Cmd>call <SID>paste_with_register('+', 'c', 'p')<CR>
+nnoremap <silent> mcP <Cmd>call <SID>paste_with_register('+', 'c', 'P')<CR>
+nnoremap <silent> mp  <Cmd>call <SID>paste_with_register('+', 'l', 'p')<CR>
 " }}}
 
 " Overwrite the current line with yanked text.
 nnoremap <silent> go  pk"_dd
 
 " Open help of a word under the cursor.
-nnoremap <silent> <Leader>hh :<C-U>help <C-R><C-W><CR>
-nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
+nnoremap <silent> <Leader>hh <Cmd>help <C-R><C-W><CR>
+nnoremap <silent> <Leader>ht <Cmd>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
-nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : ':<C-U>call append(".", repeat([""], v:count1))<CR>'
-nnoremap <silent> <Leader>O :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
+nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : '<Cmd>call append(".", repeat([""], v:count1))<CR>'
+nnoremap <silent> <Leader>O <Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
 " Change window local current directory to the directory of the file at the current window.
-nnoremap <silent> <Leader>cd :<C-U>lcd %:p:h<CR>
+nnoremap <silent> <Leader>cd <Cmd>lcd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nmap <silent> <C-]> <Nop>
@@ -244,24 +244,24 @@ vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
 vnoremap n :normal<Space>
 
 " Turn off highlight of the current search words.
-nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch<CR>
+nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch<CR>
 
 " Save the current buffer.
-nnoremap <silent> <Leader>w :<C-U>write<CR>
+nnoremap <silent> <Leader>w <Cmd>write<CR>
 
 " Close the current window.
-nnoremap <silent> <Leader>q :<C-U>quit<CR>
+nnoremap <silent> <Leader>q <Cmd>quit<CR>
 
 " Open vimrc at newtab.
 if has('nvim') || has('patch-8.0.1508')
     " `drop` command is available on gvim, neovim or vim 8.0.1508.
-    nnoremap <silent> <Leader>ev :<C-U>tab drop $MYVIMRC<CR>
+    nnoremap <silent> <Leader>ev <Cmd>tab drop $MYVIMRC<CR>
 else
-    nnoremap <silent> <Leader>ev :<C-U>tabnew $MYVIMRC<CR>
+    nnoremap <silent> <Leader>ev <Cmd>tabnew $MYVIMRC<CR>
 endif
 
 " Tab version `gf`.
-nnoremap <silent> gtf :<C-U>execute 'tabnew' printf('%s/%s', getcwd(), expand('<cfile>'))<CR>
+nnoremap <silent> gtf <Cmd>execute 'tabnew' printf('%s/%s', getcwd(), expand('<cfile>'))<CR>
 
 " Keep indent
 nnoremap <silent><expr> i empty(getline('.')) ? 'S' : 'i'
@@ -306,8 +306,8 @@ function! s:shrink_window_by_paragraph(direction) abort
 
     execute 'setlocal scrolloff=' . s
 endfunction
-noremap <silent> <S-C-Up> :<C-U>keepjumps call <SID>shrink_window_by_paragraph('upward')<CR>
-noremap <silent> <S-C-Down> :<C-U>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
+noremap <silent> <S-C-Up> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('upward')<CR>
+noremap <silent> <S-C-Down> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
 " }}}
 
 " Commands. {{{
@@ -387,11 +387,11 @@ if has('nvim')
         " Copy the number.
         call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wyiw', {})
         " Insert the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'i', ':<C-U>call PreviewRadixesInsert()<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', 'i', '<Cmd>call PreviewRadixesInsert()<CR>', l:opts)
         " Append the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'a', ':<C-U>call PreviewRadixesAppend()<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', 'a', '<Cmd>call PreviewRadixesAppend()<CR>', l:opts)
         " Replace the current cursor word by the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'r', ':<C-U>call PreviewRadixesReplace()<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', 'r', '<Cmd>call PreviewRadixesReplace()<CR>', l:opts)
 
         let l:opts = {
                     \ 'relative': 'cursor',
@@ -492,11 +492,11 @@ if has('nvim') " {{{
         " Copy the word.
         call nvim_buf_set_keymap(l:buf, 'n', 'y', '02Wyiw', {})
         " Replace the current cursor word by the selected case.
-        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', ':<C-U>call PreviewWordCaseReplace(0)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '1', ':<C-U>call PreviewWordCasesReplace(1)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '2', ':<C-U>call PreviewWordCasesReplace(2)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '3', ':<C-U>call PreviewWordCasesReplace(3)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '4', ':<C-U>call PreviewWordCasesReplace(4)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', '<Cmd>call PreviewWordCaseReplace(0)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '1', '<Cmd>call PreviewWordCasesReplace(1)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '2', '<Cmd>call PreviewWordCasesReplace(2)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '3', '<Cmd>call PreviewWordCasesReplace(3)<CR>', l:opts)
+        call nvim_buf_set_keymap(l:buf, 'n', '4', '<Cmd>call PreviewWordCasesReplace(4)<CR>', l:opts)
 
         let l:opts = {
                     \ 'relative': 'cursor',
@@ -526,7 +526,7 @@ function! s:get_session_list(arguments, cmd_line, cursor_pos) abort
     return map(l:filepaths, {i, v -> fnamemodify(v, ':t')})
 endfunction
 
-nnoremap <silent> <Leader>ls :<C-U>LoadLastSession<CR>
+nnoremap <silent> <Leader>ls <Cmd>LoadLastSession<CR>
 command! -nargs=? -complete=customlist,<SID>get_session_list SaveSession call <SID>save_session(<f-args>)
 command! -nargs=1 -complete=customlist,<SID>get_session_list LoadSession execute 'source' s:session_directory . <q-args>
 command! -nargs=0 LoadLastSession execute 'source' s:last_session_filepath
@@ -546,7 +546,7 @@ endfunction
 
 command! -nargs=0 StoreTargetWin let t:target_window = win_getid()
 command! -nargs=0 JumpTargetWin call win_gotoid(t:target_window)
-nnoremap <expr> <Leader>' :<C-U>JumpTargetWin
+nnoremap <expr> <Leader>' <Cmd>JumpTargetWin
 
 function! s:hide_left_columns() abort " {{{
     setlocal nonumber
@@ -935,20 +935,20 @@ let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
 
 " denite.nvim
 if dein#tap('denite.nvim') " {{{
-    nnoremap <silent> <Leader>n :<C-U>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
-    nnoremap <silent> <Leader>p :<C-U>Denite -resume -immediately -cursor-pos=-1 -no-empty<CR>
-    nnoremap <silent> <Leader>fb  :<C-U>Denite buffer<CR>
-    nnoremap <silent> <Leader>fe  :<C-U>Denite file/rec<CR>
-    nnoremap <silent> <Leader>ff  :<C-U>Denite file_mru<CR>
-    nnoremap <silent> <Leader>fd  :<C-U>Denite -default-action=tab_open directory_mru<CR>
-    nnoremap <silent> <Leader>fgg :<C-U>Denite grep<CR>
-    nnoremap <silent> <Leader>fgw :<C-U>DeniteCursorWord grep<CR>
-    nnoremap <silent> <Leader>fl  :<C-U>Denite line<CR>
-    nnoremap <silent> <Leader>fo  :<C-U>Denite outline<CR>
-    nnoremap <silent> <Leader>fre :<C-U>Denite -resume<CR>
-    nnoremap <silent> <Leader>git :<C-U>DeniteGitto gitto<CR>
-    nnoremap <silent> <Leader>gic :<C-U>Denite gitchanged<CR>
-    nnoremap <silent> <Leader>gis :<C-U>Denite gitstatus<CR>
+    nnoremap <silent> <Leader>n <Cmd>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
+    nnoremap <silent> <Leader>p <Cmd>Denite -resume -immediately -cursor-pos=-1 -no-empty<CR>
+    nnoremap <silent> <Leader>fb  <Cmd>Denite buffer<CR>
+    nnoremap <silent> <Leader>fe  <Cmd>Denite file/rec<CR>
+    nnoremap <silent> <Leader>ff  <Cmd>Denite file_mru<CR>
+    nnoremap <silent> <Leader>fd  <Cmd>Denite -default-action=tab_open directory_mru<CR>
+    nnoremap <silent> <Leader>fgg <Cmd>Denite grep<CR>
+    nnoremap <silent> <Leader>fgw <Cmd>DeniteCursorWord grep<CR>
+    nnoremap <silent> <Leader>fl  <Cmd>Denite line<CR>
+    nnoremap <silent> <Leader>fo  <Cmd>Denite outline<CR>
+    nnoremap <silent> <Leader>fre <Cmd>Denite -resume<CR>
+    nnoremap <silent> <Leader>git <Cmd>DeniteGitto gitto<CR>
+    nnoremap <silent> <Leader>gic <Cmd>Denite gitchanged<CR>
+    nnoremap <silent> <Leader>gis <Cmd>Denite gitstatus<CR>
 
     function! s:denite_settings() abort " {{{
         nnoremap <silent><buffer><expr><nowait> <CR> denite#do_map('do_action')
@@ -1139,7 +1139,7 @@ nmap n <Plug>(anzu-n)<Plug>Pulse
 nmap N <Plug>(anzu-N)<Plug>Pulse
 nmap * <Plug>(anzu-star)<Plug>Pulse
 nmap # <Plug>(anzu-sharp)<Plug>Pulse
-nnoremap <silent> <Esc><Esc> :<C-U>nohlsearch <bar> :AnzuClearSearchStatus<CR>
+nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 " }}}
 
 " open-browser.vim
@@ -1161,15 +1161,15 @@ let g:formatters_rust = ['rustfmt']
 
 " vim-maximizer {{{
 let g:maximizer_restore_on_winleave = 1
-nnoremap <silent><F3> :<C-U>MaximizerToggle<CR>
-vnoremap <silent><F3> :<C-U>MaximizerToggle<CR>gv
-inoremap <silent><F3> <C-O>:<C-U>MaximizerToggle<CR>
+nnoremap <silent><F3> <Cmd>MaximizerToggle<CR>
+vnoremap <silent><F3> <Cmd>MaximizerToggle<CR>gv
+inoremap <silent><F3> <C-O><Cmd>MaximizerToggle<CR>
 " }}}
 
 " junkfile.vim {{{
 command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
 command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
-nnoremap <silent> <Leader>xx :<C-U>0tabnew +JunkfileDaily<CR>
+nnoremap <silent> <Leader>xx <Cmd>0tabnew +JunkfileDaily<CR>
 let g:junkfile#directory = $HOME . '/workspace/notes'
 " }}}
 
@@ -1181,9 +1181,9 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)', l:silent_opt)
     call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)', l:silent_opt)
     call gina#custom#mapping#nmap('status', 'dd', '<Plug>(gina-diff-vsplit)')
-    call gina#custom#mapping#nmap('status', '<C-\>', ':<C-U>Gina commit<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('commit', '<C-\>', ':<C-U>Gina status<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', 'q', ':<C-U>quit<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('status', '<C-\>', '<Cmd>Gina commit<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('commit', '<C-\>', '<Cmd>Gina status<CR>', l:cmd_opt)
+    call gina#custom#mapping#nmap('/.*', 'q', '<Cmd>quit<CR>', l:cmd_opt)
     call gina#custom#mapping#nmap('/.*', 't', '<Plug>(gina-edit-tab)', l:silent_opt)
     call gina#custom#mapping#nmap('/.*', '<Tab>', '<Plug>(gina-builtin-choice)', l:silent_opt)
     call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)', l:silent_opt)
@@ -1194,10 +1194,10 @@ function! Hook_on_post_source_gina() abort
     call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--opener', 'split')
     call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--group', 'main')
 endfunction
-nnoremap <Leader>gb :<C-U>Gina branch<CR>
-nnoremap <Leader>gc :<C-U>Gina commit<CR>
-nnoremap <Leader>gd :<C-U>Gina diff<CR>
-nnoremap <Leader>gs :<C-U>Gina status<CR>
+nnoremap <Leader>gb <Cmd>Gina branch<CR>
+nnoremap <Leader>gc <Cmd>Gina commit<CR>
+nnoremap <Leader>gd <Cmd>Gina diff<CR>
+nnoremap <Leader>gs <Cmd>Gina status<CR>
 function! s:get_git_aliases(...) abort
     return system('git config --get-regexp alias | sed "s/alias\.\(\w*\)\s.*/\1/g"')
 endfunction
@@ -1346,7 +1346,7 @@ let g:unmatchparen#disable_filetypes = ['vim']
 
 " defx.nvim {{{
 command! DefxExplorer Defx -new -toggle -split=vertical -winwidth=40 -direction=topleft
-nnoremap <silent> <leader>de :<C-U>DefxExplorer<CR>
+nnoremap <silent> <leader>de <Cmd>DefxExplorer<CR>
 
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
