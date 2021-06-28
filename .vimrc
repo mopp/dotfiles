@@ -1448,6 +1448,7 @@ if executable('gopls')
                 \ 'cmd': {server_info -> ['gopls']},
                 \ 'whitelist': ['go'],
                 \ })
+    autocmd mopp FileType go setlocal omnifunc=lsp#complete
 endif
 if executable('clangd')
     autocmd mopp User lsp_setup call lsp#register_server({
