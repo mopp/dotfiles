@@ -222,7 +222,7 @@ function copy_prev_cmd() {
 }
 
 function kubexec {
-    if [ "$#" -ne 2 ]; then
+    if [ "$#" -le 1 ]; then
         echo "usage: $0 <target> <command>"
         return 1
     fi
