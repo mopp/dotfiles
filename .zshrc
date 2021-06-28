@@ -222,9 +222,14 @@ function copy_prev_cmd() {
 }
 
 function kubexec {
-    pod_name=$(kubectl get pods --no-headers --selector app="$1" | awk '{ print $1 }' | head --lines=1)
+    if [ "$#" -ne 2 ]; then
+        echo "usage: $0 <target> <command>"
+        return 1
+    fi
+
+    pod_name=$(kubectl get pods --no-headers --selector app="$1" | awk '{ print $1 }' | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
-    kubectl exec -it $pod_name ${@:2:($#-2)}
+    kubectl exec --stdin=true --tty=true $pod_name --container="$1" ${@:2:($#-2)}
 }
 # }}}
 
