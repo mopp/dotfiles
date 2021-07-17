@@ -1371,7 +1371,7 @@ function! s:defx_settings() abort " {{{
     nnoremap <silent><buffer><expr><nowait> c defx#do_action('copy')
     nnoremap <silent><buffer><expr><nowait> m defx#do_action('move')
     nnoremap <silent><buffer><expr><nowait> p defx#do_action('paste')
-    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('open')
+    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('drop')
     nnoremap <silent><buffer><expr><nowait> s defx#do_action('open', 'split')
     nnoremap <silent><buffer><expr><nowait> v defx#do_action('open', 'vsplit')
     nnoremap <silent><buffer><expr><nowait> t defx#do_action('open', 'tabedit')
