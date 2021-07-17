@@ -610,6 +610,39 @@ command! -nargs=0 -bang FitWindowSize call s:fit_window_size_to_displayed_conten
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
 
 command! -nargs=0 ExecuteCurrentLine :execute getline('.')
+
+let s:gote_dir = $HOME . '/notes'
+function! s:gote() abort
+    execute 'tcd' s:gote_dir
+    DefxExplorer
+endfunction
+command! -nargs=0 GoteOpen call s:gote()
+
+function! s:gote_today() abort
+    call s:gote()
+    wincmd l
+
+    let l:datestr = strftime('%Y-%m-%d')
+    execute 'drop' strftime(s:gote_dir . '/daily/' . l:datestr . '.md')
+
+    let l:text = [
+                \'## ' . l:datestr ,
+                \'',
+                \'### 今日やったこと',
+                \'',
+                \'',
+                \'### 明日やること',
+                \'',
+                \'',
+                \'### 雑記',
+                \'',
+                \'',
+                \]
+    call append(0, l:text)
+
+    call cursor(4, 0)
+endfunction
+command! -nargs=0 GoteToday call s:gote_today()
 " }}}
 
 " GUI. {{{
@@ -779,7 +812,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/defx.nvim')
     call dein#add('Shougo/deol.nvim', {'lazy': 1, 'on_cmd': ['Deol', 'DeolCd', 'DeolEdit']})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('Shougo/junkfile.vim', {'lazy': 1, 'on_cmd': 'JunkfileOpen', 'on_func': 'junkfile'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
     call dein#add('Yggdroot/indentLine')
     call dein#add('bronson/vim-trailing-whitespace')
@@ -1162,13 +1194,6 @@ let g:maximizer_restore_on_winleave = 1
 nnoremap <silent><F3> <Cmd>MaximizerToggle<CR>
 vnoremap <silent><F3> <Cmd>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O><Cmd>MaximizerToggle<CR>
-" }}}
-
-" junkfile.vim {{{
-command! -nargs=1 JunkfileNote call junkfile#open(strftime('%Y-%m-%d_') . <q-args>, '.md')
-command! JunkfileDaily call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
-nnoremap <silent> <Leader>xx <Cmd>0tabnew +JunkfileDaily<CR>
-let g:junkfile#directory = $HOME . '/workspace/notes'
 " }}}
 
 " gina.vim {{{
