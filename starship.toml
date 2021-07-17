@@ -1,68 +1,19 @@
-format = """
-$username\
-$hostname\
-$shlvl\
-$directory\
-$git_branch\
-$git_commit\
-$git_state\
-$git_status\
-$hg_branch\
-$kubernetes\
-$docker_context\
-$package\
-$cmake\
-$dart\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
-$golang\
-$helm\
-$java\
-$julia\
-$nim\
-$nodejs\
-$ocaml\
-$perl\
-$php\
-$purescript\
-$python\
-$ruby\
-$rust\
-$swift\
-$terraform\
-$zig\
-$nix_shell\
-$conda\
-$memory_usage\
-$gcloud\
-$env_var\
-$crystal\
-$cmd_duration\
-$custom\
-$jobs\
-$battery\
-$time\
-$status\
-$line_break\
-$character"""
-
 [hostname]
 ssh_only = false
-disabled = false
 style = "bold fg:125"
-
-[time]
-disabled = false
-time_format = "[%F %T]"
-
-[gcloud]
-disabled = true
-
-[nodejs]
-disabled = true
 
 [kubernetes]
 disabled = false
 format = '[$symbol$namespace]($style) in '
+
+[docker_context]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[character]
+success_symbol = "[>](bold green)"
