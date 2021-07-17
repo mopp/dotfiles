@@ -1,17 +1,44 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -e
+dotfiles_dir="$(cd "$( dirname "$0" )" && pwd)"
 
-DEFAULT_CONFIG_PREFIX="install"
-CONFIG_SUFFIX=".conf.yaml"
-DOTBOT_DIR="dotbot"
+link() {
+  case $1 in
+    ~/*)
+      source_filepath=$1;;
+    *)
+      source_filepath="$dotfiles_dir/$1";;
+  esac
 
-DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  ln --symbolic --verbose "$source_filepath" "$2"
+  echo "$source_filepath -> $2: $(test $? && echo 'Failed' || echo 'Succeed')"
+  echo ''
+}
 
-cd "${BASEDIR}"
-git submodule update --init --recursive "${DOTBOT_DIR}"
+mkdir --parents \
+  ~/.config/nvim/backup \
+  ~/.config/nvim/swap \
+  ~/.config/nvim/undo
 
-for conf in ${DEFAULT_CONFIG_PREFIX} ${@}; do
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${conf}${CONFIG_SUFFIX}"
-done
+link .vimrc ~/.vimrc
+link .vimrc ~/.config/nvim/init.vim
+link ~/.config/nvim ~/.vim
+
+link .gitconfig ~/.gitconfig
+link .zshrc ~/.zshrc
+link alacritty.yml ~/.config/alacritty.yml
+link starship.toml ~/.config/starship.toml
+
+# Only for Linux.
+if [ "$(uname)" = 'Linux' ]; then
+  link .fehbg ~/.fehbg
+  link .fbtermrc ~/.fbtermrc
+  link .Xresources ~/.Xresources
+  link .Xresources.flan ~/.Xresources.flan
+  link .Xresources.rosetta ~/.Xresources.rosetta
+  link .xinitrc ~/.xinitrc
+  link .Xmodmap ~/.Xmodmap
+  link i3status.conf ~/.config/i3status/config
+  link i3config ~/.config/i3/config
+  link i3exit ~/.config/i3/i3exit
+fi
