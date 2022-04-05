@@ -229,7 +229,7 @@ function kubexec {
 
     pod_name=$(kubectl get pods --no-headers --selector app="$1" | awk '{ print $1 }' | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
-    kubectl exec --stdin=true --tty=true $pod_name --container="$1" ${@:2:($#-2)}
+    kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
 }
 # }}}
 
