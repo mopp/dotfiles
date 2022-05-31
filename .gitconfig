@@ -29,6 +29,7 @@
     pushf = push --force-with-lease origin HEAD
     push = push origin HEAD
     wip = commit --message 'wip'
+    rebasel = !git rebase $(git symbolic-ref refs/remotes/origin/HEAD | cut --delimiter='/' --fields=3,4)
 [url "git@github.com:"]
     pushinsteadof = https://github.com/
 [pager]
