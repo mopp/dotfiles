@@ -7,32 +7,14 @@ case $OSTYPE in
     darwin*)
         # For homebrew.
         export path=(
-            /usr/local/bin
-            /usr/local/opt/coreutils/libexec/gnubin
-            /usr/local/opt/gettext/bin
-            /usr/local/opt/libiconv/bin
-            /usr/local/opt/llvm/bin
-            /usr/local/opt/make/libexec/gnubin
-            /usr/local/opt/ncurses/bin
+            /opt/homebrew/opt/coreutils/libexec/gnubin
             $path
         )
 
-        for e ('ncurses' 'gettext' 'libiconv' 'llvm') {
-            export path=(/usr/local/opt/$e/bin $path);
-            export LDFLAGS="-L/usr/local/opt/$e/lib $LDFLAGS";
-            export CPPFLAGS="-I/usr/local/opt/$e/include $CPPFLAGS"
-            export LD_LIBRARY_PATH="/usr/local/opt/$e/lib:$LD_LIBRARY_PATH"
-        }
-
-        export manpath=(
-            /usr/local/opt/coreutils/libexec/gnumang
-            /usr/local/opt/make/libexec/gnumang
-            /usr/local/share/mang
-            $manpath
-        )
-
-        export fpath=(/usr/local/share/zsh-completions $fpath)
-        source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        file=/opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+        if [ -e $file ]; then
+            source $file
+        fi
         ;;
     linux*)
         source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
