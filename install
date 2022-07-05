@@ -10,12 +10,12 @@ link() {
       source_filepath="$dotfiles_dir/$1";;
   esac
 
-  ln --symbolic --verbose "$source_filepath" "$2"
+  ln -s "$source_filepath" "$2"
   echo "$source_filepath -> $2: $(test $? && echo 'Failed' || echo 'Succeed')"
   echo ''
 }
 
-mkdir --parents \
+mkdir -p \
   ~/.config/nvim/backup \
   ~/.config/nvim/swap \
   ~/.config/nvim/undo
