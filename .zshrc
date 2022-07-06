@@ -17,7 +17,10 @@ case $OSTYPE in
         fi
         ;;
     linux*)
-        source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+        file=/usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+        if [ -e $file ]; then
+            source $file
+        fi
 
         case $TERM in
             *rxvt*)
