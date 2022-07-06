@@ -35,4 +35,12 @@
 [fetch]
 	prune = true
 [interactive]
-    diffFilter = delta
+    diffFilter = delta --color-only
+[add.interactive]
+    useBuiltin = false # required for git 2.37.0
+[merge]
+    conflictstyle = diff3
+[diff]
+    colorMoved = default
+[delta]
+    side-by-side = true
