@@ -89,7 +89,11 @@ fi
 # External tool configurations. {{{
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-export PAGER=less
+if (($+commands[less])); then
+    export PAGER=less
+elif (($+commands[more])); then
+    export PAGER=more
+fi
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'
