@@ -21,6 +21,7 @@
     url = !echo $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!' | sed -e 's/.git$//')
     open = !$(command -v open || command -v xdg-open) $(git url)
     pr = !$(command -v open || command -v xdg-open) $(git url)/compare/$(git rev-parse --abbrev-ref HEAD)?expand=1
+    pr-echo = !echo $(git url)/compare/$(git rev-parse --abbrev-ref HEAD)?expand=1
     rename = branch -m
     select = "!f() { select ans in $(git status --short | awk '{print $2}'); do $EDITOR $ans; break; done }; f"
     squeeze = commit --amend --no-edit
