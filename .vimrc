@@ -20,7 +20,7 @@ scriptencoding utf-8
 
 " Indent. {{{
 set autoindent
-set backspace=2
+set backspace=indent,eol,start
 set breakindent
 set expandtab
 set shiftwidth=4
