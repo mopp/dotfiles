@@ -30,7 +30,7 @@
     pushf = push --force-with-lease origin HEAD
     push = push origin HEAD
     wip = commit --message 'wip'
-    rebasel = !git rebase $(git symbolic-ref refs/remotes/origin/HEAD | cut --delimiter='/' --fields=3,4)
+    pullr = !git pull --rebase $(git symbolic-ref refs/remotes/origin/HEAD | cut --delimiter='/' --fields=3,4 | tr '/' ' ')
 [pager]
     branch = false
 [fetch]
