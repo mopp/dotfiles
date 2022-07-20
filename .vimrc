@@ -614,7 +614,7 @@ command! -nargs=0 ExecuteCurrentLine :execute getline('.')
 let s:gote_dir = $HOME . '/notes'
 function! s:gote() abort
     execute 'tcd' s:gote_dir
-    DefxExplorer
+    FernExplorer
 endfunction
 command! -nargs=0 GoteOpen call s:gote()
 
@@ -805,7 +805,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('Shougo/defx.nvim')
     call dein#add('Shougo/deol.nvim', {'lazy': 1, 'on_cmd': ['Deol', 'DeolCd', 'DeolEdit']})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
@@ -823,13 +822,15 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('junegunn/vim-easy-align', {'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': ['<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']})
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
-    call dein#add('kristijanhusak/defx-git')
+    call dein#add('lambdalisue/fern-git-status.vim')
+    call dein#add('lambdalisue/fern-hijack.vim')
+    call dein#add('lambdalisue/fern.vim')
     call dein#add('luochen1990/rainbow')
     call dein#add('mattn/learn-vimscript')
     call dein#add('mattn/webapi-vim')
+    call dein#add('mopp/Arcadia')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
-    call dein#add('mopp/Arcadia')
     call dein#add('osyo-manga/vim-anzu')
     call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
     call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
@@ -1062,8 +1063,7 @@ nmap <Leader>hn <Plug>(GitGutterNextHunk)
 " }}}
 
 " vim-trailing-whitespace
-" '' is for defx.
-let g:extra_whitespace_ignored_filetypes = ['denite', 'help', 'defx', '']
+let g:extra_whitespace_ignored_filetypes = ['denite', 'help']
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -1109,10 +1109,10 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'defx': 'Defx', 'vista': 'Vista'}
+let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'fern': 'Fern', 'vista': 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'defx\|vista\|denite\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|vista\|denite\|help')
 endfunction
 
 function! LightlineFilename() abort " {{{
@@ -1120,6 +1120,8 @@ function! LightlineFilename() abort " {{{
         return denite#get_status('sources')
     elseif &filetype ==# 'denite-filter'
         return ''
+    elseif &filetype ==# 'fern'
+        return split(expand('%:t'), ';')[0]
     elseif &filetype ==# 'vista'
         return ''
     else
@@ -1363,67 +1365,16 @@ let g:vim_json_syntax_conceal = 0
 " vim-unmatchparen
 let g:unmatchparen#disable_filetypes = ['vim']
 
-" defx.nvim {{{
-command! DefxExplorer Defx -new -toggle -split=vertical -winwidth=40 -direction=topleft
-nnoremap <silent> <leader>de <Cmd>DefxExplorer<CR>
-
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
-function! s:defx_settings() abort " {{{
-    setlocal nofoldenable
-    setlocal listchars-=extends:<
-    call s:hide_left_columns()
-    doautocmd BufRead
+" fern.vim {{{
+command! FernExplorer Fern -drawer -width=40 .
+nnoremap <silent> <leader>de <Cmd>FernExplorer<CR>
 
-    " Cursor movings.
-    nnoremap <silent><buffer><expr><nowait> h defx#do_action('close_tree')
-    nnoremap <silent><buffer><expr><nowait> j line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr><nowait> k line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr><nowait> l defx#is_directory() ? defx#do_action('open_tree') : 0
-    nnoremap <silent><buffer><expr><nowait> L defx#do_action('open_tree_recursive')
-    nnoremap <silent><buffer><expr><nowait> <C-l> defx#do_action('open')
-    nnoremap <silent><buffer><expr><nowait> <C-h> defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr><nowait> ~ defx#do_action('cd')
-    nmap <silent><buffer><nowait> <C-j> <Plug>(easymotion-j)
-    nmap <silent><buffer><nowait> <C-k> <Plug>(easymotion-k)
-
-    " File operations.
-    nnoremap <silent><buffer><expr><nowait> c defx#do_action('copy')
-    nnoremap <silent><buffer><expr><nowait> m defx#do_action('move')
-    nnoremap <silent><buffer><expr><nowait> p defx#do_action('paste')
-    nnoremap <silent><buffer><expr><nowait> <CR> defx#do_action('drop')
-    nnoremap <silent><buffer><expr><nowait> s defx#do_action('open', 'split')
-    nnoremap <silent><buffer><expr><nowait> v defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr><nowait> t defx#do_action('open', 'tabedit')
-    nnoremap <silent><buffer><expr><nowait> K defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr><nowait> N defx#do_action('new_file')
-    nnoremap <silent><buffer><expr><nowait> M defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr><nowait> d defx#do_action('remove')
-    nnoremap <silent><buffer><expr><nowait> r defx#do_action('rename')
-    nnoremap <silent><buffer><expr><nowait> w defx#do_action('call', 'DefxChoosewin')
-
-    nnoremap <silent><buffer><expr><nowait> C defx#do_action('toggle_columns', 'git:mark:filename:type:size:time')
-    nnoremap <silent><buffer><expr><nowait> S defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr><nowait> . defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr><nowait> : defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr><nowait> * defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr><nowait> ! defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr><nowait> x defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr><nowait> yy defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr><nowait> q defx#do_action('quit')
-    nnoremap <silent><buffer><expr><nowait> <C-r> defx#do_action('redraw')
-    nnoremap <silent><buffer><expr><nowait> <C-g> defx#do_action('print')
-endfunction " }}}
-
-let g:defx_ignore_filtype = ['denite', 'defx', 'tagbar']
-function! DefxChoosewin(context) abort " {{{
-    let l:winnrs = filter(range(1, winnr('$')), 'index(g:defx_ignore_filtype, getwinvar(v:val, "&filetype")) == -1' )
-    for filename in a:context.targets
-        call choosewin#start(l:winnrs, {'auto_choose': 1, 'hook_enable': 0})
-        execute 'edit' filename
-    endfor
-endfunction " }}}
+function! s:init_fern() abort
+    nnoremap <silent><buffer> q <Cmd>quit<CR>
+endfunction
 " }}}
 
 " vim-ambicmd
@@ -1503,7 +1454,7 @@ let g:vista_echo_cursor_strategy = 'floating_win'
 let g:winresizer_start_key = '<Nop>'
 
 " indentLine
-let g:indentLine_fileTypeExclude = ['defx', 'vista', 'denite', 'help']
+let g:indentLine_fileTypeExclude = ['fern', 'vista', 'denite', 'help']
 let g:indentLine_faster = 1
 let g:indentLine_color_term = 248
 let g:indentLine_setConceal = 0
@@ -1516,10 +1467,9 @@ augroup plugin
     autocmd FileType gina-commit setlocal spell
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType tex if dein#is_sourced('deoplete.nvim') | call deoplete#custom#buffer_option('auto_complete', v:false) | endif
-    autocmd FileType defx call s:defx_settings()
+    autocmd FileType fern call s:init_fern()
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
-    autocmd BufEnter * if isdirectory(expand('<afile>')) | execute 'Defx -new' expand('<afile>') | endif
     autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 augroup END
 " }}}
