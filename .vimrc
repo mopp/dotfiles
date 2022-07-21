@@ -1089,6 +1089,9 @@ let g:lightline = {
             \ },
             \ 'tabline_separator': { 'left': '', 'right': '' },
             \ 'tabline_subseparator': { 'left': '', 'right': '' },
+            \ 'tab_component_function': {
+            \    'filename': 'LightlineTabFilename'
+            \  },
             \ 'component': {
             \   'mode':         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
             \   'modified':     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
@@ -1102,6 +1105,7 @@ let g:lightline = {
             \   'modified':     'LightlineIsVisible() && &modifiable',
             \   'fileencoding': 'LightlineIsVisible()',
             \   'fileformat':   'LightlineIsVisible()',
+            \   'anzu':         'LightlineIsVisible()',
             \ },
             \ 'component_function': {
             \   'filename':   'LightlineFilename',
@@ -1129,6 +1133,21 @@ function! LightlineFilename() abort " {{{
         return l:t ==# '' ? '[No Name]' : l:t
     endif
 endfunction " }}}
+
+function! LightlineTabFilename(n) abort " {{{
+    let l:buflist = tabpagebuflist(a:n)
+    let l:winnr = tabpagewinnr(a:n)
+    let l:bufnr = l:buflist[l:winnr - 1]
+    let l:filetype = getbufvar(l:bufnr, "&filetype")
+    let l:fname = expand('#' . l:bufnr . ':t')
+
+    if l:filetype ==# 'fern'
+        return split(fname, ';')[0]
+    else
+        return l:fname ==# '' ? '[No Name]' : l:fname
+    endif
+endfunction " }}}
+" }}}
 
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
