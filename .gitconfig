@@ -16,8 +16,8 @@
 [alias]
     diffh = diff --histogram
     diffw = diff --histogram --word-diff --word-diff-regex='\\w+|[^[:space:]]'
-    graph = log --graph --decorate --oneline
-    logs = log --stat --decorate --color --graph --pretty=fuller
+    graph = log --graph --decorate --oneline --max-count=16
+    logs = log --stat --decorate --color --graph --pretty=fuller --max-count=16
     url = !echo $(git config remote.origin.url | sed -Ee 's!(git@|git://|ssh://)!https://!' -e 's!:([^/])!/\\1!' | sed -e 's/.git$//')
     open = !$(command -v open || command -v xdg-open) $(git url)
     pr = !$(command -v open || command -v xdg-open) $(git url)/compare/$(git rev-parse --abbrev-ref HEAD)?expand=1
