@@ -793,11 +793,11 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " git {{{
     call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': ['BufWritePost', 'CursorMoved']})
     call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
-    call dein#add('danishprakash/vim-githubinator', {'lazy': 1, 'on_map': ['ghc', 'gho']})
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
     call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('rhysd/committia.vim')
     call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
+    call dein#add('tyru/open-browser-github.vim', {'lazy': 1, 'on_cmd': ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
     " }}}
 
     " Utils {{{
@@ -845,7 +845,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
-    call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open']})
+    call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open'], 'on_source': ['open-browser-github.vim']})
     call dein#add('vim-scripts/copypath.vim', {'lazy': 1, 'on_cmd': ['CopyPath', 'CopyFileName']})
     " }}}
 
