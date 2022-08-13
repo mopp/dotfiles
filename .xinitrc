@@ -28,12 +28,12 @@ if [ -e /opt/dropbox/dropboxd ]; then
 fi
 
 # fcitx.
-export XMODIFIERS=@im=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export QT5_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx5
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export QT5_IM_MODULE=fcitx5
 export QT_QPA_PLATFORMTHEME=qt5ct
-fcitx -rd &
+fcitx5 -rd &
 
 # Environment specific settings.
 case $HOSTNAME in
