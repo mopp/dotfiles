@@ -39,6 +39,7 @@ if [ "$(uname)" = 'Linux' ]; then
   link .Xresources.rosetta ~/.Xresources.rosetta
   link .xinitrc ~/.xinitrc
   link .Xmodmap ~/.Xmodmap
+  mkdir -p ~/.config/i3 ~/.config/i3status
   link i3status.conf ~/.config/i3status/config
   link i3config ~/.config/i3/config
   link i3exit ~/.config/i3/i3exit
