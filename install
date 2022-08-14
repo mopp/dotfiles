@@ -33,7 +33,6 @@ link starship.toml ~/.config/starship.toml
 # Only for Linux.
 if [ "$(uname)" = 'Linux' ]; then
   link .fehbg ~/.fehbg
-  link .fbtermrc ~/.fbtermrc
   link .Xresources ~/.Xresources
   link .Xresources.flan ~/.Xresources.flan
   link .Xresources.rosetta ~/.Xresources.rosetta
