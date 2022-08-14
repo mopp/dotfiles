@@ -107,7 +107,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
 (($+commands[anyenv])) && eval "$(anyenv init -)"
-(($+commands[fasd])) && eval "$(fasd --init auto)"
+(($+commands[zoxide])) && eval "$(zoxide init zsh)"
 (($+commands[kubectl])) && source <(kubectl completion zsh)
 (($+commands[starship])) && eval "$(starship init zsh)"
 
