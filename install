@@ -17,6 +17,7 @@ link() {
 
 mkdir -p \
   ~/.config/nvim/backup \
+  ~/.config/nvim/sessions \
   ~/.config/nvim/swap \
   ~/.config/nvim/undo
 
