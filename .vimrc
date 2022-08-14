@@ -689,9 +689,9 @@ augroup mopp
     autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && get(b:, 'relnum', 1) | setlocal relativenumber   | endif
     autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu && get(b:, 'relnum', 1) | setlocal norelativenumber | endif
 
-    if executable('fcitx-remote')
+    if executable('fcitx5-remote')
         " Disable IME when back to normal mode.
-        autocmd InsertLeave,CmdLineLeave * call system('fcitx-remote -c')
+        autocmd InsertLeave,CmdLineLeave * call system('fcitx5-remote -c')
     endif
 
     " Turn on/off cursorline automatically.
