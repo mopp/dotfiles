@@ -11,8 +11,11 @@ link() {
   esac
 
   ln -s "$source_filepath" "$2"
-  echo "$source_filepath -> $2: $(test $? && echo 'Failed' || echo 'Succeed')"
-  echo ''
+  echo -n "$source_filepath -> $2: "
+  case $? in
+      0 ) echo 'Succeed' ;;
+      * ) echo "Failed ($?)" ;;
+  esac
 }
 
 mkdir -p \
