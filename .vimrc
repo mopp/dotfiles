@@ -1394,6 +1394,14 @@ nnoremap <silent> <leader>de <Cmd>FernExplorer<CR>
 function! s:init_fern() abort
     nnoremap <silent><buffer> q <Cmd>quit<CR>
     nnoremap <silent><buffer> e <Plug>(fern-action-open:drop)
+    nnoremap <silent><buffer> dd <Plug>(fern-action-remove)
+
+    " Overwrite search mapping to disable vim-search-pulse on fern buffer.
+    " It does not works well.
+    nmap <silent><buffer> n <Plug>(anzu-n)
+    nmap <silent><buffer> N <Plug>(anzu-N)
+    nmap <silent><buffer> * <Plug>(anzu-star)
+    nmap <silent><buffer> # <Plug>(anzu-sharp)
 endfunction
 " }}}
 
