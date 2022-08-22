@@ -8,8 +8,16 @@ case $OSTYPE in
         # For homebrew.
         export path=(
             /opt/homebrew/opt/coreutils/libexec/gnubin
+            /opt/homebrew/opt/llvm/bin
             $path
         )
+
+        if [ -d '/opt/homebrew/opt/llvm' ]; then
+            export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+            export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+            export CC='clang'
+            export CXX='clang++'
+        fi
 
         file=/opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
         if [ -e $file ]; then
