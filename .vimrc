@@ -861,6 +861,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('hashivim/vim-terraform')
     call dein#add('jakwings/vim-pony')
     call dein#add('leafgarland/typescript-vim')
+    call dein#add('lifepillar/pgsql.vim')
     call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
     call dein#add('peitalin/vim-jsx-typescript')
@@ -1487,6 +1488,9 @@ let g:indentLine_faster = 1
 let g:indentLine_color_term = 248
 let g:indentLine_setConceal = 0
 let g:indentLine_concealcursor = ''
+
+" pgsql.vim
+let g:sql_type_default = 'pgsql'
 
 " Autocommands for plugins.  {{{
 augroup plugin
