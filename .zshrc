@@ -30,6 +30,8 @@ case $OSTYPE in
             source $file
         fi
 
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/docker.sock"
+
         case $TERM in
             *rxvt*)
                 stty -ixon      # Disable XON/XOFF flow control.
