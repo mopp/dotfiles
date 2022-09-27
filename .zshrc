@@ -12,6 +12,9 @@ case $OSTYPE in
             $path
         )
 
+        # For ruby-build
+        export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
         if [ -d '/opt/homebrew/opt/llvm' ]; then
             export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
             export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
