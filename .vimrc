@@ -1396,6 +1396,7 @@ function! s:init_fern() abort
     nnoremap <silent><buffer> q <Cmd>quit<CR>
     nnoremap <silent><buffer> e <Plug>(fern-action-open:drop)
     nnoremap <silent><buffer> dd <Plug>(fern-action-remove)
+    nnoremap <silent><buffer> J <Plug>(fern-action-new-file)
 
     " Overwrite search mapping to disable vim-search-pulse on fern buffer.
     " It does not works well.
