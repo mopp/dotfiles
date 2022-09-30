@@ -45,4 +45,5 @@ if [ "$(uname)" = 'Linux' ]; then
   link i3status.conf ~/.config/i3status/config
   link i3config ~/.config/i3/config
   link i3exit ~/.config/i3/i3exit
+  link gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
 fi
