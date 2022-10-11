@@ -850,6 +850,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " Languages {{{
+    call dein#add('MaxMEllon/vim-jsx-pretty')
     call dein#add('Shirk/vim-gas')
     call dein#add('aklt/plantuml-syntax')
     call dein#add('cespare/vim-toml')
@@ -862,9 +863,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('jakwings/vim-pony')
     call dein#add('leafgarland/typescript-vim')
     call dein#add('lifepillar/pgsql.vim')
-    call dein#add('othree/html5.vim')
     call dein#add('pangloss/vim-javascript')
-    call dein#add('peitalin/vim-jsx-typescript')
     call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
     call dein#add('stephpy/vim-yaml')
