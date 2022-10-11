@@ -1394,6 +1394,7 @@ nnoremap <silent> <leader>de <Cmd>FernExplorer<CR>
 
 function! s:init_fern() abort
     nnoremap <silent><buffer> q <Cmd>quit<CR>
+    nnoremap <silent><buffer> w <Plug>(fern-action-open:split)
     nnoremap <silent><buffer> e <Plug>(fern-action-open:drop)
     nnoremap <silent><buffer> dd <Plug>(fern-action-remove)
     nnoremap <silent><buffer> J <Plug>(fern-action-new-file)
