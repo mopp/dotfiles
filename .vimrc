@@ -1466,9 +1466,17 @@ if executable('elixir-ls')
                 \ 'whitelist': ['elixir', 'eelixir'],
                 \ })
 endif
+if executable('typescript-language-server')
+    autocmd mopp User lsp_setup call lsp#register_server({
+                \ 'name': 'typescript-language-server',
+                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+                \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+                \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
+                \ })
+endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust,go,c,cpp,elixir call lsp#enable()
+    autocmd FileType ruby,rust,go,c,cpp,elixir,typescriptreact call lsp#enable()
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
