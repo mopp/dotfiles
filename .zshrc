@@ -46,14 +46,21 @@ esac
 # }}}
 
 # Path. {{{
+export GOPATH=$HOME/.local/go
 export GOENV_GOPATH_PREFIX=$HOME/.local/go
 
 export fpath=(~/.zfunc/ $fpath)
 
+if (($+commands[go])); then
+    export path=(
+        $(go env GOPATH)/bin
+        $path
+    )
+fi
+
 export path=(
     $HOME/.local/bin
     $HOME/.cargo/bin
-    $GOPATH/bin
     $path
 )
 
