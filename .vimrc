@@ -1476,7 +1476,7 @@ if executable('typescript-language-server')
 endif
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust,go,c,cpp,elixir,typescriptreact call lsp#enable()
+    autocmd FileType ruby,rust,go,c,cpp,elixir,typescriptreact,typescript call lsp#enable()
 augroup END
 nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
