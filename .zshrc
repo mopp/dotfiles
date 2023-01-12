@@ -16,7 +16,7 @@ case $OSTYPE in
         export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
         if [ -d '/opt/homebrew/opt/llvm' ]; then
-            export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+            export LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
             export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
             export CC='clang'
             export CXX='clang++'
