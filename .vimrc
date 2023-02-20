@@ -1490,6 +1490,7 @@ nmap <Leader>lc <plug>(lsp-declaration)
 nmap <Leader>ld <plug>(lsp-definition)
 nmap <Leader>lp <plug>(lsp-peek-definition)
 nmap <Leader>lh <plug>(lsp-hover)
+nmap <Leader>lr <plug>(lsp-references)
 " }}}
 
 " vista.vim
