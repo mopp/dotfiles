@@ -240,6 +240,24 @@ function kubexec {
     echo "$pod_name at $(kubens --current)"
     kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
 }
+
+function gitdargs {
+    local -A opthash
+    zparseopts -D -A opthash -- -pattern:
+
+    if [ "$#" -le 0 ]; then
+        echo "usage: $0 <option> <command>"
+        echo "  example: $0 --pattern '*tsx' yarn pretter --write"
+        return 1
+    fi
+
+    pattern="*"
+    if [[ -n "${opthash[(i)--pattern]}" ]]; then
+        pattern=$opthash[--pattern]
+    fi
+
+    $@ $(git diff --relative --name-only -z -- "${pattern}" | tr '\000' ' ')
+}
 # }}}
 
 # Load a machine local scripts. {{{
