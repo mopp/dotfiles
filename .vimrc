@@ -858,7 +858,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " Languages {{{
-    call dein#add('MaxMEllon/vim-jsx-pretty')
     call dein#add('Shirk/vim-gas')
     call dein#add('aklt/plantuml-syntax')
     call dein#add('cespare/vim-toml')
@@ -866,12 +865,9 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('elixir-editors/vim-elixir')
     call dein#add('elzr/vim-json')
     call dein#add('fatih/vim-go', {'lazy': 1, 'on_ft': 'go'})
-    call dein#add('hail2u/vim-css3-syntax')
     call dein#add('hashivim/vim-terraform')
     call dein#add('jakwings/vim-pony')
-    call dein#add('leafgarland/typescript-vim')
     call dein#add('lifepillar/pgsql.vim')
-    call dein#add('pangloss/vim-javascript')
     call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
     call dein#add('stephpy/vim-yaml')
@@ -881,6 +877,10 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('vim-jp/vimdoc-ja')
     call dein#add('vim-ruby/vim-ruby')
     call dein#add('vim-scripts/sh.vim--Cla')
+
+    call dein#add('leafgarland/typescript-vim')
+    call dein#add('peitalin/vim-jsx-typescript')
+    call dein#add('hail2u/vim-css3-syntax')
     " }}}
 
     call dein#end()
@@ -1510,6 +1510,26 @@ let g:indentLine_concealcursor = ''
 " pgsql.vim
 let g:sql_type_default = 'pgsql'
 
+" typescript-vim
+" vim-jsx-typescript
+function! s:override_tsx_highlights() abort
+    highlight! link tsxAttrib typescriptParens
+    highlight! link tsxAttributeBraces typescriptBraces
+    highlight! link tsxTagName tsxTypes
+    highlight! link tsxCloseTagName tsxTypes
+    highlight! link tsxTag typescriptParens
+    highlight! link tsxCloseTag typescriptParens
+    highlight! link tsxEqual Normal
+    highlight! ReactState guifg=#C176A7
+    highlight! ReactProps guifg=#D19A66
+    highlight! ApolloGraphQL guifg=#CB886B
+    highlight! Events ctermfg=204 guifg=#56B6C2
+    highlight! ReduxKeywords ctermfg=204 guifg=#C678DD
+    highlight! ReduxHooksKeywords ctermfg=204 guifg=#C176A7
+    highlight! WebBrowser ctermfg=204 guifg=#56B6C2
+    highlight! ReactLifeCycleMethods ctermfg=204 guifg=#D19A66
+endfunction
+
 " Autocommands for plugins.  {{{
 augroup plugin
     autocmd!
@@ -1521,6 +1541,7 @@ augroup plugin
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
     autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+    autocmd FileType typescriptreact call s:override_tsx_highlights()
 augroup END
 " }}}
 " }}}
