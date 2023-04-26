@@ -256,7 +256,7 @@ function gitdargs {
         pattern=$opthash[--pattern]
     fi
 
-    $@ $(git diff --relative --name-only -z -- "${pattern}" | tr '\000' ' ')
+    $@ $(git diff --relative --name-only --diff-filter=M -z -- "${pattern}" | tr '\000' ' ')
 }
 # }}}
 
