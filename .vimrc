@@ -1441,22 +1441,21 @@ if executable('solargraph')
                 \ 'name': 'solargraph',
                 \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
                 \ 'config': {'diagnostics': v:false},
-                \ 'whitelist': ['ruby'],
+                \ 'allowlist': ['ruby'],
                 \ })
 endif
-if executable('rls')
+if executable('rustup')
     autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'rls',
-                \ 'cmd': {server_info -> ['rls']},
-                \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-                \ 'whitelist': ['rust'],
+                \ 'name': 'rust-analyzer',
+                \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rust-analyzer']},
+                \ 'allowlist': ['rust'],
                 \ })
 endif
 if executable('gopls')
     autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'gopls',
                 \ 'cmd': {server_info -> ['gopls']},
-                \ 'whitelist': ['go'],
+                \ 'allowlist': ['go'],
                 \ })
     autocmd mopp FileType go setlocal omnifunc=lsp#complete
 endif
@@ -1464,14 +1463,14 @@ if executable('clangd')
     autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'clangd',
                 \ 'cmd': {server_info -> ['clangd', '-background-index']},
-                \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+                \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
                 \ })
 endif
 if executable('elixir-ls')
     autocmd mopp User lsp_setup call lsp#register_server({
                 \ 'name': 'elixir-ls',
                 \ 'cmd': {server_info -> ['elixir-ls']},
-                \ 'whitelist': ['elixir', 'eelixir'],
+                \ 'allowlist': ['elixir', 'eelixir'],
                 \ })
 endif
 if executable('typescript-language-server')
@@ -1479,7 +1478,7 @@ if executable('typescript-language-server')
                 \ 'name': 'typescript-language-server',
                 \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
                 \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-                \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
+                \ 'allowlist': ['typescript', 'typescript.tsx', 'typescriptreact'],
                 \ })
 endif
 augroup mopp_lsp
