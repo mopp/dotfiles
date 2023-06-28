@@ -230,6 +230,10 @@ function copy_prev_cmd() {
     fc -ln -1 | copy
 }
 
+function killgrep() {
+    pgrep "$1" | tee >(xargs -r kill -9)
+}
+
 function kubexec {
     if [ "$#" -le 1 ]; then
         echo "usage: $0 <target> <command>"
