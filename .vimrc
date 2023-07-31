@@ -976,8 +976,8 @@ if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>fe  <Cmd>Denite file/rec<CR>
     nnoremap <silent> <Leader>ff  <Cmd>Denite file_mru<CR>
     nnoremap <silent> <Leader>fd  <Cmd>Denite -default-action=tab_open directory_mru<CR>
-    nnoremap <silent> <Leader>fgg <Cmd>Denite grep<CR>
-    nnoremap <silent> <Leader>fgw <Cmd>DeniteCursorWord grep<CR>
+    nnoremap <silent> <Leader>fgg <Cmd>Denite grep/ignore_test<CR>
+    nnoremap <silent> <Leader>fgw <Cmd>DeniteCursorWord grep/ignore_test<CR>
     nnoremap <silent> <Leader>fl  <Cmd>Denite line<CR>
     nnoremap <silent> <Leader>fo  <Cmd>Denite outline<CR>
     nnoremap <silent> <Leader>fre <Cmd>Denite -resume<CR>
@@ -1016,15 +1016,38 @@ if dein#tap('denite.nvim') " {{{
                 \ })
     call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
 
-    if executable('rg') " {{{
-        " For ripgrep.
+    if system('git rev-parse --is-inside-work-tree') == "true\n" " {{{
+        call denite#custom#var('file/rec', 'command', ['git', 'ls-files', '--cached', '--others', '--exclude-standard'])
+
+        let s:opts = {
+                    \ 'command': ['git', '--no-pager', 'grep'],
+                    \ 'default_opts': ['--line-number', '--no-color'],
+                    \ 'recursive_opts': [],
+                    \ 'pattern_opt': ['-e'],
+                    \ 'separator': ['--'],
+                    \ 'final_opts': [],
+                    \ }
+        call denite#custom#var('grep', s:opts)
+
+        call denite#custom#alias('source', 'grep/ignore_test', 'grep')
+        let s:opts['final_opts'] = [
+                    \ ':(exclude)*spec/*',
+                    \ ':(exclude)*_spec.rb',
+                    \ ':(exclude)*test.*',
+                    \ ':(exclude)*__tests__*'
+                    \ ]
+        call denite#custom#var('grep/ignore_test', s:opts)
+    elseif executable('rg')
         call denite#custom#var('file/rec', 'command', ['rg', '--files', '--color', 'never'])
-        call denite#custom#var('grep', 'command', ['rg'])
-        call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep', '--no-heading'])
-        call denite#custom#var('grep', 'recursive_opts', [])
-        call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-        call denite#custom#var('grep', 'separator', ['--'])
-        call denite#custom#var('grep', 'final_opts', [])
+
+        call denite#custom#var('grep', {
+                    \ 'command': ['rg'],
+                    \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+                    \ 'recursive_opts': [],
+                    \ 'pattern_opt': ['--regexp'],
+                    \ 'separator': ['--'],
+                    \ 'final_opts': [],
+                    \ })
     endif " }}}
 endif " }}}
 
