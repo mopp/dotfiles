@@ -28,7 +28,7 @@ link .vimrc ~/.vimrc
 link .vimrc ~/.config/nvim/init.vim
 link ~/.config/nvim ~/.vim
 
-link .gitconfig ~/.gitconfig
+link .gitconfig ~/.config/git/config
 link .zshrc ~/.zshrc
 link alacritty.yml ~/.config/alacritty.yml
 link starship.toml ~/.config/starship.toml
