@@ -36,7 +36,7 @@
 [pager]
     branch = false
 [fetch]
-	prune = true
+    prune = true
 [interactive]
     diffFilter = delta --color-only
 [add.interactive]
@@ -48,8 +48,8 @@
 [delta]
     side-by-side = true
 [credential "https://github.com"]
-	helper =
-	helper = !gh auth git-credential
+    helper =
+    helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper =
-	helper = !gh auth git-credential
+    helper =
+    helper = !gh auth git-credential
