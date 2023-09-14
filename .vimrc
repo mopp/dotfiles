@@ -764,7 +764,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('hrsh7th/vim-neco-calc')
     call dein#add('lighttiger2505/deoplete-vim-lsp', s:lazy_plete)
     call dein#add('ujihisa/neco-look')
-    call dein#add('zchee/deoplete-clang')
     " }}}
 
     " Denite {{{
