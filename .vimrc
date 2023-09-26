@@ -865,7 +865,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('elzr/vim-json')
     call dein#add('fatih/vim-go', {'lazy': 1, 'on_ft': 'go'})
     call dein#add('hashivim/vim-terraform')
-    call dein#add('jakwings/vim-pony')
     call dein#add('lifepillar/pgsql.vim')
     call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
     call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
