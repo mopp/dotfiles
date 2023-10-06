@@ -310,9 +310,10 @@ noremap <silent> <S-C-Up> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('u
 noremap <silent> <S-C-Down> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
 
 function! s:define_quickfix_mappings() abort
-    nnoremap <buffer> t <C-W>gF<CR>
-    nnoremap <buffer><nowait> s <C-W>F<CR>
-    nnoremap <buffer> v <C-W>F<C-W>L<CR>
+    nnoremap <silent><buffer> q :<C-U>q<CR>
+    nnoremap <silent><buffer> t <C-W>gF<CR>
+    nnoremap <silent><buffer><nowait> s <C-W>F<CR>
+    nnoremap <silent><buffer> v <C-W>F<C-W>L<CR>
 endfunction
 " }}}
 
