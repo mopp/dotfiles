@@ -649,14 +649,13 @@ command! -nargs=0 GoteToday call s:gote_today()
 " }}}
 
 " GUI. {{{
-if exists("g:neovide")
+function! s:config_neovide() abort
     set guifont=Cica:h14
     inoremap <silent><D-v> <ESC>l"+Pli
-    let g:neovide_scroll_animation_length = 0.05
     let g:neovide_cursor_animation_length = 0
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_refresh_rate = 120
-endif
+endfunction
 " }}}
 
 " Autocommands. {{{
@@ -701,6 +700,11 @@ augroup mopp
     autocmd CursorMoved,CursorMovedI * if s:cur_f | setlocal nocursorline | endif
 
     autocmd FileType qf call s:define_quickfix_mappings()
+
+    if has('nvim')
+        " neovim server へ neovide から接続したときに設定を適用するため
+        autocmd UIEnter * call s:config_neovide()
+    endif
 augroup END
 " }}}
 
