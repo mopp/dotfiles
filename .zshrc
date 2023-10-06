@@ -241,6 +241,17 @@ function kubexec {
     kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
 }
 
+function kubeforward {
+    if [ "$#" -le 1 ]; then
+        echo "usage: $0 <ports> <target>"
+        return 1
+    fi
+
+    pod_name=$(kubectl get pods --no-headers --selector app="$2" | awk '{ print $1 }' | shuf --head-count=1)
+    echo "$pod_name at $(kubens --current)"
+    kubectl port-forward pod/$pod_name $1
+}
+
 function gitdargs {
     local -A opthash
     zparseopts -D -A opthash -- -pattern:
