@@ -649,21 +649,13 @@ command! -nargs=0 GoteToday call s:gote_today()
 " }}}
 
 " GUI. {{{
-if has('gui_running')
-    let g:no_buffers_menu = 1
-    set guioptions-=emTrlL
-    set mousehide
-    set visualbell
-    set t_vb=
-
-    if has('mac')
-        set macmeta
-        set guifont=Ricty-Regular:h13
-    else
-        set guifont=Ricty\ 12
-        set lines=40
-        set columns=120
-    endif
+if exists("g:neovide")
+    set guifont=Cica:h14
+    inoremap <silent><D-v> <ESC>l"+Pli
+    let g:neovide_scroll_animation_length = 0.05
+    let g:neovide_cursor_animation_length = 0
+    let g:neovide_hide_mouse_when_typing = v:true
+    let g:neovide_refresh_rate = 120
 endif
 " }}}
 
