@@ -236,7 +236,7 @@ function kubexec {
         return 1
     fi
 
-    pod_name=$(kubectl get pods --no-headers --selector app="$1" | awk '{ print $1 }' | shuf --head-count=1)
+    pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
     kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
 }
@@ -247,7 +247,7 @@ function kubeforward {
         return 1
     fi
 
-    pod_name=$(kubectl get pods --no-headers --selector app="$2" | awk '{ print $1 }' | shuf --head-count=1)
+    pod_name=$(kubectl get pods --no-headers --selector app="$2" --output name | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
     kubectl port-forward pod/$pod_name $1
 }
