@@ -215,7 +215,7 @@ nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 
 " Adding blank lines.
 nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : '<Cmd>call append(".", repeat([""], v:count1))<CR>'
-nnoremap <silent> <Leader>O <Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>
+nnoremap <silent> <S-CR> <Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
 " Change window local current directory to the directory of the file at the current window.
 nnoremap <silent> <Leader>cd <Cmd>lcd %:p:h<CR>
