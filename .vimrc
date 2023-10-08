@@ -217,8 +217,8 @@ nnoremap <silent> <Leader>ht :<C-U>tab help <C-R><C-W><CR>
 nnoremap <silent><expr> <CR> &buftype ==# 'quickfix' ? '<CR>' : '<Cmd>call append(".", repeat([""], v:count1))<CR>'
 nnoremap <silent> <S-CR> <Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
-" Change window local current directory to the directory of the file at the current window.
-nnoremap <silent> <Leader>cd <Cmd>lcd %:p:h<CR>
+" Change tab local current directory to the directory of the file at the current window.
+nnoremap <silent> <Leader>cd <Cmd>tcd %:p:h<CR>
 
 " Open list if there are multiple tags.
 nmap <silent> <C-]> <Nop>
