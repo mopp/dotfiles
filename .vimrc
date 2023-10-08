@@ -311,6 +311,7 @@ noremap <silent> <S-C-Down> <Cmd>keepjumps call <SID>shrink_window_by_paragraph(
 
 function! s:define_quickfix_mappings() abort
     nnoremap <silent><buffer> q :<C-U>q<CR>
+    nnoremap <silent><buffer> <ESC> :<C-U>q<CR>
     nnoremap <silent><buffer> t <C-W>gF<CR>
     nnoremap <silent><buffer><nowait> s <C-W>F<CR>
     nnoremap <silent><buffer> v <C-W>F<C-W>L<CR>
