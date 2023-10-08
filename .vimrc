@@ -276,26 +276,6 @@ function! s:remove_tail_spaces() abort " {{{
     endif
 endfunction " }}}
 
-function! s:shrink_window_by_paragraph(direction) abort
-    let l:s = &l:scrolloff
-    setlocal scrolloff=0
-
-    if a:direction ==? 'upward'
-        " Cut off the bottom region.
-        normal! LV{H
-    else
-        " Cut off the top region.
-        normal! HV}L
-    endif
-
-    execute 'resize -' . (line("'>") - line("'<"))
-    normal! M
-
-    let &l:scrolloff = l:s
-endfunction
-noremap <silent> <S-C-Up> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('upward')<CR>
-noremap <silent> <S-C-Down> <Cmd>keepjumps call <SID>shrink_window_by_paragraph('downward')<CR>
-
 function! s:define_quickfix_mappings() abort
     nnoremap <silent><buffer> q :<C-U>q<CR>
     nnoremap <silent><buffer> <ESC> :<C-U>q<CR>
