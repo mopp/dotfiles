@@ -289,10 +289,6 @@ endfunction
 " Reload .vimrc
 command! ReloadVimrc :source $MYVIMRC
 
-command! -nargs=1 -complete=buffer TabBuffer :tab sbuffer
-
-command! SpellCheckToggle :setlocal spell!
-
 " Echo highlight name of an object under the cursor.
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
