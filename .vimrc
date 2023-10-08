@@ -646,6 +646,7 @@ if has('nvim')
 
     tnoremap <silent> <ESC> <C-\><C-n>
     nnoremap <silent> <Leader>tm :terminal<CR>
+    nnoremap <silent> <Leader>vpt :split term://zsh<CR>
     nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
     nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
 
