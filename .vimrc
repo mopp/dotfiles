@@ -230,15 +230,6 @@ nnoremap <silent> <C-]><C-T> <C-W><C-]><C-W>T
 " Repeat the previous macro.
 nnoremap <silent> Q @@
 
-" Search something in the current visual range only.
-vnoremap <silent> / <Esc>/\%V
-
-" Replace the all selected areas.
-vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
-
-" Assist input normal command on visual mode.
-vnoremap n :normal<Space>
-
 " Turn off highlight of the current search words.
 nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch<CR>
 
