@@ -198,12 +198,12 @@ nnoremap <silent> Y y$
 nnoremap <silent> <Leader>gp <Cmd>set paste!<CR>
 xmap <silent> m <Nop>
 nmap <silent> m <Nop>
-xnoremap <silent> mY  :<C-U>call <SID>copy_to_clipboard()<CR>
-nnoremap <silent> mlp :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
-nnoremap <silent> mlP :<C-U>call <SID>paste_with_register('+', 'l', 'P')<CR>
-nnoremap <silent> mcp :<C-U>call <SID>paste_with_register('+', 'c', 'p')<CR>
-nnoremap <silent> mcP :<C-U>call <SID>paste_with_register('+', 'c', 'P')<CR>
-nnoremap <silent> mp  :<C-U>call <SID>paste_with_register('+', 'l', 'p')<CR>
+xnoremap <silent> mY  <Cmd>call <SID>copy_to_clipboard()<CR>
+nnoremap <silent> mlp <Cmd>call <SID>paste_with_register('+', 'l', 'p')<CR>
+nnoremap <silent> mlP <Cmd>call <SID>paste_with_register('+', 'l', 'P')<CR>
+nnoremap <silent> mcp <Cmd>call <SID>paste_with_register('+', 'c', 'p')<CR>
+nnoremap <silent> mcP <Cmd>call <SID>paste_with_register('+', 'c', 'P')<CR>
+nnoremap <silent> mp  <Cmd>call <SID>paste_with_register('+', 'l', 'p')<CR>
 " }}}
 
 " Overwrite the current line with yanked text.
