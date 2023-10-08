@@ -169,10 +169,6 @@ nnoremap <silent> <Leader>tc <Cmd>tabclose<CR>
 nnoremap <silent> <Leader>j gT
 nnoremap <silent> <Leader>k gt
 
-" Spliting window.
-nnoremap <Leader>sp  <Cmd>split<Space>
-nnoremap <Leader>vsp <Cmd>vsplit<Space>
-
 " Changing window size.
 noremap <silent> <S-Left>  <Cmd>wincmd <<CR>
 noremap <silent> <S-Right> <Cmd>wincmd ><CR>
