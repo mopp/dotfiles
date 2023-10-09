@@ -732,8 +732,8 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
 
     " LSP {{{
     call dein#add('liuchengxu/vista.vim', {'lazy': 1, 'on_cmd': 'Vista'})
-    call dein#add('prabirshrestha/async.vim')
     call dein#add('prabirshrestha/vim-lsp')
+    call dein#add('mattn/vim-lsp-settings')
     " }}}
 
     " git {{{
@@ -1414,55 +1414,7 @@ function! g:committia_hooks.edit_open(info)
 endfunction
 
 " vim-lsp {{{
-let g:lsp_auto_enable = 0
-let g:lsp_diagnostics_virtual_text_enabled = 0
-let g:lsp_diagnostics_float_cursor = 1
-let g:lsp_diagnostics_float_delay = 300
-if executable('solargraph')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'solargraph',
-                \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
-                \ 'config': {'diagnostics': v:false},
-                \ 'allowlist': ['ruby'],
-                \ })
-endif
-if executable('rustup')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'rust-analyzer',
-                \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rust-analyzer']},
-                \ 'allowlist': ['rust'],
-                \ })
-endif
-if executable('gopls')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'gopls',
-                \ 'cmd': {server_info -> ['gopls']},
-                \ 'allowlist': ['go'],
-                \ })
-    autocmd mopp FileType go setlocal omnifunc=lsp#complete
-endif
-if executable('clangd')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'clangd',
-                \ 'cmd': {server_info -> ['clangd', '-background-index']},
-                \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
-                \ })
-endif
-if executable('elixir-ls')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'elixir-ls',
-                \ 'cmd': {server_info -> ['elixir-ls']},
-                \ 'allowlist': ['elixir', 'eelixir'],
-                \ })
-endif
-if executable('typescript-language-server')
-    autocmd mopp User lsp_setup call lsp#register_server({
-                \ 'name': 'typescript-language-server',
-                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-                \ 'allowlist': ['typescript', 'typescript.tsx', 'typescriptreact'],
-                \ })
-endif
+let g:lsp_settings_enable_suggestions = 0
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal tagfunc=lsp#tagfunc
@@ -1481,7 +1433,6 @@ function! s:on_lsp_buffer_enabled() abort
 endfunction
 augroup mopp_lsp
     autocmd!
-    autocmd FileType ruby,rust,go,c,cpp,elixir,typescriptreact,typescript call lsp#enable()
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 " }}}
