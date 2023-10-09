@@ -675,22 +675,34 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('haya14busa/dein-command.vim')
 
     " Completions {{{
-    call dein#add('Shougo/deoplete.nvim', {'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_denite()'})
+    " TODO: Lazy
+    call dein#add('Shougo/ddc.vim')
+    call dein#add('vim-denops/denops.vim')
 
-    let s:lazy_plete = {'lazy': 1, 'on_source': ['deoplete.nvim']}
-    if !has('nvim')
-        call dein#add('roxma/nvim-yarp', s:lazy_plete)
-        call dein#add('roxma/vim-hug-neovim-rpc', s:lazy_plete)
-    endif
-    call dein#add('Shougo/neco-syntax', s:lazy_plete)
-    call dein#add('Shougo/neco-vim', s:lazy_plete)
-    call dein#add('Shougo/neoinclude.vim', s:lazy_plete)
+    call dein#add('Shougo/pum.vim')
+
+    " UI
+    call dein#add('Shougo/ddc-ui-native')
+
+    " Source
+    call dein#add('LumaKernel/ddc-source-file')
+    call dein#add('Shougo/ddc-source-around')
+    call dein#add('Shougo/ddc-source-line')
+    call dein#add('Shougo/neco-vim')
+    call dein#add('matsui54/ddc-buffer')
+    call dein#add('shun/ddc-source-vim-lsp')
+
+    call dein#add('Shougo/neco-syntax')
+    call dein#add('hokorobi/ddc-source-neco-syntax')
+
+    call dein#add('Shougo/neosnippet.vim')
     call dein#add('Shougo/neosnippet-snippets')
-    call dein#add('Shougo/neosnippet.vim', s:lazy_plete)
-    call dein#add('honza/vim-snippets', s:lazy_plete)
-    call dein#add('hrsh7th/vim-neco-calc')
-    call dein#add('lighttiger2505/deoplete-vim-lsp', s:lazy_plete)
-    call dein#add('ujihisa/neco-look')
+    call dein#add('honza/vim-snippets')
+
+    " Filter
+    call dein#add('tani/ddc-fuzzy')
+    call dein#add('Shougo/ddc-filter-matcher_head')
+    call dein#add('Shougo/ddc-filter-converter_remove_overlap')
     " }}}
 
     " Denite {{{
@@ -861,33 +873,56 @@ function! s:accelerate() abort " {{{
 endfunction
 " }}}
 
-" deoplete.nvim {{{
-let g:deoplete#enable_at_startup = 1
-function! Hook_on_post_source_denite() abort
-    call deoplete#custom#option({
-                \ 'max_list': 250,
-                \ 'skip_multibyte': v:true,
-                \ 'ignore_sources': {'_': ['look']},
-                \ })
-    call deoplete#custom#source('look', {
-                \ 'min_pattern_length': 4,
-                \ 'disabled_syntaxes': ['Normal']
-                \ })
-endfunction
-command! DisableNecoLook call deoplete#custom#option('ignore_sources', {'_': ['look']})
-command! EnableNecoLook call deoplete#custom#option('ignore_sources', {})
+" ddc.vim {{{
+let s:basic_sources = ['vim-lsp', 'around', 'necosyntax', 'buffer', 'file', 'neosnippet', 'line']
+call ddc#custom#patch_global(#{
+            \ ui: 'native',
+            \ sources: s:basic_sources,
+            \ sourceOptions: #{
+            \   _: #{
+            \     matchers: ['matcher_fuzzy'],
+            \     sorters: ['sorter_fuzzy'],
+            \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
+            \     timeout: 1000,
+            \   },
+            \   vim-lsp: #{
+            \     mark: '[lsp]',
+            \     forceCompletionPattern: '\S+(->|.)'
+            \   },
+            \   around: #{mark: '[around]'},
+            \   necosyntax: #{mark: '[syntax]'},
+            \   buffer: #{mark: '[buffer]'},
+            \   file: #{
+            \     mark: '[file]',
+            \     isVolatile: v:true,
+            \     forceCompletionPattern: '\S/\S*',
+            \   },
+            \   neosnippet: #{mark: '[snippet]'},
+            \   line: #{mark: '[line]', matchers: ['matcher_head']},
+            \   necovim: #{mark: '[vim]'},
+            \ },
+            \ sourceParams: #{
+            \   buffer: #{
+            \     requireSameFiletype: v:false,
+            \     bufNameStyle: 'basename'
+            \   },
+            \ },
+            \ })
+call ddc#custom#patch_filetype(['vim'], 'sources', (['necovim'] + s:basic_sources))
+call ddc#enable()
+" }}}
+
+" pum.vim {{{
+inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
+inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
+inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
+inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
 " }}}
 
 " neosnippet.vim {{{
 imap <C-s> <Plug>(neosnippet_expand_or_jump)
 smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#scope_aliases = {
-            \ 'stylus': 'stylus,css,scss',
-            \ 'pug': 'jade',
-            \ 'handlebars': 'handlebars,html'
-            \ }
 " }}}
 
 " neomru.vim
@@ -928,7 +963,6 @@ if dein#tap('denite.nvim') " {{{
 
     function! s:denite_filter_settings() abort " {{{
         let b:lexima_disabled = 1
-        call deoplete#custom#buffer_option('auto_complete', v:false)
         imap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
         nmap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
     endfunction " }}}
@@ -1483,7 +1517,6 @@ augroup plugin
 
     autocmd FileType gina-commit setlocal spell
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
-    autocmd FileType tex if dein#is_sourced('deoplete.nvim') | call deoplete#custom#buffer_option('auto_complete', v:false) | endif
     autocmd FileType fern call s:init_fern()
     autocmd FileType denite call s:denite_settings()
     autocmd FileType denite-filter call s:denite_filter_settings()
