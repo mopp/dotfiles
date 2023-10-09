@@ -1463,15 +1463,27 @@ if executable('typescript-language-server')
                 \ 'allowlist': ['typescript', 'typescript.tsx', 'typescriptreact'],
                 \ })
 endif
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal tagfunc=lsp#tagfunc
+
+    nmap <silent><buffer> gd <plug>(lsp-definition)
+    nmap <silent><buffer> gt <plug>(lsp-type-definition)
+    nmap <silent><buffer> gp <plug>(lsp-peek-definition)
+    nmap <silent><buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <silent><buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <silent><buffer> gr <plug>(lsp-references)
+    nmap <silent><buffer> gi <plug>(lsp-implementation)
+    nmap <silent><buffer> gn <plug>(lsp-rename)
+    nmap <silent><buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <silent><buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <silent><buffer> K <plug>(lsp-hover)
+endfunction
 augroup mopp_lsp
     autocmd!
     autocmd FileType ruby,rust,go,c,cpp,elixir,typescriptreact,typescript call lsp#enable()
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-nmap <Leader>lc <plug>(lsp-declaration)
-nmap <Leader>ld <plug>(lsp-definition)
-nmap <Leader>lp <plug>(lsp-peek-definition)
-nmap <Leader>lh <plug>(lsp-hover)
-nmap <Leader>lr <plug>(lsp-references)
 " }}}
 
 " vista.vim
