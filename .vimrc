@@ -1414,9 +1414,16 @@ function! g:committia_hooks.edit_open(info)
 endfunction
 
 " vim-lsp {{{
-let g:lsp_diagnostics_enabled = 0
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_settings_enable_suggestions = 0
+" monorepo に対応するためにそれっぽいファイルを追記する
+let g:lsp_settings_root_markers = ['Gemfile', 'go.mod', 'cargo.toml', 'mix.lock', 'package.json', '.git', '.git/', '.svn', '.hg', '.bzr']
+let g:lsp_settings_filetype_ruby = 'solargraph'
+let g:lsp_settings = #{
+            \   solargraph: #{
+            \     config: #{diagnostics: v:false},
+            \   }
+            \ }
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal tagfunc=lsp#tagfunc
