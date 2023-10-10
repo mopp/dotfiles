@@ -249,7 +249,7 @@ function kubeforward {
 
     pod_name=$(kubectl get pods --no-headers --selector app="$2" --output name | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
-    kubectl port-forward pod/$pod_name $1
+    kubectl port-forward $pod_name $1
 }
 
 function gitdargs {
