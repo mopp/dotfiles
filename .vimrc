@@ -874,7 +874,7 @@ endfunction
 " }}}
 
 " ddc.vim {{{
-let s:basic_sources = ['vim-lsp', 'around', 'necosyntax', 'buffer', 'file', 'neosnippet', 'line']
+let s:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
 call ddc#custom#patch_global(#{
             \ ui: 'native',
             \ sources: s:basic_sources,
