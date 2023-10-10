@@ -1414,6 +1414,8 @@ function! g:committia_hooks.edit_open(info)
 endfunction
 
 " vim-lsp {{{
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_settings_enable_suggestions = 0
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
