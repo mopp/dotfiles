@@ -708,11 +708,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " Denite {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
-    call dein#add('hrsh7th/vim-denite-gitto')
-    call dein#add('hrsh7th/vim-gitto')
     call dein#add('neoclide/denite-git')
-    call dein#add('notomo/denite-keymap')
-    call dein#add('rafi/vim-denite-session')
     " }}}
 
     " Operators and textobjs {{{
@@ -738,9 +734,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
 
     " git {{{
     call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': ['BufWritePost', 'CursorMoved']})
-    call dein#add('cohama/agit.vim', {'lazy': 1, 'on_cmd': 'Agit'})
     call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
-    call dein#add('mattn/gist-vim', {'lazy': 1, 'on_cmd': 'Gist'})
     call dein#add('rhysd/committia.vim')
     call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
     call dein#add('tyru/open-browser-github.vim', {'lazy': 1, 'on_cmd': ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
@@ -751,7 +745,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
     call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('Shougo/deol.nvim', {'lazy': 1, 'on_cmd': ['Deol', 'DeolCd', 'DeolEdit']})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
     call dein#add('Yggdroot/indentLine')
@@ -759,12 +752,10 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('editorconfig/editorconfig-vim', {'lazy': 1, 'on_cmd': 'EditorConfigReload'})
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
     call dein#add('itchyny/vim-parenmatch')
-    call dein#add('jsfaint/gen_tags.vim', {'lazy': 1, 'on_cmd': ['GenGTAGS', 'GenCtags']})
     call dein#add('junegunn/vim-easy-align', {'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': ['<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']})
     call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
@@ -772,8 +763,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('lambdalisue/fern-hijack.vim')
     call dein#add('lambdalisue/fern.vim')
     call dein#add('luochen1990/rainbow')
-    call dein#add('mattn/learn-vimscript')
-    call dein#add('mattn/webapi-vim')
     call dein#add('mopp/Arcadia')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
@@ -941,7 +930,6 @@ if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>fl  <Cmd>Denite line<CR>
     nnoremap <silent> <Leader>fo  <Cmd>Denite outline<CR>
     nnoremap <silent> <Leader>fre <Cmd>Denite -resume<CR>
-    nnoremap <silent> <Leader>git <Cmd>DeniteGitto gitto<CR>
     nnoremap <silent> <Leader>gic <Cmd>Denite gitchanged<CR>
     nnoremap <silent> <Leader>gis <Cmd>Denite gitstatus<CR>
 
@@ -1158,15 +1146,8 @@ let g:rainbow_conf = {
             \   }
 " }}}
 
-" gist-vim
-let g:gist_detect_filetype = 1
-let g:gist_open_browser_after_post = 1
-
 " layoutplugin.vim
 let g:layoutplugin#is_append_vimrc = 1
-
-" mopkai.vim
-let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER !=# 'mopp'))
 
 " vim-search-pulse
 let g:vim_search_pulse_disable_auto_mappings = 1
@@ -1191,10 +1172,6 @@ let g:c_prototype_insert_point = 2
 let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_operators = 1
 let g:ruby_space_errors = 1
-
-" vim-autoformat
-let g:formatdef_rustfmt = '"rustfmt"'
-let g:formatters_rust = ['rustfmt']
 
 " vim-maximizer {{{
 let g:maximizer_restore_on_winleave = 1
@@ -1327,9 +1304,6 @@ function! Hook_on_post_source_lexima() abort
 endfunction
 " }}}
 
-" vim-denite-session
-let g:session_directory = s:session_directory
-
 " caw.vim
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
 nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
@@ -1352,9 +1326,6 @@ nmap <Leader>- <Plug>(choosewin)
 let g:choosewin_overlay_enable = 1
 let g:choosewin_overlay_clear_multibyte = 1
 
-" deol.nvim
-command! DeolTabEdit tabnew +DeolEdit
-
 " vim-sandwich {{{
 let g:sandwich#recipes =
             \ g:sandwich#default_recipes +
@@ -1371,13 +1342,10 @@ let g:sandwich#recipes =
 " vim-json
 let g:vim_json_syntax_conceal = 0
 
-" vim-unmatchparen
-let g:unmatchparen#disable_filetypes = ['vim']
-
+" fern.vim {{{
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
-" fern.vim {{{
 command! FernExplorer Fern -drawer -width=40 .
 nnoremap <silent> <leader>de <Cmd>FernExplorer<CR>
 
