@@ -621,14 +621,6 @@ augroup mopp
         autocmd InsertLeave,CmdLineLeave * call system('fcitx5-remote -c')
     endif
 
-    " Turn on/off cursorline automatically.
-    " Cheking the number of bytes is to avoid cleaning intro message when vim starts.
-    let s:cur_f = 0
-    autocmd WinEnter * setlocal cursorline | let s:cur_f = 0
-    autocmd WinLeave * setlocal cursorline
-    autocmd CursorHold,CursorHoldI * if wordcount()['bytes'] | setlocal cursorline | let s:cur_f = 1 | endif
-    autocmd CursorMoved,CursorMovedI * if s:cur_f | setlocal nocursorline | endif
-
     autocmd FileType qf call s:define_quickfix_mappings()
 
     if has('nvim')
