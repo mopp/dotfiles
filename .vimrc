@@ -239,6 +239,9 @@ nnoremap <silent> <Leader>w <Cmd>write<CR>
 " Close the current window.
 nnoremap <silent> <Leader>q <Cmd>quit<CR>
 
+" Replace selected text.
+vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
+
 " Open vimrc at newtab.
 if has('nvim') || has('patch-8.0.1508')
     " `drop` command is available on gvim, neovim or vim 8.0.1508.
