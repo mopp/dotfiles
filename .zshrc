@@ -138,11 +138,11 @@ if (($+commands[rustup])); then
 fi
 
 export TIME_STYLE='long-iso'
-if (($+commands[exa])); then
-    export EXA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
-    alias ls='exa --color-scale -gh --git'
-    alias ll='exa --color-scale -gh --git -l'
-    alias la='exa --color-scale -gh --git -a'
+if (($+commands[eza])); then
+    export EZA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
+    alias ls='eza --color-scale -gh --git'
+    alias ll='eza --color-scale -gh --git -l'
+    alias la='eza --color-scale -gh --git -a'
 else
     alias ls='ls --color -hF'
     alias ll='ls --color -hFl'
