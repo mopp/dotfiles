@@ -581,8 +581,8 @@ function! s:config_neovide() abort
     set guifont=Cica:h14
 
     inoremap <silent><D-v> <ESC>l"+Pli
-    cnoremap <silent><D-v> <C-R>+
     tnoremap <silent><D-v> <C-R>+
+    cnoremap <D-v> <C-R>+
 
     let g:neovide_cursor_animation_length = 0.0
     let g:neovide_scroll_animation_length = 0.1
