@@ -195,8 +195,8 @@ function print_term_colors() {
     }
 }
 
-function date_timestamp() {
-    date --date="@$1" '+%Y/%m/%d %H:%M:%S'
+function date_from_timestamp() {
+    date --date="@$1" --iso-8601='seconds'
 }
 
 function urand() {
