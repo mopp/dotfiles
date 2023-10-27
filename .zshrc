@@ -166,6 +166,7 @@ alias objdump='objdump -M intel'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
 alias diff='diff -u'
+alias date='date --iso-8601="seconds"'
 # }}}
 
 # Keybinds. {{{
