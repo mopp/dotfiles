@@ -545,6 +545,7 @@ command! -nargs=? Jq call s:jq(<f-args>)
 
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
 
+" Gote {{{
 let s:gote_dir = $HOME . '/notes'
 function! s:gote() abort
     execute 'tcd' s:gote_dir
@@ -552,7 +553,7 @@ function! s:gote() abort
 endfunction
 command! -nargs=0 GoteOpen call s:gote()
 
-function! s:gote_today() abort
+function! s:gote_today() abort " {{{
     call s:gote()
     wincmd l
 
@@ -572,8 +573,20 @@ function! s:gote_today() abort
     call append(0, l:text)
 
     call cursor(4, 0)
-endfunction
+endfunction " }}}
 command! -nargs=0 GoteToday call s:gote_today()
+" }}}
+
+function s:copy_absolute_path()
+    let @"=expand('%:p')
+endfunction
+
+function s:copy_relative_path()
+    let @"=expand('%')
+endfunction
+
+command! -nargs=0 CopyAbsolutePath call s:copy_absolute_path()
+command! -nargs=0 CopyRelativePath call s:copy_relative_path()
 " }}}
 
 " GUI. {{{
@@ -776,7 +789,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
     call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open'], 'on_source': ['open-browser-github.vim']})
-    call dein#add('vim-scripts/copypath.vim', {'lazy': 1, 'on_cmd': ['CopyPath', 'CopyFileName']})
     " }}}
 
     " Languages {{{
