@@ -1364,6 +1364,7 @@ let g:lsp_settings_enable_suggestions = 0
 " monorepo に対応するためにそれっぽいファイルを追記する
 let g:lsp_settings_root_markers = ['Gemfile', 'go.mod', 'cargo.toml', 'mix.lock', 'package.json', '.git', '.git/', '.svn', '.hg', '.bzr']
 let g:lsp_settings_filetype_ruby = 'solargraph'
+let g:lsp_settings_filetype_typescript = 'typescript-language-server'
 let g:lsp_settings = #{
             \   solargraph: #{
             \     config: #{diagnostics: v:false},
