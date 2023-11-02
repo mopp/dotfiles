@@ -716,7 +716,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " Denite {{{
     call dein#add('Shougo/denite.nvim')
     call dein#add('Shougo/neomru.vim')
-    call dein#add('neoclide/denite-git')
     " }}}
 
     " Operators and textobjs {{{
@@ -742,7 +741,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
 
     " git {{{
     call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': ['BufWritePost', 'CursorMoved']})
-    call dein#add('lambdalisue/gina.vim', {'lazy': 1, 'on_cmd': ['Gina', 'GinaAlias'], 'on_event': 'BufWritePost', 'hook_post_source': 'call Hook_on_post_source_gina()'})
+    call dein#add('lambdalisue/gin.vim')
     call dein#add('rhysd/committia.vim')
     call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
     call dein#add('tyru/open-browser-github.vim', {'lazy': 1, 'on_cmd': ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
@@ -921,9 +920,6 @@ smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
 " }}}
 
-" neomru.vim
-let g:neomru#file_mru_ignore_pattern = '^gina:\/\/.*$'
-
 " denite.nvim
 if dein#tap('denite.nvim') " {{{
     nnoremap <silent> <Leader>n <Cmd>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
@@ -1081,7 +1077,7 @@ let g:lightline = {
             \   'mode':         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
             \   'modified':     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
             \   'readonly':     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
-            \   'git_status':   "%{ (LightlineIsVisible() && dein#is_sourced('gina.vim')) ? printf('%s: [%s]', gina#component#repo#branch(), gina#component#status#preset()) : '' }",
+            \   'git_status':   "%{ (LightlineIsVisible() && dein#is_sourced('gin.vim')) ? gin#component#branch#ascii() : '' }",
             \   'filetype':     "%{ LightlineIsVisible() ? &filetype : '' }",
             \   'fileencoding': "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
             \   'fileformat':   "%{ LightlineIsVisible() ? &fileformat : '' }",
@@ -1187,35 +1183,8 @@ vnoremap <silent><F3> <Cmd>MaximizerToggle<CR>gv
 inoremap <silent><F3> <C-O><Cmd>MaximizerToggle<CR>
 " }}}
 
-" gina.vim {{{
-function! Hook_on_post_source_gina() abort
-    let l:silent_opt = {'mode': 'n', 'silent': 1}
-    let l:cmd_opt = {'mode': 'n', 'noremap': 1, 'silent': 1}
-    call gina#custom#mapping#nmap('branch', 'n', '<Plug>(gina-branch-new)', l:silent_opt)
-    call gina#custom#mapping#nmap('branch', 'r', '<Plug>(gina-branch-move)', l:silent_opt)
-    call gina#custom#mapping#nmap('branch', 'd', '<Plug>(gina-branch-delete)', l:silent_opt)
-    call gina#custom#mapping#nmap('status', 'dd', '<Plug>(gina-diff-vsplit)')
-    call gina#custom#mapping#nmap('status', '<C-\>', '<Cmd>Gina commit<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('commit', '<C-\>', '<Cmd>Gina status<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', 'q', '<Cmd>quit<CR>', l:cmd_opt)
-    call gina#custom#mapping#nmap('/.*', 't', '<Plug>(gina-edit-tab)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<Tab>', '<Plug>(gina-builtin-choice)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-t>', '<Plug>(gina-edit-tab)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-h>', '<Plug>(gina-edit-left)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-j>', '<Plug>(gina-edit-below)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-k>', '<Plug>(gina-edit-above)', l:silent_opt)
-    call gina#custom#mapping#nmap('/.*', '<C-l>', '<Plug>(gina-edit-right)', l:silent_opt)
-    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--opener', 'split')
-    call gina#custom#command#option('/\%(commit\|status\|branch\|changes\|grep\|log\)', '--group', 'main')
-endfunction
-nnoremap <Leader>gb <Cmd>Gina branch<CR>
-nnoremap <Leader>gc <Cmd>Gina commit<CR>
-nnoremap <Leader>gd <Cmd>Gina diff<CR>
-nnoremap <Leader>gs <Cmd>Gina status<CR>
-function! s:get_git_aliases(...) abort
-    return system('git config --get-regexp alias | sed "s/alias\.\(\w*\)\s.*/\1/g"')
-endfunction
-command! -nargs=1 -complete=custom,<SID>get_git_aliases GinaAlias :Gina! <f-args>
+" gin.vim {{{
+nnoremap <Leader>gs <Cmd>GinStatus<CR>
 " }}}
 
 " lexima.vim {{{
@@ -1379,6 +1348,7 @@ if dein#tap('vim-ambicmd') " {{{
 endif " }}}
 
 " rhysd/committia.vim
+let g:committia_open_only_vim_starting = 0
 let g:committia_hooks = {}
 function! g:committia_hooks.edit_open(info)
     setlocal spell
