@@ -1184,7 +1184,7 @@ inoremap <silent><F3> <C-O><Cmd>MaximizerToggle<CR>
 " }}}
 
 " gin.vim {{{
-nnoremap <Leader>gs <Cmd>GinStatus<CR>
+nnoremap <Leader>gs <Cmd>GinStatus ++opener=split<CR>
 " }}}
 
 " lexima.vim {{{
@@ -1434,7 +1434,6 @@ endfunction
 augroup plugin
     autocmd!
 
-    autocmd FileType gina-commit setlocal spell
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType fern call s:init_fern()
     autocmd FileType denite call s:denite_settings()
