@@ -1359,6 +1359,7 @@ function! g:committia_hooks.edit_open(info)
 endfunction
 
 " vim-lsp {{{
+let g:lsp_diagnostics_highlights_enabled = 0
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_settings_enable_suggestions = 0
 " monorepo に対応するためにそれっぽいファイルを追記する
