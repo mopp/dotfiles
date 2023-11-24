@@ -49,13 +49,6 @@ set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'
 set synmaxcol=512
 " }}}
 
-" Folding. {{{
-set foldenable
-set foldmethod=indent
-set foldtext=MoppFoldText()
-set foldmarker=\ {{{,\ }}}
-" }}}
-
 " Safety. {{{
 set backup
 set backupdir=~/.vim/backup
@@ -259,18 +252,6 @@ nnoremap <silent><expr> a empty(getline('.')) ? 'S' : 'a'
 " }}}
 
 " Functions {{{
-function! MoppFoldText() abort " {{{
-    let l:head = getline(v:foldstart)
-    if &foldmethod !=# 'marker'
-        let l:head = '+' . repeat('-', &shiftwidth * v:foldlevel - 2) . ' ' . substitute(l:head, '^\s*', '', '')
-    endif
-
-    let l:count_columns = &foldcolumn + (&signcolumn ==# 'no' ? 0 : 2) + ((&number || &relativenumber) ? max([&numberwidth, strdisplaywidth(line('$')) + 1]) : 0)
-    let l:tail = printf('[%d Lines Lv%d]', (v:foldend - v:foldstart + 1), v:foldlevel)
-    let l:spaces = repeat(' ', winwidth(0) - strdisplaywidth(l:head) - l:count_columns - strdisplaywidth(l:tail) - 1)
-    return l:head . l:spaces . l:tail
-endfunction " }}}
-
 function! s:remove_tail_spaces() abort " {{{
     if &filetype !=# 'markdown'
         let l:c = getpos('.')
@@ -772,7 +753,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
-    call dein#add('Konfekt/FastFold')
     call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
     call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
