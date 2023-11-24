@@ -1356,8 +1356,8 @@ if dein#tap('vim-ambicmd') " {{{
     cnoremap <expr> <Space> ambicmd#expand('<Space>')
 endif " }}}
 
-" rhysd/committia.vim
-let g:committia_open_only_vim_starting = 0
+" committia.vim
+let g:committia_open_only_vim_starting = 1
 let g:committia_hooks = {}
 function! g:committia_hooks.edit_open(info)
     setlocal spell
