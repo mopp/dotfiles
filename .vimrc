@@ -794,28 +794,8 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " Languages {{{
-    call dein#add('Shirk/vim-gas')
-    call dein#add('aklt/plantuml-syntax')
-    call dein#add('cespare/vim-toml')
-    call dein#add('ekalinin/Dockerfile.vim')
-    call dein#add('elixir-editors/vim-elixir')
-    call dein#add('elzr/vim-json')
-    call dein#add('fatih/vim-go', {'lazy': 1, 'on_ft': 'go'})
-    call dein#add('hashivim/vim-terraform')
-    call dein#add('lifepillar/pgsql.vim')
-    call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
-    call dein#add('shima-529/C-prototype.vim', {'lazy': 1, 'on_ft': 'c'})
-    call dein#add('stephpy/vim-yaml')
-    call dein#add('vim-erlang/vim-erlang-omnicomplete', {'lazy': 1, 'on_ft': 'erlang'})
-    call dein#add('vim-erlang/vim-erlang-runtime')
-    call dein#add('vim-jp/cpp-vim')
+    call dein#add('nvim-treesitter/nvim-treesitter', {'hook_post_update': 'TSUpdate'})
     call dein#add('vim-jp/vimdoc-ja')
-    call dein#add('vim-ruby/vim-ruby')
-    call dein#add('vim-scripts/sh.vim--Cla')
-
-    call dein#add('leafgarland/typescript-vim')
-    call dein#add('peitalin/vim-jsx-typescript')
-    call dein#add('hail2u/vim-css3-syntax')
     " }}}
 
     call dein#end()
@@ -1229,16 +1209,6 @@ nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
 
-" c-prototype
-let g:c_prototype_no_default_keymappings = 1
-let g:c_prototype_remove_var_name = 1
-let g:c_prototype_insert_point = 2
-
-" vim-ruby
-let g:ruby_indent_access_modifier_style = 'indent'
-let g:ruby_operators = 1
-let g:ruby_space_errors = 1
-
 " vim-maximizer {{{
 let g:maximizer_restore_on_winleave = 1
 nnoremap <silent><F3> <Cmd>MaximizerToggle<CR>
@@ -1470,28 +1440,14 @@ let g:indentLine_color_term = 248
 let g:indentLine_setConceal = 0
 let g:indentLine_concealcursor = ''
 
-" pgsql.vim
-let g:sql_type_default = 'pgsql'
-
-" typescript-vim
-" vim-jsx-typescript
-function! s:override_tsx_highlights() abort
-    highlight! link tsxAttrib typescriptParens
-    highlight! link tsxAttributeBraces typescriptBraces
-    highlight! link tsxTagName tsxTypes
-    highlight! link tsxCloseTagName tsxTypes
-    highlight! link tsxTag typescriptParens
-    highlight! link tsxCloseTag typescriptParens
-    highlight! link tsxEqual Normal
-    highlight! ReactState guifg=#C176A7
-    highlight! ReactProps guifg=#D19A66
-    highlight! ApolloGraphQL guifg=#CB886B
-    highlight! Events ctermfg=204 guifg=#56B6C2
-    highlight! ReduxKeywords ctermfg=204 guifg=#C678DD
-    highlight! ReduxHooksKeywords ctermfg=204 guifg=#C176A7
-    highlight! WebBrowser ctermfg=204 guifg=#56B6C2
-    highlight! ReactLifeCycleMethods ctermfg=204 guifg=#D19A66
-endfunction
+" nvim-treesitter
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+    highlight = { enable = true },
+    incremental_selection = { enable = true },
+    indent = { enable = true },
+}
+EOF
 
 " Autocommands for plugins.  {{{
 augroup plugin
@@ -1501,8 +1457,6 @@ augroup plugin
     autocmd FileType fern call s:init_fern()
     autocmd FileType ddu-ff call s:ddu_ff_settings()
     autocmd FileType ddu-ff-filter call s:ddu_filter_settings()
-    autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
-    autocmd FileType typescriptreact call s:override_tsx_highlights()
 augroup END
 " }}}
 " }}}
@@ -1510,4 +1464,4 @@ augroup END
 syntax enable
 
 set termguicolors
-colorscheme tokyonight-moon
+colorscheme tokyonight-night
