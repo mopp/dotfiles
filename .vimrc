@@ -733,7 +733,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " LSP {{{
-    call dein#add('liuchengxu/vista.vim', {'lazy': 1, 'on_cmd': 'Vista'})
     call dein#add('prabirshrestha/vim-lsp')
     call dein#add('mattn/vim-lsp-settings')
     " }}}
@@ -771,13 +770,9 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('lambdalisue/fern.vim')
     call dein#add('luochen1990/rainbow')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('osyo-manga/vim-anzu')
-    call dein#add('osyo-manga/vim-stargate', {'lazy': 1, 'on_cmd': 'StargateInclude'})
-    call dein#add('previm/previm', {'lazy': 1, 'on_cmd': 'PrevimOpen', 'on_ft': 'markdown'})
     call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
     call dein#add('simeji/winresizer', {'lazy': 1, 'on_cmd': ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
-    call dein#add('szw/vim-maximizer', {'lazy': 1, 'on_cmd': 'MaximizerToggle'})
     call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-ambicmd')
@@ -1137,17 +1132,15 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'ddu-ff': 'ddu', 'ddu-ff-filter': 'ddu', 'fern': 'Fern', 'vista': 'Vista'}
+let g:lightline_plugin_modes = {'ddu-ff': 'ddu', 'ddu-ff-filter': 'ddu', 'fern': 'Fern'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|vista\|ddu-ff\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help')
 endfunction
 
 function! LightlineFilename() abort " {{{
     if &filetype ==# 'fern'
         return split(expand('%:t'), ';')[0]
-    elseif &filetype ==# 'vista'
-        return ''
     else
         let l:t = expand('%:t')
         return l:t ==# '' ? '[No Name]' : l:t
@@ -1173,9 +1166,6 @@ endfunction " }}}
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" previm
-let g:previm_show_header = 0
-
 " rainbow {{{
 let g:rainbow_active = 1
 let g:rainbow_conf = {
@@ -1187,9 +1177,6 @@ let g:rainbow_conf = {
             \   },
             \   }
 " }}}
-
-" layoutplugin.vim
-let g:layoutplugin#is_append_vimrc = 1
 
 " vim-search-pulse
 let g:vim_search_pulse_disable_auto_mappings = 1
@@ -1204,13 +1191,6 @@ nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 
 " open-browser.vim
 map <Leader>op <Plug>(openbrowser-open)
-
-" vim-maximizer {{{
-let g:maximizer_restore_on_winleave = 1
-nnoremap <silent><F3> <Cmd>MaximizerToggle<CR>
-vnoremap <silent><F3> <Cmd>MaximizerToggle<CR>gv
-inoremap <silent><F3> <C-O><Cmd>MaximizerToggle<CR>
-" }}}
 
 " gin.vim {{{
 nnoremap <Leader>gs <Cmd>GinStatus ++opener=split<CR>
@@ -1422,15 +1402,11 @@ augroup mopp_lsp
 augroup END
 " }}}
 
-" vista.vim
-let g:vista_echo_cursor = 0
-let g:vista_echo_cursor_strategy = 'floating_win'
-
 " winresizer
 let g:winresizer_start_key = '<Nop>'
 
 " indentLine
-let g:indentLine_fileTypeExclude = ['ddu-ff', 'ddu-ff-filter', 'fern', 'vista', 'help']
+let g:indentLine_fileTypeExclude = ['ddu-ff', 'ddu-ff-filter', 'fern', 'help']
 let g:indentLine_faster = 1
 let g:indentLine_color_term = 248
 let g:indentLine_setConceal = 0
