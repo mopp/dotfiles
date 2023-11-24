@@ -781,6 +781,7 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
     call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
     call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('folke/tokyonight.nvim')
     call dein#add('github/copilot.vim')
     call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
@@ -793,7 +794,6 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('lambdalisue/fern-hijack.vim')
     call dein#add('lambdalisue/fern.vim')
     call dein#add('luochen1990/rainbow')
-    call dein#add('mopp/Arcadia')
     call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
     call dein#add('mopp/layoutplugin.vim', {'lazy': 1, 'on_cmd': 'LayoutPlugin'})
     call dein#add('osyo-manga/vim-anzu')
@@ -1138,7 +1138,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 
 " lightline.vim {{{
 let g:lightline = {
-            \ 'colorscheme': 'arcadia',
+            \ 'colorscheme': 'tokyonight',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
             \   'right': [['fileencoding', 'fileformat'], ['filetype']],
@@ -1530,4 +1530,4 @@ augroup END
 syntax enable
 
 set termguicolors
-colorscheme arcadia
+colorscheme tokyonight-moon
