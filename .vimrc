@@ -682,10 +682,10 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim')
 
-    " Completions {{{
-    " TODO: Lazy
-    call dein#add('Shougo/ddc.vim')
     call dein#add('vim-denops/denops.vim')
+
+    " Completions {{{
+    call dein#add('Shougo/ddc.vim')
 
     call dein#add('Shougo/pum.vim')
 
@@ -713,9 +713,31 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/ddc-filter-converter_remove_overlap')
     " }}}
 
-    " Denite {{{
-    call dein#add('Shougo/denite.nvim')
-    call dein#add('Shougo/neomru.vim')
+    " Fuzzy finders {{{
+    call dein#add('Shougo/ddu.vim')
+
+    " UI
+    call dein#add('Shougo/ddu-ui-ff')
+
+    " Source
+    call dein#add('Shougo/ddu-source-action')
+    call dein#add('Shougo/ddu-source-file_rec')
+    call dein#add('Shougo/ddu-source-line')
+    call dein#add('matsui54/ddu-source-file_external')
+    call dein#add('shun/ddu-source-buffer')
+    call dein#add('shun/ddu-source-rg')
+
+    call dein#add('kuuote/ddu-source-mr')
+    call dein#add('lambdalisue/mr.vim')
+
+    " Filter
+    call dein#add('Shougo/ddu-filter-matcher_ignore_files')
+    call dein#add('Shougo/ddu-filter-matcher_relative')
+    call dein#add('Shougo/ddu-filter-matcher_substring')
+
+    " Kind
+    call dein#add('Shougo/ddu-kind-file')
+    call dein#add('Shougo/ddu-kind-word')
     " }}}
 
     " Operators and textobjs {{{
@@ -921,86 +943,150 @@ smap <C-s> <Plug>(neosnippet_expand_or_jump)
 xmap <C-s> <Plug>(neosnippet_expand_target)
 " }}}
 
-" denite.nvim
-if dein#tap('denite.nvim') " {{{
-    nnoremap <silent> <Leader>n <Cmd>Denite -resume -immediately -cursor-pos=+1 -no-empty<CR>
-    nnoremap <silent> <Leader>p <Cmd>Denite -resume -immediately -cursor-pos=-1 -no-empty<CR>
-    nnoremap <silent> <Leader>fb  <Cmd>Denite buffer<CR>
-    nnoremap <silent> <Leader>fe  <Cmd>Denite file/rec<CR>
-    nnoremap <silent> <Leader>ff  <Cmd>Denite file_mru<CR>
-    nnoremap <silent> <Leader>fd  <Cmd>Denite -default-action=tab_open directory_mru<CR>
-    nnoremap <silent> <Leader>fgg <Cmd>Denite grep/ignore_test<CR>
-    nnoremap <silent> <Leader>fgw <Cmd>DeniteCursorWord grep/ignore_test<CR>
-    nnoremap <silent> <Leader>fl  <Cmd>Denite line<CR>
-    nnoremap <silent> <Leader>fo  <Cmd>Denite outline<CR>
-    nnoremap <silent> <Leader>fre <Cmd>Denite -resume<CR>
-    nnoremap <silent> <Leader>gic <Cmd>Denite gitchanged<CR>
-    nnoremap <silent> <Leader>gis <Cmd>Denite gitstatus<CR>
+" ddu.vim {{{
+call ddu#custom#alias('source', 'mr_ignore', 'mr')
+call ddu#custom#alias('source', 'file_rec_ignore', 'file_rec')
+call ddu#custom#alias('source', 'file_external_ignore', 'file_external')
+call ddu#custom#alias('source', 'grep', 'rg')
+call ddu#custom#alias('source', 'grep_ignore', 'rg')
+call ddu#custom#patch_global(#{
+            \ ui: 'ff',
+            \ uiParams: #{
+            \   ff: #{
+            \     autoResize: v:true,
+            \     statusline: v:false,
+            \     split: 'floating',
+            \     floatingBorder: 'double',
+            \     floatingTitle: 'ddu.vim',
+            \     floatingTitlePos: 'center',
+            \     previewFloating: v:true,
+            \     previewFloatingBorder: 'single',
+            \     previewFloatingTitle: 'Preview',
+            \     previewFloatingTitlePos: 'center',
+            \   }
+            \ },
+            \ sourceOptions: #{
+            \   _: #{
+            \     matchers: ['matcher_substring'],
+            \   },
+            \   mr: #{
+            \     matchers: ['matcher_relative', 'matcher_substring']
+            \   },
+            \   mr_ignore: #{
+            \     matchers: ['matcher_relative', 'matcher_ignore_files', 'matcher_substring']
+            \   },
+            \   file_rec: #{
+            \     matchers: ['matcher_substring']
+            \   },
+            \   file_rec_ignore: #{
+            \     matchers: ['matcher_ignore_files', 'matcher_substring']
+            \   },
+            \   file_external: #{
+            \     matchers: ['matcher_substring']
+            \   },
+            \   file_external_ignore: #{
+            \     matchers: ['matcher_ignore_files', 'matcher_substring']
+            \   },
+            \   grep: #{
+            \     matchers: ['matcher_substring']
+            \   },
+            \   grep_ignore: #{
+            \     matchers: ['matcher_ignore_files', 'matcher_substring']
+            \   },
+            \ },
+            \ sourceParams: #{
+            \   file_external: {
+            \     'cmd': ['git', 'ls-files']
+            \   },
+            \   file_external_ignore: {
+            \     'cmd': ['git', 'ls-files']
+            \   },
+            \ },
+            \ filterParams: #{
+            \   matcher_ignore_files: #{
+            \     ignoreGlobs: ['*test/*', '*spec/*']
+            \   },
+            \ },
+            \ kindOptions: #{
+            \   action: #{
+            \     defaultAction: 'do',
+            \   },
+            \   file: #{
+            \     defaultAction: 'open',
+            \   },
+            \   word: #{
+            \     defaultAction: 'yank',
+            \   },
+            \ },
+            \ })
 
-    function! s:denite_settings() abort " {{{
-        nnoremap <silent><buffer><expr><nowait> <CR> denite#do_map('do_action')
-        nnoremap <silent><buffer><expr><nowait> <TAB> denite#do_map('choose_action')
-        nnoremap <silent><buffer><expr><nowait> <ESC> denite#do_map('quit')
-        nnoremap <silent><buffer><expr><nowait> q denite#do_map('quit')
-        nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
-        nnoremap <silent><buffer><expr><nowait> n denite#do_map('quick_move')
-        nnoremap <silent><buffer><expr><nowait> i denite#do_map('open_filter_buffer')
-        nnoremap <silent><buffer><expr><nowait> p denite#do_map('do_action', 'preview')
-        nnoremap <silent><buffer><expr><nowait> t denite#do_map('do_action', 'tabopen')
-        nnoremap <silent><buffer><expr><nowait> v denite#do_map('do_action', 'vsplit')
-        nnoremap <silent><buffer><expr><nowait> s denite#do_map('do_action', 'split')
-        nnoremap <silent><buffer><expr><nowait> dd denite#do_map('do_action', 'delete')
-        nnoremap <silent><buffer><expr><nowait> <C-h> denite#do_map('restore_sources')
-    endfunction " }}}
+nnoremap <silent> <Leader>fb <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Buffers'}}, sources: ['buffer']})<CR>
+nnoremap <silent> <Leader>ff <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Most Recently Used'}}, sources: ['mr_ignore']})<CR>
+nnoremap <silent> <Leader>fa <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Most Recently Used'}}, sources: ['mr']})<CR>
+nnoremap <silent> <Leader>fl <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Lines'}}, sources: ['line']})<CR>
+nnoremap <silent> <Leader>fre <Cmd>call ddu#start(#{resume: v:true})<CR>
 
-    function! s:denite_filter_settings() abort " {{{
-        let b:lexima_disabled = 1
-        imap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
-        nmap <silent><buffer><nowait> <ESC> <Plug>(denite_filter_quit)
-    endfunction " }}}
+function! s:ddu_file(is_ignore) abort
+    if system('git rev-parse --is-inside-work-tree') == "true\n"
+        let l:sources = a:is_ignore ? ['file_external_ignore'] : ['file_external']
+    else
+        let l:sources = a:is_ignore ? ['file_rec_ignore'] : ['file_rec']
+    endif
 
-    call denite#custom#option('_', {
-                \ 'highlight_matched_char': 'Keyword',
-                \ 'highlight_matched_range': 'None',
-                \ 'auto_resize': v:true,
-                \ 'statusline': v:false,
+    call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Files'}}, sources: l:sources})
+endfunction
+nnoremap <silent> <Leader>fe <Cmd>call <SID>ddu_file(v:true)<CR>
+nnoremap <silent> <Leader>ft <Cmd>call <SID>ddu_file(v:false)<CR>
+
+function! s:ddu_grep(is_ignore) abort
+    if system('git rev-parse --is-inside-work-tree') == "true\n"
+        let l:cmd = 'git'
+        let l:args = ['--no-pager', 'grep', '--line-number', '--column', '--no-color']
+    else
+        let l:cmd = 'rg'
+        let l:args = ["--column", "--no-heading", "--color", "never"]
+    endif
+
+    let l:source_name = a:is_ignore ? 'grep_ignore' : 'grep'
+
+    call ddu#start(#{
+                \ uiParams: #{ff: #{floatingTitle: 'Greps'}},
+                \ sources: [l:source_name],
+                \ sourceParams: {
+                \   l:source_name: #{
+                \     cmd: l:cmd,
+                \     args: l:args,
+                \     input: input('Pattern: ')
+                \   },
+                \ },
                 \ })
-    call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'sorter_rank', 'matcher_project_files'])
+endfunction
+nnoremap <silent> <Leader>fg <Cmd>call <SID>ddu_grep(v:true)<CR>
+nnoremap <silent> <Leader>fh <Cmd>call <SID>ddu_grep(v:false)<CR>
 
-    if system('git rev-parse --is-inside-work-tree') == "true\n" " {{{
-        call denite#custom#var('file/rec', 'command', ['git', 'ls-files', '--cached', '--others', '--exclude-standard'])
+function! s:ddu_ff_settings() abort
+    " ddu-ui-ff
+    nnoremap <buffer> <silent><nowait> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+    nnoremap <buffer> <silent><nowait> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+    nnoremap <buffer> <silent><nowait> ?       <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+    nnoremap <buffer> <silent><nowait> p       <Cmd>call ddu#ui#ff#do_action('togglePreview')<CR>
+    nnoremap <buffer> <silent><nowait> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+    nnoremap <buffer> <silent><nowait> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+    nnoremap <buffer> <silent><nowait> <ESC>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
 
-        let s:opts = {
-                    \ 'command': ['git', '--no-pager', 'grep'],
-                    \ 'default_opts': ['--line-number', '--no-color'],
-                    \ 'recursive_opts': [],
-                    \ 'pattern_opt': ['-e'],
-                    \ 'separator': ['--'],
-                    \ 'final_opts': [],
-                    \ }
-        call denite#custom#var('grep', s:opts)
+    " ddu-kind-file
+    nnoremap <buffer> <silent><nowait> t <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'tabedit'}})<CR>
+    nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
+    nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
+endfunction
 
-        call denite#custom#alias('source', 'grep/ignore_test', 'grep')
-        let s:opts['final_opts'] = [
-                    \ ':(exclude)*spec/*',
-                    \ ':(exclude)*_spec.rb',
-                    \ ':(exclude)*test.*',
-                    \ ':(exclude)*__tests__*'
-                    \ ]
-        call denite#custom#var('grep/ignore_test', s:opts)
-    elseif executable('rg')
-        call denite#custom#var('file/rec', 'command', ['rg', '--files', '--color', 'never'])
-
-        call denite#custom#var('grep', {
-                    \ 'command': ['rg'],
-                    \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
-                    \ 'recursive_opts': [],
-                    \ 'pattern_opt': ['--regexp'],
-                    \ 'separator': ['--'],
-                    \ 'final_opts': [],
-                    \ })
-    endif " }}}
-endif " }}}
+function! s:ddu_filter_settings() abort
+    let b:lexima_disabled = 1
+    inoremap <buffer> <silent><nowait> <CR> <Esc><Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
+    inoremap <buffer> <silent><nowait> <ESC> <Esc><Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
+    nnoremap <buffer> <silent><nowait> q <Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
+endfunction
+" }}}
 
 " vim-operator-flashy
 map y <Plug>(operator-flashy)
@@ -1045,7 +1131,7 @@ nmap <Leader>hn <Plug>(GitGutterNextHunk)
 " }}}
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = ['denite', 'help']
+let g:extra_whitespace_ignored_filetypes = ['help']
 
 " vim-easymotion
 map <Leader>e <Plug>(easymotion-prefix)
@@ -1095,18 +1181,14 @@ let g:lightline = {
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'denite': 'Denite', 'denite-filter': "Denite", 'fern': 'Fern', 'vista': 'Vista'}
+let g:lightline_plugin_modes = {'ddu-ff': 'ddu', 'ddu-ff-filter': 'ddu', 'fern': 'Fern', 'vista': 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|vista\|denite\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|vista\|ddu-ff\|help')
 endfunction
 
 function! LightlineFilename() abort " {{{
-    if &filetype ==# 'denite'
-        return denite#get_status('sources')
-    elseif &filetype ==# 'denite-filter'
-        return ''
-    elseif &filetype ==# 'fern'
+    if &filetype ==# 'fern'
         return split(expand('%:t'), ';')[0]
     elseif &filetype ==# 'vista'
         return ''
@@ -1402,7 +1484,7 @@ let g:vista_echo_cursor_strategy = 'floating_win'
 let g:winresizer_start_key = '<Nop>'
 
 " indentLine
-let g:indentLine_fileTypeExclude = ['fern', 'vista', 'denite', 'help']
+let g:indentLine_fileTypeExclude = ['ddu-ff', 'ddu-ff-filter', 'fern', 'vista', 'help']
 let g:indentLine_faster = 1
 let g:indentLine_color_term = 248
 let g:indentLine_setConceal = 0
@@ -1437,8 +1519,8 @@ augroup plugin
 
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType fern call s:init_fern()
-    autocmd FileType denite call s:denite_settings()
-    autocmd FileType denite-filter call s:denite_filter_settings()
+    autocmd FileType ddu-ff call s:ddu_ff_settings()
+    autocmd FileType ddu-ff-filter call s:ddu_filter_settings()
     autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
     autocmd FileType typescriptreact call s:override_tsx_highlights()
 augroup END
