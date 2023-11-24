@@ -641,10 +641,6 @@ if has('nvim')
 
     autocmd mopp TermOpen * call s:hide_left_columns()
     autocmd mopp TermOpen * nnoremap <silent><buffer> <Enter> A
-
-    if has('mac')
-        let g:python3_host_prog = '/opt/homebrew/bin/python3'
-    endif
 endif
 " }}}
 
