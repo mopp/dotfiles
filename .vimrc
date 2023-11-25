@@ -740,6 +740,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', #{lazy: v:true, on_cmd: 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', #{lazy: v:true, on_cmd: 'ArgWrap'})
+    call dein#add('HiPhish/rainbow-delimiters.nvim')
     call dein#add('LeafCage/yankround.vim', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('Shougo/echodoc.vim', #{lazy: v:true, on_event: 'InsertEnter'})
     call dein#add('Shougo/vinarise.vim', #{lazy: v:true, on_cmd: 'Vinarise'})
@@ -760,7 +761,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('lambdalisue/fern-git-status.vim')
     call dein#add('lambdalisue/fern-hijack.vim')
     call dein#add('lambdalisue/fern.vim')
-    call dein#add('luochen1990/rainbow')
     call dein#add('mopp/autodirmake.vim', #{lazy: v:true, on_event: 'InsertEnter'})
     call dein#add('osyo-manga/vim-anzu', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('rickhowe/diffchar.vim', #{lazy: &diff == 0, on_if: '&diff'})
@@ -1169,18 +1169,6 @@ endfunction " }}}
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" rainbow {{{
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-            \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87' ],
-            \   'ctermfgs': [ '242', '33', '197', '98', '172', '36' ],
-            \   'separately' : {
-            \       '*':   {}, 'vim': {},
-            \       'css': 0, 'perl': 0, 'html': 0, 'handlebars': 0, 'xml': 0
-            \   },
-            \   }
-" }}}
-
 " vim-search-pulse
 let g:vim_search_pulse_disable_auto_mappings = 1
 
@@ -1335,9 +1323,6 @@ let g:sandwich#recipes =
             \ ]
 " }}}
 
-" vim-json
-let g:vim_json_syntax_conceal = 0
-
 " fern.vim {{{
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
@@ -1424,6 +1409,7 @@ let g:indentLine_concealcursor = ''
 " nvim-treesitter
 lua << EOF
 require'nvim-treesitter.configs'.setup {
+    auto_install = true,
     highlight = { enable = true },
     incremental_selection = { enable = true },
     indent = { enable = true },
