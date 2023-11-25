@@ -1197,7 +1197,13 @@ nnoremap <silent> <Esc><Esc> <Cmd>nohlsearch <bar> :AnzuClearSearchStatus<CR>
 map <Leader>op <Plug>(openbrowser-open)
 
 " gin.vim {{{
+let g:gin_proxy_apply_without_confirm = 1
 nnoremap <Leader>gs <Cmd>GinStatus ++opener=split<CR>
+function! s:config_gin_status() abort
+    nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
+    nnoremap <buffer> <silent><nowait> <C-\> <Cmd>Gin commit<CR>
+    map <buffer> <silent><nowait> == <Plug>(gin-action-restore)
+endfunction
 " }}}
 
 " lexima.vim {{{
@@ -1431,6 +1437,8 @@ augroup plugin
 
     autocmd FileType erlang let b:caw_oneline_comment = '%%'
     autocmd FileType fern call s:init_fern()
+    autocmd Filetype gin-status call s:config_gin_status()
+    autocmd Filetype gin-status call s:config_gin_status()
     autocmd FileType ddu-ff call s:ddu_ff_settings()
     autocmd FileType ddu-ff-filter call s:ddu_filter_settings()
 augroup END
