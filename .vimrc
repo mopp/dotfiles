@@ -572,7 +572,11 @@ command! -nargs=0 CopyRelativePath call s:copy_relative_path()
 
 " GUI. {{{
 function! s:config_neovide() abort
-    set guifont=Cica:h14
+    if has('mac')
+        set guifont=Cica:h14
+    else
+        set guifont=Cica:h11
+    endif
 
     inoremap <silent><D-v> <ESC>l"+Pli
     tnoremap <silent><D-v> <C-R>+
