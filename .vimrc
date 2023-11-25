@@ -33,6 +33,7 @@ set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
 set display=lastline
+set foldmethod=indent
 set laststatus=2
 set list
 set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
