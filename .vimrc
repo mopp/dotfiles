@@ -656,11 +656,11 @@ let s:has_dein = isdirectory(s:dein_path)
 let &runtimepath .= ',' . s:dein_path
 let g:dein#install_log_filename = '~/.vim/dein.log'
 
-if s:has_dein && dein#load_state(s:dein_base_path) " {{{
+if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#begin(s:dein_base_path)
 
     call dein#add('Shougo/dein.vim')
-    call dein#add('haya14busa/dein-command.vim')
+    call dein#add('haya14busa/dein-command.vim', #{lazy: v:true, on_event: 'CmdlineEnter'})
 
     call dein#add('vim-denops/denops.vim')
 
@@ -676,16 +676,16 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     call dein#add('LumaKernel/ddc-source-file')
     call dein#add('Shougo/ddc-source-around')
     call dein#add('Shougo/ddc-source-line')
-    call dein#add('Shougo/neco-vim')
+    call dein#add('Shougo/neco-vim', #{lazy: v:true})
     call dein#add('matsui54/ddc-buffer')
     call dein#add('shun/ddc-source-vim-lsp')
 
-    call dein#add('Shougo/neco-syntax')
+    call dein#add('Shougo/neco-syntax', #{lazy: v:true})
     call dein#add('hokorobi/ddc-source-neco-syntax')
 
-    call dein#add('Shougo/neosnippet.vim')
+    call dein#add('Shougo/neosnippet.vim', #{lazy: v:true})
     call dein#add('Shougo/neosnippet-snippets')
-    call dein#add('honza/vim-snippets')
+    call dein#add('honza/vim-snippets', #{lazy: v:true})
 
     " Filter
     call dein#add('tani/ddc-fuzzy')
@@ -721,74 +721,74 @@ if s:has_dein && dein#load_state(s:dein_base_path) " {{{
     " }}}
 
     " Operators and textobjs {{{
-    call dein#add('haya14busa/vim-operator-flashy', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('kana/vim-operator-replace', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('haya14busa/vim-operator-flashy', #{lazy: v:true, on_map: '<Plug>'})
+    call dein#add('kana/vim-operator-replace', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('kana/vim-operator-user')
-    call dein#add('mopp/vim-operator-convert-case', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('mopp/vim-operator-convert-case', #{lazy: v:true, on_map: '<Plug>'})
 
-    call dein#add('kana/vim-textobj-indent', {'lazy': 1, 'on_map':  [['ox', 'ai' , 'ii' , 'aI',  'iI']]})
-    call dein#add('kana/vim-textobj-line', {'lazy': 1, 'on_map': [['ox', 'al', 'il']]})
+    call dein#add('kana/vim-textobj-indent', #{lazy: v:true, on_map:  [['ox', 'ai' , 'ii' , 'aI',  'iI']]})
+    call dein#add('kana/vim-textobj-line', #{lazy: v:true, on_map: [['ox', 'al', 'il']]})
     call dein#add('kana/vim-textobj-user')
-    call dein#add('rhysd/vim-textobj-word-column', {'lazy': 1, 'on_map': [['ox', 'av', 'iv']]})
-    call dein#add('sgur/vim-textobj-parameter', {'lazy': 1, 'on_map': [['ox', 'a,', 'i,', 'i2,']]})
+    call dein#add('rhysd/vim-textobj-word-column', #{lazy: v:true, on_map: [['ox', 'av', 'iv']]})
+    call dein#add('sgur/vim-textobj-parameter', #{lazy: v:true, on_map: [['ox', 'a,', 'i,', 'i2,']]})
 
     call dein#add('machakann/vim-sandwich')
     " }}}
 
     " LSP {{{
-    call dein#add('prabirshrestha/vim-lsp')
-    call dein#add('mattn/vim-lsp-settings')
+    call dein#add('prabirshrestha/vim-lsp', #{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call lsp#enable()'})
+    call dein#add('mattn/vim-lsp-settings', #{lazy: v:true, on_source: 'vim-lsp'})
     " }}}
 
     " git {{{
-    call dein#add('airblade/vim-gitgutter', {'lazy': 1, 'on_event': ['BufWritePost', 'CursorMoved']})
+    call dein#add('airblade/vim-gitgutter')
     call dein#add('lambdalisue/gin.vim')
     call dein#add('rhysd/committia.vim')
-    call dein#add('rhysd/git-messenger.vim', {'lazy' : 1, 'on_cmd' : 'GitMessenger'})
-    call dein#add('tyru/open-browser-github.vim', {'lazy': 1, 'on_cmd': ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
+    call dein#add('rhysd/git-messenger.vim', #{lazy: v:true, on_cmd: 'GitMessenger'})
+    call dein#add('tyru/open-browser-github.vim', #{lazy: v:true, on_cmd: ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
     " }}}
 
     " Utils {{{
-    call dein#add('Chiel92/vim-autoformat', {'lazy': 1, 'on_cmd': 'Autoformat'})
-    call dein#add('FooSoft/vim-argwrap', {'lazy': 1, 'on_cmd': 'ArgWrap'})
-    call dein#add('LeafCage/yankround.vim', {'lazy': 1, 'on_map': '<Plug>'})
-    call dein#add('Shougo/echodoc.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('Shougo/vinarise.vim', {'lazy':1, 'on_cmd': 'Vinarise'})
+    call dein#add('Chiel92/vim-autoformat', #{lazy: v:true, on_cmd: 'Autoformat'})
+    call dein#add('FooSoft/vim-argwrap', #{lazy: v:true, on_cmd: 'ArgWrap'})
+    call dein#add('LeafCage/yankround.vim', #{lazy: v:true, on_map: '<Plug>'})
+    call dein#add('Shougo/echodoc.vim', #{lazy: v:true, on_event: 'InsertEnter'})
+    call dein#add('Shougo/vinarise.vim', #{lazy: v:true, on_cmd: 'Vinarise'})
     call dein#add('Yggdroot/indentLine')
     call dein#add('bronson/vim-trailing-whitespace')
-    call dein#add('chrisbra/Colorizer', {'lazy': 1, 'on_cmd': 'ColorToggle'})
-    call dein#add('cohama/lexima.vim',{'lazy': 1, 'on_event': 'InsertEnter', 'hook_post_source': 'call Hook_on_post_source_lexima()'})
-    call dein#add('easymotion/vim-easymotion', {'lazy': 1, 'on_map': '<Plug>'})
+    call dein#add('chrisbra/Colorizer', #{lazy: v:true, on_cmd: 'ColorToggle'})
+    call dein#add('cohama/lexima.vim',#{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call OnPostSourceLexima()'})
+    call dein#add('easymotion/vim-easymotion', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('folke/tokyonight.nvim')
-    call dein#add('github/copilot.vim')
-    call dein#add('idanarye/vim-casetrate', {'lazy': 1, 'on_cmd': 'Casetrate'})
+    call dein#add('github/copilot.vim', #{lazy: v:true, on_cmd: 'Copilot'})
+    call dein#add('idanarye/vim-casetrate', #{lazy: v:true, on_cmd: 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
     call dein#add('itchyny/vim-parenmatch')
-    call dein#add('junegunn/vim-easy-align', {'lazy': 1, 'on_cmd': 'EasyAlign', 'on_map': ['<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']})
-    call dein#add('kana/vim-niceblock', {'lazy': 1, 'on_map': [['x', 'I', 'A']]})
+    call dein#add('junegunn/vim-easy-align', #{lazy: v:true, on_cmd: 'EasyAlign', on_map: ['<Plug>(LiveEasyAlign)', '<Plug>(EasyAlign)']})
+    call dein#add('kana/vim-niceblock', #{lazy: v:true, on_map: [['x', 'I', 'A']]})
     call dein#add('kana/vim-tabpagecd')
     call dein#add('lambdalisue/fern-git-status.vim')
     call dein#add('lambdalisue/fern-hijack.vim')
     call dein#add('lambdalisue/fern.vim')
     call dein#add('luochen1990/rainbow')
-    call dein#add('mopp/autodirmake.vim', {'lazy': 1, 'on_event': 'InsertEnter'})
-    call dein#add('osyo-manga/vim-anzu')
-    call dein#add('rickhowe/diffchar.vim', {'lazy':  &diff == 0, 'on_if': '&diff'})
-    call dein#add('simeji/winresizer', {'lazy': 1, 'on_cmd': ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
-    call dein#add('t9md/vim-choosewin', {'lazy': 1, 'on_map': {'n': '<Plug>'}})
-    call dein#add('t9md/vim-quickhl', {'lazy': 1, 'on_map' : {'nx': '<Plug>'}})
+    call dein#add('mopp/autodirmake.vim', #{lazy: v:true, on_event: 'InsertEnter'})
+    call dein#add('osyo-manga/vim-anzu', #{lazy: v:true, on_map: '<Plug>'})
+    call dein#add('rickhowe/diffchar.vim', #{lazy: &diff == 0, on_if: '&diff'})
+    call dein#add('simeji/winresizer', #{lazy: v:true, on_cmd: ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
+    call dein#add('t9md/vim-choosewin', #{lazy: v:true, on_map: {'n': '<Plug>'}})
+    call dein#add('t9md/vim-quickhl', #{lazy: v:true, on_map : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-ambicmd')
-    call dein#add('thinca/vim-quickrun', {'lazy': 1, 'on_cmd': 'QuickRun'})
-    call dein#add('thinca/vim-visualstar', {'lazy': 1, 'on_map': {'v': ['*', '#']}})
+    call dein#add('thinca/vim-quickrun', #{lazy: v:true, on_cmd: 'QuickRun'})
+    call dein#add('thinca/vim-visualstar', #{lazy: v:true, on_map: {'v': ['*', '#']}})
     call dein#add('tpope/vim-repeat')
-    call dein#add('tyru/capture.vim', {'lazy': 1, 'on_cmd': 'Capture'})
-    call dein#add('tyru/caw.vim', {'lazy': 1, 'on_map': '<Plug>(caw:', 'hook_post_source': 'doautocmd plugin FileType'})
-    call dein#add('tyru/open-browser.vim', {'lazy': 1, 'on_map': [['n', '<Plug>(openbrowser-open)']], 'on_func': ['openbrowser#load', 'openbrowser#open'], 'on_source': ['open-browser-github.vim']})
+    call dein#add('tyru/capture.vim', #{lazy: v:true, on_cmd: 'Capture'})
+    call dein#add('tyru/caw.vim', #{lazy: v:true, on_map: '<Plug>(caw:', hook_post_source: 'doautocmd plugin FileType'})
+    call dein#add('tyru/open-browser.vim', #{lazy: v:true, on_map: [['n', '<Plug>(openbrowser-open)']], on_func: ['openbrowser#load', 'openbrowser#open'], on_source: ['open-browser-github.vim']})
     " }}}
 
     " Languages {{{
-    call dein#add('nvim-treesitter/nvim-treesitter', {'hook_post_update': 'TSUpdate'})
+    call dein#add('nvim-treesitter/nvim-treesitter', #{hook_post_update: 'TSUpdate'})
     call dein#add('vim-jp/vimdoc-ja')
     " }}}
 
@@ -845,42 +845,52 @@ endfunction
 " }}}
 
 " ddc.vim {{{
-let s:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
-call ddc#custom#patch_global(#{
-            \ ui: 'native',
-            \ sources: s:basic_sources,
-            \ sourceOptions: #{
-            \   _: #{
-            \     matchers: ['matcher_fuzzy'],
-            \     sorters: ['sorter_fuzzy'],
-            \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
-            \     timeout: 1000,
-            \   },
-            \   vim-lsp: #{
-            \     mark: '[lsp]',
-            \     forceCompletionPattern: '\S+(->|.)'
-            \   },
-            \   around: #{mark: '[around]'},
-            \   necosyntax: #{mark: '[syntax]'},
-            \   buffer: #{mark: '[buffer]'},
-            \   file: #{
-            \     mark: '[file]',
-            \     isVolatile: v:true,
-            \     forceCompletionPattern: '\S/\S*',
-            \   },
-            \   neosnippet: #{mark: '[snippet]'},
-            \   line: #{mark: '[line]', matchers: ['matcher_head']},
-            \   necovim: #{mark: '[vim]'},
-            \ },
-            \ sourceParams: #{
-            \   buffer: #{
-            \     requireSameFiletype: v:false,
-            \     bufNameStyle: 'basename'
-            \   },
-            \ },
-            \ })
-call ddc#custom#patch_filetype(['vim'], 'sources', (['necovim'] + s:basic_sources))
-call ddc#enable()
+function! s:config_ddc() abort
+    call dein#source([
+                \ 'neco-vim',
+                \ 'neco-syntax',
+                \ 'neosnippet.vim',
+                \ 'vim-snippets'
+                \ ])
+
+    let l:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
+    call ddc#custom#patch_global(#{
+                \ ui: 'native',
+                \ sources: l:basic_sources,
+                \ sourceOptions: #{
+                \   _: #{
+                \     matchers: ['matcher_fuzzy'],
+                \     sorters: ['sorter_fuzzy'],
+                \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
+                \     timeout: 1000,
+                \   },
+                \   vim-lsp: #{
+                \     mark: '[lsp]',
+                \     forceCompletionPattern: '\S+(->|.)'
+                \   },
+                \   around: #{mark: '[around]'},
+                \   necosyntax: #{mark: '[syntax]'},
+                \   buffer: #{mark: '[buffer]'},
+                \   file: #{
+                \     mark: '[file]',
+                \     isVolatile: v:true,
+                \     forceCompletionPattern: '\S/\S*',
+                \   },
+                \   neosnippet: #{mark: '[snippet]'},
+                \   line: #{mark: '[line]', matchers: ['matcher_head']},
+                \   necovim: #{mark: '[vim]'},
+                \ },
+                \ sourceParams: #{
+                \   buffer: #{
+                \     requireSameFiletype: v:false,
+                \     bufNameStyle: 'basename'
+                \   },
+                \ },
+                \ })
+    call ddc#custom#patch_filetype(['vim'], 'sources', (['necovim'] + l:basic_sources))
+    call ddc#enable()
+endfunction
+autocmd vimrc InsertEnter * call s:config_ddc()
 " }}}
 
 " pum.vim {{{
@@ -1210,7 +1220,7 @@ autocmd vimrc Filetype gin-status call s:config_gin_status()
 " lexima.vim {{{
 imap <C-h> <BS>
 cmap <C-h> <BS>
-function! Hook_on_post_source_lexima() abort
+function! OnPostSourceLexima() abort
     let l:rules = []
 
     for l:char in ['+', '-', '*', '/', '%', '<', '>', '&', '=', '<Bar>']
