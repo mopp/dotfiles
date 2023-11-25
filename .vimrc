@@ -90,6 +90,11 @@ set whichwrap=b,s,h,l,<,>,[,]
 set wildignorecase
 set wildmenu
 
+" neovim only.
+set inccommand=split
+set scrollback=5000
+set wildoptions=
+
 " Turn off default plugins. {{{
 let g:loaded_2html_plugin = 1
 let g:loaded_gzip = 1
@@ -236,12 +241,7 @@ nnoremap <silent> <Leader>q <Cmd>quit<CR>
 vnoremap <C-R> "hy:%s/\V<C-R>h//g<left><left>
 
 " Open vimrc at newtab.
-if has('nvim') || has('patch-8.0.1508')
-    " `drop` command is available on gvim, neovim or vim 8.0.1508.
-    nnoremap <silent> <Leader>ev <Cmd>tab drop $MYVIMRC<CR>
-else
-    nnoremap <silent> <Leader>ev <Cmd>tabnew $MYVIMRC<CR>
-endif
+nnoremap <silent> <Leader>ev <Cmd>tab drop $MYVIMRC<CR>
 
 " Tab version `gf`.
 nnoremap <silent> gtf :<C-U>execute 'tabnew' expand('<cfile>')<CR>
@@ -249,6 +249,13 @@ nnoremap <silent> gtf :<C-U>execute 'tabnew' expand('<cfile>')<CR>
 " Keep indent
 nnoremap <silent><expr> i empty(getline('.')) ? 'S' : 'i'
 nnoremap <silent><expr> a empty(getline('.')) ? 'S' : 'a'
+
+" For terminal.
+tnoremap <silent> <ESC> <C-\><C-n>
+nnoremap <silent> <Leader>tm :terminal<CR>
+nnoremap <silent> <Leader>vpt :split term://zsh<CR>
+nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
+nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
 " }}}
 
 " Autocommands {{{
@@ -270,6 +277,8 @@ augroup vimrc
     autocmd BufWinEnter *.toml               nested setlocal filetype=toml
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
+
+    autocmd TermOpen * nnoremap <silent><buffer> <Enter> A
 
     if executable('fcitx5-remote')
         " Disable IME when back to normal mode.
@@ -306,7 +315,7 @@ command! ReloadVimrc :source $MYVIMRC
 " Echo highlight name of an object under the cursor.
 command! EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-" Convert number expression. {{{
+" Evaluate the given number expression using the specified radix. {{{
 let s:format = { 2: '0b%b', 8: '0o%o', 10: '%d', 16: '0x%x' }
 function! s:eval_with_radix(base, exp) abort " {{{
     let result = eval(a:exp)
@@ -322,178 +331,176 @@ inoremap <silent><expr> <C-G><C-B> <SID>eval_with_radix(2, input('= '))
 inoremap <silent><expr> <C-G><C-O> <SID>eval_with_radix(8, input('= '))
 inoremap <silent><expr> <C-G><C-D> <SID>eval_with_radix(10, input('= '))
 inoremap <silent><expr> <C-G><C-H> <SID>eval_with_radix(16, input('= '))
-
-if has('nvim')
-    function! PreviewRadixesInsert() abort
-        let l:n = line('.') - 1
-        quit
-        execute printf('normal! i%s', g:preview_radixes_values[l:n])
-    endfunction
-
-    function! PreviewRadixesAppend() abort
-        let l:n = line('.') - 1
-        quit
-        execute printf('normal! a%s', g:preview_radixes_values[l:n])
-    endfunction
-
-    function! PreviewRadixesReplace() abort
-        let l:n = line('.') - 1
-        quit
-        execute printf('normal! "_ciw%s', g:preview_radixes_values[l:n])
-    endfunction
-
-    function! s:preview_radixes(input) abort " {{{
-        let l:integer = str2nr(a:input)
-        if string(l:integer) != a:input
-            echohl ErrorMsg | echo 'The given value `' . a:input . '` is NOT number.' | echohl None
-            return
-        endif
-
-        let g:preview_radixes_values = [
-                    \ printf('0b%b', l:integer),
-                    \ printf('0o%o', l:integer),
-                    \ printf('%d', l:integer),
-                    \ printf('0x%x', l:integer),
-                    \ ]
-
-        let l:content = [
-                    \ printf(' Bin: 0b%b ', l:integer),
-                    \ printf(' Oct: 0o%o', l:integer),
-                    \ printf(' Dec: %d', l:integer),
-                    \ printf(' Hex: 0x%x', l:integer),
-                    \ ]
-
-        let l:buf = nvim_create_buf(v:false, v:true)
-        call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
-
-        let l:opts = {'noremap': v:true, 'nowait': v:true}
-        " Exit.
-        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
-        " Copy the number.
-        call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wyiw', {})
-        " Insert the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'i', '<Cmd>call PreviewRadixesInsert()<CR>', l:opts)
-        " Append the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'a', '<Cmd>call PreviewRadixesAppend()<CR>', l:opts)
-        " Replace the current cursor word by the number.
-        call nvim_buf_set_keymap(l:buf, 'n', 'r', '<Cmd>call PreviewRadixesReplace()<CR>', l:opts)
-
-        let l:opts = {
-                    \ 'relative': 'cursor',
-                    \ 'height': len(l:content),
-                    \ 'width': max(map(l:content, {_, c -> len(c)})),
-                    \ 'row': 1,
-                    \ 'col': 0,
-                    \ 'style': 'minimal'
-                    \ }
-        call nvim_open_win(l:buf, v:true, l:opts)
-    endfunction " }}}
-
-    command! -nargs=0 PreviewRadixes call <SID>preview_radixes(expand('<cword>'))
-    command! -nargs=? PreviewRadixesEval call <SID>preview_radixes(eval(len(<q-args>) ? <q-args> : input('= ')))
-endif
 " }}}
 
-" Convert the given word case.
-if has('nvim') " {{{
-    function! PreviewWordCasesReplace(n) abort
-        if a:n == 0
-            let l:n = line('.') - 1
-        elseif 4 < a:n
-            echoerr 'invalid'
-            return
-        else
-            let l:n = a:n
-        endif
-        quit
-        execute printf('normal! "_ciw%s', g:preview_word_cases_values[l:n])
-    endfunction
+" Preview a converted number by each radix. {{{
+function! PreviewRadixesInsert() abort
+    let l:n = line('.') - 1
+    quit
+    execute printf('normal! i%s', g:preview_radixes_values[l:n])
+endfunction
 
-    function! s:to_lower_snake_case(str) abort
-        if empty(a:str) == 1
-            return ''
-        endif
+function! PreviewRadixesAppend() abort
+    let l:n = line('.') - 1
+    quit
+    execute printf('normal! a%s', g:preview_radixes_values[l:n])
+endfunction
 
-        if stridx(a:str, '_') == -1
-            " UpperCamelCase or lowerCamelCase
-            return tolower(a:str[0]) . substitute(a:str[1:-1], '\(\u\)', '\="_" . tolower(submatch(1))', 'g')
-        else
-            " lower_snake_case or UPPER_SNAKE_CASE
-            return tolower(a:str)
-        endif
-    endfunction
+function! PreviewRadixesReplace() abort
+    let l:n = line('.') - 1
+    quit
+    execute printf('normal! "_ciw%s', g:preview_radixes_values[l:n])
+endfunction
 
-    function! s:to_upper_snake_case(str) abort
-        return toupper(s:to_lower_snake_case(a:str))
-    endfunction
+function! s:preview_radixes(input) abort " {{{
+    let l:integer = str2nr(a:input)
+    if string(l:integer) != a:input
+        echohl ErrorMsg | echo 'The given value `' . a:input . '` is NOT number.' | echohl None
+        return
+    endif
 
-    function! s:to_lower_camel_case(str) abort
-        if empty(a:str) == 1
-            return ''
-        endif
+    let g:preview_radixes_values = [
+                \ printf('0b%b', l:integer),
+                \ printf('0o%o', l:integer),
+                \ printf('%d', l:integer),
+                \ printf('0x%x', l:integer),
+                \ ]
 
-        if stridx(a:str, '_') == -1
-            " UpperCamelCase or lowerCamelCase
-            return tolower(a:str[0]) . a:str[1 : -1]
-        else
-            " lower_snake_case or UPPER_SNAKE_CASE
-            return substitute(tolower(a:str), '_\(.\)', '\=toupper(submatch(1))', 'g')
-        endif
-    endfunction
+    let l:content = [
+                \ printf(' Bin: 0b%b ', l:integer),
+                \ printf(' Oct: 0o%o', l:integer),
+                \ printf(' Dec: %d', l:integer),
+                \ printf(' Hex: 0x%x', l:integer),
+                \ ]
 
-    function! s:to_upper_camel_case(str) abort
-        if empty(a:str) == 1
-            return ''
-        endif
+    let l:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
 
-        let l:str = s:to_lower_camel_case(a:str)
-        return toupper(l:str[0]) . l:str[1 : -1]
-    endfunction
+    let l:opts = {'noremap': v:true, 'nowait': v:true}
+    " Exit.
+    call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
+    " Copy the number.
+    call nvim_buf_set_keymap(l:buf, 'n', '<cr>', '02Wyiw', {})
+    " Insert the number.
+    call nvim_buf_set_keymap(l:buf, 'n', 'i', '<Cmd>call PreviewRadixesInsert()<CR>', l:opts)
+    " Append the number.
+    call nvim_buf_set_keymap(l:buf, 'n', 'a', '<Cmd>call PreviewRadixesAppend()<CR>', l:opts)
+    " Replace the current cursor word by the number.
+    call nvim_buf_set_keymap(l:buf, 'n', 'r', '<Cmd>call PreviewRadixesReplace()<CR>', l:opts)
 
-    function! s:preview_word_cases(word) abort " {{{
-        let g:preview_word_cases_values = [
-                    \ s:to_lower_snake_case(a:word),
-                    \ s:to_upper_snake_case(a:word),
-                    \ s:to_lower_camel_case(a:word),
-                    \ s:to_upper_camel_case(a:word)
-                    \ ]
+    let l:opts = {
+                \ 'relative': 'cursor',
+                \ 'height': len(l:content),
+                \ 'width': max(map(l:content, {_, c -> len(c)})),
+                \ 'row': 1,
+                \ 'col': 0,
+                \ 'style': 'minimal'
+                \ }
+    call nvim_open_win(l:buf, v:true, l:opts)
+endfunction " }}}
 
-        let l:content = [
-                    \ ' 1: ' . g:preview_word_cases_values[0] . ' ',
-                    \ ' 2: ' . g:preview_word_cases_values[1] . ' ',
-                    \ ' 3: ' . g:preview_word_cases_values[2] . ' ',
-                    \ ' 4: ' . g:preview_word_cases_values[3] . ' '
-                    \ ]
+command! -nargs=0 PreviewRadixes call <SID>preview_radixes(expand('<cword>'))
+command! -nargs=? PreviewRadixesEval call <SID>preview_radixes(eval(len(<q-args>) ? <q-args> : input('= ')))
+" }}}
 
-        let l:buf = nvim_create_buf(v:false, v:true)
-        call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
+" Convert the given word case. {{{
+function! PreviewWordCasesReplace(n) abort
+    if a:n == 0
+        let l:n = line('.') - 1
+    elseif 4 < a:n
+        echoerr 'invalid'
+        return
+    else
+        let l:n = a:n
+    endif
+    quit
+    execute printf('normal! "_ciw%s', g:preview_word_cases_values[l:n])
+endfunction
 
-        let l:opts = {'noremap': v:true, 'nowait': v:true, 'silent': v:true}
-        " Exit.
-        call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '<ESC>', 'ZQ', l:opts)
-        " Copy the word.
-        call nvim_buf_set_keymap(l:buf, 'n', 'y', '02Wyiw', {})
-        " Replace the current cursor word by the selected case.
-        call nvim_buf_set_keymap(l:buf, 'n', '<CR>', '<Cmd>call PreviewWordCasesReplace(0)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '1', '<Cmd>call PreviewWordCasesReplace(1)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '2', '<Cmd>call PreviewWordCasesReplace(2)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '3', '<Cmd>call PreviewWordCasesReplace(3)<CR>', l:opts)
-        call nvim_buf_set_keymap(l:buf, 'n', '4', '<Cmd>call PreviewWordCasesReplace(4)<CR>', l:opts)
+function! s:to_lower_snake_case(str) abort
+    if empty(a:str) == 1
+        return ''
+    endif
 
-        let l:opts = {
-                    \ 'relative': 'cursor',
-                    \ 'height': len(l:content),
-                    \ 'width': max(map(l:content, {_, c -> len(c)})),
-                    \ 'row': 1,
-                    \ 'col': 0,
-                    \ 'style': 'minimal'
-                    \ }
-        call nvim_open_win(l:buf, v:true, l:opts)
-    endfunction " }}}
+    if stridx(a:str, '_') == -1
+        " UpperCamelCase or lowerCamelCase
+        return tolower(a:str[0]) . substitute(a:str[1:-1], '\(\u\)', '\="_" . tolower(submatch(1))', 'g')
+    else
+        " lower_snake_case or UPPER_SNAKE_CASE
+        return tolower(a:str)
+    endif
+endfunction
 
-    command! -nargs=0 PreviewWordCases call <SID>preview_word_cases(expand('<cword>'))
-endif
+function! s:to_upper_snake_case(str) abort
+    return toupper(s:to_lower_snake_case(a:str))
+endfunction
+
+function! s:to_lower_camel_case(str) abort
+    if empty(a:str) == 1
+        return ''
+    endif
+
+    if stridx(a:str, '_') == -1
+        " UpperCamelCase or lowerCamelCase
+        return tolower(a:str[0]) . a:str[1 : -1]
+    else
+        " lower_snake_case or UPPER_SNAKE_CASE
+        return substitute(tolower(a:str), '_\(.\)', '\=toupper(submatch(1))', 'g')
+    endif
+endfunction
+
+function! s:to_upper_camel_case(str) abort
+    if empty(a:str) == 1
+        return ''
+    endif
+
+    let l:str = s:to_lower_camel_case(a:str)
+    return toupper(l:str[0]) . l:str[1 : -1]
+endfunction
+
+function! s:preview_word_cases(word) abort " {{{
+    let g:preview_word_cases_values = [
+                \ s:to_lower_snake_case(a:word),
+                \ s:to_upper_snake_case(a:word),
+                \ s:to_lower_camel_case(a:word),
+                \ s:to_upper_camel_case(a:word)
+                \ ]
+
+    let l:content = [
+                \ ' 1: ' . g:preview_word_cases_values[0] . ' ',
+                \ ' 2: ' . g:preview_word_cases_values[1] . ' ',
+                \ ' 3: ' . g:preview_word_cases_values[2] . ' ',
+                \ ' 4: ' . g:preview_word_cases_values[3] . ' '
+                \ ]
+
+    let l:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
+
+    let l:opts = {'noremap': v:true, 'nowait': v:true, 'silent': v:true}
+    " Exit.
+    call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
+    call nvim_buf_set_keymap(l:buf, 'n', '<ESC>', 'ZQ', l:opts)
+    " Copy the word.
+    call nvim_buf_set_keymap(l:buf, 'n', 'y', '02Wyiw', {})
+    " Replace the current cursor word by the selected case.
+    call nvim_buf_set_keymap(l:buf, 'n', '<CR>', '<Cmd>call PreviewWordCasesReplace(0)<CR>', l:opts)
+    call nvim_buf_set_keymap(l:buf, 'n', '1', '<Cmd>call PreviewWordCasesReplace(1)<CR>', l:opts)
+    call nvim_buf_set_keymap(l:buf, 'n', '2', '<Cmd>call PreviewWordCasesReplace(2)<CR>', l:opts)
+    call nvim_buf_set_keymap(l:buf, 'n', '3', '<Cmd>call PreviewWordCasesReplace(3)<CR>', l:opts)
+    call nvim_buf_set_keymap(l:buf, 'n', '4', '<Cmd>call PreviewWordCasesReplace(4)<CR>', l:opts)
+
+    let l:opts = {
+                \ 'relative': 'cursor',
+                \ 'height': len(l:content),
+                \ 'width': max(map(l:content, {_, c -> len(c)})),
+                \ 'row': 1,
+                \ 'col': 0,
+                \ 'style': 'minimal'
+                \ }
+    call nvim_open_win(l:buf, v:true, l:opts)
+endfunction " }}}
+
+command! -nargs=0 PreviewWordCases call <SID>preview_word_cases(expand('<cword>'))
 " }}}
 
 " Keep last session. {{{
@@ -536,6 +543,7 @@ function! s:hide_left_columns() abort " {{{
     setlocal foldcolumn=0
 endfunction " }}}
 command! HideLeftColumns call s:hide_left_columns()
+autocmd vimrc TermOpen * call s:hide_left_columns()
 
 function! s:toggle_relative_number() abort " {{{
     let b:relnum = !get(b:, 'relnum', 1)
@@ -624,27 +632,8 @@ function! s:config_neovide() abort
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_refresh_rate = 120
 endfunction
-if has('nvim')
-    " neovim server へ neovide から接続したときに設定を適用するため
-    autocmd vimrc UIEnter * call s:config_neovide()
-endif
-" }}}
-
-" Neovim. {{{
-if has('nvim')
-    set inccommand=split
-    set scrollback=5000
-    set wildoptions=
-
-    tnoremap <silent> <ESC> <C-\><C-n>
-    nnoremap <silent> <Leader>tm :terminal<CR>
-    nnoremap <silent> <Leader>vpt :split term://zsh<CR>
-    nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
-    nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
-
-    autocmd vimrc TermOpen * call s:hide_left_columns()
-    autocmd vimrc TermOpen * nnoremap <silent><buffer> <Enter> A
-endif
+" apply neopvide config when it uses remove neovim server.
+autocmd vimrc UIEnter * call s:config_neovide()
 " }}}
 
 " Plugins. {{{
