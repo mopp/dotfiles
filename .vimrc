@@ -251,6 +251,33 @@ nnoremap <silent><expr> i empty(getline('.')) ? 'S' : 'i'
 nnoremap <silent><expr> a empty(getline('.')) ? 'S' : 'a'
 " }}}
 
+" Autocommands {{{
+augroup vimrc
+    " Remove all vimrc autocommands
+    autocmd!
+
+    " Turning off paste when escape insert mode.
+    autocmd InsertLeave * setlocal nopaste
+
+    " Store and load view.
+    autocmd BufWinLeave * if (bufname('%') != '') | mkview!          | endif
+    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+
+    " Detecting filetypes.
+    autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
+    autocmd BufWinEnter *.plt                nested setlocal filetype=gnuplot
+    autocmd BufWinEnter *.sh                 nested setlocal filetype=sh
+    autocmd BufWinEnter *.toml               nested setlocal filetype=toml
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
+    autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
+
+    if executable('fcitx5-remote')
+        " Disable IME when back to normal mode.
+        autocmd InsertLeave,CmdLineLeave * call system('fcitx5-remote -c')
+    endif
+augroup END
+" }}}
+
 " Functions {{{
 function! s:remove_tail_spaces() abort " {{{
     if &filetype !=# 'markdown'
@@ -258,7 +285,9 @@ function! s:remove_tail_spaces() abort " {{{
         keeppatterns %s/\s\+$//ge
         call setpos('.', l:c)
     endif
-endfunction " }}}
+endfunction
+autocmd vimrc BufWritePre * silent call s:remove_tail_spaces()
+" }}}
 
 function! s:define_quickfix_mappings() abort
     nnoremap <silent><buffer> q :<C-U>q<CR>
@@ -267,6 +296,7 @@ function! s:define_quickfix_mappings() abort
     nnoremap <silent><buffer><nowait> s <C-W>F<CR>
     nnoremap <silent><buffer> v <C-W>F<C-W>L<CR>
 endfunction
+autocmd vimrc FileType qf call s:define_quickfix_mappings()
 " }}}
 
 " Commands. {{{
@@ -470,6 +500,9 @@ endif
 let s:session_directory = '~/.vim/sessions/'
 let s:last_session_filepath = s:session_directory . 'last_session.vim'
 
+" Save session automatically.
+autocmd vimrc VimLeave * execute 'mksession!' s:last_session_filepath
+
 function! s:save_session(...) abort
     execute 'mksession!' (a:0 == 0) ? (s:last_session_filepath) : (s:session_directory . a:1)
 endfunction
@@ -516,6 +549,10 @@ function! s:toggle_relative_number() abort " {{{
     setlocal number
 endfunction " }}}
 command! ToggleRelativeNumber call s:toggle_relative_number()
+augroup vimrc
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && get(b:, 'relnum', 1) | setlocal relativenumber   | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu && get(b:, 'relnum', 1) | setlocal norelativenumber | endif
+augroup END
 
 " jq command wrapper.
 function! s:jq(...) abort " {{{
@@ -587,48 +624,10 @@ function! s:config_neovide() abort
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_refresh_rate = 120
 endfunction
-" }}}
-
-" Autocommands. {{{
-augroup mopp
-    autocmd!
-
-    " Save session automatically.
-    autocmd VimLeave * execute 'mksession!' s:last_session_filepath
-
-    " Turning off paste when escape insert mode.
-    autocmd InsertLeave * setlocal nopaste
-
-    " Store and load view.
-    autocmd BufWinLeave * if (bufname('%') != '') | mkview!          | endif
-    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
-
-    " Remove spaces at tail.
-    autocmd BufWritePre * silent call s:remove_tail_spaces()
-
-    " Detecting filetypes.
-    autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
-    autocmd BufWinEnter *.plt                nested setlocal filetype=gnuplot
-    autocmd BufWinEnter *.sh                 nested setlocal filetype=sh
-    autocmd BufWinEnter *.toml               nested setlocal filetype=toml
-    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
-    autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
-
-    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && get(b:, 'relnum', 1) | setlocal relativenumber   | endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu && get(b:, 'relnum', 1) | setlocal norelativenumber | endif
-
-    if executable('fcitx5-remote')
-        " Disable IME when back to normal mode.
-        autocmd InsertLeave,CmdLineLeave * call system('fcitx5-remote -c')
-    endif
-
-    autocmd FileType qf call s:define_quickfix_mappings()
-
-    if has('nvim')
-        " neovim server へ neovide から接続したときに設定を適用するため
-        autocmd UIEnter * call s:config_neovide()
-    endif
-augroup END
+if has('nvim')
+    " neovim server へ neovide から接続したときに設定を適用するため
+    autocmd vimrc UIEnter * call s:config_neovide()
+endif
 " }}}
 
 " Neovim. {{{
@@ -643,8 +642,8 @@ if has('nvim')
     nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
     nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
 
-    autocmd mopp TermOpen * call s:hide_left_columns()
-    autocmd mopp TermOpen * nnoremap <silent><buffer> <Enter> A
+    autocmd vimrc TermOpen * call s:hide_left_columns()
+    autocmd vimrc TermOpen * nnoremap <silent><buffer> <Enter> A
 endif
 " }}}
 
@@ -801,8 +800,7 @@ filetype plugin indent on
 
 " ftplugins are loaded when 'filetype on'.
 " The autocmds to override filetype local settings have to be executed after 'filetype on'.
-augroup mopp_filetype_overwrite " {{{
-    autocmd!
+augroup vimrc " {{{
     autocmd FileType git setlocal nofoldenable
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType text,man setlocal wrap
@@ -1034,6 +1032,7 @@ function! s:ddu_ff_settings() abort
     nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
     nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
 endfunction
+autocmd vimrc FileType ddu-ff call s:ddu_ff_settings()
 
 function! s:ddu_filter_settings() abort
     let b:lexima_disabled = 1
@@ -1041,6 +1040,7 @@ function! s:ddu_filter_settings() abort
     inoremap <buffer> <silent><nowait> <ESC> <Esc><Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
     nnoremap <buffer> <silent><nowait> q <Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
 endfunction
+autocmd vimrc FileType ddu-ff-filter call s:ddu_filter_settings()
 " }}}
 
 " vim-operator-flashy
@@ -1204,6 +1204,7 @@ function! s:config_gin_status() abort
     nnoremap <buffer> <silent><nowait> <C-\> <Cmd>Gin commit<CR>
     map <buffer> <silent><nowait> == <Plug>(gin-action-restore)
 endfunction
+autocmd vimrc Filetype gin-status call s:config_gin_status()
 " }}}
 
 " lexima.vim {{{
@@ -1303,6 +1304,7 @@ endfunction
 nmap gcg <Plug>(caw:hatpos:toggle:operator)
 nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
 vmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
+autocmd vimrc FileType erlang let b:caw_oneline_comment = '%%'
 
 " Capture.vim
 command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s/%s/print', expand('<bang>'), <q-args>)
@@ -1358,6 +1360,7 @@ function! s:init_fern() abort
     nmap <silent><buffer> * <Plug>(anzu-star)
     nmap <silent><buffer> # <Plug>(anzu-sharp)
 endfunction
+autocmd vimrc FileType fern call s:init_fern()
 " }}}
 
 " vim-ambicmd
@@ -1406,10 +1409,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <silent><buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <silent><buffer> K <plug>(lsp-hover)
 endfunction
-augroup mopp_lsp
-    autocmd!
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
+autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " }}}
 
 " winresizer
@@ -1430,19 +1430,6 @@ require'nvim-treesitter.configs'.setup {
     indent = { enable = true },
 }
 EOF
-
-" Autocommands for plugins.  {{{
-augroup plugin
-    autocmd!
-
-    autocmd FileType erlang let b:caw_oneline_comment = '%%'
-    autocmd FileType fern call s:init_fern()
-    autocmd Filetype gin-status call s:config_gin_status()
-    autocmd Filetype gin-status call s:config_gin_status()
-    autocmd FileType ddu-ff call s:ddu_ff_settings()
-    autocmd FileType ddu-ff-filter call s:ddu_filter_settings()
-augroup END
-" }}}
 " }}}
 
 syntax enable
