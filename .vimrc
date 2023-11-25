@@ -275,7 +275,7 @@ augroup vimrc
     autocmd BufWinEnter *.plt                nested setlocal filetype=gnuplot
     autocmd BufWinEnter *.sh                 nested setlocal filetype=sh
     autocmd BufWinEnter *.toml               nested setlocal filetype=toml
-    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn} nested setlocal filetype=markdown conceallevel=0
     autocmd BufWinEnter *.{pde,ino}          nested setlocal filetype=arduino
 
     autocmd TermOpen * nnoremap <silent><buffer> <Enter> A
