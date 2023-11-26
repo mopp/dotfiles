@@ -1340,7 +1340,7 @@ autocmd vimrc FileType fern call s:init_fern()
 " }}}
 
 " vim-ambicmd
-if dein#tap('vim-ambicmd') " {{{
+if dein#is_sourced('vim-ambicmd') " {{{
     cnoremap <expr> <CR> ambicmd#expand('<CR>')
     cnoremap <expr> <Space> ambicmd#expand('<Space>')
 endif " }}}
