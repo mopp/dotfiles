@@ -536,16 +536,19 @@ function! s:create_vim_directories() abort
 endfunction
 " }}}
 
-function! s:hide_left_columns() abort " {{{
+" Hide left columns {{{
+function! s:hide_left_columns() abort
     setlocal nonumber
     setlocal norelativenumber
     setlocal signcolumn=no
     setlocal foldcolumn=0
-endfunction " }}}
+endfunction
 command! HideLeftColumns call s:hide_left_columns()
 autocmd vimrc TermOpen * call s:hide_left_columns()
+" }}}
 
-function! s:toggle_relative_number() abort " {{{
+" Toggle relative number {{{
+function! s:toggle_relative_number() abort
     let b:relnum = !get(b:, 'relnum', 1)
 
     if b:relnum
@@ -555,19 +558,21 @@ function! s:toggle_relative_number() abort " {{{
     endif
 
     setlocal number
-endfunction " }}}
+endfunction
 command! ToggleRelativeNumber call s:toggle_relative_number()
 augroup vimrc
     autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && get(b:, 'relnum', 1) | setlocal relativenumber   | endif
     autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu && get(b:, 'relnum', 1) | setlocal norelativenumber | endif
 augroup END
+" }}}
 
-" jq command wrapper.
+" jq command wrapper. {{{
 function! s:jq(...) abort " {{{
     execute '%! jq ' . (a:0 ? a:1 : '.')
     setlocal filetype=json
 endfunction " }}}
 command! -nargs=? Jq call s:jq(<f-args>)
+" }}}
 
 command! -nargs=0 RemoveBlankLines :global/^\s*$/delete
 
@@ -603,6 +608,7 @@ endfunction " }}}
 command! -nargs=0 GoteToday call s:gote_today()
 " }}}
 
+" Copy file path {{{
 function s:copy_absolute_path()
     let @"=expand('%:p')
 endfunction
@@ -613,6 +619,7 @@ endfunction
 
 command! -nargs=0 CopyAbsolutePath call s:copy_absolute_path()
 command! -nargs=0 CopyRelativePath call s:copy_relative_path()
+" }}}
 " }}}
 
 " GUI. {{{
