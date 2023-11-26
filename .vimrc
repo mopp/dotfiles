@@ -550,13 +550,7 @@ autocmd vimrc TermOpen * call s:hide_left_columns()
 " Toggle relative number {{{
 function! s:toggle_relative_number() abort
     let b:relnum = !get(b:, 'relnum', 1)
-
-    if b:relnum
-        setlocal relativenumber
-    else
-        setlocal norelativenumber
-    endif
-
+    setlocal relativenumber!
     setlocal number
 endfunction
 command! ToggleRelativeNumber call s:toggle_relative_number()
