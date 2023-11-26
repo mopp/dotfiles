@@ -1355,7 +1355,7 @@ if dein#tap('vim-ambicmd') " {{{
 endif " }}}
 
 " committia.vim
-let g:committia_open_only_vim_starting = 1
+let g:committia_open_only_vim_starting = 0
 let g:committia_hooks = {}
 function! g:committia_hooks.edit_open(info)
     setlocal spell
