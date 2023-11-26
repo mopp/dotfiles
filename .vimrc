@@ -250,12 +250,12 @@ nnoremap <silent> gtf :<C-U>execute 'tabnew' expand('<cfile>')<CR>
 nnoremap <silent><expr> i empty(getline('.')) ? 'S' : 'i'
 nnoremap <silent><expr> a empty(getline('.')) ? 'S' : 'a'
 
-" For terminal.
+" Terminal.
 tnoremap <silent> <ESC> <C-\><C-n>
-nnoremap <silent> <Leader>tm :terminal<CR>
-nnoremap <silent> <Leader>vpt :split term://zsh<CR>
-nnoremap <silent> <Leader>vst :vsplit term://zsh<CR>
-nnoremap <silent> <Leader>vtt :tabnew term://zsh<CR>
+nnoremap <silent> <Leader>tm <Cmd>terminal<CR>
+nnoremap <silent> <Leader>vpt <Cmd>split +terminal<CR>
+nnoremap <silent> <Leader>vst <Cmd>vsplit +terminal<CR>
+nnoremap <silent> <Leader>vtt <Cmd>tabnew +terminal<CR>
 " }}}
 
 " Autocommands {{{
