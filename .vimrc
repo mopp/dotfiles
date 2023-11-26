@@ -29,7 +29,6 @@ set tabstop=4
 " }}}
 
 " Appearance. {{{
-set ambiwidth=double
 set cmdheight=2
 set conceallevel=2
 set display=lastline
@@ -741,11 +740,9 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', #{lazy: v:true, on_cmd: 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', #{lazy: v:true, on_cmd: 'ArgWrap'})
-    call dein#add('HiPhish/rainbow-delimiters.nvim')
     call dein#add('LeafCage/yankround.vim', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('Shougo/echodoc.vim', #{lazy: v:true, on_event: 'InsertEnter'})
     call dein#add('Shougo/vinarise.vim', #{lazy: v:true, on_cmd: 'Vinarise'})
-    call dein#add('Yggdroot/indentLine')
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', #{lazy: v:true, on_cmd: 'ColorToggle'})
     call dein#add('cohama/lexima.vim',#{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call OnPostSourceLexima()'})
@@ -777,10 +774,13 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/open-browser.vim', #{lazy: v:true, on_map: [['n', '<Plug>(openbrowser-open)']], on_func: ['openbrowser#load', 'openbrowser#open'], on_source: ['open-browser-github.vim']})
     " }}}
 
-    " Languages {{{
+    " treesitter
+    call dein#add('HiPhish/rainbow-delimiters.nvim')
+    call dein#add('lukas-reineke/indent-blankline.nvim')
     call dein#add('nvim-treesitter/nvim-treesitter', #{hook_post_update: 'TSUpdate'})
+
+    " Languages
     call dein#add('vim-jp/vimdoc-ja')
-    " }}}
 
     call dein#end()
     call dein#save_state()
@@ -823,15 +823,6 @@ if !s:has_dein " {{{
 elseif exists('g:is_setup')
     finish
 endif " }}}
-" }}}
-
-" Command to stop some features which affect performance.
-command! Accelerate call s:accelerate()
-function! s:accelerate() abort " {{{
-    IndentLinesDisable
-    RainbowToggleOff
-    set nocursorline
-endfunction
 " }}}
 
 " ddc.vim {{{
@@ -1400,20 +1391,20 @@ autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " winresizer
 let g:winresizer_start_key = '<Nop>'
 
-" indentLine
-let g:indentLine_fileTypeExclude = ['ddu-ff', 'ddu-ff-filter', 'fern', 'help']
-let g:indentLine_faster = 1
-let g:indentLine_color_term = 248
-let g:indentLine_setConceal = 0
-let g:indentLine_concealcursor = ''
-
-" nvim-treesitter
+" Lua plugin initialize
 lua << EOF
-require'nvim-treesitter.configs'.setup {
+-- nvim-treesitter
+require 'nvim-treesitter.configs'.setup {
     auto_install = true,
     highlight = { enable = true },
     incremental_selection = { enable = true },
     indent = { enable = true },
+}
+
+-- indent-blankline.nvim
+require 'ibl'.setup {
+    indent = { char = '|' },
+    scope = { enabled = false }
 }
 EOF
 " }}}
