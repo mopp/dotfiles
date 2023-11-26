@@ -476,7 +476,7 @@ function! s:preview_word_cases(word) abort " {{{
     let l:buf = nvim_create_buf(v:false, v:true)
     call nvim_buf_set_lines(l:buf, 0, -1, v:true, l:content)
 
-    let l:opts = {'noremap': v:true, 'nowait': v:true, 'silent': v:true}
+    let l:opts = #{noremap: v:true, nowait: v:true, silent: v:true}
     " Exit.
     call nvim_buf_set_keymap(l:buf, 'n', 'q', 'ZQ', l:opts)
     call nvim_buf_set_keymap(l:buf, 'n', '<ESC>', 'ZQ', l:opts)
@@ -489,13 +489,13 @@ function! s:preview_word_cases(word) abort " {{{
     call nvim_buf_set_keymap(l:buf, 'n', '3', '<Cmd>call PreviewWordCasesReplace(3)<CR>', l:opts)
     call nvim_buf_set_keymap(l:buf, 'n', '4', '<Cmd>call PreviewWordCasesReplace(4)<CR>', l:opts)
 
-    let l:opts = {
-                \ 'relative': 'cursor',
-                \ 'height': len(l:content),
-                \ 'width': max(map(l:content, {_, c -> len(c)})),
-                \ 'row': 1,
-                \ 'col': 0,
-                \ 'style': 'minimal'
+    let l:opts = #{
+                \ relative: 'cursor',
+                \ height: len(l:content),
+                \ width: max(map(l:content, {_, c -> len(c)})),
+                \ row: 1,
+                \ col: 0,
+                \ style: 'minimal'
                 \ }
     call nvim_open_win(l:buf, v:true, l:opts)
 endfunction " }}}
@@ -939,11 +939,11 @@ call ddu#custom#patch_global(#{
             \   },
             \ },
             \ sourceParams: #{
-            \   file_external: {
-            \     'cmd': ['git', 'ls-files']
+            \   file_external: #{
+            \     cmd: ['git', 'ls-files']
             \   },
-            \   file_external_ignore: {
-            \     'cmd': ['git', 'ls-files']
+            \   file_external_ignore: #{
+            \     cmd: ['git', 'ls-files']
             \   },
             \ },
             \ filterParams: #{
@@ -1083,51 +1083,49 @@ let g:extra_whitespace_ignored_filetypes = ['help']
 map <Leader>e <Plug>(easymotion-prefix)
 
 " lightline.vim {{{
-let g:lightline = {
-            \ 'colorscheme': 'tokyonight',
-            \ 'active': {
-            \   'left': [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
-            \   'right': [['fileencoding', 'fileformat'], ['filetype']],
+let g:lightline = #{
+            \ colorscheme: 'tokyonight',
+            \ active: #{
+            \   left: [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
+            \   right: [['fileencoding', 'fileformat'], ['filetype']],
             \ },
-            \ 'inactive': {
-            \   'left': [['filename', 'modified']],
-            \   'right': [['filetype']]
+            \ inactive: #{
+            \   left: [['filename', 'modified']],
+            \   right: [['filetype']]
             \ },
-            \ 'tabline': {
-            \   'left': [['tabs']],
-            \   'right': []
+            \ tabline: #{
+            \   left: [['tabs']],
+            \   right: []
             \ },
-            \ 'tab': {
-            \   'active':   ['tabnum', 'filename', 'modified'],
-            \   'inactive': ['tabnum', 'filename', 'modified']
+            \ tab: #{
+            \   active:   ['tabnum', 'filename', 'modified'],
+            \   inactive: ['tabnum', 'filename', 'modified']
             \ },
-            \ 'tabline_separator': { 'left': '', 'right': '' },
-            \ 'tabline_subseparator': { 'left': '', 'right': '' },
-            \ 'tab_component_function': {
-            \    'filename': 'LightlineTabFilename'
-            \  },
-            \ 'component': {
-            \   'mode':         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
-            \   'modified':     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
-            \   'readonly':     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
-            \   'git_status':   "%{ (LightlineIsVisible() && dein#is_sourced('gin.vim')) ? gin#component#branch#ascii() : '' }",
-            \   'filetype':     "%{ LightlineIsVisible() ? &filetype : '' }",
-            \   'fileencoding': "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
-            \   'fileformat':   "%{ LightlineIsVisible() ? &fileformat : '' }",
+            \ tabline_separator: #{left: '', right: ''},
+            \ tabline_subseparator: #{left: '', right: ''},
+            \ tab_component_function: #{filename: 'LightlineTabFilename'},
+            \ component: #{
+            \   mode:         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
+            \   modified:     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
+            \   readonly:     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
+            \   git_status:   "%{ (LightlineIsVisible() && dein#is_sourced('gin.vim')) ? gin#component#branch#ascii() : '' }",
+            \   filetype:     "%{ LightlineIsVisible() ? &filetype : '' }",
+            \   fileencoding: "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
+            \   fileformat:   "%{ LightlineIsVisible() ? &fileformat : '' }",
             \ },
-            \ 'component_visible_condition': {
-            \   'modified':     'LightlineIsVisible() && &modifiable',
-            \   'fileencoding': 'LightlineIsVisible()',
-            \   'fileformat':   'LightlineIsVisible()',
-            \   'anzu':         'LightlineIsVisible()',
+            \ component_visible_condition: #{
+            \   modified:     'LightlineIsVisible() && &modifiable',
+            \   fileencoding: 'LightlineIsVisible()',
+            \   fileformat:   'LightlineIsVisible()',
+            \   anzu:         'LightlineIsVisible()',
             \ },
-            \ 'component_function': {
-            \   'filename':   'LightlineFilename',
-            \   'anzu':       'anzu#search_status',
+            \ component_function: #{
+            \   filename:   'LightlineFilename',
+            \   anzu:       'anzu#search_status',
             \ },
             \ }
 
-let g:lightline_plugin_modes = {'ddu-ff': 'ddu', 'ddu-ff-filter': 'ddu', 'fern': 'Fern'}
+let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern'}
 
 function! LightlineIsVisible() abort
     return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help')
@@ -1193,84 +1191,84 @@ function! OnPostSourceLexima() abort
     let l:rules = []
 
     for l:char in ['+', '-', '*', '/', '%', '<', '>', '&', '=', '<Bar>']
-        call add(l:rules, {'char': l:char, 'at': '\S\+\%#', 'except': '''.*\%#.*''', 'input': ' ' . l:char . ' '})
+        call add(l:rules, #{char: l:char, at: '\S\+\%#', except: '''.*\%#.*''', input: ' ' . l:char . ' '})
     endfor
-    call add(l:rules, {'char': '<BS>', 'at': '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', 'input': '<BS><BS><BS>'})
+    call add(l:rules, #{char: '<BS>', at: '\w\+\s\(+\|-\|\*\|%\|<\|>\|&\|=\||\)\s\%#', input: '<BS><BS><BS>'})
 
     for l:char in ['*', '<', '>', '&', '=', '<Bar>', '/']
-        call add(l:rules, {'char': l:char, 'at': l:char . '\s\%#', 'input': '<BS>' . l:char . ' '})
+        call add(l:rules, #{char: l:char, at: l:char . '\s\%#', input: '<BS>' . l:char . ' '})
     endfor
-    call add(l:rules, {'char': '<BS>', 'at': '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', 'input': '<BS><BS><BS><BS>'})
+    call add(l:rules, #{char: '<BS>', at: '\s\(++\|\*\*\|<<\|>>\|&&\|||\)\s\%#', input: '<BS><BS><BS><BS>'})
 
     let l:rules +=
                 \ [
-                \ {'char': '-', 'at': '< \%#', 'input': '<BS>- ', 'priority': 10},
+                \ #{char: '-', at: '< \%#', input: '<BS>- ', priority: 10},
                 \
-                \ {'char': '<TAB>', 'at': '([()]*\%#[)]*)', 'input': '<Right>'},
+                \ #{char: '<TAB>', at: '([()]*\%#[)]*)', input: '<Right>'},
                 \
-                \ {'char': '=',    'at': '!\%#',     'input': '<BS> != ', 'priority': 10},
-                \ {'char': '<BS>', 'at': ' != !\%#', 'input': '<BS><BS><BS><BS>'},
+                \ #{char: '=',    at: '!\%#',     input: '<BS> != ', priority: 10},
+                \ #{char: '<BS>', at: ' != !\%#', input: '<BS><BS><BS><BS>'},
                 \
-                \ {'char': '/', 'at': '^\s*\%#', 'input': '// '},
+                \ #{char: '/', at: '^\s*\%#', input: '// '},
                 \
-                \ {'filetype': ['erlang'], 'char': ':',     'at': ':\%#',     'input': '<BS> :: '},
-                \ {'filetype': ['erlang'], 'char': '=',     'at': ':\%#',     'input': '<BS> := '},
-                \ {'filetype': ['erlang'], 'char': '=',     'at': '= \%#',    'input': '<BS>:= '},
-                \ {'filetype': ['erlang'], 'char': '=',     'at': '!\%#',     'input': '<BS> =/= ', 'priority': 20},
-                \ {'filetype': ['erlang'], 'char': '<BS>',  'at': '`\%#''',   'input': '<BS><Del>'},
-                \ {'filetype': ['erlang'], 'char': '%',     'at': '^\s*%\%#', 'input': '% '},
-                \ {'filetype': ['erlang'], 'char': '<Del>', 'at': ':= \%#',   'input': '<BS><BS><BS>'},
-                \ {'filetype': ['erlang'], 'char': '`',     'input': '`''<Left>', 'syntax': 'Comment'},
+                \ #{filetype: ['erlang'], char: ':',     at: ':\%#',     input: '<BS> :: '},
+                \ #{filetype: ['erlang'], char: '=',     at: ':\%#',     input: '<BS> := '},
+                \ #{filetype: ['erlang'], char: '=',     at: '= \%#',    input: '<BS>:= '},
+                \ #{filetype: ['erlang'], char: '=',     at: '!\%#',     input: '<BS> =/= ', priority: 20},
+                \ #{filetype: ['erlang'], char: '<BS>',  at: '`\%#''',   input: '<BS><Del>'},
+                \ #{filetype: ['erlang'], char: '%',     at: '^\s*%\%#', input: '% '},
+                \ #{filetype: ['erlang'], char: '<Del>', at: ':= \%#',   input: '<BS><BS><BS>'},
+                \ #{filetype: ['erlang'], char: '`',     input: '`''<Left>', syntax: 'Comment'},
                 \
-                \ {'filetype': ['elixir'], 'char': '<Bar>', 'at': '^\s\+\%#', 'input': '|> ', 'priority': 10},
-                \ {'filetype': ['elixir'], 'char': '>', 'at': '|\%#', 'input': '> ', 'priority': 10},
+                \ #{filetype: ['elixir'], char: '<Bar>', at: '^\s\+\%#', input: '|> ', priority: 10},
+                \ #{filetype: ['elixir'], char: '>', at: '|\%#', input: '> ', priority: 10},
                 \
-                \ {'filetype': ['ruby'], 'char': '<Bar>', 'at': '{\%#}', 'input': '||<Left>', 'priority': 10},
-                \ {'filetype': ['ruby'], 'char': '{', 'at': '\w\+\%#', 'input': ' {}<Left>', 'priority': 10},
+                \ #{filetype: ['ruby'], char: '<Bar>', at: '{\%#}', input: '||<Left>', priority: 10},
+                \ #{filetype: ['ruby'], char: '{', at: '\w\+\%#', input: ' {}<Left>', priority: 10},
                 \
-                \ {'filetype': ['go'], 'char': '=', 'at': ':\%#', 'input': '<BS> := '},
+                \ #{filetype: ['go'], char: '=', at: ':\%#', input: '<BS> := '},
                 \
-                \ {'char': '<Bar>', 'at': '\s|\s\%#', 'input': '<BS>| '},
+                \ #{char: '<Bar>', at: '\s|\s\%#', input: '<BS>| '},
                 \
-                \ {'char': '>',    'at': '<\%#',     'input': '><Left>',              'filetype': ['vim', 'rust']},
-                \ {'char': '>',    'at': '\s<\s\%#', 'input': '<BS><BS><BS><><Left>', 'filetype': ['vim', 'rust']},
-                \ {'char': '<BS>', 'at': '<\%#>',    'input': '<BS><Del>'},
+                \ #{char: '>',    at: '<\%#',     input: '><Left>',              filetype: ['vim', 'rust']},
+                \ #{char: '>',    at: '\s<\s\%#', input: '<BS><BS><BS><><Left>', filetype: ['vim', 'rust']},
+                \ #{char: '<BS>', at: '<\%#>',    input: '<BS><Del>'},
                 \
-                \ {'char': '=',     'at': '\(+\|-\|*\|%\|<\|>\) \%#',    'input': '<BS>= '},
+                \ #{char: '=',     at: '\(+\|-\|*\|%\|<\|>\) \%#',    input: '<BS>= '},
                 \
-                \ {'char': '+',    'at': '\s+\s\%#',      'input': '<BS><BS><BS>++'},
-                \ {'char': '-',    'at': '\s-\s\%#',      'input': '<BS><BS><BS>--'},
-                \ {'char': '<BS>', 'at': '\(++\|--\)\%#', 'input': '<BS><BS>'},
+                \ #{char: '+',    at: '\s+\s\%#',      input: '<BS><BS><BS>++'},
+                \ #{char: '-',    at: '\s-\s\%#',      input: '<BS><BS><BS>--'},
+                \ #{char: '<BS>', at: '\(++\|--\)\%#', input: '<BS><BS>'},
                 \
-                \ {'char': ',',       'at': '\%#',              'input': ', '},
-                \ {'char': ',',       'at': ',\%#',             'input': '<BS>->'},
-                \ {'char': ',',       'at': ',\s\%#',           'input': '<BS><BS>->'},
-                \ {'char': '<Space>', 'at': '\S->\%#',          'input': '<BS><BS> -> '},
-                \ {'char': ',',       'at': '->\%#',            'input': '<BS><BS>=>'},
-                \ {'char': '<Space>', 'at': '\S=>\%#',          'input': '<BS><BS> => '},
-                \ {'char': ',',       'at': '\s->\s\%#',        'input': '<BS><BS><BS>=> '},
-                \ {'char': ',',       'at': '\s=>\s\%#',        'input': '<BS><BS><BS><BS>, '},
-                \ {'char': ',',       'at': '=>\s\%#',          'input': '<BS><BS><BS>, '},
-                \ {'char': ',',       'at': '=>\%#',            'input': '<BS><BS>, '},
-                \ {'char': '<BS>',    'at': '\(,\s\|->\), \%#', 'input': '<BS><BS>'},
-                \ {'char': '<BS>',    'at': '\s\(-\|=\)>\s\%#', 'input': '<BS><BS><BS><BS>'},
+                \ #{char: ',',       at: '\%#',              input: ', '},
+                \ #{char: ',',       at: ',\%#',             input: '<BS>->'},
+                \ #{char: ',',       at: ',\s\%#',           input: '<BS><BS>->'},
+                \ #{char: '<Space>', at: '\S->\%#',          input: '<BS><BS> -> '},
+                \ #{char: ',',       at: '->\%#',            input: '<BS><BS>=>'},
+                \ #{char: '<Space>', at: '\S=>\%#',          input: '<BS><BS> => '},
+                \ #{char: ',',       at: '\s->\s\%#',        input: '<BS><BS><BS>=> '},
+                \ #{char: ',',       at: '\s=>\s\%#',        input: '<BS><BS><BS><BS>, '},
+                \ #{char: ',',       at: '=>\s\%#',          input: '<BS><BS><BS>, '},
+                \ #{char: ',',       at: '=>\%#',            input: '<BS><BS>, '},
+                \ #{char: '<BS>',    at: '\(,\s\|->\), \%#', input: '<BS><BS>'},
+                \ #{char: '<BS>',    at: '\s\(-\|=\)>\s\%#', input: '<BS><BS><BS><BS>'},
                 \
-                \ {'filetype': ['markdown'], 'char': '/',     'input': '/'},
-                \ {'filetype': ['markdown'], 'char': '#',     'at': '^\%#\%(#\)\@!',    'input': '# '},
-                \ {'filetype': ['markdown'], 'char': '#',     'at': '#\s\%#',           'input': '<BS># '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^#\s\%#',          'input': '<BS><BS>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '##\s\%#',          'input': '<BS><BS> '},
-                \ {'filetype': ['markdown'], 'char': '+',     'at': '^\s*\%#',          'input': '+ '},
-                \ {'filetype': ['markdown'], 'char': '-',     'at': '^\s*\%#',          'input': '- '},
-                \ {'filetype': ['markdown'], 'char': '*',     'at': '^\s*\%#',          'input': '* '},
-                \ {'filetype': ['markdown'], 'char': '>',     'at': '^\s*\%#',          'input': '> '},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*- \%#',        'input': '<Left><Left><Tab><Del>-<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*+ \%#',        'input': '<Left><Left><Tab><Del>+<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<TAB>', 'at': '^\s*\* \%#',       'input': '<Left><Left><Tab><Del>*<Right>'},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*- \%#',        'input': '<BS><BS><BS>- '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*+ \%#',        'input': '<BS><BS><BS>+ '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\s*\* \%#',       'input': '<BS><BS><BS>* '},
-                \ {'filetype': ['markdown'], 'char': '<BS>',  'at': '^\(-\|+\|*\) \%#', 'input': '<C-W>'},
+                \ #{filetype: ['markdown'], char: '/',     input: '/'},
+                \ #{filetype: ['markdown'], char: '#',     at: '^\%#\%(#\)\@!',    input: '# '},
+                \ #{filetype: ['markdown'], char: '#',     at: '#\s\%#',           input: '<BS># '},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '^#\s\%#',          input: '<BS><BS>'},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '##\s\%#',          input: '<BS><BS> '},
+                \ #{filetype: ['markdown'], char: '+',     at: '^\s*\%#',          input: '+ '},
+                \ #{filetype: ['markdown'], char: '-',     at: '^\s*\%#',          input: '- '},
+                \ #{filetype: ['markdown'], char: '*',     at: '^\s*\%#',          input: '* '},
+                \ #{filetype: ['markdown'], char: '>',     at: '^\s*\%#',          input: '> '},
+                \ #{filetype: ['markdown'], char: '<TAB>', at: '^\s*- \%#',        input: '<Left><Left><Tab><Del>-<Right>'},
+                \ #{filetype: ['markdown'], char: '<TAB>', at: '^\s*+ \%#',        input: '<Left><Left><Tab><Del>+<Right>'},
+                \ #{filetype: ['markdown'], char: '<TAB>', at: '^\s*\* \%#',       input: '<Left><Left><Tab><Del>*<Right>'},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '^\s*- \%#',        input: '<BS><BS><BS>- '},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '^\s*+ \%#',        input: '<BS><BS><BS>+ '},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '^\s*\* \%#',       input: '<BS><BS><BS>* '},
+                \ #{filetype: ['markdown'], char: '<BS>',  at: '^\(-\|+\|*\) \%#', input: '<C-W>'},
                 \ ]
 
     for l:rule in l:rules
@@ -1306,11 +1304,11 @@ let g:choosewin_overlay_clear_multibyte = 1
 let g:sandwich#recipes =
             \ g:sandwich#default_recipes +
             \ [
-            \ {
-            \   '__filetype__': 'erlang',
-            \   'buns':     ['#{', '}'],
-            \   'input':    ['#'],
-            \   'filetype': ['erlang'],
+            \ #{
+            \   __filetype__: 'erlang',
+            \   buns:     ['#{', '}'],
+            \   input:    ['#'],
+            \   filetype: ['erlang'],
             \ }
             \ ]
 " }}}
