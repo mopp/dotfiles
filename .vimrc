@@ -41,7 +41,7 @@ set nowrap
 set number
 set relativenumber
 set scrolloff=3
-set showcmd
+set noshowcmd
 set showmatch
 set showtabline=2
 set signcolumn=yes
