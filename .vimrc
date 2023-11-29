@@ -726,8 +726,8 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " }}}
 
     " LSP {{{
-    call dein#add('prabirshrestha/vim-lsp', #{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call lsp#enable()'})
-    call dein#add('mattn/vim-lsp-settings', #{lazy: v:true, on_source: 'vim-lsp'})
+    call dein#add('prabirshrestha/vim-lsp')
+    call dein#add('mattn/vim-lsp-settings')
     " }}}
 
     " git {{{
