@@ -262,7 +262,7 @@ function kubevide() {
     kubeforward 6666:6666 "$1" &
 
     pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
-    kubectl exec --stdin=false --tty=true $pod_name --container="$1" -- sh -c 'env PATH=$HOME/.local/bin:$PATH nvim --headless --listen 0.0.0.0:6666' &
+    kubectl exec --stdin=false --tty=true $pod_name --container="$1" -- sh -c 'env SHELL=/usr/bin/zsh PATH=$HOME/.local/bin:$PATH nvim --headless --listen 0.0.0.0:6666' &
 
     sleep 5
     neovide --server=localhost:6666
