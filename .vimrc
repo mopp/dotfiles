@@ -796,7 +796,7 @@ augroup vimrc " {{{
     autocmd FileType lisp setlocal nocindent nosmartindent lisp lispwords=define
     autocmd FileType text,man setlocal wrap
     autocmd FileType help setlocal foldcolumn=0
-    autocmd FileType ruby,javascript,typescript,typescriptreact,html,css,pony,markdown setlocal shiftwidth=2
+    autocmd FileType ruby,javascript,typescript,typescriptreact,html,css,pony,markdown,terraform setlocal shiftwidth=2
 augroup END " }}}
 
 if !s:has_dein " {{{
