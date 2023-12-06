@@ -1181,6 +1181,9 @@ function! s:config_gin_status() abort
     nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
     nnoremap <buffer> <silent><nowait> <C-\> <Cmd>Gin commit<CR>
     map <buffer> <silent><nowait> == <Plug>(gin-action-restore)
+    nmap <buffer> <silent><nowait> t <Plug>(gin-action-edit:local:tabedit)
+    nmap <buffer> <silent><nowait> v <Plug>(gin-action-edit:local:vsplit)
+    nmap <buffer> <silent><nowait> s <Plug>(gin-action-edit:local:split)
 endfunction
 autocmd vimrc Filetype gin-status call s:config_gin_status()
 " }}}
