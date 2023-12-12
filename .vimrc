@@ -983,7 +983,7 @@ endfunction
 nnoremap <silent> <Leader>fe <Cmd>call <SID>ddu_file(v:true)<CR>
 nnoremap <silent> <Leader>ft <Cmd>call <SID>ddu_file(v:false)<CR>
 
-function! s:ddu_grep(is_ignore) abort
+function! s:ddu_grep(is_ignore, input) abort
     if system('git rev-parse --is-inside-work-tree') == "true\n"
         let l:cmd = 'git'
         let l:args = ['--no-pager', 'grep', '--line-number', '--column', '--no-color']
@@ -1001,13 +1001,14 @@ function! s:ddu_grep(is_ignore) abort
                 \   l:source_name: #{
                 \     cmd: l:cmd,
                 \     args: l:args,
-                \     input: input('Pattern: ')
+                \     input: a:input,
                 \   },
                 \ },
                 \ })
 endfunction
-nnoremap <silent> <Leader>fg <Cmd>call <SID>ddu_grep(v:true)<CR>
-nnoremap <silent> <Leader>fh <Cmd>call <SID>ddu_grep(v:false)<CR>
+nnoremap <silent> <Leader>fg <Cmd>call <SID>ddu_grep(v:true, input('Pattern: '))<CR>
+nnoremap <silent> <Leader>fh <Cmd>call <SID>ddu_grep(v:false, input('Pattern: '))<CR>
+nnoremap <silent> <Leader>fw <Cmd>call <SID>ddu_grep(v:true, expand('<cword>'))<CR>
 
 function! s:ddu_ff_settings() abort
     " ddu-ui-ff
