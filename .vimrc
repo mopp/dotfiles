@@ -1325,18 +1325,19 @@ command! FernExplorer Fern -drawer -width=40 .
 nnoremap <silent> <leader>de <Cmd>FernExplorer<CR>
 
 function! s:init_fern() abort
-    nnoremap <silent><buffer> q <Cmd>quit<CR>
-    nnoremap <silent><buffer> w <Plug>(fern-action-open:split)
-    nnoremap <silent><buffer> e <Plug>(fern-action-open:drop)
-    nnoremap <silent><buffer> dd <Plug>(fern-action-remove)
-    nnoremap <silent><buffer> J <Plug>(fern-action-new-file)
+    nnoremap <buffer> <silent><nowait> q <Cmd>quit<CR>
+    nnoremap <buffer> <silent><nowait> v <Plug>(fern-action-open:side)
+    nnoremap <buffer> <silent><nowait> w <Plug>(fern-action-open:split)
+    nnoremap <buffer> <silent><nowait> e <Plug>(fern-action-open:drop)
+    nnoremap <buffer> <silent><nowait> dd <Plug>(fern-action-remove)
+    nnoremap <buffer> <silent><nowait> J <Plug>(fern-action-new-file)
 
     " Overwrite search mapping to disable vim-search-pulse on fern buffer.
     " It does not works well.
-    nmap <silent><buffer> n <Plug>(anzu-n)
-    nmap <silent><buffer> N <Plug>(anzu-N)
-    nmap <silent><buffer> * <Plug>(anzu-star)
-    nmap <silent><buffer> # <Plug>(anzu-sharp)
+    nmap <buffer> <silent><nowait> n <Plug>(anzu-n)
+    nmap <buffer> <silent><nowait> N <Plug>(anzu-N)
+    nmap <buffer> <silent><nowait> * <Plug>(anzu-star)
+    nmap <buffer> <silent><nowait> # <Plug>(anzu-sharp)
 endfunction
 autocmd vimrc FileType fern call s:init_fern()
 " }}}
