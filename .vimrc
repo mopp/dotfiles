@@ -949,7 +949,7 @@ call ddu#custom#patch_global(#{
             \ },
             \ filterParams: #{
             \   matcher_ignore_files: #{
-            \     ignoreGlobs: ['*test/*', '*test.*', '*_spec*']
+            \     ignoreGlobs: ['*test/*', '*test\.*', '*_spec*']
             \   },
             \ },
             \ kindOptions: #{
