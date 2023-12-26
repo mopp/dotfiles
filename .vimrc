@@ -771,13 +771,13 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('thinca/vim-visualstar', #{lazy: v:true, on_map: {'v': ['*', '#']}})
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', #{lazy: v:true, on_cmd: 'Capture'})
-    call dein#add('tyru/caw.vim', #{lazy: v:true, on_map: '<Plug>(caw:', hook_post_source: 'doautocmd plugin FileType'})
     call dein#add('tyru/open-browser.vim', #{lazy: v:true, on_map: [['n', '<Plug>(openbrowser-open)']], on_func: ['openbrowser#load', 'openbrowser#open'], on_source: ['open-browser-github.vim']})
     " }}}
 
     " treesitter
     call dein#add('HiPhish/rainbow-delimiters.nvim')
     call dein#add('lukas-reineke/indent-blankline.nvim')
+    call dein#add('numToStr/Comment.nvim')
     call dein#add('nvim-treesitter/nvim-treesitter', #{hook_post_update: 'TSUpdate'})
 
     " Languages
@@ -1282,12 +1282,6 @@ function! OnPostSourceLexima() abort
 endfunction
 " }}}
 
-" caw.vim
-nmap gcg <Plug>(caw:hatpos:toggle:operator)
-nmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
-vmap <Leader><Leader> <Plug>(caw:hatpos:toggle)
-autocmd vimrc FileType erlang let b:caw_oneline_comment = '%%'
-
 " Capture.vim
 command! -nargs=1 -bang GrepBuffer           :execute printf(':Capture! global%s/%s/print', expand('<bang>'), <q-args>)
 command! -nargs=0 -bang GrepBufferCursorWord :execute printf(':GrepBuffer%s %s', expand('<bang>'), expand('<cword>'))
@@ -1409,6 +1403,14 @@ require 'nvim-treesitter.configs'.setup {
 require 'ibl'.setup {
     indent = { char = '|' },
     scope = { enabled = false }
+}
+
+-- Comment.nvim
+require('Comment').setup {
+    mappings = {
+        basic = true,
+        extra = false
+    },
 }
 EOF
 " }}}
