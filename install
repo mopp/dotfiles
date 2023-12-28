@@ -30,7 +30,7 @@ link ~/.config/nvim ~/.vim
 
 link .gitconfig ~/.config/git/config
 link .zshrc ~/.zshrc
-link alacritty.yml ~/.config/alacritty.yml
+link alacritty.toml ~/.config/alacritty.toml
 link starship.toml ~/.config/starship.toml
 
 # Only for Linux.
