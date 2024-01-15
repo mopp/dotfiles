@@ -1024,6 +1024,8 @@ function! s:ddu_ff_settings() abort
     nnoremap <buffer> <silent><nowait> t <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'tabedit'}})<CR>
     nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
     nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
+
+    setlocal cursorline
 endfunction
 autocmd vimrc FileType ddu-ff call s:ddu_ff_settings()
 
