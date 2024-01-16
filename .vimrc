@@ -1090,7 +1090,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 let g:lightline = #{
             \ colorscheme: 'tokyonight',
             \ active: #{
-            \   left: [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git_status'], ['anzu']],
+            \   left: [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['anzu']],
             \   right: [['fileencoding', 'fileformat'], ['filetype']],
             \ },
             \ inactive: #{
@@ -1112,7 +1112,6 @@ let g:lightline = #{
             \   mode:         '%{ get(g:lightline_plugin_modes, &filetype, lightline#mode()) }',
             \   modified:     "%{ (LightlineIsVisible() && &modifiable) ? (&modified ? '[+]' : '[-]') : '' }",
             \   readonly:     "%{ (LightlineIsVisible() && &readonly) ? 'RO' : '' }",
-            \   git_status:   "%{ (LightlineIsVisible() && dein#is_sourced('gin.vim')) ? gin#component#branch#ascii() : '' }",
             \   filetype:     "%{ LightlineIsVisible() ? &filetype : '' }",
             \   fileencoding: "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
             \   fileformat:   "%{ LightlineIsVisible() ? &fileformat : '' }",
