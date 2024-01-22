@@ -1012,18 +1012,18 @@ nnoremap <silent> <Leader>fw <Cmd>call <SID>ddu_grep(v:true, expand('<cword>'))<
 
 function! s:ddu_ff_settings() abort
     " ddu-ui-ff
-    nnoremap <buffer> <silent><nowait> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-    nnoremap <buffer> <silent><nowait> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-    nnoremap <buffer> <silent><nowait> ?       <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
-    nnoremap <buffer> <silent><nowait> p       <Cmd>call ddu#ui#ff#do_action('togglePreview')<CR>
-    nnoremap <buffer> <silent><nowait> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-    nnoremap <buffer> <silent><nowait> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-    nnoremap <buffer> <silent><nowait> <ESC>   <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+    nnoremap <buffer> <silent><nowait> i       <Cmd>call ddu#ui#do_action('openFilterWindow')<CR>
+    nnoremap <buffer> <silent><nowait> <CR>    <Cmd>call ddu#ui#do_action('itemAction')<CR>
+    nnoremap <buffer> <silent><nowait> ?       <Cmd>call ddu#ui#do_action('chooseAction')<CR>
+    nnoremap <buffer> <silent><nowait> p       <Cmd>call ddu#ui#do_action('togglePreview')<CR>
+    nnoremap <buffer> <silent><nowait> <Space> <Cmd>call ddu#ui#do_action('toggleSelectItem')<CR>
+    nnoremap <buffer> <silent><nowait> q       <Cmd>call ddu#ui#do_action('quit')<CR>
+    nnoremap <buffer> <silent><nowait> <ESC>   <Cmd>call ddu#ui#do_action('quit')<CR>
 
     " ddu-kind-file
-    nnoremap <buffer> <silent><nowait> t <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'tabedit'}})<CR>
-    nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
-    nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#ff#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
+    nnoremap <buffer> <silent><nowait> t <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'tabedit'}})<CR>
+    nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
+    nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
 
     setlocal cursorline
 endfunction
