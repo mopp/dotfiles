@@ -292,6 +292,10 @@ function gitdargs {
 
     $@ $(git diff --relative --name-only --diff-filter=M -z -- "${pattern}" | tr '\000' ' ')
 }
+
+function killjobs {
+    kill ${${(v)jobstates##*:*:}%=*}
+}
 # }}}
 
 # Load a machine local scripts. {{{
