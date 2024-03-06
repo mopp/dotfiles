@@ -43,6 +43,10 @@ case $OSTYPE in
         esac
         ;;
 esac
+
+# Disable man command highlight because of slow down.
+# https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
+FAST_HIGHLIGHT[chroma-man]=
 # }}}
 
 # Path. {{{
