@@ -239,6 +239,8 @@ function kubexec {
 
     pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
     echo "$pod_name at $(kubens --current)"
+
+    set -o xtrace
     kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
 }
 
@@ -248,9 +250,8 @@ function kubeforward {
         return 1
     fi
 
-    pod_name=$(kubectl get pods --no-headers --selector app="$2" --output name | shuf --head-count=1)
-    echo "$pod_name at $(kubens --current)"
-    kubectl port-forward $pod_name $1
+    set -o xtrace
+    kubectl port-forward service/$2 $1
 }
 
 function kubevide() {
@@ -262,6 +263,8 @@ function kubevide() {
     kubeforward 6666:6666 "$1" &
 
     pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
+
+    set -o xtrace
     kubectl exec --stdin=false --tty=true $pod_name --container="$1" -- sh -c 'env SHELL=/usr/bin/zsh PATH=$HOME/.local/bin:$PATH nvim --headless --listen 0.0.0.0:6666' &
 
     sleep 5
