@@ -625,7 +625,7 @@ function! s:config_neovide() abort
     endif
 
     inoremap <silent><D-v> <ESC>l"+Pli
-    tnoremap <silent><D-v> <C-R>+
+    tnoremap <silent><D-v> <C-\><C-N>l"+Pli
     cnoremap <D-v> <C-R>+
 
     let g:neovide_cursor_animation_length = 0.0
