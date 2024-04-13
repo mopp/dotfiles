@@ -23,10 +23,6 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-if [ -e /opt/dropbox/dropboxd ]; then
-    /opt/dropbox/dropboxd
-fi
-
 # fcitx.
 export XMODIFIERS=@im=fcitx5
 export GTK_IM_MODULE=fcitx5
