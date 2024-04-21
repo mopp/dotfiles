@@ -704,6 +704,8 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/ddu-filter-matcher_ignore_files')
     call dein#add('Shougo/ddu-filter-matcher_relative')
     call dein#add('Shougo/ddu-filter-matcher_substring')
+    call dein#add('gamoutatsumi/ddu-filter-converter_relativepath')
+    call dein#add('kyoh86/ddu-filter-converter_hl_dir')
 
     " Kind
     call dein#add('Shougo/ddu-kind-file')
@@ -915,22 +917,28 @@ call ddu#custom#patch_global(#{
             \     matchers: ['matcher_substring'],
             \   },
             \   mr: #{
-            \     matchers: ['matcher_relative', 'matcher_substring']
+            \     matchers: ['matcher_relative', 'matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   mr_ignore: #{
-            \     matchers: ['matcher_relative', 'matcher_ignore_files', 'matcher_substring']
+            \     matchers: ['matcher_relative', 'matcher_ignore_files', 'matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   file_rec: #{
-            \     matchers: ['matcher_substring']
+            \     matchers: ['matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   file_rec_ignore: #{
-            \     matchers: ['matcher_ignore_files', 'matcher_substring']
+            \     matchers: ['matcher_ignore_files', 'matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   file_external: #{
-            \     matchers: ['matcher_substring']
+            \     matchers: ['matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   file_external_ignore: #{
-            \     matchers: ['matcher_ignore_files', 'matcher_substring']
+            \     matchers: ['matcher_ignore_files', 'matcher_substring'],
+            \     converters: ['converter_relativepath', 'converter_hl_dir'],
             \   },
             \   grep: #{
             \     matchers: ['matcher_substring']
