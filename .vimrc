@@ -621,7 +621,7 @@ function! s:config_neovide() abort
     if has('mac')
         set guifont=Cica:h15
     else
-        set guifont=Cica:h11
+        set guifont=Cica:h14.5
     endif
 
     inoremap <silent><D-v> <ESC>l"+Pli
