@@ -849,22 +849,28 @@ function! s:config_ddc() abort
                 \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
                 \     timeout: 1000,
                 \   },
+                \   copilot: #{
+                \     mark: '[copilot]',
+                \     matchers: [],
+                \     minAutoCompleteLength: 0,
+                \     isVolatile: v:true
+                \   },
                 \   vim-lsp: #{
                 \     mark: '[lsp]',
                 \     forceCompletionPattern: '\S+(->|.)'
                 \   },
-                \   around: #{mark: '[around]'},
+                \   neosnippet: #{mark: '[snippet]'},
+                \   around: #{mark: '[around]', maxItems: 5},
                 \   necosyntax: #{mark: '[syntax]'},
                 \   buffer: #{mark: '[buffer]'},
                 \   file: #{
                 \     mark: '[file]',
+                \     maxItems: 5,
                 \     isVolatile: v:true,
                 \     forceCompletionPattern: '\S/\S*',
                 \   },
-                \   neosnippet: #{mark: '[snippet]'},
                 \   line: #{mark: '[line]', matchers: ['matcher_head']},
                 \   necovim: #{mark: '[vim]'},
-                \   copilot: #{mark: '[copilot]', minAutoCompleteLength: 0, isVolatile: v:true},
                 \ },
                 \ sourceParams: #{
                 \   buffer: #{
