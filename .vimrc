@@ -613,6 +613,9 @@ endfunction
 
 command! -nargs=0 CopyAbsolutePath call s:copy_absolute_path()
 command! -nargs=0 CopyRelativePath call s:copy_relative_path()
+
+" Run RSpec at the current line in the current file.
+command! -nargs=0 RSpec execute printf('split +terminal\ bin/rspec\ %s:%d', expand('%'), line('.'))
 " }}}
 " }}}
 
