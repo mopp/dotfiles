@@ -665,6 +665,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " Source
     call dein#add('LumaKernel/ddc-source-file')
     call dein#add('Shougo/ddc-source-around')
+    call dein#add('Shougo/ddc-source-copilot')
     call dein#add('Shougo/ddc-source-line')
     call dein#add('Shougo/neco-vim', #{lazy: v:true})
     call dein#add('matsui54/ddc-buffer')
@@ -837,7 +838,7 @@ function! s:config_ddc() abort
                 \ 'vim-snippets'
                 \ ])
 
-    let l:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
+    let l:basic_sources = ['copilot', 'vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
     call ddc#custom#patch_global(#{
                 \ ui: 'native',
                 \ sources: l:basic_sources,
@@ -863,6 +864,7 @@ function! s:config_ddc() abort
                 \   neosnippet: #{mark: '[snippet]'},
                 \   line: #{mark: '[line]', matchers: ['matcher_head']},
                 \   necovim: #{mark: '[vim]'},
+                \   copilot: #{mark: '[copilot]', minAutoCompleteLength: 0, isVolatile: v:true},
                 \ },
                 \ sourceParams: #{
                 \   buffer: #{
@@ -1397,6 +1399,9 @@ autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 
 " winresizer
 let g:winresizer_start_key = '<Nop>'
+
+" copilot.vim
+let g:copilot_no_maps = v:true
 
 " Lua plugin initialize
 lua << EOF
