@@ -613,9 +613,6 @@ endfunction
 
 command! -nargs=0 CopyAbsolutePath call s:copy_absolute_path()
 command! -nargs=0 CopyRelativePath call s:copy_relative_path()
-
-" Run RSpec at the current line in the current file.
-command! -nargs=0 RSpec execute printf('split +terminal\ bin/rspec\ %s:%d', expand('%'), line('.'))
 " }}}
 " }}}
 
@@ -778,6 +775,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', #{lazy: v:true, on_cmd: 'Capture'})
     call dein#add('tyru/open-browser.vim', #{lazy: v:true, on_map: [['n', '<Plug>(openbrowser-open)']], on_func: ['openbrowser#load', 'openbrowser#open'], on_source: ['open-browser-github.vim']})
+    call dein#add('vim-test/vim-test')
     " }}}
 
     " treesitter
@@ -1411,6 +1409,10 @@ let g:winresizer_start_key = '<Nop>'
 
 " copilot.vim
 let g:copilot_no_maps = v:true
+
+" vim-test
+let test#strategy = 'neovim'
+let test#neovim#term_position = 'topleft'
 
 " Lua plugin initialize
 lua << EOF
