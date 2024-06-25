@@ -1188,6 +1188,7 @@ map <Leader>op <Plug>(openbrowser-open)
 " gin.vim {{{
 let g:gin_proxy_apply_without_confirm = 1
 nnoremap <Leader>gs <Cmd>GinStatus ++opener=split<CR>
+
 function! s:config_gin_status() abort
     nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
     nnoremap <buffer> <silent><nowait> <C-\> <Cmd>Gin commit<CR>
@@ -1197,6 +1198,11 @@ function! s:config_gin_status() abort
     nmap <buffer> <silent><nowait> s <Plug>(gin-action-edit:local:split)
 endfunction
 autocmd vimrc Filetype gin-status call s:config_gin_status()
+
+function! s:config_gin_diff() abort
+    nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
+endfunction
+autocmd vimrc Filetype gin-diff call s:config_gin_diff()
 " }}}
 
 " lexima.vim {{{
