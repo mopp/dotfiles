@@ -734,10 +734,9 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " }}}
 
     " git {{{
-    call dein#add('airblade/vim-gitgutter')
     call dein#add('lambdalisue/gin.vim')
+    call dein#add('lewis6991/gitsigns.nvim')
     call dein#add('rhysd/committia.vim')
-    call dein#add('rhysd/git-messenger.vim', #{lazy: v:true, on_cmd: 'GitMessenger'})
     call dein#add('tyru/open-browser-github.vim', #{lazy: v:true, on_cmd: ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
     " }}}
 
@@ -1089,14 +1088,6 @@ nmap <C-n> <Plug>(yankround-next)
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
-" vim-gitgutter {{{
-let g:gitgutter_map_keys = 0
-nmap <Leader>hs <Plug>(GitGutterStageHunk)
-nmap <Leader>hu <Plug>(GitGutterUndoHunk)
-nmap <Leader>hp <Plug>(GitGutterPrevHunk)
-nmap <Leader>hn <Plug>(GitGutterNextHunk)
-" }}}
-
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = ['help']
 
@@ -1107,7 +1098,7 @@ map <Leader>e <Plug>(easymotion-prefix)
 let g:lightline = #{
             \ colorscheme: 'tokyonight',
             \ active: #{
-            \   left: [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['anzu']],
+            \   left: [['mode', 'paste'], ['filename', 'modified'], ['readonly', 'spell'], ['git', 'anzu']],
             \   right: [['fileencoding', 'fileformat'], ['filetype']],
             \ },
             \ inactive: #{
@@ -1132,6 +1123,7 @@ let g:lightline = #{
             \   filetype:     "%{ LightlineIsVisible() ? &filetype : '' }",
             \   fileencoding: "%{ LightlineIsVisible() ? (strlen(&fenc) ? &fenc : &enc) : '' }",
             \   fileformat:   "%{ LightlineIsVisible() ? &fileformat : '' }",
+            \   git:          "%{ get(b:, 'gitsigns_status', '') }",
             \ },
             \ component_visible_condition: #{
             \   modified:     'LightlineIsVisible() && &modifiable',
@@ -1436,6 +1428,20 @@ require('Comment').setup {
         basic = true,
         extra = false
     },
+}
+
+-- gitsigns.nvim
+require('gitsigns').setup{
+  on_attach = function(bufnr)
+    local gitsigns = require('gitsigns')
+
+    opts = {buffer = bufnr}
+    vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, opts)
+    vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, opts)
+    vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk, opts)
+    vim.keymap.set('n', '<leader>hp', function() gitsigns.nav_hunk('prev') end, opts)
+    vim.keymap.set('n', '<leader>hn', function() gitsigns.nav_hunk('next') end, opts)
+  end
 }
 EOF
 " }}}
