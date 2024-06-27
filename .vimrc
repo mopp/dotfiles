@@ -740,6 +740,12 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/open-browser-github.vim', #{lazy: v:true, on_cmd: ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
     " }}}
 
+    " AI {{{
+    call dein#add('CopilotC-Nvim/CopilotChat.nvim', #{rev: 'canary'})
+    call dein#add('nvim-lua/plenary.nvim')
+    call dein#add('zbirenbaum/copilot.lua')
+    " }}}
+
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', #{lazy: v:true, on_cmd: 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', #{lazy: v:true, on_cmd: 'ArgWrap'})
@@ -751,7 +757,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('cohama/lexima.vim',#{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call OnPostSourceLexima()'})
     call dein#add('easymotion/vim-easymotion', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('folke/tokyonight.nvim')
-    call dein#add('github/copilot.vim', #{lazy: v:true, on_cmd: 'Copilot'})
     call dein#add('idanarye/vim-casetrate', #{lazy: v:true, on_cmd: 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
     call dein#add('itchyny/lightline.vim')
@@ -1405,9 +1410,6 @@ autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " winresizer
 let g:winresizer_start_key = '<Nop>'
 
-" copilot.vim
-let g:copilot_no_maps = v:true
-
 " vim-test
 let test#strategy = 'neovim'
 let test#neovim#term_position = 'topleft'
@@ -1433,11 +1435,11 @@ require('Comment').setup {
     mappings = {
         basic = true,
         extra = false
-    },
+    }
 }
 
 -- gitsigns.nvim
-require('gitsigns').setup{
+require('gitsigns').setup {
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
 
@@ -1448,6 +1450,23 @@ require('gitsigns').setup{
     vim.keymap.set('n', '<leader>hp', function() gitsigns.nav_hunk('prev') end, opts)
     vim.keymap.set('n', '<leader>hn', function() gitsigns.nav_hunk('next') end, opts)
   end
+}
+
+-- copilot.lua
+require('copilot').setup({
+    panel = {
+        auto_refresh = true,
+        layout = {
+            position = 'top'
+        }
+    }
+})
+
+-- CopilotChat.nvim
+require('CopilotChat').setup {
+    window = {
+        layout = 'horizontal'
+    }
 }
 EOF
 " }}}
