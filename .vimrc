@@ -779,7 +779,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('tpope/vim-repeat')
     call dein#add('tyru/capture.vim', #{lazy: v:true, on_cmd: 'Capture'})
     call dein#add('tyru/open-browser.vim', #{lazy: v:true, on_map: [['n', '<Plug>(openbrowser-open)']], on_func: ['openbrowser#load', 'openbrowser#open'], on_source: ['open-browser-github.vim']})
-    call dein#add('vim-test/vim-test')
+    call dein#add('vim-test/vim-test', #{lazy: v:true, on_cmd: ['TestNearest', 'TestClass', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']})
     " }}}
 
     " treesitter
@@ -1469,6 +1469,7 @@ require('CopilotChat').setup {
     }
 }
 EOF
+
 " }}}
 
 syntax enable
