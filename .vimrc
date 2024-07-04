@@ -1413,6 +1413,7 @@ let g:winresizer_start_key = '<Nop>'
 " vim-test
 let test#strategy = 'neovim'
 let test#neovim#term_position = 'topleft'
+nnoremap <silent> <F5> <Cmd>TestFile<CR>
 
 " Lua plugin initialize
 lua << EOF
