@@ -729,8 +729,9 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " }}}
 
     " LSP {{{
-    call dein#add('prabirshrestha/vim-lsp')
+    call dein#add('liuchengxu/vista.vim', #{lazy: v:true, on_cmd: 'Vista'})
     call dein#add('mattn/vim-lsp-settings')
+    call dein#add('prabirshrestha/vim-lsp')
     " }}}
 
     " git {{{
@@ -1142,15 +1143,17 @@ let g:lightline = #{
             \ },
             \ }
 
-let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern'}
+let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern', vista_kind: 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help\|vista_kind')
 endfunction
 
 function! LightlineFilename() abort " {{{
     if &filetype ==# 'fern'
         return split(expand('%:t'), ';')[0]
+    elseif &filetype ==# 'vista_kind'
+        return ''
     else
         let l:t = expand('%:t')
         return l:t ==# '' ? '[No Name]' : l:t
@@ -1406,6 +1409,11 @@ function! s:on_lsp_buffer_enabled() abort
 endfunction
 autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " }}}
+
+" vista.vim
+let g:vista_default_executive = 'vim_lsp'
+let g:vista#renderer#enable_icon = v:false
+let g:vista_sidebar_width = 45
 
 " winresizer
 let g:winresizer_start_key = '<Nop>'
