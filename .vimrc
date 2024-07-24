@@ -1469,6 +1469,8 @@ require('CopilotChat').setup {
         layout = 'horizontal'
     }
 }
+vim.keymap.set('n', '<F2>', '<cmd>:CopilotChat<CR>', { silent = true })
+
 EOF
 
 " }}}
