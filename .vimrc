@@ -1143,16 +1143,16 @@ let g:lightline = #{
             \ },
             \ }
 
-let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern', vista_kind: 'Vista'}
+let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern', vista_kind: 'Vista', vista_markdown: 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help\|vista_kind')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help\|vista_\a\+')
 endfunction
 
 function! LightlineFilename() abort " {{{
     if &filetype ==# 'fern'
         return split(expand('%:t'), ';')[0]
-    elseif &filetype ==# 'vista_kind'
+    elseif &filetype =~# 'vista_\a\+'
         return ''
     else
         let l:t = expand('%:t')
