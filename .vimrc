@@ -756,7 +756,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('bronson/vim-trailing-whitespace')
     call dein#add('chrisbra/Colorizer', #{lazy: v:true, on_cmd: 'ColorToggle'})
     call dein#add('cohama/lexima.vim',#{lazy: v:true, on_event: 'InsertEnter', hook_post_source: 'call OnPostSourceLexima()'})
-    call dein#add('easymotion/vim-easymotion', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('folke/tokyonight.nvim')
     call dein#add('idanarye/vim-casetrate', #{lazy: v:true, on_cmd: 'Casetrate'})
     call dein#add('inside/vim-search-pulse')
@@ -772,6 +771,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('osyo-manga/vim-anzu', #{lazy: v:true, on_map: '<Plug>'})
     call dein#add('rickhowe/diffchar.vim', #{lazy: &diff == 0, on_if: '&diff'})
     call dein#add('simeji/winresizer', #{lazy: v:true, on_cmd: ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize']})
+    call dein#add('smoka7/hop.nvim')
     call dein#add('t9md/vim-choosewin', #{lazy: v:true, on_map: {'n': '<Plug>'}})
     call dein#add('t9md/vim-quickhl', #{lazy: v:true, on_map : {'nx': '<Plug>'}})
     call dein#add('thinca/vim-ambicmd')
@@ -1096,9 +1096,6 @@ let g:echodoc_enable_at_startup = 1
 
 " vim-trailing-whitespace
 let g:extra_whitespace_ignored_filetypes = ['help']
-
-" vim-easymotion
-map <Leader>e <Plug>(easymotion-prefix)
 
 " lightline.vim {{{
 let g:lightline = #{
@@ -1452,12 +1449,12 @@ require('gitsigns').setup {
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
 
-    opts = {buffer = bufnr}
-    vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, opts)
-    vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, opts)
-    vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk, opts)
-    vim.keymap.set('n', '<leader>hp', function() gitsigns.nav_hunk('prev') end, opts)
-    vim.keymap.set('n', '<leader>hn', function() gitsigns.nav_hunk('next') end, opts)
+    local opts = {buffer = bufnr}
+    vim.keymap.set('n', '<Leader>hs', gitsigns.stage_hunk, opts)
+    vim.keymap.set('n', '<Leader>hr', gitsigns.reset_hunk, opts)
+    vim.keymap.set('n', '<Leader>hu', gitsigns.undo_stage_hunk, opts)
+    vim.keymap.set('n', '<Leader>hp', function() gitsigns.nav_hunk('prev') end, opts)
+    vim.keymap.set('n', '<Leader>hn', function() gitsigns.nav_hunk('next') end, opts)
   end
 }
 
@@ -1478,6 +1475,17 @@ require('CopilotChat').setup {
     }
 }
 vim.keymap.set('n', '<F2>', '<cmd>:CopilotChat<CR>', { silent = true })
+
+-- hop.nvim
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+local opts = { noremap=true, silent=true }
+hop.setup()
+vim.keymap.set('n', '<Leader><Leader>', function() hop.hint_words({}) end, opts)
+vim.keymap.set('n', '<Leader>ek', function() hop.hint_words({ direction = directions.BEFORE_CURSOR }) end, opts)
+vim.keymap.set('n', '<Leader>ej', function() hop.hint_words({ direction = directions.AFTER_CURSOR }) end, opts)
+vim.keymap.set('n', '<Leader>et', function() hop.hint_words({ direction = directions.BEFORE_CURSOR, current_line_only = true}) end, opts)
+vim.keymap.set('n', '<Leader>ef', function() hop.hint_words({ direction = directions.AFTER_CURSOR, current_line_only = true}) end, opts)
 
 EOF
 
