@@ -1208,6 +1208,14 @@ function! s:config_gin_diff() abort
     nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
 endfunction
 autocmd vimrc Filetype gin-diff call s:config_gin_diff()
+
+function! s:config_gin_log() abort
+    nmap <buffer> <silent><nowait> v <Plug>(gin-action-show:vsplit)
+    nmap <buffer> <silent><nowait> s <Plug>(gin-action-show:split)
+endfunction
+autocmd vimrc Filetype gin-log call s:config_gin_log()
+
+autocmd vimrc Filetype gin nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
 " }}}
 
 " lexima.vim {{{
