@@ -1192,7 +1192,7 @@ map <Leader>op <Plug>(openbrowser-open)
 
 " gin.vim {{{
 let g:gin_proxy_apply_without_confirm = 1
-nnoremap <Leader>gs <Cmd>GinStatus ++opener=split<CR>
+nnoremap <Leader>gs <Cmd>GinStatus ++opener=10split<CR>
 
 function! s:config_gin_status() abort
     nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
