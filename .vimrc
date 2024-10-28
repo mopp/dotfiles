@@ -1476,6 +1476,14 @@ require('copilot').setup({
         layout = {
             position = 'top'
         }
+    },
+    suggestion = {
+        keymap = {
+            dismiss = '<C-H>',
+            prev = '<C-J>',
+            next = '<C-K>',
+            accept = '<C-L>'
+        }
     }
 })
 
