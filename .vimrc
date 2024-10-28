@@ -37,11 +37,12 @@ set laststatus=2
 set list
 set listchars=tab:>\ ,trail:\ ,extends:<,precedes:<
 set noarabicshape
+set noshowcmd
+set noshowmode
 set nowrap
 set number
 set relativenumber
 set scrolloff=3
-set noshowcmd
 set showmatch
 set showtabline=2
 set signcolumn=yes
