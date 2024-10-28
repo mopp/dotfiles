@@ -13,8 +13,8 @@ case $OSTYPE in
         )
 
         if [ -d '/opt/homebrew/opt/llvm' ]; then
-            export LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
-            export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+            export LDFLAGS="-L/opt/homebrew/opt/zstd/lib -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
+            export CPPFLAGS="-I/opt/homebrew/opt/zstd/include -I/opt/homebrew/opt/openssl@3/include -I/opt/homebrew/opt/llvm/include"
             export CC='clang'
             export CXX='clang++'
         fi
