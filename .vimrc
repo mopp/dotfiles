@@ -1196,12 +1196,14 @@ let g:gin_proxy_apply_without_confirm = 1
 nnoremap <Leader>gs <Cmd>GinStatus ++opener=10split<CR>
 
 function! s:config_gin_status() abort
+    setlocal nofoldenable
     nnoremap <buffer> <silent><nowait> q <Cmd>close<CR>
     nnoremap <buffer> <silent><nowait> <C-\> <Cmd>Gin commit<CR>
     map <buffer> <silent><nowait> == <Plug>(gin-action-restore)
     nmap <buffer> <silent><nowait> t <Plug>(gin-action-edit:local:tabedit)
     nmap <buffer> <silent><nowait> v <Plug>(gin-action-edit:local:vsplit)
     nmap <buffer> <silent><nowait> s <Plug>(gin-action-edit:local:split)
+    nmap <buffer> <silent><nowait> dd <Plug>(gin-action-diff:smart:split)
 endfunction
 autocmd vimrc Filetype gin-status call s:config_gin_status()
 
