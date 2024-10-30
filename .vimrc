@@ -666,7 +666,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " Source
     call dein#add('LumaKernel/ddc-source-file')
     call dein#add('Shougo/ddc-source-around')
-    call dein#add('Shougo/ddc-source-copilot')
     call dein#add('Shougo/ddc-source-line')
     call dein#add('Shougo/neco-vim', #{lazy: v:true})
     call dein#add('matsui54/ddc-buffer')
@@ -855,24 +854,19 @@ function! s:config_ddc() abort
                 \     sorters: ['sorter_fuzzy'],
                 \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
                 \     timeout: 1000,
-                \   },
-                \   copilot: #{
-                \     mark: '[copilot]',
-                \     matchers: [],
-                \     minAutoCompleteLength: 0,
-                \     isVolatile: v:true
+                \     minAutoCompleteLength: 3,
                 \   },
                 \   vim-lsp: #{
                 \     mark: '[lsp]',
-                \     forceCompletionPattern: '\S+(->|.)'
+                \     forceCompletionPattern: '\S+(->|.)',
+                \     maxItems: 8
                 \   },
                 \   neosnippet: #{mark: '[snippet]'},
-                \   around: #{mark: '[around]', maxItems: 5},
+                \   around: #{mark: '[around]', maxItems: 8},
                 \   necosyntax: #{mark: '[syntax]'},
-                \   buffer: #{mark: '[buffer]'},
+                \   buffer: #{mark: '[buffer]', maxItems: 8},
                 \   file: #{
                 \     mark: '[file]',
-                \     maxItems: 5,
                 \     isVolatile: v:true,
                 \     forceCompletionPattern: '\S/\S*',
                 \   },
