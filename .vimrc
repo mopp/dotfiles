@@ -837,6 +837,8 @@ endif " }}}
 
 " ddc.vim {{{
 function! s:config_ddc() abort
+    inoremap <silent> <C-E> <Cmd>call ddc#hide()<CR>
+
     call dein#source([
                 \ 'neco-vim',
                 \ 'neco-syntax',
@@ -844,7 +846,7 @@ function! s:config_ddc() abort
                 \ 'vim-snippets'
                 \ ])
 
-    let l:basic_sources = ['copilot', 'vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
+    let l:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
     call ddc#custom#patch_global(#{
                 \ ui: 'native',
                 \ sources: l:basic_sources,
@@ -889,8 +891,6 @@ autocmd vimrc InsertEnter * call s:config_ddc()
 " pum.vim {{{
 inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
 inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
-inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
 " }}}
 
 " neosnippet.vim {{{
@@ -1478,8 +1478,13 @@ require('copilot').setup({
             next = '<C-K>',
             accept = '<C-L>'
         }
+    },
+    filetypes = {
+        yaml = false,
+        markdown = false,
     }
 })
+vim.keymap.set('n', '<F3>', '<cmd>:Copilot panel<CR>', { silent = true })
 
 -- CopilotChat.nvim
 require('CopilotChat').setup {
