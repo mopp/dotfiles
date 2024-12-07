@@ -742,7 +742,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " }}}
 
     " AI {{{
-    call dein#add('CopilotC-Nvim/CopilotChat.nvim', #{rev: 'canary'})
+    call dein#add('CopilotC-Nvim/CopilotChat.nvim')
     call dein#add('nvim-lua/plenary.nvim')
     call dein#add('zbirenbaum/copilot.lua')
     " }}}
