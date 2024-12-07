@@ -900,11 +900,11 @@ xmap <C-s> <Plug>(neosnippet_expand_target)
 " }}}
 
 " ddu.vim {{{
-call ddu#custom#alias('source', 'mr_ignore', 'mr')
-call ddu#custom#alias('source', 'file_rec_ignore', 'file_rec')
-call ddu#custom#alias('source', 'file_external_ignore', 'file_external')
-call ddu#custom#alias('source', 'grep', 'rg')
-call ddu#custom#alias('source', 'grep_ignore', 'rg')
+call ddu#custom#alias('default', 'source', 'mr_ignore', 'mr')
+call ddu#custom#alias('default', 'source', 'file_rec_ignore', 'file_rec')
+call ddu#custom#alias('default', 'source', 'file_external_ignore', 'file_external')
+call ddu#custom#alias('default', 'source', 'grep', 'rg')
+call ddu#custom#alias('default', 'source', 'grep_ignore', 'rg')
 call ddu#custom#patch_global(#{
             \ ui: 'ff',
             \ uiParams: #{
