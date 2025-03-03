@@ -741,12 +741,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('tyru/open-browser-github.vim', #{lazy: v:true, on_cmd: ['OpenGithubFile', 'OpenGithubProject', 'OpenGithubPullReq']})
     " }}}
 
-    " AI {{{
-    call dein#add('CopilotC-Nvim/CopilotChat.nvim')
-    call dein#add('nvim-lua/plenary.nvim')
-    call dein#add('zbirenbaum/copilot.lua')
-    " }}}
-
     " Utils {{{
     call dein#add('Chiel92/vim-autoformat', #{lazy: v:true, on_cmd: 'Autoformat'})
     call dein#add('FooSoft/vim-argwrap', #{lazy: v:true, on_cmd: 'ArgWrap'})
@@ -1462,37 +1456,6 @@ require('gitsigns').setup {
     vim.keymap.set('n', '<Leader>hn', function() gitsigns.nav_hunk('next') end, opts)
   end
 }
-
--- copilot.lua
-require('copilot').setup({
-    panel = {
-        auto_refresh = true,
-        layout = {
-            position = 'top'
-        }
-    },
-    suggestion = {
-        keymap = {
-            dismiss = '<C-H>',
-            prev = '<C-J>',
-            next = '<C-K>',
-            accept = '<C-L>'
-        }
-    },
-    filetypes = {
-        yaml = false,
-        markdown = false,
-    }
-})
-vim.keymap.set('n', '<F3>', '<cmd>:Copilot panel<CR>', { silent = true })
-
--- CopilotChat.nvim
-require('CopilotChat').setup {
-    window = {
-        layout = 'horizontal'
-    }
-}
-vim.keymap.set('n', '<F2>', '<cmd>:CopilotChat<CR>', { silent = true })
 
 -- hop.nvim
 local hop = require('hop')
