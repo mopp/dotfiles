@@ -32,6 +32,7 @@ link .gitconfig ~/.config/git/config
 link .zshrc ~/.zshrc
 link alacritty.toml ~/.config/alacritty.toml
 link starship.toml ~/.config/starship.toml
+link eza_theme.yml ~/.config/eza/theme.yml
 
 # Only for Linux.
 if [ "$(uname)" = 'Linux' ]; then

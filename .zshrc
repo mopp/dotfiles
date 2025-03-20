@@ -140,7 +140,7 @@ fi
 
 export TIME_STYLE='long-iso'
 if (($+commands[eza])); then
-    export EZA_COLORS='uu=38;5;221:gu=38;5;221:da=38;5;038'
+    export EZA_CONFIG_DIR=$HOME/.config/eza
     alias ls='eza --color-scale -gh --git'
     alias ll='eza --color-scale -gh --git -l'
     alias la='eza --color-scale -gh --git -a'
