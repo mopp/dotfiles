@@ -9,7 +9,6 @@
 [color]
     ui = auto
 [core]
-    pager = delta
     quotepath = false
 [github]
     user = mopp
@@ -37,19 +36,35 @@
     branch = false
 [fetch]
     prune = true
-[interactive]
-    diffFilter = delta --color-only
 [add.interactive]
     useBuiltin = false # required for git 2.37.0
-[merge]
-    conflictstyle = diff3
-[diff]
-    colorMoved = default
-[delta]
-    side-by-side = true
 [credential "https://github.com"]
     helper =
     helper = !gh auth git-credential
 [credential "https://gist.github.com"]
     helper =
     helper = !gh auth git-credential
+
+; For delta
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    side-by-side = true
+    ; Copy from https://github.com/folke/tokyonight.nvim/blob/main/extras/delta/tokyonight_night.gitconfig
+    minus-style                   = syntax "#37222c"
+    minus-non-emph-style          = syntax "#37222c"
+    minus-emph-style              = syntax "#713137"
+    minus-empty-line-marker-style = syntax "#37222c"
+    line-numbers-minus-style      = "#914c54"
+    plus-style                    = syntax "#20303b"
+    plus-non-emph-style           = syntax "#20303b"
+    plus-emph-style               = syntax "#2c5a66"
+    plus-empty-line-marker-style  = syntax "#20303b"
+    line-numbers-plus-style       = "#449dab"
+    line-numbers-zero-style       = "#3b4261"
+[merge]
+    conflictstyle = zdiff3
+[diff]
+    colorMoved = default
