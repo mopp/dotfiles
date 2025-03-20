@@ -141,9 +141,13 @@ fi
 export TIME_STYLE='long-iso'
 if (($+commands[eza])); then
     export EZA_CONFIG_DIR=$HOME/.config/eza
-    alias ls='eza --color-scale -gh --git'
-    alias ll='eza --color-scale -gh --git -l'
-    alias la='eza --color-scale -gh --git -a'
+    alias eza='eza --color-scale '
+    alias ls='eza'
+    alias la='eza --all'
+    alias ll='eza --all --long --binary --no-user --smart-group'
+    alias lla='eza --all --long --binary --group --header'
+    alias llm='eza --all --long --binary --group --header --sort=modified'
+    alias tree='eza --all --tree --recurse'
 else
     alias ls='ls --color -hF'
     alias ll='ls --color -hFl'
