@@ -32,6 +32,8 @@
     wip = commit --message 'wip'
     pullr = !git pull --rebase $(git symbolic-ref refs/remotes/origin/HEAD --short | tr '/' ' ')
     reload = !git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
+    default-branch = "!git rev-parse --symbolic-full-name origin/HEAD | cut -f4 -d/"
+    default = !git switch $(git default-branch)
 [pager]
     branch = false
 [fetch]
