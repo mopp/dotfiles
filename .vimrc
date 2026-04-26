@@ -269,8 +269,8 @@ augroup vimrc
 
     " Store and load view.
     autocmd BufWinLeave * if (bufname('%') != '') | mkview!          | endif
-    " Use BufReadPre to avoid overriding foldexpr and foldmethod set by FileType
-    autocmd BufReadPre * if (bufname('%') != '') | silent! loadview | endif
+    " Use BufRead to avoid overriding foldexpr and foldmethod set by FileType
+    autocmd BufRead * if (bufname('%') != '') | silent! loadview | endif
 
     " Detecting filetypes.
     autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
