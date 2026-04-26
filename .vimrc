@@ -72,28 +72,32 @@ set incsearch
 set smartcase
 " }}}
 
+" Complete. {{{
+set autocomplete
+set complete=.^5,w^5,b^5,u^5
+set completeopt=menu,menuone,noselect,fuzzy,popup
+set dictionary=/usr/share/dict/words
+set pumborder=rounded
+set winborder=rounded
+" }}}
+
 " Others. {{{
 set belloff=all
-set completeopt=menu
-set dictionary=/usr/share/dict/words
 set diffopt+=iwhite
 set formatoptions+=tjrol
-set helplang=ja
+set inccommand=split
 set langnoremap
 set lazyredraw
 set matchpairs+=<:>
 set mouse=
 set regexpengine=2
+set scrollback=5000
 set splitright
 set updatetime=500
 set virtualedit=all
 set whichwrap=b,s,h,l,<,>,[,]
 set wildignorecase
 set wildmenu
-
-" neovim only.
-set inccommand=split
-set scrollback=5000
 set wildoptions=
 
 " Turn off default plugins. {{{
@@ -115,7 +119,6 @@ let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h = 1
 let g:tex_conceal = ''
 let g:tex_flavor = 'latex'
-let g:markdown_folding = 1
 " }}}
 " }}}
 
@@ -261,9 +264,6 @@ nnoremap <silent> <Leader>vtt <Cmd>tabnew +terminal<CR>
 
 " Autocommands {{{
 augroup vimrc
-    " Remove all vimrc autocommands
-    autocmd!
-
     " Turning off paste when escape insert mode.
     autocmd InsertLeave * setlocal nopaste
 
@@ -653,36 +653,16 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('Shougo/dein.vim')
     call dein#add('haya14busa/dein-command.vim', #{lazy: v:true, on_event: 'CmdlineEnter'})
 
+    " LSP {{{
+    call dein#add('neovim/nvim-lspconfig')
+    call dein#add('liuchengxu/vista.vim', #{lazy: v:true, on_cmd: 'Vista'})
+    " }}}
+
     call dein#add('vim-denops/denops.vim')
-
-    " Completions {{{
-    call dein#add('Shougo/ddc.vim')
-
-    call dein#add('Shougo/pum.vim')
-
-    " UI
-    call dein#add('Shougo/ddc-ui-native')
-
-    " Source
-    call dein#add('LumaKernel/ddc-source-file')
-    call dein#add('Shougo/ddc-source-around')
-    call dein#add('Shougo/ddc-source-line')
-    call dein#add('Shougo/neco-vim', #{lazy: v:true})
-    call dein#add('matsui54/ddc-buffer')
-    call dein#add('shun/ddc-source-vim-lsp')
-
-    call dein#add('Shougo/neco-syntax', #{lazy: v:true})
-    call dein#add('hokorobi/ddc-source-neco-syntax')
 
     call dein#add('Shougo/neosnippet.vim', #{lazy: v:true})
     call dein#add('Shougo/neosnippet-snippets')
     call dein#add('honza/vim-snippets', #{lazy: v:true})
-
-    " Filter
-    call dein#add('tani/ddc-fuzzy')
-    call dein#add('Shougo/ddc-filter-matcher_head')
-    call dein#add('Shougo/ddc-filter-converter_remove_overlap')
-    " }}}
 
     " Fuzzy finders {{{
     call dein#add('Shougo/ddu.vim')
@@ -726,12 +706,6 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('sgur/vim-textobj-parameter', #{lazy: v:true, on_map: [['ox', 'a,', 'i,', 'i2,']]})
 
     call dein#add('machakann/vim-sandwich')
-    " }}}
-
-    " LSP {{{
-    call dein#add('liuchengxu/vista.vim', #{lazy: v:true, on_cmd: 'Vista'})
-    call dein#add('mattn/vim-lsp-settings')
-    call dein#add('prabirshrestha/vim-lsp')
     " }}}
 
     " git {{{
@@ -778,13 +752,10 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     " }}}
 
     " treesitter
+    call dein#add('nvim-treesitter/nvim-treesitter', #{hook_post_update: 'TSUpdate', branch: 'main'})
     call dein#add('HiPhish/rainbow-delimiters.nvim')
     call dein#add('lukas-reineke/indent-blankline.nvim')
     call dein#add('numToStr/Comment.nvim')
-    call dein#add('nvim-treesitter/nvim-treesitter', #{hook_post_update: 'TSUpdate'})
-
-    " Languages
-    call dein#add('vim-jp/vimdoc-ja')
 
     call dein#end()
     call dein#save_state()
@@ -829,68 +800,61 @@ elseif exists('g:is_setup')
 endif " }}}
 " }}}
 
-" ddc.vim {{{
-function! s:config_ddc() abort
-    inoremap <silent> <C-E> <Cmd>call ddc#hide()<CR>
+" LSP {{{
+lua << EOF
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = 'vimrc',
+  callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
-    call dein#source([
-                \ 'neco-vim',
-                \ 'neco-syntax',
-                \ 'neosnippet.vim',
-                \ 'vim-snippets'
-                \ ])
+    if client:supports_method('textDocument/completion') then
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    end
 
-    let l:basic_sources = ['vim-lsp', 'neosnippet', 'around', 'necosyntax', 'buffer', 'file', 'line']
-    call ddc#custom#patch_global(#{
-                \ ui: 'native',
-                \ sources: l:basic_sources,
-                \ sourceOptions: #{
-                \   _: #{
-                \     matchers: ['matcher_fuzzy'],
-                \     sorters: ['sorter_fuzzy'],
-                \     converters: ['converter_fuzzy', 'converter_remove_overlap'],
-                \     timeout: 1000,
-                \     minAutoCompleteLength: 3,
-                \   },
-                \   vim-lsp: #{
-                \     mark: '[lsp]',
-                \     forceCompletionPattern: '\S+(->|.)',
-                \     maxItems: 8
-                \   },
-                \   neosnippet: #{mark: '[snippet]'},
-                \   around: #{mark: '[around]', maxItems: 8},
-                \   necosyntax: #{mark: '[syntax]'},
-                \   buffer: #{mark: '[buffer]', maxItems: 8},
-                \   file: #{
-                \     mark: '[file]',
-                \     isVolatile: v:true,
-                \     forceCompletionPattern: '\S/\S*',
-                \   },
-                \   line: #{mark: '[line]', matchers: ['matcher_head']},
-                \   necovim: #{mark: '[vim]'},
-                \ },
-                \ sourceParams: #{
-                \   buffer: #{
-                \     requireSameFiletype: v:false,
-                \     bufNameStyle: 'basename'
-                \   },
-                \ },
-                \ })
-    call ddc#custom#patch_filetype(['vim'], 'sources', (['necovim'] + l:basic_sources))
-    call ddc#enable()
-endfunction
-autocmd vimrc InsertEnter * call s:config_ddc()
-" }}}
+    if client:supports_method('textDocument/codeLens') then
+      vim.lsp.codelens.enable(true)
+    end
 
-" pum.vim {{{
-inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
-" }}}
+    if client:supports_method('textDocument/linkedEditingRange') then
+      vim.lsp.linked_editing_range.enable(true)
+    end
 
-" neosnippet.vim {{{
-imap <C-s> <Plug>(neosnippet_expand_or_jump)
-smap <C-s> <Plug>(neosnippet_expand_or_jump)
-xmap <C-s> <Plug>(neosnippet_expand_target)
+    if client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true)
+    end
+
+    -- Highlight the current cursor item.
+    if client:supports_method('textDocument/documentHighlight') then
+      vim.api.nvim_create_autocmd('CursorHold', { group = 'vimrc', buf = ev.buf, callback = vim.lsp.buf.document_highlight })
+      vim.api.nvim_create_autocmd('CursorHoldI', { group = 'vimrc', buf = ev.buf, callback = vim.lsp.buf.document_highlight })
+      vim.api.nvim_create_autocmd('CursorMoved', { group = 'vimrc', buf = ev.buf, callback = vim.lsp.buf.clear_references })
+    end
+
+    if client:supports_method('textDocument/foldingRange') then
+      local win = vim.api.nvim_get_current_win()
+      vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+    end
+  end,
+})
+
+-- HACK: Decorate the popup window
+-- neovim 0.12からはネイティブの補完で十分そう
+-- https://www.pandanoir.info/entry/2026/04/19/095000
+local orig_complete_set = vim.api.nvim__complete_set
+vim.api.nvim__complete_set = function(...)
+  local result = orig_complete_set(...)
+  if result and result.winid then
+    pcall(vim.api.nvim_win_set_config, result.winid, { border = 'rounded' })
+  end
+  return result
+end
+EOF
+
+" vista.vim
+let g:vista_default_executive = 'nvim_lsp'
+let g:vista#renderer#enable_icon = v:false
+let g:vista_sidebar_width = 45
+
 " }}}
 
 " ddu.vim {{{
@@ -1374,43 +1338,6 @@ function! g:committia_hooks.edit_open(info)
     nmap <buffer> <C-J> <Plug>(committia-scroll-diff-down-half)
 endfunction
 
-" vim-lsp {{{
-let g:lsp_diagnostics_highlights_enabled = 0
-let g:lsp_diagnostics_virtual_text_enabled = 0
-let g:lsp_settings_enable_suggestions = 0
-" monorepo に対応するためにそれっぽいファイルを追記する
-let g:lsp_settings_root_markers = ['Gemfile', 'go.mod', 'cargo.toml', 'mix.lock', 'package.json', '.git', '.git/', '.svn', '.hg', '.bzr']
-let g:lsp_settings_filetype_ruby = 'solargraph'
-let g:lsp_settings_filetype_typescript = 'typescript-language-server'
-let g:lsp_settings = #{
-            \   solargraph: #{
-            \     config: #{diagnostics: v:false},
-            \   }
-            \ }
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal tagfunc=lsp#tagfunc
-
-    nmap <silent><buffer> gd <plug>(lsp-definition)
-    nmap <silent><buffer> gt <plug>(lsp-type-definition)
-    nmap <silent><buffer> gp <plug>(lsp-peek-definition)
-    nmap <silent><buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <silent><buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <silent><buffer> gr <plug>(lsp-references)
-    nmap <silent><buffer> gi <plug>(lsp-implementation)
-    nmap <silent><buffer> gn <plug>(lsp-rename)
-    nmap <silent><buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <silent><buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <silent><buffer> K <plug>(lsp-hover)
-endfunction
-autocmd vimrc User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" }}}
-
-" vista.vim
-let g:vista_default_executive = 'vim_lsp'
-let g:vista#renderer#enable_icon = v:false
-let g:vista_sidebar_width = 45
-
 " winresizer
 let g:winresizer_start_key = '<Nop>'
 
@@ -1422,7 +1349,7 @@ nnoremap <silent> <C-S> <Cmd>TestFile<CR>
 " Lua plugin initialize
 lua << EOF
 -- nvim-treesitter
-require 'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter'.setup {
     auto_install = true,
     highlight = { enable = true },
     incremental_selection = { enable = true },
