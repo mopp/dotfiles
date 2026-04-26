@@ -656,6 +656,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
 
     " LSP {{{
     call dein#add('neovim/nvim-lspconfig')
+    call dein#add('mason-org/mason.nvim')
     call dein#add('liuchengxu/vista.vim', #{lazy: v:true, on_cmd: 'Vista'})
     " }}}
 
@@ -892,6 +893,10 @@ vim.api.nvim__complete_set = function(...)
   end
   return result
 end
+
+-- mason.nvim
+require("mason").setup()
+
 EOF
 
 " vista.vim
