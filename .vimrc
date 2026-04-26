@@ -269,7 +269,8 @@ augroup vimrc
 
     " Store and load view.
     autocmd BufWinLeave * if (bufname('%') != '') | mkview!          | endif
-    autocmd BufWinEnter * if (bufname('%') != '') | silent! loadview | endif
+    " Use BufReadPre to avoid overriding foldexpr and foldmethod set by FileType
+    autocmd BufReadPre * if (bufname('%') != '') | silent! loadview | endif
 
     " Detecting filetypes.
     autocmd BufWinEnter *.nas                nested setlocal filetype=nasm
@@ -800,6 +801,31 @@ elseif exists('g:is_setup')
 endif " }}}
 " }}}
 
+" treesitter {{{
+lua << EOF
+vim.api.nvim_create_autocmd('FileType', {
+    group = 'vimrc',
+    callback = function(ev)
+        if not pcall(vim.treesitter.start) then
+            return
+        end
+
+        local lang = vim.bo[ev.buf].filetype
+
+        if vim.treesitter.query.get(lang, 'folds') then
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            vim.wo[win][0].foldmethod = 'expr'
+        end
+
+        if vim.treesitter.query.get(lang, 'indents') then
+            vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+    end,
+})
+EOF
+" }}}
+
 " LSP {{{
 lua << EOF
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -833,6 +859,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method('textDocument/foldingRange') then
       local win = vim.api.nvim_get_current_win()
       vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+      vim.wo[win][0].foldmethod = 'expr'
     end
   end,
 })
@@ -1348,14 +1375,6 @@ nnoremap <silent> <C-S> <Cmd>TestFile<CR>
 
 " Lua plugin initialize
 lua << EOF
--- nvim-treesitter
-require 'nvim-treesitter'.setup {
-    auto_install = true,
-    highlight = { enable = true },
-    incremental_selection = { enable = true },
-    indent = { enable = true },
-}
-
 -- indent-blankline.nvim
 require 'ibl'.setup {
     indent = { char = '|' },
