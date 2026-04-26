@@ -861,7 +861,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
       vim.wo[win][0].foldmethod = 'expr'
     end
+
+    local opts = { noremap=true, silent=true }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gic', vim.lsp.buf.incoming_calls, opts)
+    vim.keymap.set('n', 'goc', vim.lsp.buf.outgoing_calls, opts)
   end,
+})
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = 'vimrc',
+  pattern = '*',
+  callback = function(ev)
+    -- https://whatsapp.github.io/erlang-language-platform/docs/feature-gallery/#semantic-syntax-highlighting
+    vim.api.nvim_set_hl(0, '@lsp.mod.bound', {underline = true})
+    vim.api.nvim_set_hl(0, '@lsp.typemod.function.exported_function', {bold = true})
+    vim.api.nvim_set_hl(0, '@lsp.typemod.function.exported_type', {bold = true})
+    vim.api.nvim_set_hl(0, '@lsp.typemod.function.deprecated_function', {link = '@lsp.mod.deprecated'})
+  end
 })
 
 -- HACK: Decorate the popup window
