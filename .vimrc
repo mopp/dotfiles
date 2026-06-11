@@ -667,32 +667,7 @@ if s:has_dein && dein#min#load_state(s:dein_base_path) " {{{
     call dein#add('honza/vim-snippets', #{lazy: v:true})
 
     " Fuzzy finders {{{
-    call dein#add('Shougo/ddu.vim')
-
-    " UI
-    call dein#add('Shougo/ddu-ui-ff')
-
-    " Source
-    call dein#add('Shougo/ddu-source-action')
-    call dein#add('Shougo/ddu-source-file_rec')
-    call dein#add('Shougo/ddu-source-line')
-    call dein#add('matsui54/ddu-source-file_external')
-    call dein#add('shun/ddu-source-buffer')
-    call dein#add('shun/ddu-source-rg')
-
-    call dein#add('kuuote/ddu-source-mr')
-    call dein#add('lambdalisue/mr.vim')
-
-    " Filter
-    call dein#add('Shougo/ddu-filter-matcher_ignore_files')
-    call dein#add('Shougo/ddu-filter-matcher_relative')
-    call dein#add('Shougo/ddu-filter-matcher_substring')
-    call dein#add('gamoutatsumi/ddu-filter-converter_relativepath')
-    call dein#add('kyoh86/ddu-filter-converter_hl_dir')
-
-    " Kind
-    call dein#add('Shougo/ddu-kind-file')
-    call dein#add('Shougo/ddu-kind-word')
+    call dein#add('ibhagwan/fzf-lua')
     " }}}
 
     " Operators and textobjs {{{
@@ -903,163 +878,28 @@ EOF
 let g:vista_default_executive = 'nvim_lsp'
 let g:vista#renderer#enable_icon = v:false
 let g:vista_sidebar_width = 45
-
 " }}}
 
-" ddu.vim {{{
-call ddu#custom#alias('default', 'source', 'mr_ignore', 'mr')
-call ddu#custom#alias('default', 'source', 'file_rec_ignore', 'file_rec')
-call ddu#custom#alias('default', 'source', 'file_external_ignore', 'file_external')
-call ddu#custom#alias('default', 'source', 'grep', 'rg')
-call ddu#custom#alias('default', 'source', 'grep_ignore', 'rg')
-call ddu#custom#patch_global(#{
-            \ ui: 'ff',
-            \ uiParams: #{
-            \   ff: #{
-            \     autoResize: v:true,
-            \     statusline: v:false,
-            \     split: 'floating',
-            \     floatingBorder: 'double',
-            \     floatingTitle: 'ddu.vim',
-            \     floatingTitlePos: 'center',
-            \     previewFloating: v:true,
-            \     previewFloatingBorder: 'single',
-            \     previewFloatingTitle: 'Preview',
-            \     previewFloatingTitlePos: 'center',
-            \   }
-            \ },
-            \ sourceOptions: #{
-            \   _: #{
-            \     matchers: ['matcher_substring'],
-            \   },
-            \   mr: #{
-            \     matchers: ['matcher_relative', 'matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   mr_ignore: #{
-            \     matchers: ['matcher_relative', 'matcher_ignore_files', 'matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   file_rec: #{
-            \     matchers: ['matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   file_rec_ignore: #{
-            \     matchers: ['matcher_ignore_files', 'matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   file_external: #{
-            \     matchers: ['matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   file_external_ignore: #{
-            \     matchers: ['matcher_ignore_files', 'matcher_substring'],
-            \     converters: ['converter_relativepath', 'converter_hl_dir'],
-            \   },
-            \   grep: #{
-            \     matchers: ['matcher_substring']
-            \   },
-            \   grep_ignore: #{
-            \     matchers: ['matcher_ignore_files', 'matcher_substring']
-            \   },
-            \ },
-            \ sourceParams: #{
-            \   file_external: #{
-            \     cmd: ['git', 'ls-files']
-            \   },
-            \   file_external_ignore: #{
-            \     cmd: ['git', 'ls-files']
-            \   },
-            \ },
-            \ filterParams: #{
-            \   matcher_ignore_files: #{
-            \     ignoreGlobs: ['*test/*', '*test\.*', '*_spec*']
-            \   },
-            \ },
-            \ kindOptions: #{
-            \   action: #{
-            \     defaultAction: 'do',
-            \   },
-            \   file: #{
-            \     defaultAction: 'open',
-            \   },
-            \   word: #{
-            \     defaultAction: 'yank',
-            \   },
-            \ },
-            \ })
+" fzf-lua {{{
+lua << EOF
+require('fzf-lua').setup{
+    {'skim'},
+    defaults = { file_icons = false },
+    winopts = {
+        preview = { default = "bat" }
+    },
+    keymap = {
 
-nnoremap <silent> <Leader>fb <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Buffers'}}, sources: ['buffer']})<CR>
-nnoremap <silent> <Leader>ff <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Most Recently Used'}}, sources: ['mr_ignore']})<CR>
-nnoremap <silent> <Leader>fa <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Most Recently Used'}}, sources: ['mr']})<CR>
-nnoremap <silent> <Leader>fl <Cmd>call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Lines'}}, sources: ['line']})<CR>
-nnoremap <silent> <Leader>fre <Cmd>call ddu#start(#{resume: v:true})<CR>
+    }
+}
+EOF
 
-function! s:ddu_file(is_ignore) abort
-    if system('git rev-parse --is-inside-work-tree') == "true\n"
-        let l:sources = a:is_ignore ? ['file_external_ignore'] : ['file_external']
-    else
-        let l:sources = a:is_ignore ? ['file_rec_ignore'] : ['file_rec']
-    endif
-
-    call ddu#start(#{uiParams: #{ff: #{floatingTitle: 'Files'}}, sources: l:sources})
-endfunction
-nnoremap <silent> <Leader>fe <Cmd>call <SID>ddu_file(v:true)<CR>
-nnoremap <silent> <Leader>ft <Cmd>call <SID>ddu_file(v:false)<CR>
-
-function! s:ddu_grep(is_ignore, input) abort
-    if system('git rev-parse --is-inside-work-tree') == "true\n"
-        let l:cmd = 'git'
-        let l:args = ['--no-pager', 'grep', '--line-number', '--column', '--no-color']
-    else
-        let l:cmd = 'rg'
-        let l:args = ["--column", "--no-heading", "--color", "never"]
-    endif
-
-    let l:source_name = a:is_ignore ? 'grep_ignore' : 'grep'
-
-    call ddu#start(#{
-                \ uiParams: #{ff: #{floatingTitle: 'Greps'}},
-                \ sources: [l:source_name],
-                \ sourceParams: {
-                \   l:source_name: #{
-                \     cmd: l:cmd,
-                \     args: l:args,
-                \     input: a:input,
-                \   },
-                \ },
-                \ })
-endfunction
-nnoremap <silent> <Leader>fg <Cmd>call <SID>ddu_grep(v:true, input('Pattern: '))<CR>
-nnoremap <silent> <Leader>fh <Cmd>call <SID>ddu_grep(v:false, input('Pattern: '))<CR>
-nnoremap <silent> <Leader>fw <Cmd>call <SID>ddu_grep(v:true, expand('<cword>'))<CR>
-
-function! s:ddu_ff_settings() abort
-    " ddu-ui-ff
-    nnoremap <buffer> <silent><nowait> i       <Cmd>call ddu#ui#do_action('openFilterWindow')<CR>
-    nnoremap <buffer> <silent><nowait> <CR>    <Cmd>call ddu#ui#do_action('itemAction')<CR>
-    nnoremap <buffer> <silent><nowait> ?       <Cmd>call ddu#ui#do_action('chooseAction')<CR>
-    nnoremap <buffer> <silent><nowait> p       <Cmd>call ddu#ui#do_action('togglePreview')<CR>
-    nnoremap <buffer> <silent><nowait> <Space> <Cmd>call ddu#ui#do_action('toggleSelectItem')<CR>
-    nnoremap <buffer> <silent><nowait> q       <Cmd>call ddu#ui#do_action('quit')<CR>
-    nnoremap <buffer> <silent><nowait> <ESC>   <Cmd>call ddu#ui#do_action('quit')<CR>
-
-    " ddu-kind-file
-    nnoremap <buffer> <silent><nowait> t <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'tabedit'}})<CR>
-    nnoremap <buffer> <silent><nowait> v <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'vsplit'}})<CR>
-    nnoremap <buffer> <silent><nowait> s <Cmd>call ddu#ui#do_action('itemAction', #{name: 'open', params: #{command: 'split'}})<CR>
-
-    setlocal cursorline
-endfunction
-autocmd vimrc FileType ddu-ff call s:ddu_ff_settings()
-
-function! s:ddu_filter_settings() abort
-    let b:lexima_disabled = 1
-    inoremap <buffer> <silent><nowait> <CR> <Esc><Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
-    inoremap <buffer> <silent><nowait> <ESC> <Esc><Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
-    nnoremap <buffer> <silent><nowait> q <Cmd>call ddu#ui#do_action('closeFilterWindow')<CR>
-endfunction
-autocmd vimrc FileType ddu-ff-filter call s:ddu_filter_settings()
+nnoremap <silent> <Leader>fb <Cmd>FzfLua buffers<CR>
+nnoremap <silent> <Leader>ff <Cmd>FzfLua vcs_files<CR>
+nnoremap <silent> <Leader>fo <Cmd>FzfLua oldfiles cwd_only=true<CR>
+nnoremap <silent> <Leader>fl <Cmd>FzfLua lines<CR>
+nnoremap <silent> <Leader>fre <Cmd>FzfLua resume<CR>
+nnoremap <silent> <Leader>fg <Cmd>FzfLua live_grep<CR>
 " }}}
 
 " vim-operator-flashy
@@ -1142,10 +982,10 @@ let g:lightline = #{
             \ },
             \ }
 
-let g:lightline_plugin_modes = #{ddu-ff: 'ddu', ddu-ff-filter: 'ddu', fern: 'Fern', vista_kind: 'Vista', vista_markdown: 'Vista'}
+let g:lightline_plugin_modes = #{fern: 'Fern', vista_kind: 'Vista', vista_markdown: 'Vista'}
 
 function! LightlineIsVisible() abort
-    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|ddu-ff\|help\|vista_\a\+')
+    return (60 <= winwidth(0)) && (&filetype !~? 'fern\|help\|vista_\a\+')
 endfunction
 
 function! LightlineFilename() abort " {{{
