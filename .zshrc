@@ -1,123 +1,123 @@
-# vim:set foldmethod=marker:
+# vim:set foldmethod=marker shiftwidth=2:
+#
+# - Configuring Zsh Without Dependencies
+#   - https://thevaluable.dev/zsh-install-configure-mouseless/
 export LANG=en_US.UTF-8
-export XDG_HOME_CONFIG=$HOME/.config
 
-# Define environment specific settings. {{{
-case $OSTYPE in
-    darwin*)
-        # For homebrew.
-        export path=(
-            /opt/homebrew/opt/coreutils/libexec/gnubin
-            /opt/homebrew/opt/llvm/bin
-            $path
-        )
-
-        if [ -d '/opt/homebrew/opt/llvm' ]; then
-            export LDFLAGS="-L/opt/homebrew/opt/zstd/lib -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
-            export CPPFLAGS="-I/opt/homebrew/opt/zstd/include -I/opt/homebrew/opt/openssl@3/include -I/opt/homebrew/opt/llvm/include"
-            export CC='clang'
-            export CXX='clang++'
-        fi
-
-        file=/opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-        if [ -e $file ]; then
-            source $file
-        fi
-        ;;
-    linux*)
-        file=/usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-        if [ -e $file ]; then
-            source $file
-        fi
-
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/docker.sock"
-
-        case $TERM in
-            *rxvt*)
-                stty -ixon      # Disable XON/XOFF flow control.
-                stty stop undef # Disable terminal lock by <Ctrl-S>.
-                ;;
-        esac
-        ;;
-esac
-
-# Disable man command highlight because of slow down.
-# https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
-FAST_HIGHLIGHT[chroma-man]=
+# XDG Base Directory {{{
+# - XDG Base Directory
+#   - https://wiki.archlinux.org/title/XDG_Base_Directory
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 # }}}
 
-# Path. {{{
-export GOPATH=$HOME/.local/go
-export GOENV_GOPATH_PREFIX=$HOME/.local/go
+path=($HOME/.local/bin $path)
 
-export fpath=(~/.zfunc/ $fpath)
+stty -ixon      # Disable XON/XOFF flow control (Ctrl-Q)
+stty stop undef # Disable terminal lock (Ctrl-S)
 
-if (($+commands[go])); then
-    export path=(
-        $(go env GOPATH)/bin
-        $path
-    )
+# $EDITOR {{{
+if (($+commands[nvim])); then
+  export EDITOR='nvim'
+elif (($+commands[vim])); then
+  export EDITOR='vim'
+else
+  export EDITOR='vi'
 fi
-
-export path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $path
-)
-
-typeset -U PATH path
 # }}}
 
-# Options. {{{
-setopt null_glob
-unsetopt beep
-unsetopt listbeep
+# Key bindings {{{
+#
+# References:
+# - 18 Zsh Line Editor
+#   - https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html
+# - Chapter 4: The Z-Shell Line Editor
+#   - https://zsh.sourceforge.io/Guide/zshguide04.html
+# - Editor Functions Index
+#   - https://zsh.sourceforge.io/Doc/Release/Editor-Functions-Index.html
+bindkey -v # Enable vi mode
 
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-export ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;'
+bindkey '^A' beginning-of-line
+bindkey '^B' backward-char
+bindkey '^D' delete-char-or-list
+bindkey '^E' end-of-line
+bindkey '^F' forward-char
+bindkey '^K' kill-line
+
+# Edit the current line using $EDITOR.
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
 # }}}
 
-# History. {{{
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=10000
-SAVEHIST=$HISTSIZE
-setopt inc_append_history
-setopt hist_ignore_all_dups
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
+# History {{{
+HISTFILE="$HOME/.zhistory"
+HISTSIZE=4096
+SAVEHIST=4096
+
+# https://zsh.sourceforge.io/Doc/Release/Options.html#History
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_FUNCTIONS # Don't store function definitions.
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY # Append the history as soon as they are entered.
+
+# Seach matched command in the history.
+# https://zsh.sourceforge.io/Doc/Release/User-Contributions.html#index-history_002dbeginning_002dsearch_002dbackward_002dend
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey '^P' history-beginning-search-backward-end
+bindkey '^N' history-beginning-search-forward-end
+
+bindkey "^R" history-incremental-pattern-search-backward
 # }}}
 
-# Complement {{{
+# Completion {{{
+# - A Guide to the Zsh Completion with Examples
+#   - https://thevaluable.dev/zsh-completion-guide-examples/
 autoload -Uz compinit
 compinit
 
-zstyle :compinstall filename "$HOME/.zshrc"
-zstyle ':completion:*:default' menu select=1
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*:messages' format '%F{003}%d'$DEFAULT
-zstyle ':completion:*:warnings' format '%F{196}No matches for:''%F{228} %d'$DEFAULT
+# Complete all unquoted arguments of the form ‘anything=expression’
+setopt MAGIC_EQUAL_SUBST
+
+bindkey '^[[Z' reverse-menu-complete # Reverse with Shift+Tab
+
+# Enable more completers
+zstyle ':completion:*' completer _extensions _complete _approximate
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+zstyle ':completion:*' menu select                  # Use menu selection style
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # Ignore cases
+zstyle ':completion:*' group-name ''                # Group by the type of the matched completions
+
+zstyle ':completion:*:*:*:*:descriptions' format '%F{069}-- %d --%f'
+zstyle ':completion:*:*:*:*:corrections'  format '%F{069}-- %d (errors: %e) --%f' # For _approximate
+zstyle ':completion:*:*:*:*:original'     format '%F{160}-- %d --%f'              # For _approximate
+zstyle ':completion:*:messages'           format '%F{105}-- %d --%f'
+zstyle ':completion:*:warnings'           format '%F{197}-- %BNo matches found%b%F{197} --%f'
 # }}}
 
-# Define EDITOR variable. {{{
-# `bindkey` uses this setting.
-if (($+commands[nvim])); then
-    export EDITOR=nvim
-elif (($+commands[vim])); then
-    export EDITOR=vim
-else
-    export EDITOR=vi
-fi
-# }}}
+# Pager {{{
+# cat, bat
+if (($+commands[bat])); then
+  alias cat='bat'
+  export BAT_THEME='TwoDark'
 
-# External tool configurations. {{{
-export ERL_AFLAGS="-kernel shell_history enabled"
-
-if (($+commands[less])); then
-    export PAGER=less
+  export PAGER='bat -plman'
+elif (($+commands[less])); then
+  export PAGER='less'
 elif (($+commands[more])); then
-    export PAGER=more
+  export PAGER='more'
 fi
+
 export LESS='-R -f -X --tabs=4 --ignore-case --SILENT -P --LESS-- ?f%f:(stdin). ?lb%lb?L/%L.. [?eEOF:?pb%pb\%..]'
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'
@@ -126,104 +126,97 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[38;5;246m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+# }}}
 
-(($+commands[anyenv])) && eval "$(anyenv init -)"
+(($+commands[rustup])) && path=($HOME/.cargo/bin $path)
 (($+commands[zoxide])) && eval "$(zoxide init zsh)"
-(($+commands[kubectl])) && source <(kubectl completion zsh)
 (($+commands[starship])) && eval "$(starship init zsh)"
+(($+commands[kubectl])) && source <(kubectl completion zsh)
+(($+commands[anyenv])) && eval "$(anyenv init -)"
 
-if (($+commands[rustup])); then
-    RUST_SYSROOT=$(rustc --print sysroot)
-    export RUST_SRC_PATH=$RUST_SYSROOT/lib/rustlib/src/rust/src
-    export LD_LIBRARY_PATH=$RUST_SYSROOT/lib:$LD_LIBRARY_PATH
-fi
-
-export TIME_STYLE='long-iso'
+# ls, eza {{{
+export TIME_STYLE=long-iso
 if (($+commands[eza])); then
-    export EZA_CONFIG_DIR=$HOME/.config/eza
-    alias eza='eza --color-scale '
-    alias ls='eza'
-    alias la='eza --all'
-    alias ll='eza --all --long --binary --no-user --smart-group'
-    alias lla='eza --all --long --binary --group --header'
-    alias llm='eza --all --long --binary --group --header --sort=modified'
-    alias tree='eza --all --tree --recurse'
+  alias eza='eza --color-scale'
+  alias ls='eza'
+  alias la='eza --all'
+  alias ll='eza --all --long --binary --no-user --smart-group'
+  alias lt='eza --all --long --binary --no-user --smart-group --sort=modified'
+  alias tree='eza --all --tree --recurse'
 else
-    alias ls='ls --color -hF'
-    alias ll='ls --color -hFl'
-    alias la='ls --color -hFa'
-fi
-
-if (($+commands[rg])); then
-    alias grep='rg'
-else
-    alias grep='grep --color=auto'
-fi
-
-if (($+commands[bat])); then
-    export BAT_THEME='Nord'
-    alias cat='bat'
+  alias ls='ls --color -hF'
+  alias ll='ls --color -hFl'
+  alias la='ls --color -hFla'
+  alias lt='ls --color -hFlat'
 fi
 # }}}
 
-# Aliases. {{{
+# grep, rg {{{
+if (($+commands[rg])); then
+  alias grep='rg'
+else
+  alias grep='grep --color=auto'
+fi
+# }}}
+
+# diff, delta {{{
+if (($+commands[delta])); then
+  alias diff="delta"
+else
+  alias diff='diff -u'
+fi
+# }}}
+
+# skim {{{
+if (($+commands[sk])); then
+  export SKIM_DEFAULT_OPTIONS='--reverse'
+
+  # '^T' select from file
+  # '^R' select from history
+  source <(sk --shell zsh --shell-bindings)
+  bindkey '^X^Q' skim-cd-widget
+
+  # # Based on https://github.com/ajeetdsouza/zoxide/issues/228#issuecomment-1105726772
+  function __local_cd_with_zoxide_by_sk() {
+    cd $(zoxide query --list --score | awk '{print $2}' | sk --select-1)
+    zle reset-prompt
+  }
+  zle -N __local_cd_with_zoxide_by_sk
+  bindkey -M viins '^Q' __local_cd_with_zoxide_by_sk
+fi
+# }}}
+
 alias objdump='objdump -M intel'
 alias od='od -tx1 -Ax'
 alias xxd='xxd -a'
-alias diff='diff -u'
 alias date='date --iso-8601="seconds"'
+
+# Elixir, Erlang/OTP
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+# OS specific {{{
+if [[ "$OSTYPE" == linux* ]]; then
+  source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh &> /dev/null || true
+
+  export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/docker.sock"
+else
+  source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh &> /dev/null || true
+
+  path=(/opt/homebrew/opt/rustup/bin $path)
+fi
 # }}}
 
-# Keybinds. {{{
-autoload -Uz history-search-end edit-command-line
-zle -N edit-command-line
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey -v
-bindkey -M viins '^A' beginning-of-line
-bindkey -M viins '^B' backward-char
-bindkey -M viins '^D' delete-char-or-list
-bindkey -M viins '^E' end-of-line
-bindkey -M viins '^F' forward-char
-bindkey -M viins '^K' kill-line
-bindkey -M viins '^P' history-beginning-search-backward-end
-bindkey -M viins '^N' history-beginning-search-forward-end
-bindkey -M viins "^R" history-incremental-pattern-search-backward
-bindkey -M viins '^X^E' edit-command-line
-bindkey -M viins '^[[Z' reverse-menu-complete
-# }}}
-
-# Functions. {{{
-function print_term_colors() {
+# Print terminal colors
+function print_term_colors() { # {{{
     for c ({000..255}) {
         echo -n "\e[38;5;${c}m $c";
         [ $(($c%16)) -eq 15 ] && echo
     }
 }
+# }}}
 
-function date_from_timestamp() {
-    date --date="@$1" --iso-8601='seconds'
-}
-
-function urand() {
-    od -vAn -N4 -tu4 < /dev/urandom | tail -n 1 | tr -d ' '
-}
-
-function du_rank() {
-    du -s * | sort -nr
-}
-
-function switch_cc_cxx() {
-    if [[ $CC == "clang" ]]; then
-        export CC='gcc'
-        export CXX='g++'
-    else
-        export CC='clang'
-        export CXX='clang++'
-    fi
-}
-
-function copy() {
+# Copy into the clipboard
+function copy() { # {{{
     [ -p /dev/stdin ] && input='-' || input=$@
 
     case $OSTYPE in
@@ -231,77 +224,14 @@ function copy() {
         linux*)  cat $input | xclip -selection clipboard -i ;;
     esac
 }
+# }}}
 
-function copy_prev_cmd() {
+# Copy the previous command into the clipboard
+function copy_prev_cmd() { # {{{
     fc -ln -1 | copy
 }
-
-function kubexec {
-    if [ "$#" -le 1 ]; then
-        echo "usage: $0 <target> <command>"
-        return 1
-    fi
-
-    pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
-    echo "$pod_name at $(kubens --current)"
-
-    set -o xtrace
-    kubectl exec --stdin=true --tty=true $pod_name --container="$1" -- ${@:2:($#-2)}
-}
-
-function kubeforward {
-    if [ "$#" -le 1 ]; then
-        echo "usage: $0 <ports> <target>"
-        return 1
-    fi
-
-    set -o xtrace
-    pod_name=$(kubectl get pods --no-headers --selector app="$2" --output name | shuf --head-count=1)
-    echo "$pod_name at $(kubens --current)"
-    kubectl port-forward $pod_name $1
-}
-
-function kubevide() {
-    if [ "$#" -le 0 ]; then
-        echo "usage: $0 <target>"
-        return 1
-    fi
-
-    kubeforward 6666:6666 "$1" &
-
-    pod_name=$(kubectl get pods --no-headers --selector app="$1" --output name | shuf --head-count=1)
-
-    set -o xtrace
-    kubectl exec --stdin=false --tty=true $pod_name --container="$1" -- sh -c 'env SHELL=/usr/bin/zsh PATH=$HOME/.local/bin:$PATH nvim --headless --listen 0.0.0.0:6666' &
-
-    sleep 5
-    neovide --server=localhost:6666
-}
-
-function gitdargs {
-    local -A opthash
-    zparseopts -D -A opthash -- -pattern:
-
-    if [ "$#" -le 0 ]; then
-        echo "usage: $0 <option> <command>"
-        echo "  example: $0 --pattern '*tsx' yarn pretter --write"
-        return 1
-    fi
-
-    pattern="*"
-    if [[ -n "${opthash[(i)--pattern]}" ]]; then
-        pattern=$opthash[--pattern]
-    fi
-
-    $@ $(git diff --relative --name-only --diff-filter=M -z -- "${pattern}" | tr '\000' ' ')
-}
-
-function killjobs {
-    kill ${${(v)jobstates##*:*:}%=*}
-}
 # }}}
 
-# Load a machine local scripts. {{{
+# Load the machine local scripts.
 # NOTE: the last `true` command makes the exit code successes (0).
-[ -s $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true
-# }}}
+source $HOME/.zshrc_local &> /dev/null || true
