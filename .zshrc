@@ -186,7 +186,7 @@ if (($+commands[sk])); then
     zle reset-prompt
   }
   zle -N __local_cd_with_zoxide_by_sk
-  bindkey -M viins '^Q' __local_cd_with_zoxide_by_sk
+  bindkey '^Q' __local_cd_with_zoxide_by_sk
 fi
 # }}}
 
