@@ -169,7 +169,11 @@ fi
 
 # skim {{{
 if (($+commands[sk])); then
-  export SKIM_DEFAULT_OPTIONS='--reverse'
+  local -r sk_git='git ls-tree -r --name-only HEAD'
+  local -r sk_find="find . -name '.' -or -type d -name '.*' -prune -or -type f -print | sort" # Ignore dot directly but show dot files.
+  export SKIM_DEFAULT_COMMAND="$sk_git || $sk_find"
+
+  export SKIM_DEFAULT_OPTIONS='--reverse --height 35% --border rounded --color catppuccin-mocha'
 
   # '^T' select from file
   # '^R' select from history
