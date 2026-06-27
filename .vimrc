@@ -884,13 +884,16 @@ let g:vista_sidebar_width = 45
 lua << EOF
 require('fzf-lua').setup{
     {'skim'},
-    defaults = { file_icons = false },
     winopts = {
-        preview = { default = "bat" }
+        preview = {
+            hidden = true
+        }
     },
     keymap = {
-
-    }
+        builtin = {
+            ["<C-P>"] = "toggle-preview"
+        }
+    },
 }
 EOF
 
@@ -899,7 +902,7 @@ nnoremap <silent> <Leader>ff <Cmd>FzfLua vcs_files<CR>
 nnoremap <silent> <Leader>fo <Cmd>FzfLua oldfiles cwd_only=true<CR>
 nnoremap <silent> <Leader>fl <Cmd>FzfLua lines<CR>
 nnoremap <silent> <Leader>fre <Cmd>FzfLua resume<CR>
-nnoremap <silent> <Leader>fg <Cmd>FzfLua live_grep<CR>
+nnoremap <silent> <Leader>fg <Cmd>FzfLua grep_cword<CR>
 " }}}
 
 " vim-operator-flashy
